@@ -1,0 +1,6 @@
+module Pods_cementerios_ui_cementerios_uiTests {
+  umbrella header "Pods-cementerios_ui-cementerios_uiTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
