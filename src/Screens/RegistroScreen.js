@@ -30,7 +30,7 @@ export default function RegistroScreen (props) {
                 Introduce tus datos
                 </Text> 
                 <MyTextInput keyboardType={null} placeholder='Usuario' image='user'/>
-                <MyTextInput keyboardType='email-address' placeholder='E-mail' image='mail-forward'/>
+                <MyTextInput keyboardType='email-address' placeholder='E-mail' image='envelope'/>
                 <MyTextInput keyboardType={null} placeholder='Password' image='lock' bolGone={true} 
         secureTextEntry={hidePassword} onPress={()=> setHidePassword(!hidePassword)}/>
                 <MyTextInput keyboardType={null} placeholder='Confirmar Password' image='lock' bolGone={true} 
