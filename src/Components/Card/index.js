@@ -1,11 +1,11 @@
 import React from 'react';
 import {View} from 'react-native';
-import mainStyles from '@styles/stylesGeneral';
+import stylesG from '../../../style';
 
 export default function Card(props) {
   return (
-    <View style={mainStyles.card}>
-      <View style={mainStyles.cardContenido}>{props.children}</View>
+    <View style={stylesG.card}>
+      <View style={stylesG.cardContenido}>{props.children}</View>
     </View>
   );
 }

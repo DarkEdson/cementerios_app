@@ -3,7 +3,6 @@ import Card from '../Card/index';
 import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 export default function CardProducto(props) {
-  console.log(props)
   return (
     <TouchableOpacity style={styles.cuerpoCard}>
       <View style={{...styles.view, backgroundColor: props.bgColor}}>
