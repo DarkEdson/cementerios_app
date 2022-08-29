@@ -1,11 +1,12 @@
 import React from 'react';
 import Card from '../Card/index';
 import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import mainStyles from '@styles/stylesGeneral';
 
 export default function CardColaborador(props) {
   return (
     <TouchableOpacity style={styles.cuerpoCard}>
-      <View style={styles.view}>
+      <View style={mainStyles.viewComponents}>
         <View style={styles.top}>
           <Card>
             <Image
@@ -15,7 +16,7 @@ export default function CardColaborador(props) {
           </Card>
         </View>
         <View style={styles.bottom}>
-          <Text style={styles.titulo}> {props.nombre} </Text>
+          <Text style={mainStyles.tituloComponents}> {props.nombre} </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -31,9 +32,6 @@ const styles = StyleSheet.create({
     height: 240,
     borderRadius: 12,
   },
-  view: {
-    flexDirection: 'column',
-  },
   top: {
     width: '98%',
     height: '70%',
@@ -45,14 +43,6 @@ const styles = StyleSheet.create({
     height: '30%',
     flexDirection: 'row',
     marginBottom: '5%',
-  },
-  titulo: {
-    fontWeight: '700',
-    textAlign: 'left',
-    fontSize: 18,
-    marginTop: 10,
-    width: '100%',
-    height: '100%',
   },
   imgCategoria: {
     height: '100%',

@@ -1,12 +1,13 @@
 import React from 'react';
 import Card from '../Card/index';
 import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import mainStyles from '@styles/stylesGeneral';
 
 export default function BtnCategoria(props) {
   return (
     <TouchableOpacity style={styles.cuerpoCard}>
       <Card>
-        <View style={styles.view}>
+        <View style={mainStyles.viewComponents}>
           <View style={styles.top}>
             <Image
               style={styles.imgCategoria}
@@ -14,7 +15,7 @@ export default function BtnCategoria(props) {
             />
           </View>
           <View style={styles.bottom}>
-            <Text style={styles.titulo}> {props.titulo} </Text>
+            <Text style={mainStyles.tituloComponents}> {props.titulo} </Text>
           </View>
         </View>
       </Card>
@@ -31,9 +32,6 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 12,
   },
-  view: {
-    flexDirection: 'column',
-  },
   top: {
     width: '40%',
     marginLeft: '30%',
@@ -47,14 +45,6 @@ const styles = StyleSheet.create({
     height: '50%',
     flexDirection: 'row',
     marginBottom: '5%',
-  },
-  titulo: {
-    fontWeight: '700',
-    textAlign: 'center',
-    fontSize: 18,
-    marginTop: 10,
-    width: '100%',
-    height: '100%',
   },
   imgCategoria: {
     height: '100%',
