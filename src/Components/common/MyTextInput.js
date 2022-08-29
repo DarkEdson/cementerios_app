@@ -33,7 +33,7 @@ export default function MyTextInput(props) {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.btnVisibility}
-            onPress={props.onPress}>
+            onPress={props.onPressIcon}>
             <Image
               style={styles.btnImage}
               tintColor={color.BLACK}
