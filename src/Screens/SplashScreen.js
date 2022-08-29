@@ -10,6 +10,7 @@ export default class SplashScreen extends Component {
   }
   componentDidMount(){
     setTimeout(()=>{
+      //aqui va el if para ir a Home o a Login
         this.goToScreen('Login')
     },5000, this)
   }
