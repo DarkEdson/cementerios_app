@@ -1,23 +1,29 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import color from '@styles/colors'
+import React from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import {mainStyles} from '@styles/stylesGeneral';
 
-export default function ToolBar(props){
+import {Icon} from '@rneui/themed';
 
-    return (
-        <View style={[props.style, { height: 64, marginTop: 24, backgroundColor: color.PRINCIPALCOLOR }]}>
-            {props.titulo && 
-                <Text style={{ 
-                    marginTop: 12, textAlign: 'center', fontSize: 25, 
-                    color: color.WHITE }}>{props.titulo}
-                </Text>
-            }
-            {props.iconLeft &&
-            <TouchableOpacity style={{ position: 'absolute', left: 20, top: 15 }} onPress={props.onPressLeft}>
-                <Image style={{ tintColor: color.WHITE, width: 30, height: 30 }} source={props.iconLeft} />
-            </TouchableOpacity>
-            }
-        </View>
-    )
+import color from '@styles/colors';
+
+export default function ToolBar(props) {
+  return (
+    <View style={[props.style, mainStyles.toolBarStyle]}>
+      {props.titulo && (
+        <Text style={mainStyles.toolBarText}>{props.titulo}</Text>
+      )}
+      {props.iconLeft && (
+        <TouchableOpacity
+          style={{position: 'absolute', left: 20, top: 12}}
+          onPress={props.onPressLeft}>
+          <Icon
+            size={35}
+            color={color.BLACK}
+            type={'material-community'}
+            name="chevron-left"
+          />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 }
-

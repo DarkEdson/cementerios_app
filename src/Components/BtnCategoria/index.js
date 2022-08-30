@@ -24,10 +24,10 @@ export default function BtnCategoria(props) {
 
 const styles = StyleSheet.create({
   cuerpoCard: {
-    marginLeft: '5%',
+    marginLeft: '4%',
     marginTop: '3%',
     marginBottom: '3%',
-    width: '35%',
+    width: '20%',
     height: 130,
     borderRadius: 12,
   },
@@ -35,11 +35,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   top: {
-    width: '40%',
-    marginLeft: '30%',
+    width: '65%',
+    marginLeft: '15%',
     marginRight: '30%',
     height: '40%',
-    marginTop: '10%',
+    marginTop: '15%',
     flexDirection: 'row',
   },
   bottom: {

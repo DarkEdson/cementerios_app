@@ -11,17 +11,6 @@ export default function SplashScreen(props) {
   useEffect(() => {
     fetchSesion(loginAction);
   }, []);
-  /*
-  componentDidMount() {
-    setTimeout(
-      () => {
-        //aqui va el if para ir a Home o a Login
-        this.goToScreen('Login');
-      },
-      5000,
-      this,
-    );
-  }*/
 
   return (
     <View style={splashStyles.container}>
@@ -52,7 +41,7 @@ export default function SplashScreen(props) {
     }
     loginAction({type: 'sign-in', data: response});
     setTimeout(() => {
-      goToScreen('Principal');
+      goToScreen('Home');
     }, 500);
   }
   function goToScreen(routeName) {

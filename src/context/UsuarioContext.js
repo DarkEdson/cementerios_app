@@ -22,7 +22,7 @@ const usuarioReducer = (state = initialState, payload) => {
         console.log('usuario guardado');
       });
       Snackbar.show({
-        title: 'Inicio de sesión exitoso',
+        text: 'Inicio de sesión exitoso',
         duration: Snackbar.LENGTH_LONG,
       });
 
@@ -32,7 +32,7 @@ const usuarioReducer = (state = initialState, payload) => {
         console.log(msg);
       });
       Snackbar.show({
-        title: 'Sesión expirada',
+        text: 'Sesión expirada',
         duration: Snackbar.LENGTH_LONG,
       });
 

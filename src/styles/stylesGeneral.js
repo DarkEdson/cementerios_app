@@ -23,14 +23,37 @@ const mainStyles = StyleSheet.create({
     color: color.PRINCIPALCOLOR,
     fontFamily: 'Poppins-SemiBold',
   },
-
+  toolBarStyle: {
+    height: 50,
+    marginTop: 16,
+    backgroundColor: color.WHITE,
+  },
+  toolBarSessionStyle: {
+    height: Dimensions.get('screen').height * 0.13,
+    marginTop: 16,
+    backgroundColor: color.WHITE,
+  },
+  toolBarText: {
+    marginTop: 12,
+    textAlign: 'center',
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: color.BLACK,
+  },
+  toolBarSessionText: {
+    marginTop: 16,
+    marginLeft: 8,
+    textAlign: 'left',
+    fontSize: 16,
+    color: color.GRAY,
+  },
   btnMain: {
-    width: 280,
+    width: Dimensions.get('screen').width * 0.9,
     marginTop: 40,
     marginBottom: 20,
     alignItems: 'center',
     backgroundColor: color.PRINCIPALCOLOR,
-    borderRadius: 60,
+    borderRadius: 15,
   },
 
   btnTransparent: {
@@ -41,7 +64,12 @@ const mainStyles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 60,
   },
-
+  btnUnderline: {
+    textDecorationLine: 'underline',
+  },
+  btnMargin: {
+    marginTop: -5,
+  },
   btntxt: {
     textAlign: 'center',
     fontSize: 17,
@@ -152,10 +180,10 @@ const registroStyles = StyleSheet.create({
 
   buttonSocialIcon: {
     marginBottom: 10,
-    width: 250,
+    width: Dimensions.get('screen').width * 0.9,
     height: 60,
     alignItems: 'center',
-    borderRadius: 60,
+    borderRadius: 5,
   },
 });
 

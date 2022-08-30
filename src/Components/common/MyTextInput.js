@@ -24,7 +24,7 @@ export default function MyTextInput(props) {
         <Icon
           size={24}
           color={color.BLACK}
-          type={'font-awesome'}
+          type={'material-community'}
           name={props.image}
         />
       }
@@ -34,14 +34,11 @@ export default function MyTextInput(props) {
             activeOpacity={0.8}
             style={styles.btnVisibility}
             onPress={props.onPressIcon}>
-            <Image
-              style={styles.btnImage}
-              tintColor={color.BLACK}
-              source={
-                props.secureTextEntry
-                  ? require('@images/ic_show_password.png')
-                  : require('@images/ic_hide_password.png')
-              }
+            <Icon
+              size={24}
+              color={color.BLACK}
+              type={'material-community'}
+              name={props.secureTextEntry ? 'eye' : 'eye-off'}
             />
           </TouchableOpacity>
         ) : (
