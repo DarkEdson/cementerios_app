@@ -78,6 +78,7 @@ export default function HomeScreen(props) {
           <MyTextButton
             titulo="Ver todos"
             underline={true}
+            color="blue"
             onPress={() => {}}
           />
         </View>
