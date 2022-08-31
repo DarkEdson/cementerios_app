@@ -75,7 +75,6 @@ const mainStyles = StyleSheet.create({
     fontSize: 17,
     color: color.WHITE,
     paddingVertical: 15,
-    fontFamily: 'Poppins-Bold',
   },
   viewComponents: {
     flexDirection: 'column',
@@ -83,7 +82,6 @@ const mainStyles = StyleSheet.create({
   txtTransparent: {
     color: color.PRINCIPALCOLOR,
     fontSize: 14,
-    fontFamily: 'Poppins-Light',
   },
   tituloComponents: {
     fontWeight: '700',
