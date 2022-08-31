@@ -55,13 +55,13 @@ export default function HomeScreen(props) {
         searchPlaceHolder='Cementerios, arrecifes o flores...'
         buttonTextStyle={{ textAlign: 'left'}}
         buttonStyle={styles.btnStyle}
-        dropdownStyle={{marginLeft:15}}
         renderDropdownIcon={isOpened => {
           return <Icon type={'material-community'} name={isOpened ? 'magnify-expand' : 'magnify'} color={'#444'} size={16} />;
         }}
         dropdownIconPosition='left'
         onSelect={(selectedItem, index) => {
           console.log(selectedItem.name, index)
+          Alert.alert(JSON.stringify(selectedItem))
         }}
         buttonTextAfterSelection={(selectedItem, index) => {
           return selectedItem.name
