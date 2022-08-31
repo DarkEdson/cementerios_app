@@ -23,7 +23,7 @@ export default function SplashScreen(props) {
           easing="ease-in-out"
           iterationCount="infinite"
           style={splashStyles.logo}
-          source={require('@images/logo.png')}
+          source={require('@images/main_logo.png')}
         />
         <Text style={splashStyles.texto}>Bienvenidos</Text>
       </ImageBackground>
@@ -42,7 +42,7 @@ export default function SplashScreen(props) {
     loginAction({type: 'sign-in', data: response});
     setTimeout(() => {
       goToScreen('Home');
-    }, 500);
+    }, 1000);
   }
   function goToScreen(routeName) {
     props.navigation.replace(routeName);

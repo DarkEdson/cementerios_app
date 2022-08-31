@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -29,10 +29,12 @@ function useBackButton(handler) {
 }
 
 export default function HomeScreen(props) {
+
   const [login, loginAction] = useContext(UsuarioContext);
 
   useBackButton(desconectarse);
   return (
+    
     <ScrollView>
       <View style={styles.container}>
         <StatusBar
@@ -49,6 +51,7 @@ export default function HomeScreen(props) {
           {' '}
           Bienvenido {'\n' + login.usuario.email}{' '}
         </Text>
+        
         <CardPromocion
           titulo="30% de descuento"
           descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
