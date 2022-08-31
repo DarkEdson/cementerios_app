@@ -6,33 +6,34 @@ import {
   StyleSheet,
   StatusBar,
   Alert,
-  BackHandler,
 } from 'react-native';
 import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
-import MyButton from '@Components/common/MyButton';
+import { Icon } from '@rneui/themed';
 import CardPromocion from '@Components/CardPromocion/';
 import BtnCategoria from '@Components/BtnCategoria/';
 import ToolBarSession from '@Components/common/toolBarSession';
 import MyTextButton from '@Components/common/MyTextButton';
 import CardColaborador from '@Components/CardColaborador/';
+import SelectDropdown from 'react-native-select-dropdown'
 
-function useBackButton(handler) {
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handler);
 
-    return () => {
-      console.log('hardwareBackPress Close');
-      BackHandler.removeEventListener('hardwareBackPress', handler);
-    };
-  }, [handler]);
-}
 
 export default function HomeScreen(props) {
-
   const [login, loginAction] = useContext(UsuarioContext);
-
-  useBackButton(desconectarse);
+  const [data, setData] = useState([
+  {id: 1, name: 'angellist'},
+  {id: 2, name: 'codepen'},
+  {id: 3, name: 'envelope'},
+  {id: 4, name: 'etsy'},
+  {id: 5, name: 'facebook'},
+  {id: 6, name: 'foursquare'},
+  {id: 7, name: 'github-alt'},
+  {id: 8, name: 'github'},
+  {id: 9, name: 'gitlab'},
+  {id: 10, name: 'instagram'},
+  ]);
+  
   return (
     
     <ScrollView>
@@ -47,11 +48,28 @@ export default function HomeScreen(props) {
           onPressLeft={() => goToScreen('Principal')}
           iconLeft={true}
         />
-        <Text style={styles.txtNuevoComponente}>
-          {' '}
-          Bienvenido {'\n' + login.usuario.email}{' '}
-        </Text>
-        
+        <SelectDropdown
+        data={data}
+        search
+        defaultButtonText='Cementerios, arrecifes o flores...'
+        searchPlaceHolder='Cementerios, arrecifes o flores...'
+        buttonTextStyle={{ textAlign: 'left'}}
+        buttonStyle={styles.btnStyle}
+        dropdownStyle={{marginLeft:15}}
+        renderDropdownIcon={isOpened => {
+          return <Icon type={'material-community'} name={isOpened ? 'magnify-expand' : 'magnify'} color={'#444'} size={16} />;
+        }}
+        dropdownIconPosition='left'
+        onSelect={(selectedItem, index) => {
+          console.log(selectedItem.name, index)
+        }}
+        buttonTextAfterSelection={(selectedItem, index) => {
+          return selectedItem.name
+        }}
+        rowTextForSelection={(item, index) => {
+          return item.name
+        }}
+      />
         <CardPromocion
           titulo="30% de descuento"
           descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
@@ -95,29 +113,10 @@ export default function HomeScreen(props) {
             nombre="Capillas senoriales"
           />
         </View>
-        <MyButton titulo="LOGOUT" onPress={() => desconectarse()} />
       </View>
     </ScrollView>
   );
-  function desconectarse() {
-    Alert.alert('Salir', '¿Esta seguro que \ndesea cerrar sesion?', [
-      {
-        text: 'Si',
-        onPress: () => {
-          loginAction({
-            type: 'sign-out',
-            data: {},
-          });
-          goToScreen('Login');
-        },
-      },
-      {
-        text: 'No',
-        onPress: () => {},
-        style: 'cancel',
-      },
-    ]);
-  }
+  
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
@@ -128,6 +127,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.WHITE,
+  },
+  btnStyle: {
+    width:'90%',
+    marginLeft:20,
+    marginBottom:15,
+    borderRadius: 10,
+    backgroundColor: color.GRAY2
   },
   categories: {
     flexDirection: 'row',
