@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { mainStyles } from '@styles/stylesGeneral';
 import SelectDropdown from 'react-native-select-dropdown'
 
-import { Icon } from '@rneui/themed';
+import { Icon,  Avatar } from '@rneui/themed';
 
 import color from '@styles/colors';
 
@@ -42,10 +42,14 @@ export default function ToolBarSession(props) {
           style={styles.btnProfile}
           onPress={props.onPressLeft}>
           {props.image ? (
-            <Image />
+            <Avatar
+            rounded
+            source={{ uri: 'https://randomuser.me/api/portraits/men/41.jpg' }}
+            size='medium'
+          />
           ) : (
             <Icon
-              size={60}
+              size={47}
               color={color.BLACK}
               type={'material-community'}
               name="account"
