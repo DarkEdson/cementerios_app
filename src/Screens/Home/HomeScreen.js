@@ -1,9 +1,4 @@
-import React, {useContext, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import color from '@styles/colors';
 import { Icon } from '@rneui/themed';
@@ -16,7 +11,6 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function HomeScreen(props) {
   return (
-    <NavigationContainer>
     <Tab.Navigator
     initialRouteName="initial"
     labeled
@@ -72,44 +66,5 @@ export default function HomeScreen(props) {
       }}
     />
   </Tab.Navigator>
-  </NavigationContainer>
   );
-  
-
-  function goToScreen(routeName) {
-    props.navigation.navigate(routeName);
-  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  promociones: {
-    width: '100%',
-    height: 180,
-    borderWidth: 1,
-    borderColor: 'red',
-  },
-  txtNuevoComponente: {
-    marginTop: 20,
-    marginLeft: 20,
-    marginBottom: 15,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});

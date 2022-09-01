@@ -7,6 +7,7 @@ import AdicionalRegistroScreen from '@Screens/Registro/AdicionalRegistroScreen';
 import HomeScreen from '@Screens/Home/HomeScreen';
 import RecuperarPasswordScreen from '@Screens/Login/RecuperarPasswordScreen';
 import PrincipalScreen from '@Screens/PrincipalScreen';
+import CompanyScreen from '@Screens/Company/CompanyScreen';
 
 const AppNavigation = createStackNavigator({
   Splash: {
@@ -47,6 +48,12 @@ const AppNavigation = createStackNavigator({
   },
   Principal: {
     screen: PrincipalScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  Company: {
+    screen: CompanyScreen,
     navigationOptions: {
       headerShown: false,
     },

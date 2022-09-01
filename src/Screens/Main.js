@@ -1,11 +1,11 @@
 import React from 'react';
-import AppNavigation from '@routes/AppNavigation';
+import AppNavigations from '@routes/AppNavigationV2';
 import {UsuarioProvider} from '@context/UsuarioContext';
 
 const MainPage = () => {
   return (
     <UsuarioProvider>
-      <AppNavigation />
+      <AppNavigations />
     </UsuarioProvider>
   );
 };

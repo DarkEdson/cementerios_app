@@ -18,6 +18,7 @@ import MyTextButton from '@Components/common/MyTextButton';
 import CardColaborador from '@Components/CardColaborador/';
 import SelectDropdown from 'react-native-select-dropdown';
 import Carousel , { ICarouselInstance } from 'react-native-reanimated-carousel';
+import CompanyScreen from '../Company/CompanyScreen';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
@@ -143,12 +144,13 @@ export default function InitialScreen(props) {
                 autoPlayInterval={2000}
                 data={categorias}
                 pagingEnabled={true}
-                onSnapToItem={(index) => console.log('current index:', index)}
+                //onSnapToItem={(index) => console.log('current index:', index)}
                 renderItem={({ item }) => (
                     <View style={styles.categories}>
                         <CardColaborador
             urlImagen={item.urlImagen}
             nombre={item.titulo}
+            onPressColab={()=>goToScreen('Company',{screen: 'CompanyScreen'})}
           />
                     </View>
                 )}
