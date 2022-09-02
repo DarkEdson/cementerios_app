@@ -65,7 +65,7 @@ export default function CompanyScreen(props) {
         </View>
         <Text style={CementeryScreen.title2Text}>Mas Populares</Text>
         <CardProducto
-          urlImagen="https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg"
+          urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
           titulo="Perla Magistral"
           descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
           precio="$ 12.50"
