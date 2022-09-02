@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   titulo: {
     fontWeight: '700',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 13,
     marginTop: 10,
     width: '100%',
     height: '100%',

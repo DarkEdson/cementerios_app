@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import color from './colors';
 
 //Estilos para MainScreen
@@ -10,7 +10,20 @@ const mainStyles = StyleSheet.create({
     backgroundColor: color.WHITE,
     paddingHorizontal: 20,
   },
-
+  logoImage: {
+    width: 230,
+    height: 185,
+    marginBottom: 20,
+  },
+  headerBackground: {
+    marginTop: Dimensions.get('screen').height * 0.03,
+    width: Dimensions.get('screen').width * 1,
+    height: Dimensions.get('screen').height * 0.35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    overflow: 'hidden',
+  },
   containerCenter: {
     paddingTop: 10,
     alignItems: 'center',
@@ -64,6 +77,7 @@ const mainStyles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 60,
   },
+
   btnUnderline: {
     textDecorationLine: 'underline',
   },
@@ -96,7 +110,7 @@ const mainStyles = StyleSheet.create({
     borderRadius: 12,
     elevation: 2,
     backgroundColor: '#fff',
-    shadowOffset: {width: 1, height: 1},
+    shadowOffset: { width: 1, height: 1 },
     shadowColor: '#333',
     shadowOpacity: 0.3,
     shadowRadius: 2,
@@ -108,6 +122,7 @@ const mainStyles = StyleSheet.create({
     marginVertical: 0,
   },
 });
+
 //Estilos para SplashScreen
 const splashStyles = StyleSheet.create({
   container: {
@@ -184,5 +199,111 @@ const registroStyles = StyleSheet.create({
     borderRadius: 5,
   },
 });
+//Estilos para CementeryScreen
+const CementeryScreen = StyleSheet.create({
+  HeaderView: {
+    flexDirection: 'row',
+    marginTop: 15,
+    marginBottom: 25,
+    justifyContent: 'space-evenly'
+  },
+  FooterView: {
+    marginTop: 5,
+    flex: 1,
+    backgroundColor: color.WHITE
+  },
+  container: {
+    flex: 1,
+    backgroundColor: color.WHITE
+  },
+  titleText: {
+    marginLeft: 20,
+    marginTop: 10,
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: color.BLACK,
+  },
+  title2Text: {
+    marginLeft: 22,
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: color.BLACK,
+  },
+  titleFooterText: {
+    marginLeft: 20,
 
-export {mainStyles, splashStyles, loginStyles, registroStyles};
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: color.PRINCIPALCOLOR,
+  },
+  subtitleText: {
+    marginLeft: 20,
+    marginTop: 4,
+    fontSize: 16.28,
+    color: color.GRAY3,
+  },
+  subtitleFooterText: {
+    marginLeft: -20,
+    fontSize: 22,
+    fontWeight: '600',
+    color: color.GRAY3,
+  },
+  categories: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  titles: {
+    marginRight: 70,
+    marginBottom: 20,
+    marginTop: 16,
+  },
+});
+
+//Estilos para InformationIcon
+const informationIconStyles = StyleSheet.create({
+  circleRounded: {
+    marginTop: 4,
+    marginRight: 7,
+    paddingTop: 3,
+    height: 25,
+    width: 25,
+    alignItems: 'center',
+    borderRadius: 100,
+    backgroundColor: color.PRINCIPALCOLOR,
+  },
+  circleRoundedTransparent: {
+    marginTop: 4,
+    paddingTop: 3,
+    marginRight: 7,
+    height: 25,
+    width: 25,
+    alignItems: 'center',
+    borderRadius: 100,
+  },
+  titleText: {
+    fontWeight: '700',
+    color: color.BLACK,
+    justifyContent: 'center',
+    fontSize: 16,
+  },
+  subtitleText: {
+    fontWeight: '400',
+    color: color.GRAY3,
+    justifyContent: 'center',
+    fontSize: 13,
+  },
+  verticleLine: {
+    height: '100%',
+    width: 2,
+    backgroundColor: color.GRAY2,
+  },
+  logo: {
+    width: 190,
+    height: 151,
+    marginTop: 20,
+    marginBottom: Dimensions.get('screen').height * 0.2,
+    marginHorizontal: Dimensions.get('screen').width * 0.25,
+  },
+});
+
+export { mainStyles, splashStyles, loginStyles, registroStyles, informationIconStyles, CementeryScreen };
