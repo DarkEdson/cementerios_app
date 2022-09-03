@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import color from './colors';
 
 //Estilos para MainScreen
@@ -110,7 +110,7 @@ const mainStyles = StyleSheet.create({
     borderRadius: 12,
     elevation: 2,
     backgroundColor: '#fff',
-    shadowOffset: { width: 1, height: 1 },
+    shadowOffset: {width: 1, height: 1},
     shadowColor: '#333',
     shadowOpacity: 0.3,
     shadowRadius: 2,
@@ -205,16 +205,16 @@ const CementeryScreen = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 15,
     marginBottom: 25,
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
   },
   FooterView: {
     marginTop: 5,
     flex: 1,
-    backgroundColor: color.WHITE
+    backgroundColor: color.WHITE,
   },
   container: {
     flex: 1,
-    backgroundColor: color.WHITE
+    backgroundColor: color.WHITE,
   },
   titleText: {
     marginLeft: 20,
@@ -306,4 +306,49 @@ const informationIconStyles = StyleSheet.create({
   },
 });
 
-export { mainStyles, splashStyles, loginStyles, registroStyles, informationIconStyles, CementeryScreen };
+//Estilos para RegistroScreen
+const floatButtonStyles = StyleSheet.create({
+  circleRounded: {
+    position: 'absolute',
+    top: 35,
+    paddingTop: 3,
+    height: 60,
+    width: 60,
+    alignItems: 'center',
+    borderRadius: 100,
+    backgroundColor: color.GRAY4,
+  },
+  btnMain: {
+    width: Dimensions.get('screen').width * 0.9,
+    marginTop: 40,
+    marginBottom: 20,
+    alignItems: 'center',
+    backgroundColor: color.PRINCIPALCOLOR,
+    borderRadius: 15,
+  },
+
+  btnTransparent: {
+    backgroundColor: 'rgba(52, 52, 52, 0)',
+    borderColor: color.PRINCIPALCOLOR,
+    width: 280,
+    borderWidth: 2,
+    marginBottom: 20,
+    borderRadius: 60,
+  },
+  btntxt: {
+    textAlign: 'center',
+    fontSize: 17,
+    color: color.WHITE,
+    paddingVertical: 15,
+  },
+});
+
+export {
+  mainStyles,
+  splashStyles,
+  loginStyles,
+  registroStyles,
+  informationIconStyles,
+  CementeryScreen,
+  floatButtonStyles,
+};

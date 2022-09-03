@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,15 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import { mainStyles, CementeryScreen, informationIconStyles } from '@styles/stylesGeneral';
-import { UsuarioContext } from '@context/UsuarioContext';
+import {
+  mainStyles,
+  CementeryScreen,
+  informationIconStyles,
+} from '@styles/stylesGeneral';
+import {UsuarioContext} from '@context/UsuarioContext';
 import CardProducto from '@Components/CardProducto/';
-import { CementeryContext } from '@context/CementeryContext';
-import MyTextButton from '@Components/common/MyTextButton';
+import {CementeryContext} from '@context/CementeryContext';
+import MyFloatButton from '@Components/common/MyFloatButton';
 import color from '@styles/colors';
 import InformationIcon from '@Components/common/InformationIcon';
 
@@ -23,7 +27,7 @@ export default function CompanyScreen(props) {
 
   useEffect(() => {
     console.log(cementery);
-    return () => { };
+    return () => {};
   }, []);
   return (
     <ScrollView>
@@ -35,7 +39,7 @@ export default function CompanyScreen(props) {
         />
         <View>
           <ImageBackground
-            source={{ uri: cementery.urlImagen }}
+            source={{uri: cementery.urlImagen}}
             resizeMode="stretch"
             style={mainStyles.headerBackground}>
             <Image
@@ -44,23 +48,54 @@ export default function CompanyScreen(props) {
             />
           </ImageBackground>
           <Text style={CementeryScreen.titleText}>{cementery.titulo}</Text>
-          <Text style={CementeryScreen.subtitleText}>$$ • Mar • Arrecife • Perla</Text>
+          <Text style={CementeryScreen.subtitleText}>
+            $$ • Mar • Arrecife • Perla
+          </Text>
         </View>
         <View style={CementeryScreen.HeaderView}>
-          <InformationIcon tipo='font-awesome-5' image='dollar-sign' titulo='Free' subtitulo='Tour' />
-          <View style={informationIconStyles.verticleLine}></View>
-          <InformationIcon tipo='ionicons' image='location-pin' titulo='Campeche' subtitulo='Ubicaciones' />
-          <View style={informationIconStyles.verticleLine}></View>
-          <InformationIcon transparent={true} tipo='ant-design' image='star' titulo='4.3' subtitulo='(200+ Ratings)' />
+          <InformationIcon
+            tipo="font-awesome-5"
+            image="dollar-sign"
+            titulo="Free"
+            subtitulo="Tour"
+          />
+          <View style={informationIconStyles.verticleLine} />
+          <InformationIcon
+            tipo="ionicons"
+            image="location-pin"
+            titulo="Campeche"
+            subtitulo="Ubicaciones"
+          />
+          <View style={informationIconStyles.verticleLine} />
+          <InformationIcon
+            transparent={true}
+            tipo="ant-design"
+            image="star"
+            titulo="4.3"
+            subtitulo="(200+ Ratings)"
+          />
         </View>
+        <MyFloatButton
+          tipo="material-icon-community"
+          image="chevron-left"
+          left={true}
+          onPress={() => goToScreen('Home')}
+        />
+        <MyFloatButton
+          tipo="font-awesome-5"
+          image="expand"
+          onPress={() => {}}
+        />
       </View>
       <View style={CementeryScreen.FooterView}>
         <View style={[CementeryScreen.categories, CementeryScreen.titles]}>
           <TouchableOpacity>
-          <Text style={CementeryScreen.titleFooterText}>Todos los Productos</Text>
+            <Text style={CementeryScreen.titleFooterText}>
+              Todos los Productos
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity>
-          <Text style={CementeryScreen.subtitleFooterText}>Perlas</Text>
+            <Text style={CementeryScreen.subtitleFooterText}>Perlas</Text>
           </TouchableOpacity>
         </View>
         <Text style={CementeryScreen.title2Text}>Mas Populares</Text>
@@ -84,5 +119,3 @@ export default function CompanyScreen(props) {
     props.navigation.navigate(routeName);
   }
 }
-
-
