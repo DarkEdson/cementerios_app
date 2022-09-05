@@ -24,7 +24,7 @@ export default function RecuperarPasswordScreen(props) {
       <ToolBar
         titulo="Contraseña"
         onPressLeft={() => goToScreen('Login')}
-        iconLeft={require('@images/back.png')}
+        iconLeft={true}
       />
       <View style={mainStyles.container}>
         <View style={loginStyles.logo}>

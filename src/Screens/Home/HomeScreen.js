@@ -4,7 +4,7 @@ import color from '@styles/colors';
 import { Icon } from '@rneui/themed';
 import InitialScreen from './InitialScreen';
 import PrincipalScreen from '@Screens/PrincipalScreen'
-import ProfileScreen from '@Screens/PrincipalScreen'
+import SalesScreen from '@Screens/Sales/SalesScreen'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -46,8 +46,8 @@ export default function HomeScreen(props) {
       }}
     />
     <Tab.Screen
-      name="Profile"
-      component={ProfileScreen}
+      name="Wanted"
+      component={PrincipalScreen}
       options={{
         tabBarLabel: 'Productos',
         tabBarIcon: ({ color }) => (
@@ -57,7 +57,7 @@ export default function HomeScreen(props) {
     />
     <Tab.Screen
       name="Ventas"
-      component={ProfileScreen}
+      component={SalesScreen}
       options={{
         tabBarLabel: 'Ventas',
         tabBarIcon: ({ color }) => (

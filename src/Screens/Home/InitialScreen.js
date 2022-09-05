@@ -116,7 +116,7 @@ export default function InitialScreen(props) {
         />
         <ToolBarSession
           titulo="Ubicación"
-          onPressLeft={() => goToScreen('Principal')}
+          onPressLeft={() => goToScreen('Profile')}
           iconLeft={true}
         />
         <SelectDropdown

@@ -58,6 +58,7 @@ export default function CompanyScreen(props) {
             image="dollar-sign"
             titulo="Free"
             subtitulo="Tour"
+            onPress={()=>{}}
           />
           <View style={informationIconStyles.verticleLine} />
           <InformationIcon

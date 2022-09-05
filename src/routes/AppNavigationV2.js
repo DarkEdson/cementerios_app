@@ -9,6 +9,7 @@ import HomeScreen from '@Screens/Home/HomeScreen';
 import RecuperarPasswordScreen from '@Screens/Login/RecuperarPasswordScreen';
 import PrincipalScreen from '@Screens/PrincipalScreen';
 import CompanyScreen from '@Screens/Company/CompanyScreen';
+import ProfileScreen from '@Screens/ProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -74,6 +75,13 @@ const AppNavigationV2 = ()=>{
                 <Stack.Screen 
                     name="Company"
                     component={CompanyScreen}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen 
+                    name="Profile"
+                    component={ProfileScreen}
                     options={{
                         headerShown: false,
                     }}
