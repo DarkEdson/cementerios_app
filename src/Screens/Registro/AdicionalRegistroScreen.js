@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,15 +9,13 @@ import {
 import {mainStyles, registroStyles} from '@styles/stylesGeneral';
 import MyTextInput from '@Components/common/MyTextInput';
 import color from '@styles/colors';
+import {UsuarioContext} from '@context/UsuarioContext';
 import ToolBar from '@Components/common/toolBar';
 import {CheckBox} from '@rneui/themed';
 import MyButton from '@Components/common/MyButton';
 
-function goToScreen(props, routeName) {
-  props.navigation.navigate(routeName);
-}
-
 export default function RegistroScreen(props) {
+  const [login, loginAction] = useContext(UsuarioContext);
   return (
     <ScrollView
       keyboardDismissMode="on-drag"
@@ -26,7 +24,7 @@ export default function RegistroScreen(props) {
       <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
       <ToolBar
         titulo="Completa tus datos"
-        onPressLeft={() => goToScreen(props, 'Registro')}
+        onPressLeft={() => goToScreen('Registro')}
         iconLeft={true}
       />
       <View style={mainStyles.container}>
@@ -60,9 +58,36 @@ export default function RegistroScreen(props) {
         />
         <MyButton
           titulo="COMPLETAR REGISTRO"
-          onPress={() => goToScreen(props, 'Login')}
+          onPress={() => goToScreen('Login')}
         />
       </View>
     </ScrollView>
   );
+  function registrar() {
+    if (email == '' || password == '') {
+      Alert.alert(
+        'Datos Incorrectos',
+        '¿Debe Ingresar un Usuario y una Contraseña ?',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+            style: 'cancel',
+          },
+        ],
+      );
+    } else {
+      loginAction({
+        type: 'register',
+        data: {
+          email,
+          password,
+        },
+      });
+      goToScreen('Home');
+    }
+  }
+  function goToScreen(routeName) {
+    props.navigation.navigate(routeName);
+  }
 }

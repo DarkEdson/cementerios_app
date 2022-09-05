@@ -44,6 +44,7 @@ export default function SplashScreen(props) {
       goToScreen('Home');
     }, 1000);
   }
+
   function goToScreen(routeName) {
     props.navigation.replace(routeName);
   }

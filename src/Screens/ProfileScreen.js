@@ -18,6 +18,7 @@ import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
 import MyButton from '@Components/common/MyButton';
+import {getUsuario} from '@storage/UsuarioAsyncStorage';
 
 function useBackButton(handler) {
   useEffect(() => {
@@ -32,6 +33,15 @@ function useBackButton(handler) {
 
 export default function ProfileScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
+  useEffect(() => {
+    fetchSesion(loginAction);
+  }, []);
+
+  async function fetchSesion(loginAction) {
+    const response = await getUsuario();
+    console.log(response);
+    loginAction({type: 'sign-in', data: response});
+  }
 
   useBackButton(desconectarse);
   return (
@@ -64,18 +74,18 @@ export default function ProfileScreen(props) {
               />
             )}
           </TouchableOpacity>
-          <Text style={styles.txtNuevoComponente}>{login.usuario.email}</Text>
+          <Text style={styles.txtNuevoComponente}>
+            {login.usuario.name + ' ' + login.usuario.lastname}
+          </Text>
           <MyTextButton
-            titulo="Editar datosPersonales"
+            titulo="Editar datos personales"
             style={{marginBottom: 20}}
             onPress={() => {}}
           />
         </View>
         <Text style={styles.txtComponente}>Codigo de vendedor</Text>
         <View style={{backgroundColor: color.WHITE}}>
-          <Text style={styles.txtComponente}>
-            {login.usuario.codVendedor}VTS458TR
-          </Text>
+          <Text style={styles.txtComponente}>{login.usuario.id_number}</Text>
         </View>
         <View style={mainStyles.boxTransparent} />
         <View style={{backgroundColor: color.WHITE}}>
@@ -119,6 +129,12 @@ export default function ProfileScreen(props) {
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
+  }
+
+  async function fetchSesion(loginAction) {
+    const response = await getUsuario();
+    console.log(response);
+    loginAction({type: 'sign-in', data: response});
   }
 }
 
