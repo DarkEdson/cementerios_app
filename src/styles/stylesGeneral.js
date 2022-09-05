@@ -121,6 +121,10 @@ const mainStyles = StyleSheet.create({
     marginHorizontal: 0,
     marginVertical: 0,
   },
+  boxTransparent: {
+    backgroundColor: 'transparent',
+    marginBottom: Dimensions.get('screen').height * 0.06,
+  },
 });
 
 //Estilos para SplashScreen

@@ -4,18 +4,17 @@ import {
   Text,
   ScrollView,
   Image,
+  ImageBackground,
   StyleSheet,
   TouchableOpacity,
   StatusBar,
   Alert,
   BackHandler,
 } from 'react-native';
-import BtnCategoria from '@Components/BtnCategoria/';
+import MyTextButton from '@Components/common/MyTextButton';
 import ToolBar from '@Components/common/toolBar';
-import CardColaborador from '@Components/CardColaborador/';
-import CardProducto from '@Components/CardProducto/';
-import CardPromocion from '@Components/CardPromocion/';
-import {mainStyles} from '@styles/stylesGeneral';
+import {Icon, Avatar} from '@rneui/themed';
+import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
 import MyButton from '@Components/common/MyButton';
@@ -44,44 +43,57 @@ export default function ProfileScreen(props) {
           translucent={true}
         />
         <ToolBar
-          titulo="USUARIO"
+          titulo="Perfil"
           onPressLeft={() => goToScreen('Home')}
           iconLeft={true}
         />
-
-        <Text style={styles.txtNuevoComponente}>
-          {' '}
-          Bienvenido {'\n' + login.usuario.email}{' '}
-        </Text>
-        <MyButton titulo="LOGOUT" onPress={() => desconectarse()} />
-        <Text style={styles.txtNuevoComponente}> PERFIL </Text>
-        <CardPromocion
-          titulo="30% de descuento"
-          descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
-          bgColor="#fadf8e"
-          urlImagen="https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000"
-        />
-        <Image
-          source={{
-            uri: 'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-          }}
-        />
-        <CardPromocion
-          titulo="40% de descuento"
-          descripcion="Descuento en viaje en lancha en acuatic."
-          bgColor="#f5c48c"
-          urlImagen="https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000"
-        />
-        <Text style={styles.txtNuevoComponente}> Boton de categoria </Text>
-        <BtnCategoria
-          urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvvrsxGFFwp4ylemzQNDVJQXBU-PCB3FP1og&usqp=CAU"
-          titulo="Viajes en lancha"
-        />
-        <BtnCategoria
-          urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvvrsxGFFwp4ylemzQNDVJQXBU-PCB3FP1og&usqp=CAU"
-          titulo="Flores"
-        />
-        <Text style={styles.txtNuevoComponente}> Card de colaborador </Text>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity style={styles.btnProfile} onPress={() => {}}>
+            {login.usuario.image ? (
+              <Avatar
+                rounded
+                source={{uri: 'https://randomuser.me/api/portraits/men/41.jpg'}}
+                size="medium"
+              />
+            ) : (
+              <Icon
+                size={60}
+                color={color.BLACK}
+                type={'material-community'}
+                name="account"
+              />
+            )}
+          </TouchableOpacity>
+          <Text style={styles.txtNuevoComponente}>{login.usuario.email}</Text>
+          <MyTextButton
+            titulo="Editar datosPersonales"
+            style={{marginBottom: 20}}
+            onPress={() => {}}
+          />
+        </View>
+        <Text style={styles.txtComponente}>Codigo de vendedor</Text>
+        <View style={{backgroundColor: color.WHITE}}>
+          <Text style={styles.txtComponente}>
+            {login.usuario.codVendedor}VTS458TR
+          </Text>
+        </View>
+        <View style={mainStyles.boxTransparent} />
+        <View style={{backgroundColor: color.WHITE}}>
+          <TouchableOpacity onPress={() => desconectarse()}>
+            <Text style={styles.txtComponente}>Cerrar Sesión</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={loginStyles.logo}>
+          <ImageBackground
+            source={require('@images/profilepic.png')}
+            resizeMode="stretch"
+            style={loginStyles.logoBackground}>
+            <Image
+              source={require('@images/logo.png')}
+              style={loginStyles.logoImage}
+            />
+          </ImageBackground>
+        </View>
       </View>
     </ScrollView>
   );
@@ -114,16 +126,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  promociones: {
+  headerContainer: {
+    flex: 1,
+    alignItems: 'center',
+    alignContent: 'center',
+    backgroundColor: color.WHITE,
+    height: '40%',
     width: '100%',
-    height: 180,
-    borderWidth: 1,
-    borderColor: 'red',
   },
   txtNuevoComponente: {
     marginTop: 20,
-    marginLeft: 20,
-    marginBottom: 15,
+    marginHorizontal: 20,
+    marginBottom: 5,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: color.BLACK,
+  },
+  btnProfile: {
+    marginTop: 20,
+    height: 70,
+    width: 70,
+    borderRadius: 100,
+    backgroundColor: color.PRINCIPALCOLOR,
+  },
+  txtComponente: {
+    marginVertical: 15,
+    marginHorizontal: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: color.BLACK,
   },
   sectionContainer: {
     marginTop: 32,
