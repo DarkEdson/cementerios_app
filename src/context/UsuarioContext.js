@@ -33,10 +33,11 @@ function usuarioReducer(state = initialState, payload) {
       loginUser = apiLogin(payload.data).then(res => {
         console.log('dentro de la funcion consultora');
         console.log(res);
-
-        saveUsuario(res).then(msg => {
-          console.log('usuario guardado');
-        });
+        if (res !== 'Email or Password is wrong!') {
+          saveUsuario(res).then(msg => {
+            console.log('usuario guardado');
+          });
+        }
       });
 
       console.log('EN EL CASE');
