@@ -188,7 +188,7 @@ export default function InitialScreen(props) {
             titulo="Ver todos"
             underline={true}
             color="blue"
-            onPress={() => {}}
+            onPress={() => goToScreen('Cementeries')}
           />
         </View>
         <Carousel

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {mainStyles} from '@styles/stylesGeneral';
 import {UsuarioContext} from '@context/UsuarioContext';
+import ToolBar from '@Components/common/toolBar';
 import {CementeryContext} from '@context/CementeryContext';
 import color from '@styles/colors';
 import MyButton from '@Components/common/MyButton';
@@ -30,6 +31,11 @@ export default function CompanyScreen(props) {
           backgroundColor={color.PRINCIPALCOLOR}
           barStyle="dark-content"
           translucent={true}
+        />
+        <ToolBar
+          titulo="Cementerios"
+          onPressLeft={() => goToScreen('Initial')}
+          iconLeft={true}
         />
       </View>
     </ScrollView>
