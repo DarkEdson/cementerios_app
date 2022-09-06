@@ -95,7 +95,7 @@ export default function LoginScreen(props) {
           password,
         },
       });
-      goToScreen('Home');
+      goToScreen('Loading');
     }
   }
   function goToScreen(routeName) {

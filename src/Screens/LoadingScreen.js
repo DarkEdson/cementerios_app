@@ -4,16 +4,18 @@ import * as Animatable from 'react-native-animatable';
 import {splashStyles} from '@styles/stylesGeneral';
 import {getUsuario} from '@storage/UsuarioAsyncStorage';
 import {UsuarioContext} from '@context/UsuarioContext';
+import Snackbar from 'react-native-snackbar';
 
 export default function LoadingScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
 
   useEffect(() => {
+    console.log(login);
     fetchSesion(loginAction);
   }, []);
 
   return (
-    <View style={splashStyles.container}>
+    <View style={splashStyles.containerLoading}>
       <Animatable.Image
         animation="pulse"
         easing="ease-in-out"
@@ -32,11 +34,15 @@ export default function LoadingScreen(props) {
     if (response == null) {
       setTimeout(() => {
         goToScreen('Login');
-      }, 3000);
+      }, 1000);
       return;
     }
     loginAction({type: 'sign-in', data: response});
     setTimeout(() => {
+      Snackbar.show({
+        text: 'Inicio de sesión exitoso',
+        duration: Snackbar.LENGTH_LONG,
+      });
       goToScreen('Home');
     }, 1000);
   }

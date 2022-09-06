@@ -11,6 +11,7 @@ import PrincipalScreen from '@Screens/PrincipalScreen';
 import CompanyScreen from '@Screens/Company/CompanyScreen';
 import CementeriesScreen from '@Screens/Company/CementeriesScreen';
 import ProfileScreen from '@Screens/ProfileScreen';
+import LoadingScreen from '@Screens/LoadingScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,15 +31,15 @@ const AppNavigationV2 = () => {
           }}
         />
         <Stack.Screen
-          name="Login"
-          component={LoginScreen}
+          name="Loading"
+          component={LoadingScreen}
           options={{
             headerShown: false,
           }}
         />
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Login"
+          component={LoginScreen}
           options={{
             headerShown: false,
           }}
@@ -67,6 +68,13 @@ const AppNavigationV2 = () => {
         <Stack.Screen
           name="Principal"
           component={PrincipalScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
           options={{
             headerShown: false,
           }}

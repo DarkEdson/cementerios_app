@@ -132,6 +132,11 @@ const splashStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  containerLoading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   image: {
     flex: 1,
     justifyContent: 'center',

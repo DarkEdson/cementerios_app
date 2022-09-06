@@ -43,7 +43,7 @@ function usuarioReducer(state = initialState, payload) {
       console.log('EN EL CASE');
       console.log(loginUser);
       Snackbar.show({
-        text: 'Inicio de sesión exitoso',
+        text: 'Iniciando Sesion',
         duration: Snackbar.LENGTH_LONG,
       });
 
