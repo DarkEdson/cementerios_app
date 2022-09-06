@@ -21,6 +21,7 @@ export default function LoadingScreen(props) {
         style={splashStyles.logo}
         source={require('@images/main_logo.png')}
       />
+      <Text>Iniciando Sesion</Text>
       <ActivityIndicator size={'large'} />
     </View>
   );
