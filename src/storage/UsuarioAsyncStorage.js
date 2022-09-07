@@ -29,8 +29,12 @@ async function getUsuario() {
 async function deleteUsuario() {
   try {
     await AsyncStorage.removeItem(USUARIO_KEY);
+    await AsyncStorage.removeItem('errorInfo');
     const item = await AsyncStorage.getItem(USUARIO_KEY);
-    return item == null ? 'usuario removido' : 'usuario no removido';
+    const item2 = await AsyncStorage.getItem('errorInfo');
+    return item == null && item2 == null
+      ? 'usuario removido'
+      : 'usuario no removido';
   } catch (error) {
     console.log('Error al eliminar' + error.message);
     return 'Error de sintaxis';
