@@ -6,15 +6,12 @@ import InitialScreen from './InitialScreen';
 import PrincipalScreen from '@Screens/PrincipalScreen';
 import SalesScreen from '@Screens/Sales/SalesScreen';
 import {UsuarioContext} from '@context/UsuarioContext';
-import {getUsuario} from '@storage/UsuarioAsyncStorage';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default function HomeScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
-  useEffect(() => {
-    fetchSesion(loginAction);
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Tab.Navigator
@@ -99,9 +96,4 @@ export default function HomeScreen(props) {
       />
     </Tab.Navigator>
   );
-  async function fetchSesion(loginAction) {
-    const response = await getUsuario();
-    console.log(response);
-    loginAction({type: 'sign-in', data: response});
-  }
 }

@@ -1,10 +1,7 @@
 import React, {createContext, useReducer, useState} from 'react';
 import {saveUsuario, deleteUsuario} from '@storage/UsuarioAsyncStorage';
 import Snackbar from 'react-native-snackbar';
-import apiLogin from '../Apis/LoginApi';
 import apiRegister from '../Apis/RegisterApi';
-
-import {getUsuario} from '../storage/UsuarioAsyncStorage';
 
 const initialState = {
   usuario: {
@@ -30,24 +27,18 @@ function usuarioReducer(state = initialState, payload) {
       console.log('Bienvenidos al sistema');
       return {...state, usuario: payload.data, activo: true};
     case 'sign':
-      loginUser = apiLogin(payload.data).then(res => {
-        console.log('dentro de la funcion consultora');
-        console.log(res);
-        if (res !== 'Email or Password is wrong!') {
-          saveUsuario(res).then(msg => {
-            console.log('usuario guardado');
-          });
-        }
+      saveUsuario(payload.data).then(msg => {
+        console.log('usuario guardado');
       });
 
       console.log('EN EL CASE');
-      console.log(loginUser);
+      console.log(payload.data);
       Snackbar.show({
         text: 'Iniciando Sesion',
         duration: Snackbar.LENGTH_LONG,
       });
 
-      return {...state, usuario: loginUser, activo: true};
+      return {...state, usuario: payload.data, activo: true};
 
     case 'sign-out':
       deleteUsuario().then(msg => {
@@ -86,10 +77,10 @@ function usuarioReducer(state = initialState, payload) {
 const UsuarioContext = createContext(initialState);
 
 function UsuarioProvider(props) {
-  const [login, loginAction] = useReducer(usuarioReducer, initialState);
+  const [loginUser, loginAction] = useReducer(usuarioReducer, initialState);
 
   return (
-    <UsuarioContext.Provider value={[login, loginAction]}>
+    <UsuarioContext.Provider value={[loginUser, loginAction]}>
       {props.children}
     </UsuarioContext.Provider>
   );

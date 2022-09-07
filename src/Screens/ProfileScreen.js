@@ -17,8 +17,6 @@ import {Icon, Avatar} from '@rneui/themed';
 import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
-import MyButton from '@Components/common/MyButton';
-import {getUsuario} from '@storage/UsuarioAsyncStorage';
 
 function useBackButton(handler) {
   useEffect(() => {
@@ -32,16 +30,8 @@ function useBackButton(handler) {
 }
 
 export default function ProfileScreen(props) {
-  const [login, loginAction] = useContext(UsuarioContext);
-  useEffect(() => {
-    fetchSesion(loginAction);
-  }, []);
-
-  async function fetchSesion(loginAction) {
-    const response = await getUsuario();
-    console.log(response);
-    loginAction({type: 'sign-in', data: response});
-  }
+  const [loginUser, loginAction] = useContext(UsuarioContext);
+  useEffect(() => {}, []);
 
   useBackButton(desconectarse);
   return (
@@ -59,7 +49,7 @@ export default function ProfileScreen(props) {
         />
         <View style={styles.headerContainer}>
           <TouchableOpacity style={styles.btnProfile} onPress={() => {}}>
-            {login.usuario.image ? (
+            {loginUser.usuario.image ? (
               <Avatar
                 rounded
                 source={{uri: 'https://randomuser.me/api/portraits/men/41.jpg'}}
@@ -75,7 +65,7 @@ export default function ProfileScreen(props) {
             )}
           </TouchableOpacity>
           <Text style={styles.txtNuevoComponente}>
-            {login.usuario.name + ' ' + login.usuario.lastname}
+            {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
           </Text>
           <MyTextButton
             titulo="Editar datos personales"
@@ -85,7 +75,9 @@ export default function ProfileScreen(props) {
         </View>
         <Text style={styles.txtComponente}>Codigo de vendedor</Text>
         <View style={{backgroundColor: color.WHITE}}>
-          <Text style={styles.txtComponente}>{login.usuario.id_number}</Text>
+          <Text style={styles.txtComponente}>
+            {loginUser.usuario.id_number}
+          </Text>
         </View>
         <View style={mainStyles.boxTransparent} />
         <View style={{backgroundColor: color.WHITE}}>
@@ -129,12 +121,6 @@ export default function ProfileScreen(props) {
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
-  }
-
-  async function fetchSesion(loginAction) {
-    const response = await getUsuario();
-    console.log(response);
-    loginAction({type: 'sign-in', data: response});
   }
 }
 

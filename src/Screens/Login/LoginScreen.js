@@ -11,12 +11,13 @@ import {mainStyles, loginStyles} from '@styles/stylesGeneral';
 import MyTextInput from '@Components/common/MyTextInput';
 import MyButton from '@Components/common/MyButton';
 import MyTextButton from '@Components/common/MyTextButton';
-
 import {UsuarioContext} from '@context/UsuarioContext';
+import {AuthContext} from '@context/AuthContext';
 import color from '@styles/colors';
 
 export default function LoginScreen(props) {
-  const [login, loginAction] = useContext(UsuarioContext);
+  const [loginUser, loginAction] = useContext(UsuarioContext);
+  const {login} = useContext(AuthContext);
   const [hidePassword, setHidePassword] = useState(true);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -88,14 +89,14 @@ export default function LoginScreen(props) {
         ],
       );
     } else {
-      loginAction({
+      /* loginAction({
         type: 'sign',
         data: {
           email,
           password,
         },
-      });
-      goToScreen('Loading');
+      });*/
+      login(email, password, goToScreen, loginAction);
     }
   }
   function goToScreen(routeName) {

@@ -1,14 +1,23 @@
-import React, {Component, useContext, useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {View, Text, ImageBackground} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {splashStyles} from '@styles/stylesGeneral';
 import {getUsuario} from '@storage/UsuarioAsyncStorage';
 import {UsuarioContext} from '@context/UsuarioContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SplashScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
-
+  const clear = false;
   useEffect(() => {
+    if (clear) {
+      console.log(clear);
+      clearAsyncStorage = async () => {
+        AsyncStorage.clear();
+      };
+      clearAsyncStorage();
+    }
+
     fetchSesion(loginAction);
   }, []);
 
@@ -32,6 +41,7 @@ export default function SplashScreen(props) {
 
   async function fetchSesion(loginAction) {
     const response = await getUsuario();
+
     console.log(response);
     if (response == null) {
       setTimeout(() => {

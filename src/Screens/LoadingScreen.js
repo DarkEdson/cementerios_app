@@ -1,16 +1,19 @@
-import React, {Component, useContext, useEffect} from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import React, {useState, useContext, useEffect} from 'react';
+import {View, Text, Alert, ActivityIndicator} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {splashStyles} from '@styles/stylesGeneral';
 import {getUsuario} from '@storage/UsuarioAsyncStorage';
 import {UsuarioContext} from '@context/UsuarioContext';
+import {AuthContext} from '@context/AuthContext';
 import Snackbar from 'react-native-snackbar';
 
 export default function LoadingScreen(props) {
-  const [login, loginAction] = useContext(UsuarioContext);
+  const [loginUser, loginAction] = useContext(UsuarioContext);
+  const {errorInfo} = useContext(AuthContext);
 
   useEffect(() => {
-    console.log(login);
+    console.log(errorInfo, 'en loading screen');
+    console.log(loginUser);
     fetchSesion(loginAction);
   }, []);
 
@@ -31,7 +34,15 @@ export default function LoadingScreen(props) {
   async function fetchSesion(loginAction) {
     const response = await getUsuario();
     console.log(response);
-    if (response == null) {
+    console.log(errorInfo, 'en fetch');
+    if (errorInfo != null) {
+      Alert.alert('Datos Incorrectos', errorInfo, [
+        {
+          text: 'Ok',
+          onPress: () => {},
+          style: 'cancel',
+        },
+      ]);
       setTimeout(() => {
         goToScreen('Login');
       }, 1000);
