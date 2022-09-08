@@ -2,12 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, {createContext, useEffect, useState} from 'react';
 import {BASE_URL} from '@utils/config';
+import {
+  Alert,
+} from 'react-native';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState({});
-  const [isFirst, setIsFirst] = useState(false);
   const [errorInfo, setErrorInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
@@ -41,6 +43,13 @@ export const AuthProvider = ({children}) => {
         let errorInfo = e.response.data;
         console.log(errorInfo);
         AsyncStorage.setItem('errorInfo', JSON.stringify(errorInfo));
+        Alert.alert('Datos Incorrectos', errorInfo, [
+          {
+            text: 'Ok',
+            onPress: () => {},
+            style: 'cancel',
+          },
+        ]);
         setErrorInfo(errorInfo);
         setIsLoading(false);
         setUserInfo({});
@@ -69,7 +78,7 @@ export const AuthProvider = ({children}) => {
           data: userInfo,
         });
 
-        goToScreen('Loading');
+        goToScreen('Home');
       })
       .catch(e => {
         let errorInfo = e.response.data;
@@ -79,7 +88,14 @@ export const AuthProvider = ({children}) => {
         setErrorInfo(errorInfo);
         setIsLoading(false);
         setUserInfo({});
-        goToScreen('Loading');
+        Alert.alert('Datos Incorrectos', errorInfo, [
+          {
+            text: 'Ok',
+            onPress: () => {},
+            style: 'cancel',
+          },
+        ]);
+        goToScreen('Login');
       });
   }
 
@@ -111,23 +127,12 @@ export const AuthProvider = ({children}) => {
   const isLoggedIn = async () => {
     try {
       setSplashLoading(true);
-
       let userInfo = await AsyncStorage.getItem('userInfo');
-      // let errorInfo = await AsyncStorage.getItem('errorInfo');
-
       userInfo = JSON.parse(userInfo);
       console.log(userInfo);
       if (userInfo) {
         setUserInfo(userInfo);
-        //   errorInfo = await AsyncStorage.removeItem('userInfo');
-        setIsFirst(false);
       }
-      /*    if (errorInfo) {
-        console.log('aqui?', errorInfo);
-        //
-        setErrorInfo(errorInfo);
-        setIsFirst(true);
-      }*/
       setSplashLoading(false);
     } catch (e) {
       setSplashLoading(false);
@@ -146,10 +151,6 @@ export const AuthProvider = ({children}) => {
         userInfo,
         splashLoading,
         errorInfo,
-        isFirst,
-        setIsFirst,
-        setErrorInfo,
-        isLoggedIn,
         register,
         login,
         logout,

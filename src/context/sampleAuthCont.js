@@ -3,9 +3,9 @@ import axios from 'axios';
 import React, {createContext, useEffect, useState} from 'react';
 import {BASE_URL} from '@utils/config';
 
-export const AuthContext = createContext();
+export const SampleAuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const SampleAuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
@@ -99,9 +99,9 @@ export const AuthProvider = ({children}) => {
   }, []);
 
   return (
-    <AuthContext.Provider
+    <SampleAuthContext.Provider
       value={[isLoading, userInfo, splashLoading, register, login, logout]}>
       {children}
-    </AuthContext.Provider>
+    </SampleAuthContext.Provider>
   );
 };

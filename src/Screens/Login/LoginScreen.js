@@ -27,6 +27,9 @@ export default function LoginScreen(props) {
     setPassword('');
     return () => {};
   }, []);
+
+  
+  
   return (
     <ScrollView>
       <View style={mainStyles.container}>
@@ -78,8 +81,8 @@ export default function LoginScreen(props) {
   function iniciarSesion() {
     if (email == '' || password == '') {
       Alert.alert(
-        'Datos Incorrectos',
-        '¿Debe Ingresar un Usuario y una Contraseña ?',
+        'Datos en blanco',
+        '¿Debe Ingresar un Usuario y7o una Contraseña ?',
         [
           {
             text: 'Ok',
@@ -89,13 +92,6 @@ export default function LoginScreen(props) {
         ],
       );
     } else {
-      /* loginAction({
-        type: 'sign',
-        data: {
-          email,
-          password,
-        },
-      });*/
       login(email, password, goToScreen, loginAction);
     }
   }
