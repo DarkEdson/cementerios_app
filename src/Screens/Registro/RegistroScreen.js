@@ -97,7 +97,7 @@ export default function RegistroScreen(props) {
       <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
       <ToolBar
         titulo="Introduce tus datos"
-        onPressLeft={() => goToScreen(props, 'Login')}
+        onPressLeft={() => goToScreen( 'Login')}
         iconLeft={true}
       />
       <View style={mainStyles.container}>
