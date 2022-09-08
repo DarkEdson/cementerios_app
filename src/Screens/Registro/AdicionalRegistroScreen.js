@@ -6,16 +6,29 @@ import {
   StatusBar,
   ScrollView,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import {mainStyles, registroStyles} from '@styles/stylesGeneral';
 import MyTextInput from '@Components/common/MyTextInput';
 import color from '@styles/colors';
-import {UsuarioContext} from '@context/UsuarioContext';
 import ToolBar from '@Components/common/toolBar';
 import {CheckBox} from '@rneui/themed';
 import MyButton from '@Components/common/MyButton';
+import { RegisterContext } from '@context/RegisterContext';
+import {AuthContext} from '@context/AuthContext';
+import {UsuarioContext} from '@context/UsuarioContext';
 
 export default function RegistroScreen(props) {
-  const [login, loginAction] = useContext(UsuarioContext);
+  const [loginUser, loginAction] = useContext(UsuarioContext);
+  const {register} = useContext(AuthContext);
+  const [registerUser, registerAction]= useContext(RegisterContext)
+  const [data, setData] = useState({})
+
+  useEffect(() => {
+    setData(registerUser)
+    return () => {};
+  }, []);
+
+
   return (
     <ScrollView
       keyboardDismissMode="on-drag"
@@ -64,10 +77,11 @@ export default function RegistroScreen(props) {
     </ScrollView>
   );
   function registrar() {
+    console.log(data)
     if (email == '' || password == '') {
       Alert.alert(
-        'Datos Incorrectos',
-        '¿Debe Ingresar un Usuario y una Contraseña ?',
+        'Datos en blanco',
+        '¿Debe Ingresar un Usuario y7o una Contraseña ?',
         [
           {
             text: 'Ok',
@@ -77,14 +91,7 @@ export default function RegistroScreen(props) {
         ],
       );
     } else {
-      loginAction({
-        type: 'register',
-        data: {
-          email,
-          password,
-        },
-      });
-      goToScreen('Home');
+      register(data, goToScreen, loginAction);
     }
   }
   function goToScreen(routeName) {
