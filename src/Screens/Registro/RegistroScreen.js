@@ -2,7 +2,6 @@ import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
-  Alert,
   StatusBar,
   ScrollView,
 } from 'react-native';
@@ -175,21 +174,15 @@ export default function RegistroScreen(props) {
 
   function registroParcial(){
     if (password == '' || password == ' ' || confirmPassword == '' || confirmPassword == ' '){
-      Alert.alert('Contraseña Vacia', 'Revise las contraseñas, una esta vacia', [
-        {
-          text: 'Ok',
-          onPress: () => {},
-          style: 'cancel',
-        },
-      ]);
+      Snackbar.show({
+        text: 'Revise las contraseñas, una esta vacia',
+        duration: Snackbar.LENGTH_LONG,
+      });
     }else  if (username == ' ' || username == '' || usertype == '' || usertype == ' '){
-      Alert.alert('usuario o tipo de usuario', 'revise el campo usuario o tipo de usuario, no puede ir vacio', [
-        {
-          text: 'Ok',
-          onPress: () => {},
-          style: 'cancel',
-        },
-      ]);
+      Snackbar.show({
+        text: 'No se admiten campos vacios, revise usuario o tipo de usuario',
+        duration: Snackbar.LENGTH_LONG,
+      });
     }
     else{
       registerAction({

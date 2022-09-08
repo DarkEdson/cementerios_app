@@ -1,12 +1,12 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
-  Alert,
   StatusBar,
   Image,
   ImageBackground,
   ScrollView,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import {mainStyles, loginStyles} from '@styles/stylesGeneral';
 import MyTextInput from '@Components/common/MyTextInput';
 import MyButton from '@Components/common/MyButton';
@@ -80,17 +80,10 @@ export default function LoginScreen(props) {
 
   function iniciarSesion() {
     if (email == '' || password == '') {
-      Alert.alert(
-        'Datos en blanco',
-        '¿Debe Ingresar un Usuario y7o una Contraseña ?',
-        [
-          {
-            text: 'Ok',
-            onPress: () => {},
-            style: 'cancel',
-          },
-        ],
-      );
+      Snackbar.show({
+        text: 'Usuario o Contraseña en Blanco',
+        duration: Snackbar.LENGTH_LONG,
+      });
     } else {
       login(email, password, goToScreen, loginAction);
     }
