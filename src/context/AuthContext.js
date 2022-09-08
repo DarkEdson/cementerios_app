@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, {createContext, useEffect, useState} from 'react';
+import Snackbar from 'react-native-snackbar';
 import {BASE_URL} from '@utils/config';
 import {
   Alert,
@@ -43,13 +44,10 @@ export const AuthProvider = ({children}) => {
         let errorInfo = e.response.data;
         console.log(errorInfo);
         AsyncStorage.setItem('errorInfo', JSON.stringify(errorInfo));
-        Alert.alert('Datos Incorrectos', errorInfo, [
-          {
-            text: 'Ok',
-            onPress: () => {},
-            style: 'cancel',
-          },
-        ]);
+        Snackbar.show({
+          text: errorInfo,
+          duration: Snackbar.LENGTH_LONG,
+        });
         setErrorInfo(errorInfo);
         setIsLoading(false);
         setUserInfo({});
@@ -88,13 +86,10 @@ export const AuthProvider = ({children}) => {
         setErrorInfo(errorInfo);
         setIsLoading(false);
         setUserInfo({});
-        Alert.alert('Datos Incorrectos', errorInfo, [
-          {
-            text: 'Ok',
-            onPress: () => {},
-            style: 'cancel',
-          },
-        ]);
+        Snackbar.show({
+          text: errorInfo,
+          duration: Snackbar.LENGTH_LONG,
+        });
         goToScreen('Login');
       });
   }
