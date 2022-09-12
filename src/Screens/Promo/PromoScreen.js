@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
-import CardPromocion from '@Components/CardPromocion/index';
+import {Text, View, StyleSheet, StatusBar, ScrollView} from 'react-native';
+import ToolBar from '@Components/common/toolBar';
+import color from '@styles/colors';
+import CardPromocion from '@Components/CardPromocion/';
 
-export default function VistaPromocion(props) {
+export default function PromoScreen(props) {
   // Cargar informacion de la vista
   useEffect(() => {
     // Actualizar valores de la vista
@@ -96,7 +98,17 @@ export default function VistaPromocion(props) {
 
   return (
     <View>
-      <Text style={styles.titulo}> {propsVista.label1} </Text>
+      <StatusBar
+        backgroundColor={color.PRINCIPALCOLOR}
+        barStyle="dark-content"
+        translucent={true}
+      />
+      <ToolBar
+        titulo={propsVista.label1}
+        onPressLeft={() => goToScreen('Initial')}
+        iconLeft={true}
+      />
+
       <ScrollView style={styles.scroll}>
         <View>
           {propsVista.descuentos.map((promo, key) => {
@@ -114,6 +126,9 @@ export default function VistaPromocion(props) {
       </ScrollView>
     </View>
   );
+  function goToScreen(routeName) {
+    props.navigation.navigate(routeName);
+  }
 }
 
 const styles = StyleSheet.create({

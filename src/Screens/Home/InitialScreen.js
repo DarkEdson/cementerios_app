@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import {UsuarioContext} from '@context/UsuarioContext';
+import {mainStyles, loginStyles} from '@styles/stylesGeneral';
 import {CementeryContext} from '@context/CementeryContext';
 import color from '@styles/colors';
 import {Icon} from '@rneui/themed';
@@ -107,111 +108,114 @@ export default function InitialScreen(props) {
   ]);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <StatusBar
-          backgroundColor={color.PRINCIPALCOLOR}
-          barStyle="dark-content"
-          translucent={true}
-        />
-        <ToolBarSession
-          titulo="Ubicación"
-          onPressLeft={() => goToScreen('Profile')}
-          iconLeft={true}
-        />
-        <SelectDropdown
-          data={data}
-          search
-          defaultButtonText="Cementerios, arrecifes o flores..."
-          searchPlaceHolder="Cementerios, arrecifes o flores..."
-          buttonTextStyle={{textAlign: 'left'}}
-          buttonStyle={styles.btnStyle}
-          renderDropdownIcon={isOpened => {
-            return (
-              <Icon
-                type={'material-community'}
-                name={isOpened ? 'magnify-expand' : 'magnify'}
-                color={'#444'}
-                size={16}
+    <View>
+      <StatusBar
+        backgroundColor={color.PRINCIPALCOLOR}
+        barStyle="dark-content"
+        translucent={true}
+      />
+      <ToolBarSession
+        titulo="Ubicación"
+        onPressLeft={() => goToScreen('Profile')}
+        iconLeft={true}
+      />
+      <ScrollView>
+        <View style={styles.container}>
+          <SelectDropdown
+            data={data}
+            search
+            defaultButtonText="Cementerios, arrecifes o flores..."
+            searchPlaceHolder="Cementerios, arrecifes o flores..."
+            buttonTextStyle={{textAlign: 'left'}}
+            buttonStyle={styles.btnStyle}
+            renderDropdownIcon={isOpened => {
+              return (
+                <Icon
+                  type={'material-community'}
+                  name={isOpened ? 'magnify-expand' : 'magnify'}
+                  color={'#444'}
+                  size={16}
+                />
+              );
+            }}
+            dropdownIconPosition="left"
+            onSelect={(selectedItem, index) => {
+              console.log(selectedItem.name, index);
+              Alert.alert(JSON.stringify(selectedItem));
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              return selectedItem.name;
+            }}
+            rowTextForSelection={(item, index) => {
+              return item.name;
+            }}
+          />
+          <Carousel
+            width={400}
+            height={175}
+            loop
+            autoPlay={true}
+            autoPlayInterval={2000}
+            data={categorias}
+            renderItem={({item}) => (
+              <CardPromocion
+                titulo="30% de descuento"
+                descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
+                bgColor="#fadf8e"
+                urlImagen="https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000"
               />
-            );
-          }}
-          dropdownIconPosition="left"
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem.name, index);
-            Alert.alert(JSON.stringify(selectedItem));
-          }}
-          buttonTextAfterSelection={(selectedItem, index) => {
-            return selectedItem.name;
-          }}
-          rowTextForSelection={(item, index) => {
-            return item.name;
-          }}
-        />
-        <Carousel
-          width={400}
-          height={175}
-          loop
-          autoPlay={true}
-          autoPlayInterval={2000}
-          data={categorias}
-          renderItem={({item}) => (
-            <CardPromocion
-              titulo="30% de descuento"
-              descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
-              bgColor="#fadf8e"
-              urlImagen="https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000"
+            )}
+          />
+          <View style={styles.categories}>
+            <BtnCategoria
+              urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
+              titulo="Viajes en Lancha"
             />
-          )}
-        />
-        <View style={styles.categories}>
-          <BtnCategoria
-            urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
-            titulo="Viajes en Lancha"
-          />
-          <BtnCategoria
-            urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvvrsxGFFwp4ylemzQNDVJQXBU-PCB3FP1og&usqp=CAU"
-            titulo="Flores"
-          />
-          <BtnCategoria
-            urlImagen="https://flyclipart.com/thumb2/flat-location-logo-icons-png-934757.png"
-            titulo="Ubicaciones"
-          />
-          <BtnCategoria
-            urlImagen="https://img2.freepng.es/20190208/aqt/kisspng-diving-mask-snorkeling-underwater-diving-scuba-div-spearfishing-today-mexicoampaposs-top-caribbean-5c5d6a5d360982.2594144115496259492214.jpg"
-            titulo="Buceo"
+            <BtnCategoria
+              urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvvrsxGFFwp4ylemzQNDVJQXBU-PCB3FP1og&usqp=CAU"
+              titulo="Flores"
+            />
+            <BtnCategoria
+              urlImagen="https://flyclipart.com/thumb2/flat-location-logo-icons-png-934757.png"
+              titulo="Ubicaciones"
+            />
+            <BtnCategoria
+              urlImagen="https://img2.freepng.es/20190208/aqt/kisspng-diving-mask-snorkeling-underwater-diving-scuba-div-spearfishing-today-mexicoampaposs-top-caribbean-5c5d6a5d360982.2594144115496259492214.jpg"
+              titulo="Buceo"
+            />
+          </View>
+          <View style={[styles.categories, styles.titles]}>
+            <Text style={styles.titleText}>Cementerios</Text>
+            <MyTextButton
+              titulo="Ver todos"
+              underline={true}
+              color="blue"
+              onPress={() => goToScreen('Cementeries')}
+            />
+          </View>
+          <Carousel
+            {...baseOptions}
+            loop={true}
+            style={{width: '100%'}}
+            autoPlay={true}
+            autoPlayInterval={2000}
+            data={categorias}
+            pagingEnabled={true}
+            //onSnapToItem={(index) => console.log('current index:', index)}
+            renderItem={({item}) => (
+              <View style={styles.categories}>
+                <CardColaborador
+                  urlImagen={item.urlImagen}
+                  nombre={item.titulo}
+                  onPressColab={() => selectCementery(item, 'Company')}
+                />
+              </View>
+            )}
           />
         </View>
-        <View style={[styles.categories, styles.titles]}>
-          <Text style={styles.titleText}>Cementerios</Text>
-          <MyTextButton
-            titulo="Ver todos"
-            underline={true}
-            color="blue"
-            onPress={() => goToScreen('Cementeries')}
-          />
-        </View>
-        <Carousel
-          {...baseOptions}
-          loop={true}
-          style={{width: '100%'}}
-          autoPlay={true}
-          autoPlayInterval={2000}
-          data={categorias}
-          pagingEnabled={true}
-          //onSnapToItem={(index) => console.log('current index:', index)}
-          renderItem={({item}) => (
-            <View style={styles.categories}>
-              <CardColaborador
-                urlImagen={item.urlImagen}
-                nombre={item.titulo}
-                onPressColab={() => selectCementery(item, 'Company')}
-              />
-            </View>
-          )}
-        />
-      </View>
-    </ScrollView>
+        <View style={styles.boxTransparent} />
+      </ScrollView>
+    </View>
   );
 
   function selectCementery(cementery, routeName) {
@@ -228,6 +232,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.WHITE,
+    marginBottom: 15,
+    paddingBottom: 20,
+  },
+  boxTransparent: {
+    backgroundColor: 'white',
+    marginBottom: Dimensions.get('screen').height * 0.13,
   },
   btnStyle: {
     width: '90%',

@@ -23,34 +23,35 @@ export default function SalesScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <StatusBar
-          backgroundColor={color.PRINCIPALCOLOR}
-          barStyle="dark-content"
-          translucent={true}
-        />
-        <ToolBar
-          titulo="Ventas"
-          onPressLeft={() => goToScreen('Initial')}
-          iconLeft={true}
-        />
-
-        <Text style={styles.txtNuevoComponente}> Card de productos </Text>
-        <CardProducto
-          urlImagen="https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg"
-          titulo="Perla Magistral"
-          descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-          precio="$ 12.50"
-        />
-        <CardProducto
-          urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
-          titulo="Perla oceano 2"
-          descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-          precio="$ 16.90"
-        />
-      </View>
-    </ScrollView>
+    <View>
+      <StatusBar
+        backgroundColor={color.PRINCIPALCOLOR}
+        barStyle="dark-content"
+        translucent={true}
+      />
+      <ToolBar
+        titulo="Ventas"
+        onPressLeft={() => goToScreen('Initial')}
+        iconLeft={true}
+      />
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.txtNuevoComponente}> Card de productos </Text>
+          <CardProducto
+            urlImagen="https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg"
+            titulo="Perla Magistral"
+            descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
+            precio="$ 12.50"
+          />
+          <CardProducto
+            urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
+            titulo="Perla oceano 2"
+            descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
+            precio="$ 16.90"
+          />
+        </View>
+      </ScrollView>
+    </View>
   );
 
   function goToScreen(routeName) {
@@ -62,6 +63,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.WHITE,
+    marginBottom: 15,
+    paddingBottom: 20,
   },
   promociones: {
     width: '100%',

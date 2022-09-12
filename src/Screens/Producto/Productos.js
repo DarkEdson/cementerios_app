@@ -4,9 +4,12 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  StatusBar,
   Platform,
   TextInput,
 } from 'react-native';
+import ToolBar from '@Components/common/toolBar';
+import color from '@styles/colors';
 import CardProducto from '@Components/CardProducto/index';
 
 export default function VistaProductos(props) {
@@ -176,7 +179,16 @@ export default function VistaProductos(props) {
 
   return (
     <View>
-      <Text style={styles.titulo}> {propsVista.label1} </Text>
+      <StatusBar
+        backgroundColor={color.PRINCIPALCOLOR}
+        barStyle="dark-content"
+        translucent={true}
+      />
+      <ToolBar
+        titulo={propsVista.label1}
+        onPressLeft={() => goToScreen('Initial')}
+        iconLeft={true}
+      />
       <View style={styles.searchSection}>
         <TextInput
           style={styles.input}
@@ -218,6 +230,9 @@ export default function VistaProductos(props) {
       </ScrollView>
     </View>
   );
+  function goToScreen(routeName) {
+    props.navigation.navigate(routeName);
+  }
 }
 
 const styles = StyleSheet.create({

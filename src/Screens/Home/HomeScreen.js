@@ -6,8 +6,8 @@ import InitialScreen from './InitialScreen';
 import PrincipalScreen from '@Screens/PrincipalScreen';
 import SalesScreen from '@Screens/Sales/SalesScreen';
 import {UsuarioContext} from '@context/UsuarioContext';
-import {VistaProductos} from '@Screens/Productos/Productos';
-import {VistaPromocion} from '@Screens/Promociones/Promociones';
+import PromoScreen from '@Screens/Promo/PromoScreen';
+import VistaProductos from '@Screens/Producto/Productos';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -50,7 +50,7 @@ export default function HomeScreen(props) {
       />
       <Tab.Screen
         name="Promociones"
-        component={VistaPromocion}
+        component={PromoScreen}
         options={{
           tabBarLabel: 'Promociones',
           tabBarIcon: ({color}) => (
