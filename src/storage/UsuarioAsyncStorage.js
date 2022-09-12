@@ -30,6 +30,7 @@ async function deleteUsuario() {
   try {
     await AsyncStorage.removeItem(USUARIO_KEY);
     await AsyncStorage.removeItem('errorInfo');
+    await AsyncStorage.removeItem('tokenUserInfo');
     const item = await AsyncStorage.getItem(USUARIO_KEY);
     const item2 = await AsyncStorage.getItem('errorInfo');
     return item == null && item2 == null

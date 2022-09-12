@@ -3,14 +3,13 @@ import axios from 'axios';
 import React, {createContext, useEffect, useState} from 'react';
 import Snackbar from 'react-native-snackbar';
 import {BASE_URL} from '@utils/config';
-import {
-  Alert,
-} from 'react-native';
+import {Alert} from 'react-native';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState({});
+  const [tokenUserInfo, setTokenUserInfo] = useState(null);
   const [errorInfo, setErrorInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
@@ -26,13 +25,15 @@ export const AuthProvider = ({children}) => {
       })
       .then(res => {
         let userInfo = res.data;
+        let tokenUserInfo = res.headers.token;
         setUserInfo(userInfo);
+        setTokenUserInfo(tokenUserInfo);
+        AsyncStorage.setItem('tokenUserInfo', JSON.stringify(tokenUserInfo));
         //   AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
         loginAction({
           type: 'sign',
           data: userInfo,
         });
-
         console.log(userInfo);
         AsyncStorage.removeItem('errorInfo');
         setIsLoading(false);
@@ -65,9 +66,11 @@ export const AuthProvider = ({children}) => {
       })
       .then(res => {
         let userInfo = res.data;
+        let tokenUserInfo = res.headers.token;
         console.log(userInfo);
         setUserInfo(userInfo);
-        // AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+        setTokenUserInfo(tokenUserInfo);
+        AsyncStorage.setItem('tokenUserInfo', JSON.stringify(tokenUserInfo));
         AsyncStorage.removeItem('errorInfo');
         setIsLoading(false);
         setErrorInfo(null);
@@ -75,7 +78,6 @@ export const AuthProvider = ({children}) => {
           type: 'sign',
           data: userInfo,
         });
-
         goToScreen('Home');
       })
       .catch(e => {
@@ -102,11 +104,13 @@ export const AuthProvider = ({children}) => {
         `${BASE_URL}/logout`,
         {},
         {
-          headers: {Authorization: `Bearer ${userInfo.access_token}`},
+          headers: {Authorization: `Bearer ${tokenUserInfo}`},
         },
       )
       .then(res => {
         console.log(res.data);
+        setTokenUserInfo(null);
+        AsyncStorage.removeItem('tokenUserInfo');
         AsyncStorage.removeItem('userInfo');
         AsyncStorage.removeItem('errorInfo');
         setUserInfo({});
@@ -123,10 +127,13 @@ export const AuthProvider = ({children}) => {
     try {
       setSplashLoading(true);
       let userInfo = await AsyncStorage.getItem('userInfo');
+      let tokenUserInfo = await AsyncStorage.getItem('tokenUserInfo');
+
       userInfo = JSON.parse(userInfo);
       console.log(userInfo);
       if (userInfo) {
         setUserInfo(userInfo);
+        setTokenUserInfo(tokenUserInfo);
       }
       setSplashLoading(false);
     } catch (e) {
