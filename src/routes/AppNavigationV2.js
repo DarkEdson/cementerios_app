@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from '@Screens/SplashScreen';
 import LoginScreen from '@Screens/Login/LoginScreen';
@@ -12,10 +13,23 @@ import CompanyScreen from '@Screens/Company/CompanyScreen';
 import CementeriesScreen from '@Screens/Company/CementeriesScreen';
 import ProfileScreen from '@Screens/ProfileScreen';
 import LoadingScreen from '@Screens/LoadingScreen';
+import {AuthContext} from '@context/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 
 const AppNavigationV2 = () => {
+  //  const {tokenUserInfo} = useContext(AuthContext);
+
+  useEffect(() => {
+    async function tokenRefresh() {
+      let tokenUserInfo = await AsyncStorage.getItem('tokenUserInfo');
+      console.log(tokenUserInfo, 'tokenInfo en react navigate');
+    }
+    setTimeout(() => {
+      tokenRefresh();
+    }, 1000);
+  });
   return (
     <NavigationContainer>
       <Stack.Navigator

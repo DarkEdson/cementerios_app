@@ -3,7 +3,6 @@ import axios from 'axios';
 import React, {createContext, useEffect, useState} from 'react';
 import Snackbar from 'react-native-snackbar';
 import {BASE_URL} from '@utils/config';
-import {Alert} from 'react-native';
 
 export const AuthContext = createContext();
 
@@ -130,7 +129,9 @@ export const AuthProvider = ({children}) => {
       let tokenUserInfo = await AsyncStorage.getItem('tokenUserInfo');
 
       userInfo = JSON.parse(userInfo);
+      tokenUserInfo = JSON.parse(tokenUserInfo);
       console.log(userInfo);
+      console.log(tokenUserInfo);
       if (userInfo) {
         setUserInfo(userInfo);
         setTokenUserInfo(tokenUserInfo);
@@ -153,6 +154,7 @@ export const AuthProvider = ({children}) => {
         userInfo,
         splashLoading,
         errorInfo,
+        tokenUserInfo,
         register,
         login,
         logout,
