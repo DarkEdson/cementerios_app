@@ -17,11 +17,12 @@ import ToolBar from '@Components/common/toolBar';
 import {CementeryContext} from '@context/CementeryContext';
 import color from '@styles/colors';
 import MyButton from '@Components/common/MyButton';
+import CardColaborador from '@Components/CardColaborador/';
 import CardPromocion from '@Components/CardPromocion/';
 
 export default function CompanyScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
-  const [cementery] = useContext(CementeryContext);
+  const [cementery, setCementery] = useContext(CementeryContext);
 
   // Cargar informacion de la vista
   useEffect(() => {
@@ -112,7 +113,7 @@ export default function CompanyScreen(props) {
         precio: '$ 16.90',
         categoria: 'CMar',
         cementerio: 'capillas',
-        idCementerio: 1,
+        id: 1,
       },
       {
         urlImagen:
@@ -122,7 +123,7 @@ export default function CompanyScreen(props) {
         precio: '$ 16.90',
         categoria: 'Buseo',
         cementerio: 'cementerio del mar',
-        idCementerio: 2,
+        id: 2,
       },
       {
         urlImagen:
@@ -132,7 +133,7 @@ export default function CompanyScreen(props) {
         precio: '$ 16.90',
         categoria: 'CMar',
         cementerio: 'capillas',
-        idCementerio: 1,
+        id: 3,
       },
       {
         urlImagen:
@@ -142,7 +143,7 @@ export default function CompanyScreen(props) {
         precio: '$ 16.90',
         categoria: 'Buseo',
         cementerio: 'cementerio del mar',
-        idCementerio: 2,
+        id: 4,
       },
       {
         urlImagen:
@@ -152,7 +153,7 @@ export default function CompanyScreen(props) {
         precio: '$ 16.90',
         categoria: 'Buseo',
         cementerio: 'cementerio del mar',
-        idCementerio: 2,
+        id: 5,
       },
       {
         urlImagen:
@@ -162,7 +163,7 @@ export default function CompanyScreen(props) {
         precio: '$ 16.90',
         categoria: 'CMar',
         cementerio: 'capillas',
-        idCementerio: 1,
+        id: 6,
       },
       {
         urlImagen:
@@ -172,7 +173,7 @@ export default function CompanyScreen(props) {
         precio: '$ 16.90',
         categoria: 'Buseo',
         cementerio: 'cementerio del mar',
-        idCementerio: 2,
+        id: 7,
       },
     ]);
   }, []);
@@ -199,37 +200,55 @@ export default function CompanyScreen(props) {
         onPressLeft={() => goToScreen('Initial')}
         iconLeft={true}
       />
-
-      <View style={styles.searchSection}>
-        <TextInput
-          style={styles.input}
-          placeholder={propsVista.labelSearch}
-          onChangeText={val => {
-            setArrProductosDisp(
-              propsVista.productos.filter(
-                p =>
-                  p.cementerio
-                    .toLocaleLowerCase()
-                    .includes(val.toLocaleLowerCase()) ||
-                  p.titulo
-                    .toLocaleLowerCase()
-                    .includes(val.toLocaleLowerCase()) ||
-                  p.categoria
-                    .toLocaleLowerCase()
-                    .includes(val.toLocaleLowerCase()) ||
-                  p.descripcion
-                    .toLocaleLowerCase()
-                    .includes(val.toLocaleLowerCase()),
-              ),
-            );
-          }}
-        />
+      <View style={styles.containerHeader}>
+        <View style={styles.searchSection}>
+          <TextInput
+            style={styles.input}
+            placeholder={propsVista.labelSearch}
+            onChangeText={val => {
+              setArrProductosDisp(
+                propsVista.productos.filter(
+                  p =>
+                    p.cementerio
+                      .toLocaleLowerCase()
+                      .includes(val.toLocaleLowerCase()) ||
+                    p.titulo
+                      .toLocaleLowerCase()
+                      .includes(val.toLocaleLowerCase()) ||
+                    p.categoria
+                      .toLocaleLowerCase()
+                      .includes(val.toLocaleLowerCase()) ||
+                    p.descripcion
+                      .toLocaleLowerCase()
+                      .includes(val.toLocaleLowerCase()),
+                ),
+              );
+            }}
+          />
+        </View>
       </View>
+
       <ScrollView>
-        <View />
+        <View style={styles.containerHeader}>
+          {arrProductosDisp.map(promo => {
+            return (
+              <CardColaborador
+                onPressColab={() => selectCementery(promo, 'Company')}
+                urlImagen={promo.urlImagen}
+                nombre={promo.titulo}
+                descripcion={promo.descripcion}
+                precio={promo.precio}
+              />
+            );
+          })}
+        </View>
       </ScrollView>
     </View>
   );
+  function selectCementery(cementery, routeName) {
+    setCementery(cementery);
+    goToScreen(routeName);
+  }
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
@@ -241,7 +260,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerHeader: {
-    backgroundColor: color.White,
+    backgroundColor: color.WHITE,
   },
   promociones: {
     width: '100%',
@@ -281,7 +300,6 @@ const styles = StyleSheet.create({
     height: '80%',
   },
   searchSection: {
-    backgroundColor: color.White,
     borderBottomWidth: 1,
     borderColor: 'grey',
     borderRadius: 2,
@@ -290,6 +308,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     width: '85%',
     height: Platform.OS === 'ios' ? 40 : 50,
+    backgroundColor: color.White,
   },
   input: {
     paddingTop: 10,

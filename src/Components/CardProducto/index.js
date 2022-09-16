@@ -4,7 +4,7 @@ import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 export default function CardProducto(props) {
   return (
-    <TouchableOpacity style={styles.cuerpoCard}>
+    <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressProduct}>
       <View style={{...styles.view, backgroundColor: props.bgColor}}>
         <View style={styles.right}>
           <Image style={styles.imgPromocion} source={{uri: props.urlImagen}} />

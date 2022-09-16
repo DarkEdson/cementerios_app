@@ -6,7 +6,9 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import CardProducto from '../Components/CardProducto/index';
+import CardProducto from '@Components/CardProducto/index';
+import ToolBar from '@Components/common/toolBar';
+import LargeButton from '@Components/common/largeButton';
 
 export default function VistaPago(props) {
   // Cargar informacion de la vista
@@ -51,7 +53,7 @@ export default function VistaPago(props) {
       subTotal: 120,
       entrega: 10,
       total: 110,
-    })
+    });
   }, []);
 
   // Variables de la vista
@@ -75,9 +77,13 @@ export default function VistaPago(props) {
 
   return (
     <View style={styles.vista}>
+      <ToolBar
+        titulo={propsVista.label1}
+        onPressLeft={() => goToScreen('Productos')}
+        iconLeft={true}
+      />
       <ScrollView>
         <View>
-          <Text style={styles.titulo}> {propsVista.label1} </Text>
           <View style={styles.productos}>
             {productosCarrito.map(promo => {
               return (
@@ -105,10 +111,18 @@ export default function VistaPago(props) {
             <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
           </View>
           <View style={styles.espacio}>
-            <Text style={styles.txtUnico1}>{propsVista.label5}</Text>
+            <LargeButton
+              titulo={propsVista.label5}
+              onPressRight={() => goToScreen('Productos')}
+              iconRight={true}
+            />
           </View>
           <View style={styles.espacio}>
-            <Text style={styles.txtUnico2}>{propsVista.label6}</Text>
+            <LargeButton
+              titulo={propsVista.label6}
+              onPressRight={() => goToScreen('PromoCode')}
+              iconRight={true}
+            />
           </View>
           <TouchableOpacity style={styles.btnAgregar}>
             <Text style={styles.txtAgregar}> {propsVista.label7} </Text>
@@ -117,6 +131,9 @@ export default function VistaPago(props) {
       </ScrollView>
     </View>
   );
+  function goToScreen(routeName) {
+    props.navigation.navigate(routeName);
+  }
 }
 
 const styles = StyleSheet.create({

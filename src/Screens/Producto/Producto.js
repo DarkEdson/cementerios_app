@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import MyFloatButton from '@Components/common/MyFloatButton';
 
 export default function VistaProducto(props) {
   // Cargar informacion de la vista
@@ -51,7 +52,8 @@ export default function VistaProducto(props) {
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
     nombre: '',
-    urlImagenPrincipal: '',
+    urlImagenPrincipal:
+      'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
     tags: '',
     precio: {
       label: '',
@@ -122,12 +124,13 @@ export default function VistaProducto(props) {
           </View>
         </View>
       </ScrollView>
-
-      {/* Boton para regtresar al avista anterior */}
-      <TouchableOpacity style={styles.btnRegresar}>
-        <Text style={styles.txtRegresar}> B </Text>
-      </TouchableOpacity>
-
+      {/* Boton para regtresar a lavista anterior */}
+      <MyFloatButton
+        tipo="material-icon-community"
+        image="chevron-left"
+        left={true}
+        onPress={() => goToScreen('Initial')}
+      />
       {/* Seccion para agregar producto al carrito */}
       <View style={styles.agregarProducto}>
         <View style={styles.numCant}>
@@ -139,12 +142,17 @@ export default function VistaProducto(props) {
             <Text style={styles.txtCantBtn}> + </Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.btnAgregar}>
+        <TouchableOpacity
+          style={styles.btnAgregar}
+          onPress={() => goToScreen('Payments')}>
           <Text style={styles.txtAgregar}>{propsVista.label2}</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
+  function goToScreen(routeName) {
+    props.navigation.navigate(routeName);
+  }
 }
 
 const styles = StyleSheet.create({

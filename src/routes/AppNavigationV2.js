@@ -13,6 +13,9 @@ import CompanyScreen from '@Screens/Company/CompanyScreen';
 import CementeriesScreen from '@Screens/Company/CementeriesScreen';
 import ProfileScreen from '@Screens/ProfileScreen';
 import LoadingScreen from '@Screens/LoadingScreen';
+import VistaProducto from '@Screens/Producto/Producto';
+import VistaPago from '@Screens/Payments/Pago';
+import VistaCodigoPromocion from '@Screens/Promo/CodigoPromocion';
 import {AuthContext} from '@context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -110,6 +113,27 @@ const AppNavigationV2 = () => {
         <Stack.Screen
           name="Cementeries"
           component={CementeriesScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Product"
+          component={VistaProducto}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Payments"
+          component={VistaPago}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PromoCode"
+          component={VistaCodigoPromocion}
           options={{
             headerShown: false,
           }}

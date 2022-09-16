@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  Dimensions,
   StatusBar,
   Platform,
   TextInput,
@@ -189,36 +190,40 @@ export default function VistaProductos(props) {
         onPressLeft={() => goToScreen('Initial')}
         iconLeft={true}
       />
-      <View style={styles.searchSection}>
-        <TextInput
-          style={styles.input}
-          placeholder={propsVista.labelSearch}
-          onChangeText={val => {
-            setArrProductosDisp(
-              propsVista.productos.filter(
-                p =>
-                  p.cementerio
-                    .toLocaleLowerCase()
-                    .includes(val.toLocaleLowerCase()) ||
-                  p.titulo
-                    .toLocaleLowerCase()
-                    .includes(val.toLocaleLowerCase()) ||
-                  p.categoria
-                    .toLocaleLowerCase()
-                    .includes(val.toLocaleLowerCase()) ||
-                  p.descripcion
-                    .toLocaleLowerCase()
-                    .includes(val.toLocaleLowerCase()),
-              ),
-            );
-          }}
-        />
+      <View style={styles.containerHeader}>
+        <View style={styles.searchSection}>
+          <TextInput
+            style={styles.input}
+            placeholder={propsVista.labelSearch}
+            onChangeText={val => {
+              setArrProductosDisp(
+                propsVista.productos.filter(
+                  p =>
+                    p.cementerio
+                      .toLocaleLowerCase()
+                      .includes(val.toLocaleLowerCase()) ||
+                    p.titulo
+                      .toLocaleLowerCase()
+                      .includes(val.toLocaleLowerCase()) ||
+                    p.categoria
+                      .toLocaleLowerCase()
+                      .includes(val.toLocaleLowerCase()) ||
+                    p.descripcion
+                      .toLocaleLowerCase()
+                      .includes(val.toLocaleLowerCase()),
+                ),
+              );
+            }}
+          />
+        </View>
       </View>
+
       <ScrollView style={styles.scroll}>
-        <View>
+        <View style={styles.containerHeader}>
           {arrProductosDisp.map(promo => {
             return (
               <CardProducto
+                onPressProduct={() => goToScreen('Product')}
                 urlImagen={promo.urlImagen}
                 titulo={promo.titulo}
                 descripcion={promo.descripcion}
@@ -227,6 +232,7 @@ export default function VistaProductos(props) {
             );
           })}
         </View>
+        <View style={styles.boxTransparent} />
       </ScrollView>
     </View>
   );
@@ -242,6 +248,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     marginBottom: 25,
+  },
+  containerHeader: {
+    backgroundColor: color.WHITE,
+  },
+  boxTransparent: {
+    backgroundColor: color.WHITE,
+    marginBottom: Dimensions.get('screen').height * 0.027,
   },
   scroll: {
     height: '80%',

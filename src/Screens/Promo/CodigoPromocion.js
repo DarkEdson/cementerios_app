@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, TextInput, Platform, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
+import ToolBar from '@Components/common/toolBar';
 
 export default function VistaCodigoPromocion(props) {
   // Cargar informacion de la vista
@@ -21,7 +29,11 @@ export default function VistaCodigoPromocion(props) {
 
   return (
     <View style={styles.vista}>
-      <Text style={styles.titulo}> {propsVista.label1} </Text>
+      <ToolBar
+        titulo={propsVista.label1}
+        onPressLeft={() => goToScreen('Payments')}
+        iconLeft={true}
+      />
       <View style={styles.searchSection}>
         <TextInput style={styles.input} placeholder={propsVista.labelInput} />
       </View>
@@ -30,6 +42,9 @@ export default function VistaCodigoPromocion(props) {
       </TouchableOpacity>
     </View>
   );
+  function goToScreen(routeName) {
+    props.navigation.navigate(routeName);
+  }
 }
 
 const styles = StyleSheet.create({

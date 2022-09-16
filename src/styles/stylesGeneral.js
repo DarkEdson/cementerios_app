@@ -41,6 +41,7 @@ const mainStyles = StyleSheet.create({
     marginTop: 16,
     backgroundColor: color.WHITE,
   },
+
   toolBarSessionStyle: {
     height: Dimensions.get('screen').height * 0.13,
     marginTop: 16,
@@ -124,6 +125,28 @@ const mainStyles = StyleSheet.create({
   boxTransparent: {
     backgroundColor: 'transparent',
     marginBottom: Dimensions.get('screen').height * 0.06,
+  },
+  txtAgregar: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'white',
+  },
+  txtUnico2: {
+    fontWeight: '400',
+    fontSize: 18,
+    textAlign: 'center',
+    alignSelf: 'center',
+  },
+  espacio: {
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%',
+    height: 50,
+    marginBottom: 3,
+    borderBottomWidth: 1,
+    borderColor: 'grey',
+    flexDirection: 'row',
   },
 });
 

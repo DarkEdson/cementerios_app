@@ -4,7 +4,9 @@ import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 export default function CardPromocion(props) {
   return (
-    <TouchableOpacity style={styles.cuerpoCard}>
+    <TouchableOpacity
+      style={styles.cuerpoCard}
+      onPress={props.onPressPromotion}>
       <Card>
         <View style={{...styles.view, backgroundColor: props.bgColor}}>
           <View style={styles.left}>
