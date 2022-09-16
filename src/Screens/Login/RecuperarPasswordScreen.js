@@ -9,6 +9,7 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import {mainStyles, loginStyles} from '@styles/stylesGeneral';
 import MyTextInput from '@Components/common/MyTextInput';
 import color from '@styles/colors';
@@ -55,19 +56,10 @@ export default function RecuperarPasswordScreen(props) {
   );
 
   function recuperarClave() {
-    Alert.alert(
-      'Recuperar Password',
-      'Su contraseña fue reiniciada y enviada a su correo electronico',
-      [
-        {
-          text: 'Ok',
-          onPress: () => {
-            goToScreen('Login');
-          },
-          style: 'cancel',
-        },
-      ],
-    );
+    Snackbar.show({
+      text: 'Su contraseña fue reiniciada y enviada a su correo electronico',
+      duration: Snackbar.LENGTH_LONG,
+    });
   }
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
