@@ -21,6 +21,10 @@ export const AuthProvider = ({children}) => {
         name: userNew.name,
         email: userNew.email,
         password: userNew.password,
+        lastname: userNew.lastname,
+        paypal_id: userNew.paypal_id,
+        id_number: userNew.id_number,
+        phone: '',
       })
       .then(res => {
         let userInfo = res.data;
@@ -33,7 +37,7 @@ export const AuthProvider = ({children}) => {
           type: 'sign',
           data: userInfo,
         });
-        console.log(userInfo);
+        console.log(userInfo, 'dentro del registro');
         AsyncStorage.removeItem('errorInfo');
         setIsLoading(false);
         setErrorInfo(null);

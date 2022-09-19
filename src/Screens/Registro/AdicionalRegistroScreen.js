@@ -13,21 +13,31 @@ import color from '@styles/colors';
 import ToolBar from '@Components/common/toolBar';
 import {CheckBox} from '@rneui/themed';
 import MyButton from '@Components/common/MyButton';
-import { RegisterContext } from '@context/RegisterContext';
+import {RegisterContext} from '@context/RegisterContext';
 import {AuthContext} from '@context/AuthContext';
 import {UsuarioContext} from '@context/UsuarioContext';
 
 export default function RegistroScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const {register} = useContext(AuthContext);
-  const [registerUser, registerAction]= useContext(RegisterContext)
-  const [data, setData] = useState({})
+  const [registerUser, registerAction] = useContext(RegisterContext);
+  const [TC, setTC] = useState(false);
+  const [data, setData] = useState({
+    name: '',
+    lastname: '',
+    paypal_id: '',
+    id_number: '',
+  });
 
   useEffect(() => {
-    setData(registerUser)
+    setData({
+      ...data,
+      email: registerUser.email,
+      password: registerUser.password,
+      username: registerUser.username,
+    });
     return () => {};
   }, []);
-
 
   return (
     <ScrollView
@@ -44,20 +54,28 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder="Nombres"
+          value={data.name}
+          onChangeText={nombre => setData({...data, name: nombre})}
           image="account-circle"
         />
         <MyTextInput
           keyboardType={null}
+          value={data.lastname}
+          onChangeText={apellido => setData({...data, lastname: apellido})}
           placeholder="Apellidos"
           image="account-circle"
         />
         <MyTextInput
           keyboardType={null}
+          value={data.id_number}
+          onChangeText={numeroID => setData({...data, id_number: numeroID})}
           placeholder="Número de ID"
           image="card-account-details"
         />
         <MyTextInput
           keyboardType={null}
+          value={data.paypal_id}
+          onChangeText={paypalID => setData({...data, paypal_id: paypalID})}
           placeholder="PayPal ID"
           image="credit-card-outline"
         />
@@ -65,8 +83,14 @@ export default function RegistroScreen(props) {
         <CheckBox
           containerStyle={registroStyles.checkBox}
           textStyle={{color: color.PRINCIPALCOOR}}
+          onPress={() => {
+            console.log(data);
+            console.log(!TC);
+            setData({...data, termino: !TC});
+            setTC(!TC);
+          }}
+          checked={TC}
           title="He leído y acepto los términos y condiciones"
-          checked={false}
           checkedColor={color.PRINCIPALCOLOR}
         />
         <MyButton
@@ -77,7 +101,7 @@ export default function RegistroScreen(props) {
     </ScrollView>
   );
   function registrar() {
-    console.log(data)
+    console.log(data);
     if (email == '' || password == '') {
       Alert.alert(
         'Datos en blanco',
