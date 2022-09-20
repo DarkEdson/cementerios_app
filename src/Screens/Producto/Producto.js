@@ -2,12 +2,20 @@ import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
+  Platform,
   StyleSheet,
   ScrollView,
   Image,
   TouchableOpacity,
 } from 'react-native';
 import MyFloatButton from '@Components/common/MyFloatButton';
+import InformationIcon from '@Components/common/InformationIcon';
+import color from '@styles/colors';
+import {
+  mainStyles,
+  CementeryScreen,
+  informationIconStyles,
+} from '@styles/stylesGeneral';
 
 export default function VistaProducto(props) {
   // Cargar informacion de la vista
@@ -78,6 +86,20 @@ export default function VistaProducto(props) {
     id: 0,
   });
 
+  const [cantProductos, setCantProductos] = useState(1);
+
+  function suma() {
+    let aumenta = cantProductos;
+    console.log(aumenta, 'aumenta');
+    setCantProductos(aumenta + 1);
+  }
+
+  function resta() {
+    let disminuye = cantProductos;
+    console.log(disminuye, 'disminuye');
+    setCantProductos(disminuye - 1);
+  }
+
   return (
     <View style={styles.vista}>
       <Image
@@ -89,19 +111,29 @@ export default function VistaProducto(props) {
       <View style={styles.descripcion}>
         <Text style={styles.titulo}> {propsVista.nombre} </Text>
         <Text style={styles.categorias}> {propsVista.tags} </Text>
-        <View style={styles.datos}>
-          <View style={styles.precio}>
-            <Text style={styles.valDato}> {propsVista.precio.valor} </Text>
-            <Text style={styles.descDato}> {propsVista.precio.label} </Text>
-          </View>
-          <View style={styles.sede}>
-            <Text style={styles.valDato}> {sede.nombre} </Text>
-            <Text style={styles.descDato}>{propsVista.ubicaciones.label}</Text>
-          </View>
-          <View style={styles.rating}>
-            <Text style={styles.valDato}>{propsVista.rating.valor}</Text>
-            <Text style={styles.descDato}>{propsVista.rating.label}</Text>
-          </View>
+        <View style={CementeryScreen.HeaderView}>
+          <InformationIcon
+            tipo="font-awesome-5"
+            image="dollar-sign"
+            titulo={propsVista.precio.valor}
+            subtitulo={propsVista.precio.label}
+            onPress={() => {}}
+          />
+          <View style={informationIconStyles.verticleLine} />
+          <InformationIcon
+            tipo="ionicons"
+            image="location-pin"
+            titulo={sede.nombre}
+            subtitulo={propsVista.ubicaciones.label}
+          />
+          <View style={informationIconStyles.verticleLine} />
+          <InformationIcon
+            transparent={true}
+            tipo="ant-design"
+            image="star"
+            titulo={propsVista.rating.valor}
+            subtitulo={propsVista.rating.label}
+          />
         </View>
       </View>
       <ScrollView>
@@ -124,7 +156,7 @@ export default function VistaProducto(props) {
           </View>
         </View>
       </ScrollView>
-      {/* Boton para regtresar a lavista anterior */}
+      {/* Boton para regresar a la vista anterior */}
       <MyFloatButton
         tipo="material-icon-community"
         image="chevron-left"
@@ -134,11 +166,19 @@ export default function VistaProducto(props) {
       {/* Seccion para agregar producto al carrito */}
       <View style={styles.agregarProducto}>
         <View style={styles.numCant}>
-          <TouchableOpacity style={styles.btnCant}>
+          <TouchableOpacity
+            style={styles.btnCant}
+            onPress={() => {
+              resta();
+            }}>
             <Text style={styles.txtCantBtn}> - </Text>
           </TouchableOpacity>
-          <Text style={styles.txtCant}> 1 </Text>
-          <TouchableOpacity style={styles.btnCant}>
+          <Text style={styles.txtCant}> {cantProductos} </Text>
+          <TouchableOpacity
+            style={styles.btnCant}
+            onPress={() => {
+              suma();
+            }}>
             <Text style={styles.txtCantBtn}> + </Text>
           </TouchableOpacity>
         </View>
@@ -158,6 +198,7 @@ export default function VistaProducto(props) {
 const styles = StyleSheet.create({
   vista: {
     height: '100%',
+    backgroundColor: color.WHITE,
   },
   descripcion: {
     paddingLeft: 20,
@@ -272,7 +313,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 10,
-    bottom: 0,
+    bottom: Platform.OS === 'ios' ? 0 : 20,
     alignSelf: 'center',
     flexDirection: 'column',
   },
