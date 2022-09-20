@@ -43,6 +43,9 @@ const AppNavigationV2 = () => {
         screenOptions={{
           headerTitle: 'Logo',
         }}>
+        {
+          //Vistas iniciales
+        }
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
@@ -57,6 +60,9 @@ const AppNavigationV2 = () => {
             headerShown: false,
           }}
         />
+        {
+          //Vistas de login y registro
+        }
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -92,16 +98,12 @@ const AppNavigationV2 = () => {
             headerShown: false,
           }}
         />
+        {
+          //vistas internas
+        }
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Company"
-          component={CompanyScreen}
           options={{
             headerShown: false,
           }}
@@ -144,6 +146,13 @@ const AppNavigationV2 = () => {
         <Stack.Screen
           name="Cementeries"
           component={CementeriesScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Company"
+          component={CompanyScreen}
           options={{
             headerShown: false,
           }}
