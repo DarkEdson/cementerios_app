@@ -8,7 +8,7 @@ import color from '@styles/colors';
 
 export default function PaymentButton(props) {
   return (
-    <TouchableOpacity onPress={props.onPressRight}>
+    <TouchableOpacity onPress={props.onPress}>
       <View style={[props.style, mainStyles.espacio]}>
         {props.iconLeft && (
           <View

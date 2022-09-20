@@ -14,7 +14,7 @@ export default function LargeButton(props) {
           <View
             style={{
               marginTop: 7,
-              marginRight: 155,
+              marginRight: 110,
               alignItems: 'flex-start',
               alignContent: 'flex-start',
             }}>

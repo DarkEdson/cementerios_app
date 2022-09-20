@@ -55,7 +55,7 @@ const mainStyles = StyleSheet.create({
   toolBarText: {
     marginTop: 12,
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 23,
     fontWeight: 'bold',
     color: color.BLACK,
   },
@@ -176,7 +176,7 @@ const splashStyles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: Dimensions.get('screen').height * 0.4,
     marginHorizontal: Dimensions.get('screen').width * 0.35,
-    fontSize: 20,
+    fontSize: 17,
   },
   logo: {
     width: 190,
@@ -263,12 +263,12 @@ const CementeryScreen = StyleSheet.create({
   },
   title2Text: {
     marginLeft: 22,
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
     color: color.BLACK,
   },
   titleFooterText: {
-    marginLeft: 20,
+    marginLeft: 18,
 
     fontSize: 22,
     fontWeight: 'bold',
@@ -282,7 +282,7 @@ const CementeryScreen = StyleSheet.create({
   },
   subtitleFooterText: {
     marginLeft: -20,
-    fontSize: 22,
+    fontSize: 19,
     fontWeight: '600',
     color: color.GRAY3,
   },

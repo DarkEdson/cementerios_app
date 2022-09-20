@@ -18,26 +18,30 @@ import MyTextInput from '@Components/common/MyTextInput';
 import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
 import MyButton from '@Components/common/MyButton';
+import {CreditCardContext} from '@context/CreditCardContext';
 
 export default function PaymentMethodScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
+  const [creditCard, setCreditCard] = useContext(CreditCardContext);
   const [data, setData] = useState({
-    username: '',
-    name: '',
-    lastname: '',
-    phone: '',
-    paypal_id: '',
-    email: '',
+    cardNumber: '',
+    cardHolderName: '',
+    nameSurname: '',
+    mmYY: '',
+    expiration: '',
+    securityCode: '',
+    brand: '',
   });
   useEffect(() => {
     setData({
       ...data,
-      username: loginUser.usuario.username,
-      name: loginUser.usuario.name,
-      lastname: loginUser.usuario.lastname,
-      phone: loginUser.usuario.phone,
-      paypal_id: loginUser.usuario.paypal_id,
-      email: loginUser.usuario.email,
+      cardNumber: '5425 2334 3010 9903',
+      cardHolderName: 'Edson',
+      nameSurname: 'Aju',
+      mmYY: '04/2023',
+      expiration: '',
+      securityCode: '',
+      brand: 'mastercard',
     });
   }, []);
 
@@ -70,8 +74,9 @@ export default function PaymentMethodScreen(props) {
           />
           <PaymentButton
             iconLeft={true}
-            titulo={'XXXX-XXXX-XXXX-1234'}
+            titulo={'XXXX-XXXX-XXXX-9595'}
             iconRight={true}
+            onPress={() => selectCard(data)}
           />
           <PaymentButton
             iconLeft={true}
@@ -89,6 +94,19 @@ export default function PaymentMethodScreen(props) {
     </View>
   );
 
+  function selectCard(card) {
+    setCreditCard({
+      ...creditCard,
+      cardNumber: card.cardNumber,
+      cardHolderName: card.cardHolderName,
+      nameSurname: card.nameSurname,
+      mmYY: card.mmYY,
+      expiration: card.expiration,
+      securityCode: '',
+      brand: card.brand,
+    });
+    goToScreen('PaymentDetails');
+  }
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
   }

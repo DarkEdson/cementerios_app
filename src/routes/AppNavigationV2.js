@@ -14,6 +14,7 @@ import ProfileScreen from '@Screens/Profile/ProfileScreen';
 import EditProfileScreen from '@Screens/Profile/EditProfileScreen';
 import PersonalDataScreen from '@Screens/Profile/PersonalDataScreen';
 import PaymentMethodScreen from '@Screens/Profile/PaymentMethodScreen';
+import PaymentDetailScreen from '@Screens/Profile/PaymentDetailScreen';
 import PasswordChangeScreen from '@Screens/Profile/PasswordChangeScreen';
 import LoadingScreen from '@Screens/LoadingScreen';
 import VistaProducto from '@Screens/Producto/Producto';
@@ -125,6 +126,13 @@ const AppNavigationV2 = () => {
         <Stack.Screen
           name="PaymentMethod"
           component={PaymentMethodScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PaymentDetails"
+          component={PaymentDetailScreen}
           options={{
             headerShown: false,
           }}

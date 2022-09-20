@@ -3,15 +3,18 @@ import AppNavigations from '@routes/AppNavigationV2';
 import {UsuarioProvider} from '@context/UsuarioContext';
 import {CementeryProvider} from '@context/CementeryContext';
 import {AuthProvider} from '@context/AuthContext';
-import { RegisterProvider } from '@context/RegisterContext';
+import {RegisterProvider} from '@context/RegisterContext';
+import {CreditCardProvider} from '@context/CreditCardContext';
 
 const MainPage = () => {
-  return (   
+  return (
     <AuthProvider>
       <UsuarioProvider>
         <RegisterProvider>
           <CementeryProvider>
-            <AppNavigations />
+            <CreditCardProvider>
+              <AppNavigations />
+            </CreditCardProvider>
           </CementeryProvider>
         </RegisterProvider>
       </UsuarioProvider>
