@@ -29,7 +29,12 @@ const mainStyles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 25,
   },
-
+  logo: {
+    flex: 1,
+    marginTop: 15,
+    borderRadius: 25,
+    alignItems: 'center',
+  },
   titleText: {
     fontSize: 28,
     marginTop: 20,

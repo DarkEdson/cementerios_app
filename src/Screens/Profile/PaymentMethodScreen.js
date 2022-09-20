@@ -13,6 +13,7 @@ import {
 import BtnCategoria from '@Components/BtnCategoria/';
 import ToolBar from '@Components/common/toolBar';
 import {mainStyles} from '@styles/stylesGeneral';
+import PaymentButton from '@Components/common/paymentButton';
 import MyTextInput from '@Components/common/MyTextInput';
 import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
@@ -55,21 +56,32 @@ export default function PaymentMethodScreen(props) {
 
       <ScrollView>
         <View style={styles.editField}>
-          <Text style={styles.titleLabel}>Efectivo:</Text>
-          <MyTextInput
-            keyboardType={null}
-            placeholder="Username"
-            value={data.username}
-            onChangeText={user => setData({...data, username: user})}
-            image="account"
+          <Text style={styles.titleLabel}>Preferido:</Text>
+          <PaymentButton
+            iconLeft={true}
+            titulo={'XXXX-XXXX-XXXX-5678'}
+            iconRight={true}
           />
           <Text style={styles.titleLabel}>Tarjetas:</Text>
-          <MyTextInput
-            keyboardType={null}
-            placeholder="Nombres"
-            value={data.name}
-            onChangeText={nombre => setData({...data, name: nombre})}
-            image="account-circle"
+          <PaymentButton
+            iconLeft={true}
+            titulo={'XXXX-XXXX-XXXX-0123'}
+            iconRight={true}
+          />
+          <PaymentButton
+            iconLeft={true}
+            titulo={'XXXX-XXXX-XXXX-1234'}
+            iconRight={true}
+          />
+          <PaymentButton
+            iconLeft={true}
+            titulo={'XXXX-XXXX-XXXX-2345'}
+            iconRight={true}
+          />
+          <PaymentButton
+            iconLeft={true}
+            titulo={'XXXX-XXXX-XXXX-4567'}
+            iconRight={true}
           />
           <MyButton titulo="Guardar Cambios" onPress={() => {}} />
         </View>

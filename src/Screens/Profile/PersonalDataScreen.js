@@ -19,22 +19,10 @@ import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
 import LargeButton from '@Components/common/largeButton';
 
-function useBackButton(handler) {
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handler);
-
-    return () => {
-      console.log('hardwareBackPress Close');
-      BackHandler.removeEventListener('hardwareBackPress', handler);
-    };
-  }, [handler]);
-}
-
 export default function PersonalDataScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   useEffect(() => {}, []);
 
-  useBackButton(desconectarse);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -92,25 +80,6 @@ export default function PersonalDataScreen(props) {
       </View>
     </ScrollView>
   );
-  function desconectarse() {
-    Alert.alert('Salir', '¿Esta seguro que \ndesea cerrar sesion?', [
-      {
-        text: 'Si',
-        onPress: () => {
-          loginAction({
-            type: 'sign-out',
-            data: {},
-          });
-          goToScreen('Login');
-        },
-      },
-      {
-        text: 'No',
-        onPress: () => {},
-        style: 'cancel',
-      },
-    ]);
-  }
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);

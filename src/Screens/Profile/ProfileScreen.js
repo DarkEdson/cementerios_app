@@ -4,6 +4,7 @@ import {
   Text,
   ScrollView,
   Image,
+  Dimensions,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
@@ -85,7 +86,7 @@ export default function ProfileScreen(props) {
             <Text style={styles.txtComponente}>Cerrar Sesión</Text>
           </TouchableOpacity>
         </View>
-        <View style={loginStyles.logo}>
+        <View style={mainStyles.logo}>
           <ImageBackground
             source={require('@images/profilepic.png')}
             resizeMode="stretch"
@@ -96,6 +97,7 @@ export default function ProfileScreen(props) {
             />
           </ImageBackground>
         </View>
+        <View style={styles.boxTransparent} />
       </View>
     </ScrollView>
   );
@@ -127,6 +129,9 @@ export default function ProfileScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  boxTransparent: {
+    marginBottom: Dimensions.get('screen').height * 0.01,
   },
   headerContainer: {
     flex: 1,
