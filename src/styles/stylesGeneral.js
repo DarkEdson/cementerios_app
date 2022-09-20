@@ -142,6 +142,7 @@ const mainStyles = StyleSheet.create({
     width: '90%',
     marginLeft: '5%',
     marginRight: '5%',
+    justifyContent: 'space-around',
     height: 50,
     marginBottom: 3,
     borderBottomWidth: 1,

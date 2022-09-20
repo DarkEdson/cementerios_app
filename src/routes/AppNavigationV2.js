@@ -1,6 +1,5 @@
 import React, {useEffect, useContext} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {useFocusEffect} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from '@Screens/SplashScreen';
 import LoginScreen from '@Screens/Login/LoginScreen';
@@ -11,7 +10,11 @@ import RecuperarPasswordScreen from '@Screens/Login/RecuperarPasswordScreen';
 import PrincipalScreen from '@Screens/PrincipalScreen';
 import CompanyScreen from '@Screens/Company/CompanyScreen';
 import CementeriesScreen from '@Screens/Company/CementeriesScreen';
-import ProfileScreen from '@Screens/ProfileScreen';
+import ProfileScreen from '@Screens/Profile/ProfileScreen';
+import EditProfileScreen from '@Screens/Profile/EditProfileScreen';
+import PersonalDataScreen from '@Screens/Profile/PersonalDataScreen';
+import PaymentMethodScreen from '@Screens/Profile/PaymentMethodScreen';
+import PasswordChangeScreen from '@Screens/Profile/PasswordChangeScreen';
 import LoadingScreen from '@Screens/LoadingScreen';
 import VistaProducto from '@Screens/Producto/Producto';
 import VistaPago from '@Screens/Payments/Pago';
@@ -106,6 +109,34 @@ const AppNavigationV2 = () => {
         <Stack.Screen
           name="Profile"
           component={ProfileScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PersonalData"
+          component={PersonalDataScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PaymentMethod"
+          component={PaymentMethodScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PasswordChange"
+          component={PasswordChangeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfileScreen}
           options={{
             headerShown: false,
           }}

@@ -17,6 +17,7 @@ import {Icon, Avatar} from '@rneui/themed';
 import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
+import LargeButton from '@Components/common/largeButton';
 
 function useBackButton(handler) {
   useEffect(() => {
@@ -29,7 +30,7 @@ function useBackButton(handler) {
   }, [handler]);
 }
 
-export default function ProfileScreen(props) {
+export default function PersonalDataScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   useEffect(() => {}, []);
 
@@ -43,35 +44,20 @@ export default function ProfileScreen(props) {
           translucent={true}
         />
         <ToolBar
-          titulo="Perfil"
-          onPressLeft={() => goToScreen('Home')}
+          titulo="Datos Personales"
+          onPressLeft={() => goToScreen('Profile')}
           iconLeft={true}
         />
-        <View style={styles.headerContainer}>
-          <TouchableOpacity style={styles.btnProfile} onPress={() => {}}>
-            {loginUser.usuario.image ? (
-              <Avatar
-                rounded
-                source={{uri: 'https://randomuser.me/api/portraits/men/41.jpg'}}
-                size="medium"
-              />
-            ) : (
-              <Icon
-                size={60}
-                color={color.BLACK}
-                type={'material-community'}
-                name="account"
-              />
-            )}
-          </TouchableOpacity>
-          <Text style={styles.txtNuevoComponente}>
+        <Text style={styles.txtComponente}>Nombre</Text>
+        <View style={{backgroundColor: color.WHITE}}>
+          <Text style={styles.txtComponente}>
+            {' '}
             {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
           </Text>
-          <MyTextButton
-            titulo="Editar datos personales"
-            style={{marginBottom: 20}}
-            onPress={() => {}}
-          />
+        </View>
+        <Text style={styles.txtComponente}>e-mail</Text>
+        <View style={{backgroundColor: color.WHITE}}>
+          <Text style={styles.txtComponente}>{loginUser.usuario.email}</Text>
         </View>
         <Text style={styles.txtComponente}>Codigo de vendedor</Text>
         <View style={{backgroundColor: color.WHITE}}>
@@ -79,22 +65,29 @@ export default function ProfileScreen(props) {
             {loginUser.usuario.id_number}
           </Text>
         </View>
-        <View style={mainStyles.boxTransparent} />
+        <Text style={styles.txtComponente}>Editar</Text>
         <View style={{backgroundColor: color.WHITE}}>
-          <TouchableOpacity onPress={() => desconectarse()}>
-            <Text style={styles.txtComponente}>Cerrar Sesión</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={loginStyles.logo}>
-          <ImageBackground
-            source={require('@images/profilepic.png')}
-            resizeMode="stretch"
-            style={loginStyles.logoBackground}>
-            <Image
-              source={require('@images/logo.png')}
-              style={loginStyles.logoImage}
+          <View style={styles.espacio}>
+            <LargeButton
+              titulo="Informacion personal"
+              onPressRight={() => goToScreen('EditProfile')}
+              iconRight={true}
             />
-          </ImageBackground>
+          </View>
+          <View style={styles.espacio}>
+            <LargeButton
+              titulo="Contraseña         "
+              onPressRight={() => goToScreen('PasswordChange')}
+              iconRight={true}
+            />
+          </View>
+          <View style={styles.espacio}>
+            <LargeButton
+              titulo="Metodos de Pago"
+              onPressRight={() => goToScreen('PaymentMethod')}
+              iconRight={true}
+            />
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -135,6 +128,16 @@ const styles = StyleSheet.create({
     backgroundColor: color.WHITE,
     height: '40%',
     width: '100%',
+  },
+  espacio: {
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%',
+    height: 50,
+    marginBottom: 3,
+    borderBottomWidth: 1,
+    borderColor: 'grey',
+    flexDirection: 'row',
   },
   txtNuevoComponente: {
     marginTop: 20,

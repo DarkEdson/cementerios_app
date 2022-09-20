@@ -18,6 +18,7 @@ export const AuthProvider = ({children}) => {
 
     axios
       .post(`${BASE_URL}/auth/signup`, {
+        username: userNew.username,
         name: userNew.name,
         email: userNew.email,
         password: userNew.password,
