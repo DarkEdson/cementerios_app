@@ -79,12 +79,14 @@ export default function LoginScreen(props) {
   );
 
   function iniciarSesion() {
+    console.log('boton login')
     if (email == '' || password == '') {
       Snackbar.show({
         text: 'Usuario o Contraseña en Blanco',
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
+      console.log(email,password)
       login(email, password, goToScreen, loginAction);
     }
   }

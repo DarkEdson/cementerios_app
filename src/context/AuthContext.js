@@ -62,7 +62,7 @@ export const AuthProvider = ({children}) => {
 
   function login(email, password, goToScreen, loginAction) {
     setIsLoading(true);
-
+    console.log(email, password, 'dentro de loginauth')
     axios
       .post(`${BASE_URL}/auth/signin`, {
         email,
