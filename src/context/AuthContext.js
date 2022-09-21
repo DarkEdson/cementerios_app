@@ -42,7 +42,7 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.removeItem('errorInfo');
         setIsLoading(false);
         setErrorInfo(null);
-        goToScreen('Loading');
+        goToScreen('Home');
       })
       .catch(e => {
         console.log(`register error ${e}`);
@@ -56,7 +56,7 @@ export const AuthProvider = ({children}) => {
         setErrorInfo(errorInfo);
         setIsLoading(false);
         setUserInfo({});
-        goToScreen('Loading');
+        goToScreen('Login');
       });
   };
 
