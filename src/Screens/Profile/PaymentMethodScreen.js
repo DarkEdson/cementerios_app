@@ -82,6 +82,7 @@ export default function PaymentMethodScreen(props) {
             iconLeft={true}
             titulo={'XXXX-XXXX-XXXX-2345'}
             iconRight={true}
+          //  onPress={() => goToScreen("PaymentMethodDetail")}
           />
           <PaymentButton
             iconLeft={true}
