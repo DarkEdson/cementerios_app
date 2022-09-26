@@ -30,11 +30,13 @@ export default function RecuperarPasswordScreen(props) {
       <View style={mainStyles.container}>
         <View style={loginStyles.logo}>
           <ImageBackground
-            source={require('@images/logoBackground.png')}
+            source={{
+              uri: 'https://proyectocementeriogt.gq/images/logoBackground.png',
+            }}
             resizeMode="stretch"
             style={loginStyles.logoBackground}>
             <Image
-              source={require('@images/logo.png')}
+              source={{uri: 'https://proyectocementeriogt.gq/images/logo.png'}}
               style={loginStyles.logoImage}
             />
           </ImageBackground>
@@ -50,6 +52,10 @@ export default function RecuperarPasswordScreen(props) {
             <Text style={mainStyles.btntxt}> Recuperar</Text>
           </TouchableOpacity>
         </View>
+        <Image
+          style={loginStyles.logoImage}
+          source={{uri: 'https://proyectocementeriogt.gq/images/banner.jpg'}}
+        />
         <View style={loginStyles.boxTransparent} />
       </View>
     </ScrollView>
