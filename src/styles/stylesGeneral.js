@@ -175,7 +175,7 @@ const splashStyles = StyleSheet.create({
     color: color.WHITE,
     justifyContent: 'center',
     marginBottom: Dimensions.get('screen').height * 0.4,
-    marginHorizontal: Dimensions.get('screen').width * 0.35,
+    marginHorizontal: Dimensions.get('screen').width * 0.37,
     fontSize: 17,
   },
   logo: {

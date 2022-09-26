@@ -7,29 +7,58 @@ import {
   ScrollView,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
+//Configuracion general
+import {LOGIN_SCREEN_ID} from '@utils/config';
+//Estilos generales
 import {mainStyles, loginStyles} from '@styles/stylesGeneral';
+import color from '@styles/colors';
+//Apis Generales
+import {apiScreen} from '@Apis/ApisGenerales';
+//Componentes
 import MyTextInput from '@Components/common/MyTextInput';
 import MyButton from '@Components/common/MyButton';
 import MyTextButton from '@Components/common/MyTextButton';
+//Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
+import {LanguaguesContext} from '@context/LanguaguesContext';
+import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {AuthContext} from '@context/AuthContext';
-import color from '@styles/colors';
 
 export default function LoginScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
+  const [Languagues, setLanguagues] = useContext(LanguaguesContext);
+  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const {login} = useContext(AuthContext);
+  const [labels, setLabels] = useState([]);
   const [hidePassword, setHidePassword] = useState(true);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  let idScreen = '0';
 
   useEffect(() => {
+    async function obtenerEtiquetas() {
+      console.log('Listado de Screen', ScreenId);
+      ScreenId.forEach(screen => {
+        if (screen.code == LOGIN_SCREEN_ID) {
+          idScreen = screen._id;
+          console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
+        } else {
+          console.log('SCREENS FUERA', screen);
+        }
+      });
+      console.log('ID Del screen', idScreen);
+      let etiquetas = await apiScreen(idScreen);
+      //setLabels(etiquetas[0]);
+      setLabels(etiquetas);
+      console.log(etiquetas, 'etiquetas en LOGIN');
+    }
+    obtenerEtiquetas();
     setEmail('');
     setPassword('');
+    console.log(Languagues);
     return () => {};
   }, []);
 
-  
-  
   return (
     <ScrollView>
       <View style={mainStyles.container}>
@@ -63,7 +92,11 @@ export default function LoginScreen(props) {
           onPressIcon={() => setHidePassword(!hidePassword)}
         />
         <MyTextButton
-          titulo="Si no tiene cuenta, suscribase."
+          titulo={
+            labels.code == 'label1'
+              ? labels.description
+              : 'Si no tiene cuenta, suscribase.'
+          }
           margin={true}
           onPress={() => goToScreen('Registro')}
         />
@@ -79,14 +112,14 @@ export default function LoginScreen(props) {
   );
 
   function iniciarSesion() {
-    console.log('boton login')
+    console.log('boton login');
     if (email == '' || password == '') {
       Snackbar.show({
         text: 'Usuario o Contraseña en Blanco',
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
-      console.log(email,password)
+      console.log(email, password);
       login(email, password, goToScreen, loginAction);
     }
   }
