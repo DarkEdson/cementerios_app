@@ -32,8 +32,9 @@ async function apiLanguage() {
 }
 
 async function apiScreen(idScreen) {
-  //const lenguaje = await getLanguague();
-  const lenguaje = {_id: '63313015a17b6dbe84cb5f3e'};
+  const lenguaje = await getLanguague();
+  console.log(lenguaje)
+  //const lenguaje = {_id: '633225cf5531aa122f71a7e4'};
   let url = `${BASE_URL}/view.labels.getbyidandlan/${idScreen}/${lenguaje._id}`;
   console.log(url);
   let etiquetas = [];
