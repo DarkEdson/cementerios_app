@@ -29,7 +29,13 @@ export default function LoginScreen(props) {
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const {login} = useContext(AuthContext);
-  const [labels, setLabels] = useState([]);
+  const [labels, setLabels] = useState({
+    btnlogin: '',
+    contrasena: '',
+    inputpassword: '',
+    inputusuario: '',
+    label1: '',
+  });
   const [hidePassword, setHidePassword] = useState(true);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -42,14 +48,19 @@ export default function LoginScreen(props) {
         if (screen.code == LOGIN_SCREEN_ID) {
           idScreen = screen._id;
           console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
-        } else {
-          console.log('SCREENS FUERA', screen);
         }
       });
       console.log('ID Del screen', idScreen);
       let etiquetas = await apiScreen(idScreen);
-      //setLabels(etiquetas[0]);
-      setLabels(etiquetas);
+      if (etiquetas.length != 0) {
+        setLabels({
+          btnlogin: etiquetas[0].description,
+          contrasena: etiquetas[1].description,
+          inputpassword: etiquetas[2].description,
+          inputusuario: etiquetas[3].description,
+          label1: etiquetas[4].description,
+        });
+      }
       console.log(etiquetas, 'etiquetas en LOGIN');
     }
     obtenerEtiquetas();
@@ -76,14 +87,18 @@ export default function LoginScreen(props) {
         </View>
         <MyTextInput
           keyboardType="email-address"
-          placeholder="Usuario"
+          placeholder={
+            labels.inputusuario != '' ? labels.inputusuario : 'Usuario.'
+          }
           image="account-circle"
           value={email}
           onChangeText={email => setEmail(email)}
         />
         <MyTextInput
           keyboardType={null}
-          placeholder="Password"
+          placeholder={
+            labels.inputpassword != '' ? labels.inputpassword : 'Password.'
+          }
           image="lock"
           value={password}
           onChangeText={password => setPassword(password)}
@@ -93,16 +108,23 @@ export default function LoginScreen(props) {
         />
         <MyTextButton
           titulo={
-            labels.code == 'label1'
-              ? labels.description
+            labels.label1 != ''
+              ? labels.label1
               : 'Si no tiene cuenta, suscribase.'
           }
           margin={true}
           onPress={() => goToScreen('Registro')}
         />
-        <MyButton titulo="LOGIN" onPress={() => iniciarSesion()} />
+        <MyButton
+          titulo={labels.btnlogin != '' ? labels.btnlogin : 'LOGIN.'}
+          onPress={() => iniciarSesion()}
+        />
         <MyTextButton
-          titulo="Olvide mi Contraseña."
+          titulo={
+            labels.contrasena != ''
+              ? labels.contrasena
+              : 'Olvide mi Contraseña.'
+          }
           underline={true}
           onPress={() => goToScreen('RecuperarPassword')}
         />

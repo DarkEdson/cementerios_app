@@ -8,24 +8,49 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import {UsuarioContext} from '@context/UsuarioContext';
-import {mainStyles, loginStyles} from '@styles/stylesGeneral';
-import {CementeryContext} from '@context/CementeryContext';
-import color from '@styles/colors';
 import {Icon} from '@rneui/themed';
+import SelectDropdown from 'react-native-select-dropdown';
+import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
+//Configuracion general
+import {HOME_SCREEN_ID} from '@utils/config';
+//Estilos generales
+import {mainStyles, loginStyles} from '@styles/stylesGeneral';
+import color from '@styles/colors';
+//Apis Generales
+import {apiScreen} from '@Apis/ApisGenerales';
+//Contextos
+import {UsuarioContext} from '@context/UsuarioContext';
+import {CementeryContext} from '@context/CementeryContext';
+import {ScreenIdContext} from '@context/ScreensIDsContext';
+//Componentes
 import CardPromocion from '@Components/CardPromocion/';
 import BtnCategoria from '@Components/BtnCategoria/';
 import ToolBarSession from '@Components/common/toolBarSession';
 import MyTextButton from '@Components/common/MyTextButton';
 import CardColaborador from '@Components/CardColaborador/';
-import SelectDropdown from 'react-native-select-dropdown';
-import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
 export default function InitialScreen(props) {
-  const [login, loginAction] = useContext(UsuarioContext);
+  const [loginUser, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
+  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
+
+  const [ubicaciones, setubicaciones] = useState([
+    {label: 'Guatemala, GT', value: 'GTM'},
+    {label: 'Mexico, MX', value: 'MXN'},
+  ]);
+
+  const [labels, setLabels] = useState({
+    btnlogin: '',
+    contrasena: '',
+    inputpassword: '',
+    inputusuario: '',
+    label1: '',
+  });
+
+  let idScreen = '0';
+
   const ref = useRef < ICarouselInstance > null;
   const baseOptions = {
     vertical: false,
@@ -107,6 +132,31 @@ export default function InitialScreen(props) {
     },
   ]);
 
+  useEffect(() => {
+    async function obtenerEtiquetas() {
+      console.log('Listado de Screen', ScreenId);
+      ScreenId.forEach(screen => {
+        if (screen.code == HOME_SCREEN_ID) {
+          idScreen = screen._id;
+          console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
+        }
+      });
+      console.log('ID Del screen', idScreen);
+      let etiquetas = await apiScreen(idScreen);
+      if (etiquetas.length != 0) {
+        setLabels({
+          btnlogin: etiquetas[0].description,
+          contrasena: etiquetas[1].description,
+          inputpassword: etiquetas[2].description,
+          inputusuario: etiquetas[3].description,
+        });
+      }
+      console.log(etiquetas, 'etiquetas en HOME');
+    }
+    obtenerEtiquetas();
+    return () => {};
+  }, []);
+
   return (
     <View>
       <StatusBar
@@ -116,8 +166,13 @@ export default function InitialScreen(props) {
       />
       <ToolBarSession
         titulo="Ubicación"
+        ubicaciones={ubicaciones}
+        onSelectUbication={() => {
+          console.log('cambia ubicacion seleccionada');
+        }}
         onPressLeft={() => goToScreen('Profile')}
         iconLeft={true}
+        image={loginUser.usuario.avatar}
       />
       <ScrollView>
         <View style={styles.container}>

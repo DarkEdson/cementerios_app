@@ -1,24 +1,40 @@
-import React, {useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  StatusBar,
-  ScrollView,
-} from 'react-native';
+import React, {useState, useContext, useEffect} from 'react';
+import {View, Text, StatusBar, ScrollView} from 'react-native';
 import Snackbar from 'react-native-snackbar';
-import {mainStyles, registroStyles, loginStyles} from '@styles/stylesGeneral';
-import MyTextInput from '@Components/common/MyTextInput';
-import color from '@styles/colors';
-import ToolBar from '@Components/common/toolBar';
 import {SocialIcon} from '@rneui/themed';
+//Configuracion general
+import {REGISTER_SCREEN_ID} from '@utils/config';
+//Estilos generales
+import color from '@styles/colors';
+import {mainStyles, registroStyles, loginStyles} from '@styles/stylesGeneral';
+//Apis Generales
+import {apiScreen} from '@Apis/ApisGenerales';
+//Componentes
+import MyTextInput from '@Components/common/MyTextInput';
+import ToolBar from '@Components/common/toolBar';
 import MyButton from '@Components/common/MyButton';
-import { RegisterContext } from '@context/RegisterContext';
-
-
-
+//Contextos
+import {RegisterContext} from '@context/RegisterContext';
+import {ScreenIdContext} from '@context/ScreensIDsContext';
 
 export default function RegistroScreen(props) {
-  const [registerUser, registerAction]= useContext(RegisterContext)
+  const [registerUser, registerAction] = useContext(RegisterContext);
+  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
+
+  const [labels, setLabels] = useState({
+    btnapple: '',
+    btnsiguiente: '',
+    header1: '',
+    inputconfpassword: '',
+    inputcorreo: '',
+    inputpassword1: '',
+    inputtipo: '',
+    inputusuario1: '',
+    label2: '',
+  });
+
+  let idScreen = '0';
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -27,12 +43,41 @@ export default function RegistroScreen(props) {
   const [hidePassword, setHidePassword] = useState(true);
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
 
+  useEffect(() => {
+    async function obtenerEtiquetas() {
+      console.log('Listado de Screen', ScreenId);
+      ScreenId.forEach(screen => {
+        if (screen.code == REGISTER_SCREEN_ID) {
+          idScreen = screen._id;
+          console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
+        }
+      });
+      console.log('ID Del screen', idScreen);
+      let etiquetas = await apiScreen(idScreen);
+      if (etiquetas.length != 0) {
+        setLabels({
+          btnapple: etiquetas[0].description,
+          btnsiguiente: etiquetas[1].description,
+          header1: etiquetas[2].description,
+          inputconfpassword: etiquetas[3].description,
+          inputcorreo: etiquetas[4].description,
+          inputpassword1: etiquetas[5].description,
+          inputtipo: etiquetas[6].description,
+          inputusuario1: etiquetas[7].description,
+          label2: etiquetas[8].description,
+        });
+      }
+      console.log(etiquetas, 'etiquetas en REGISTRO');
+    }
+    obtenerEtiquetas();
+    return () => {};
+  }, []);
+
   const handlePasswordChange = val => {
-    if (confirmPassword != ''){
-      
+    if (confirmPassword != '') {
       if (val == confirmPassword) {
         if (val.trim().length >= 8) {
-          setPassword(val)
+          setPassword(val);
         } else {
           Snackbar.show({
             text: 'La contraseña debe ser de al menos 8 caracteres',
@@ -51,12 +96,10 @@ export default function RegistroScreen(props) {
             duration: Snackbar.LENGTH_LONG,
           });
         }
-        
-        
       }
-    }else{
+    } else {
       if (val.trim().length >= 8) {
-        setPassword(val)
+        setPassword(val);
       } else {
         Snackbar.show({
           text: 'La contraseña debe ser de al menos 8 caracteres',
@@ -64,11 +107,10 @@ export default function RegistroScreen(props) {
         });
       }
     }
-    
   };
   const handlePasswordConfirm = val => {
     if (val == password) {
-      setConfirmPassword(val)
+      setConfirmPassword(val);
     } else {
       Snackbar.show({
         text: 'Las contraseñas no coinciden',
@@ -77,9 +119,8 @@ export default function RegistroScreen(props) {
     }
   };
   const handleValidUser = val => {
-
     if (val.trim().toString().length >= 4) {
-      setUsername(val)
+      setUsername(val);
     } else {
       Snackbar.show({
         text: 'usuario debe ser de minimo 4 caracteres',
@@ -95,14 +136,16 @@ export default function RegistroScreen(props) {
       style={{backgroundColor: color.WHITE}}>
       <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
       <ToolBar
-        titulo="Introduce tus datos"
-        onPressLeft={() => goToScreen( 'Login')}
+        titulo={labels.header1 != '' ? labels.header1 : 'Introduce tus datos'}
+        onPressLeft={() => goToScreen('Login')}
         iconLeft={true}
       />
       <View style={mainStyles.container}>
         <MyTextInput
           keyboardType={null}
-          placeholder="Usuario"
+          placeholder={
+            labels.inputusuario1 != '' ? labels.inputusuario1 : 'Usuario'
+          }
           image="account-circle"
           value={username}
           onChangeText={username => setUsername(username)}
@@ -110,14 +153,18 @@ export default function RegistroScreen(props) {
         />
         <MyTextInput
           keyboardType="email-address"
-          placeholder="Correo electrónico"
+          placeholder={
+            labels.inputcorreo != '' ? labels.inputcorreo : 'Correo electrónico'
+          }
           image="email"
           value={email}
           onChangeText={email => setEmail(email)}
         />
         <MyTextInput
           keyboardType={null}
-          placeholder="Password"
+          placeholder={
+            labels.inputpassword1 != '' ? labels.inputpassword1 : 'Password'
+          }
           image="lock"
           value={password}
           onChangeText={password => setPassword(password)}
@@ -128,7 +175,11 @@ export default function RegistroScreen(props) {
         />
         <MyTextInput
           keyboardType={null}
-          placeholder="Confirmar Password"
+          placeholder={
+            labels.inputconfpassword != ''
+              ? labels.inputconfpassword
+              : 'Confirmar Password'
+          }
           image="lock"
           bolGone={true}
           value={confirmPassword}
@@ -139,18 +190,22 @@ export default function RegistroScreen(props) {
         />
         <MyTextInput
           keyboardType={null}
-          placeholder="Tipo usuario"
+          placeholder={
+            labels.inputtipo != '' ? labels.inputtipo : 'Tipo usuario'
+          }
           image="account-circle"
           value={usertype}
           onChangeText={usertype => setUsertype(usertype)}
         />
         <MyButton
-          titulo="SIGUIENTE"
+          titulo={labels.btnsiguiente != '' ? labels.btnsiguiente : 'SIGUIENTE'}
           onPress={() => registroParcial()}
         />
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{color: color.GRAY, fontSize: 16}}>
-            o crea tu cuenta con tus redes sociales.{' '}
+            {labels.label2 != ''
+              ? labels.label2
+              : 'o crea tu cuenta con tus redes sociales.'}
           </Text>
         </View>
         <View style={registroStyles.containerSocial}>
@@ -172,28 +227,36 @@ export default function RegistroScreen(props) {
     </ScrollView>
   );
 
-  function registroParcial(){
-    if (password == '' || password == ' ' || confirmPassword == '' || confirmPassword == ' '){
+  function registroParcial() {
+    if (
+      password == '' ||
+      password == ' ' ||
+      confirmPassword == '' ||
+      confirmPassword == ' '
+    ) {
       Snackbar.show({
         text: 'Revise las contraseñas, una esta vacia',
         duration: Snackbar.LENGTH_LONG,
       });
-    }else  if (username == ' ' || username == '' || usertype == '' || usertype == ' '){
+    } else if (
+      username == ' ' ||
+      username == '' ||
+      usertype == '' ||
+      usertype == ' '
+    ) {
       Snackbar.show({
         text: 'No se admiten campos vacios, revise usuario o tipo de usuario',
         duration: Snackbar.LENGTH_LONG,
       });
-    }
-    else{
+    } else {
       registerAction({
         username,
-        email, 
+        email,
         password,
-        usertype
-      })
-      goToScreen( 'RegistroAdd')
+        usertype,
+      });
+      goToScreen('RegistroAdd');
     }
-
   }
 
   function goToScreen(routeName) {

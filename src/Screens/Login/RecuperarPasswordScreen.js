@@ -52,10 +52,6 @@ export default function RecuperarPasswordScreen(props) {
             <Text style={mainStyles.btntxt}> Recuperar</Text>
           </TouchableOpacity>
         </View>
-        <Image
-          style={loginStyles.logoImage}
-          source={{uri: 'https://proyectocementeriogt.gq/images/banner.jpg'}}
-        />
         <View style={loginStyles.boxTransparent} />
       </View>
     </ScrollView>

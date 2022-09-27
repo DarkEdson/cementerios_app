@@ -8,10 +8,7 @@ import {Icon, Avatar} from '@rneui/themed';
 import color from '@styles/colors';
 
 export default function ToolBarSession(props) {
-  const [items, setItems] = useState([
-    {label: 'Guatemala, GT', value: 'GTM'},
-    {label: 'Mexico, MX', value: 'MXN'},
-  ]);
+  const [items, setItems] = useState(props.ubicaciones);
   return (
     <View style={[props.style, mainStyles.toolBarSessionStyle]}>
       {props.titulo && (
@@ -36,6 +33,7 @@ export default function ToolBarSession(props) {
         dropdownIconPosition="right"
         onSelect={(selectedItem, index) => {
           console.log(selectedItem.label, index);
+          props.onSelectUbication();
         }}
         buttonTextAfterSelection={(selectedItem, index) => {
           return selectedItem.label;
@@ -46,10 +44,12 @@ export default function ToolBarSession(props) {
       />
       {props.iconLeft && (
         <TouchableOpacity style={styles.btnProfile} onPress={props.onPressLeft}>
-          {props.image ? (
+          {props.image != '' ? (
             <Avatar
               rounded
-              source={{uri: 'https://randomuser.me/api/portraits/men/41.jpg'}}
+              source={{
+                uri: `https://proyectocementeriogt.gq/images/${props.image}`,
+              }}
               size="medium"
             />
           ) : (

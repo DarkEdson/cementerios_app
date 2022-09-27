@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,12 +12,15 @@ import {
   Alert,
   BackHandler,
 } from 'react-native';
+import {Icon, Avatar} from '@rneui/themed';
+//Componentes
 import MyTextButton from '@Components/common/MyTextButton';
 import ToolBar from '@Components/common/toolBar';
-import {Icon, Avatar} from '@rneui/themed';
+//Estilos
 import {loginStyles, mainStyles} from '@styles/stylesGeneral';
-import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
+//Contextos
+import {UsuarioContext} from '@context/UsuarioContext';
 
 function useBackButton(handler) {
   useEffect(() => {
@@ -32,6 +35,7 @@ function useBackButton(handler) {
 
 export default function ProfileScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
+
   useEffect(() => {}, []);
 
   useBackButton(desconectarse);
@@ -43,27 +47,49 @@ export default function ProfileScreen(props) {
           barStyle="dark-content"
           translucent={true}
         />
+
         <ToolBar
           titulo="Perfil"
           onPressLeft={() => goToScreen('Home')}
           iconLeft={true}
         />
         <View style={styles.headerContainer}>
-          <TouchableOpacity style={styles.btnProfile} onPress={() => {}}>
-            {loginUser.usuario.image ? (
+          <TouchableOpacity
+            style={styles.btnProfile}
+            onPress={() => {
+              console.log('editar imagen');
+            }}>
+            {loginUser.usuario.avatar != '' ? (
               <Avatar
                 rounded
-                source={{uri: 'https://randomuser.me/api/portraits/men/41.jpg'}}
-                size="medium"
+                source={{
+                  uri: `https://proyectocementeriogt.gq/images/${loginUser.usuario.avatar}`,
+                }}
+                size="large"
               />
             ) : (
               <Icon
-                size={60}
+                size={65}
                 color={color.BLACK}
                 type={'material-community'}
                 name="account"
               />
             )}
+            <View
+              style={{
+                zIndex: 2,
+                bottom: 21,
+                left: 50,
+                width: 29,
+                backgroundColor: 'transparent',
+              }}>
+              <Icon
+                size={25}
+                color={color.BLACK}
+                type={'material-community'}
+                name="pencil"
+              />
+            </View>
           </TouchableOpacity>
           <Text style={styles.txtNuevoComponente}>
             {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
@@ -80,7 +106,7 @@ export default function ProfileScreen(props) {
             {loginUser.usuario.id_number}
           </Text>
         </View>
-        <View style={mainStyles.boxTransparent} />
+
         <View style={{backgroundColor: color.WHITE}}>
           <TouchableOpacity onPress={() => desconectarse()}>
             <Text style={styles.txtComponente}>Cerrar Sesión</Text>
@@ -151,8 +177,8 @@ const styles = StyleSheet.create({
   },
   btnProfile: {
     marginTop: 20,
-    height: 70,
-    width: 70,
+    height: 75,
+    width: 75,
     borderRadius: 100,
     backgroundColor: color.PRINCIPALCOLOR,
   },

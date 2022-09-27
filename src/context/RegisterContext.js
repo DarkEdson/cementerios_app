@@ -1,17 +1,17 @@
 import React, {createContext, useState} from 'react';
 
 const initialState = {
-      username: '',
-      name: '',
-      lastname: '',
-      email: '',
-      password: '',
-      phone: '',
-      id_number: '',
-      paypal_id: '',
-      image: '',
-
-  };
+  username: '',
+  name: '',
+  lastname: '',
+  email: '',
+  password: '',
+  phone: '',
+  role: '',
+  id_number: '',
+  paypal_id: '',
+  avatar: '',
+};
 const RegisterContext = createContext();
 
 function RegisterProvider({children}) {

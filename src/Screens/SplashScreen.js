@@ -73,7 +73,7 @@ export default function SplashScreen(props) {
     console.log(lenguaje, 'lenguaje que esta guardado');
     if (lenguaje == null) {
       response.forEach(element => {
-        if ((element.code = defecto)) {
+        if (element.code == defecto) {
           setbienvenida(element.code);
           saveLanguague(element).then(msg => {
             console.log('lenguaje defecto guardado');
@@ -86,6 +86,20 @@ export default function SplashScreen(props) {
         }
       });
     } else {
+      response.forEach(element => {
+        if (element._id == lenguaje._id) {
+          setbienvenida(lenguaje.code);
+          saveLanguague(lenguaje).then(msg => {
+            console.log('lenguaje confirmado guardado ');
+          });
+        } else if (element.code == lenguaje.code) {
+          setbienvenida(element.code);
+          saveLanguague(element).then(msg => {
+            console.log('lenguaje actualizado');
+          });
+        }
+      });
+
       setbienvenida(lenguaje.code);
     }
   }

@@ -32,9 +32,12 @@ async function apiLanguage() {
 }
 
 async function apiScreen(idScreen) {
-  const lenguaje = await getLanguague();
-  console.log(lenguaje)
-  //const lenguaje = {_id: '633225cf5531aa122f71a7e4'};
+  const lenguajer = await getLanguague();
+  console.log(lenguajer, 'LENGUAJE GUARDADO');
+
+  const lenguaje = {_id: '633225cf5531aa122f71a7e4'};
+  console.log(lenguaje);
+
   let url = `${BASE_URL}/view.labels.getbyidandlan/${idScreen}/${lenguaje._id}`;
   console.log(url);
   let etiquetas = [];
@@ -48,7 +51,13 @@ async function apiScreen(idScreen) {
       .then(response => {
         console.log('dentro del API Screen');
         console.log(response);
-        etiquetas = response;
+        response.forEach(tag => {
+          etiquetas.push({
+            _id: tag._id,
+            code: tag.code,
+            description: tag.description,
+          });
+        });
       });
     return etiquetas;
   } catch (error) {

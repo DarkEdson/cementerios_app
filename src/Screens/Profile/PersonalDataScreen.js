@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,43 @@ import {
   Alert,
   BackHandler,
 } from 'react-native';
+import SelectDropdown from 'react-native-select-dropdown';
+import {Icon, Avatar} from '@rneui/themed';
+//Componentes
 import MyTextButton from '@Components/common/MyTextButton';
 import ToolBar from '@Components/common/toolBar';
-import {Icon, Avatar} from '@rneui/themed';
-import {loginStyles, mainStyles} from '@styles/stylesGeneral';
-import {UsuarioContext} from '@context/UsuarioContext';
-import color from '@styles/colors';
 import LargeButton from '@Components/common/largeButton';
+//Estilos
+import {loginStyles, mainStyles} from '@styles/stylesGeneral';
+import color from '@styles/colors';
+//Contextos
+import {LanguaguesContext} from '@context/LanguaguesContext';
+import {UsuarioContext} from '@context/UsuarioContext';
+//Async Storage
+import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 
 export default function PersonalDataScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
-  useEffect(() => {}, []);
+  const [Languagues, setLanguagues] = useContext(LanguaguesContext);
+  const [lenguajes, setLenguajes] = useState([]);
+  const [defaultLanguage, setdefaultLanguage] = useState({});
+  const [nuevoLenguaje, setnuevoLenguaje] = useState({});
+
+  useEffect(() => {
+    async function lenguajeDefault() {
+      const lenguaje = await getLanguague();
+      console.log(lenguaje, 'lenguaje que esta guardado');
+      setdefaultLanguage({label: lenguaje.name, value: lenguaje.code});
+    }
+    let arrayLenguajes = [];
+    Languagues.forEach(item => {
+      arrayLenguajes.push({label: item.name, value: item.code});
+    });
+    setLenguajes(arrayLenguajes);
+    lenguajeDefault();
+    console.log(defaultLanguage);
+    console.log(Languagues);
+  }, [nuevoLenguaje]);
 
   return (
     <ScrollView>
@@ -76,6 +102,46 @@ export default function PersonalDataScreen(props) {
               iconRight={true}
             />
           </View>
+          <View style={styles.espacio}>
+            <Text>Cambiar Idioma</Text>
+            <SelectDropdown
+              data={lenguajes}
+              defaultValue={defaultLanguage}
+              //   defaultValueByIndex={0}
+              defaultButtonText="Cambia Idioma"
+              buttonTextStyle={{textAlign: 'left'}}
+              buttonStyle={styles.btnDropStyle}
+              dropdownStyle={{marginLeft: 15}}
+              renderDropdownIcon={isOpened => {
+                return (
+                  <Icon
+                    type={'font-awesome'}
+                    name={isOpened ? 'chevron-up' : 'chevron-down'}
+                    color={'#444'}
+                    size={12}
+                  />
+                );
+              }}
+              dropdownIconPosition="right"
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem.label, index, selectedItem.value);
+                Languagues.forEach(item => {
+                  if (item.code == selectedItem.value) {
+                    setnuevoLenguaje(item);
+                    saveLanguague(item).then(msg => {
+                      console.log('lenguaje cambiado correctamente');
+                    });
+                  }
+                });
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem.label;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item.label;
+              }}
+            />
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -97,6 +163,12 @@ const styles = StyleSheet.create({
     backgroundColor: color.WHITE,
     height: '40%',
     width: '100%',
+  },
+  btnDropStyle: {
+    width: '35%',
+    marginRight: 8,
+    height: '85%',
+    backgroundColor: color.WHITE,
   },
   espacio: {
     width: '90%',
