@@ -103,7 +103,7 @@ export default function PersonalDataScreen(props) {
             />
           </View>
           <View style={styles.espacio}>
-            <Text>Cambiar Idioma</Text>
+            <Text style={styles.sectionDescription}>Cambiar Idioma</Text>
             <SelectDropdown
               data={lenguajes}
               defaultValue={defaultLanguage}
@@ -211,6 +211,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   sectionDescription: {
+    marginLeft: 30,
+    marginRight: 52,
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
