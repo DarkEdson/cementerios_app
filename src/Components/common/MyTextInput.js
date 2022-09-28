@@ -15,7 +15,7 @@ export default function MyTextInput(props) {
       inputStyle={{
         fontSize: 18,
         paddingHorizontal: 6,
-        color: color.PRIMARYCOLOR,
+        color: color.PRINCIPALCOLOR,
       }}
       placeholderTextColor={color.TEXTCOLOR}
       placeholder={props.placeholder}
@@ -56,6 +56,7 @@ export default function MyTextInput(props) {
       secureTextEntry={props.secureTextEntry}
       keyboardType={props.keyboardType}
       onChangeText={props.onChangeText}
+      onEndEditing={props.onEndEditing}
       value={props.value}
     />
   );

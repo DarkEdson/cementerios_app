@@ -1,22 +1,34 @@
 import React from 'react';
-import Card from '../Card/index';
+import color from '@styles/colors';
 import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
-export default function CardProducto(props) {
+export default function CardProductoVenta(props) {
   return (
     <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressProduct}>
       <View style={{...styles.view, backgroundColor: props.bgColor}}>
         <View style={styles.right}>
           <Image style={styles.imgPromocion} source={{uri: props.urlImagen}} />
         </View>
-        <View style={styles.left}>
+        <View style={styles.center}>
           <Text style={styles.titulo}> {props.titulo} </Text>
-          <Text numberOfLines={1} style={styles.descripcion}>
+          <Text numberOfLines={4} style={styles.descripcion}>
             {props.descripcion}
           </Text>
-          <Text style={styles.precio}> {props.precio} </Text>
+        </View>
+        <View style={styles.left}>
+          <Text style={styles.precio}>US{props.precio} </Text>
+          <Text style={styles.cantidad}>x{props.cantidad}</Text>
         </View>
       </View>
+      <View
+        style={{
+          marginHorizontal: '7%',
+          marginVertical: 5,
+          width: '85%',
+          borderBottomColor: color.GRAY,
+          borderBottomWidth: 2,
+        }}
+      />
     </TouchableOpacity>
   );
 }
@@ -24,23 +36,24 @@ export default function CardProducto(props) {
 const styles = StyleSheet.create({
   cuerpoCard: {
     marginLeft: '5%',
-    marginTop: '3%',
+    marginVertical: '2.5%',
     width: '90%',
     height: 100,
-    elevation: 2,
     backgroundColor: '#fff',
-    shadowOffset: {width: 1, height: 1},
-    shadowColor: '#333',
-    shadowOpacity: 0.17,
-    shadowRadius: 2,
-    borderRadius: 15,
   },
   view: {
     flexDirection: 'row',
   },
-  left: {
-    width: '65%',
+  center: {
+    width: '52%',
     height: '100%',
+    flexDirection: 'column',
+    paddingLeft: 10,
+  },
+  left: {
+    width: '23%',
+    height: '100%',
+    paddingTop: 10,
     flexDirection: 'column',
     paddingLeft: 10,
   },
@@ -59,6 +72,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: 'grey',
     fontSize: 15,
+    marginBottom: 10,
+  },
+  cantidad: {
+    fontWeight: '600',
+    color: 'grey',
+    fontSize: 15,
+    marginLeft: 55,
+    marginTop: 25,
     marginBottom: 10,
   },
   precio: {

@@ -9,6 +9,7 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import {mainStyles, loginStyles} from '@styles/stylesGeneral';
 import MyTextInput from '@Components/common/MyTextInput';
 import color from '@styles/colors';
@@ -24,16 +25,18 @@ export default function RecuperarPasswordScreen(props) {
       <ToolBar
         titulo="Contraseña"
         onPressLeft={() => goToScreen('Login')}
-        iconLeft={require('@images/back.png')}
+        iconLeft={true}
       />
       <View style={mainStyles.container}>
         <View style={loginStyles.logo}>
           <ImageBackground
-            source={require('@images/logoBackground.png')}
+            source={{
+              uri: 'https://proyectocementeriogt.gq/images/logoBackground.png',
+            }}
             resizeMode="stretch"
             style={loginStyles.logoBackground}>
             <Image
-              source={require('@images/logo.png')}
+              source={{uri: 'https://proyectocementeriogt.gq/images/logo.png'}}
               style={loginStyles.logoImage}
             />
           </ImageBackground>
@@ -55,19 +58,10 @@ export default function RecuperarPasswordScreen(props) {
   );
 
   function recuperarClave() {
-    Alert.alert(
-      'Recuperar Password',
-      'Su contraseña fue reiniciada y enviada a su correo electronico',
-      [
-        {
-          text: 'Ok',
-          onPress: () => {
-            goToScreen('Login');
-          },
-          style: 'cancel',
-        },
-      ],
-    );
+    Snackbar.show({
+      text: 'Su contraseña fue reiniciada y enviada a su correo electronico',
+      duration: Snackbar.LENGTH_LONG,
+    });
   }
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);

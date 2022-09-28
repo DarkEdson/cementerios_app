@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { mainStyles } from '@styles/stylesGeneral';
-import SelectDropdown from 'react-native-select-dropdown'
+import React, {useState} from 'react';
+import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {mainStyles} from '@styles/stylesGeneral';
+import SelectDropdown from 'react-native-select-dropdown';
 
-import { Icon,  Avatar } from '@rneui/themed';
+import {Icon, Avatar} from '@rneui/themed';
 
 import color from '@styles/colors';
 
 export default function ToolBarSession(props) {
-  const [items, setItems] = useState([
-    { label: 'Guatemala, GT', value: 'GTM' },
-    { label: 'Mexico, MX', value: 'MXN' }
-  ]);
+  const [items, setItems] = useState(props.ubicaciones);
   return (
     <View style={[props.style, mainStyles.toolBarSessionStyle]}>
       {props.titulo && (
@@ -20,33 +17,41 @@ export default function ToolBarSession(props) {
       <SelectDropdown
         data={items}
         defaultValueByIndex={0}
-        buttonTextStyle={{ textAlign: 'left'}}
+        buttonTextStyle={{textAlign: 'left'}}
         buttonStyle={styles.btnStyle}
-        dropdownStyle={{marginLeft:15}}
+        dropdownStyle={{marginLeft: 15}}
         renderDropdownIcon={isOpened => {
-          return <Icon type={'font-awesome'} name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={16} />;
+          return (
+            <Icon
+              type={'font-awesome'}
+              name={isOpened ? 'chevron-up' : 'chevron-down'}
+              color={'#444'}
+              size={12}
+            />
+          );
         }}
-        dropdownIconPosition='right'
+        dropdownIconPosition="right"
         onSelect={(selectedItem, index) => {
-          console.log(selectedItem.label, index)
+          console.log(selectedItem.label, index);
+          props.onSelectUbication();
         }}
         buttonTextAfterSelection={(selectedItem, index) => {
-          return selectedItem.label
+          return selectedItem.label;
         }}
         rowTextForSelection={(item, index) => {
-          return item.label
+          return item.label;
         }}
       />
       {props.iconLeft && (
-        <TouchableOpacity
-          style={styles.btnProfile}
-          onPress={props.onPressLeft}>
-          {props.image ? (
+        <TouchableOpacity style={styles.btnProfile} onPress={props.onPressLeft}>
+          {props.image != '' ? (
             <Avatar
-            rounded
-            source={{ uri: 'https://randomuser.me/api/portraits/men/41.jpg' }}
-            size='medium'
-          />
+              rounded
+              source={{
+                uri: `https://proyectocementeriogt.gq/images/${props.image}`,
+              }}
+              size="medium"
+            />
           ) : (
             <Icon
               size={47}
@@ -63,11 +68,11 @@ export default function ToolBarSession(props) {
 
 const styles = StyleSheet.create({
   btnStyle: {
-    width:'45%',
+    width: '45%',
     position: 'absolute',
-    marginLeft:-8,
-    marginTop:35,
-    backgroundColor: color.WHITE
+    marginLeft: -8,
+    marginTop: 35,
+    backgroundColor: color.WHITE,
   },
   btnProfile: {
     position: 'absolute',

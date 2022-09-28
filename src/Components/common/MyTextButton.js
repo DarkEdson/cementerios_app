@@ -12,7 +12,7 @@ const MyTextButton = props => {
     props.color == 'blue' ? styles.txtTransparent : mainStyles.txtTransparent;
 
   return (
-    <View style={sMargin}>
+    <View style={[sMargin, props.style]}>
       <TouchableOpacity onPress={props.onPress}>
         <Text style={[blue, sButton]}>{props.titulo}</Text>
       </TouchableOpacity>
