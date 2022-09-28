@@ -13,6 +13,12 @@ import {
   BackHandler,
 } from 'react-native';
 import {Icon, Avatar} from '@rneui/themed';
+//Recarga la screen
+import { useIsFocused } from "@react-navigation/native";
+//Configuracion general
+import {PROFILE_SCREEN_ID} from '@utils/config';
+//Apis Generales
+import {apiScreen} from '@Apis/ApisGenerales';
 //Componentes
 import MyTextButton from '@Components/common/MyTextButton';
 import ToolBar from '@Components/common/toolBar';
@@ -21,6 +27,8 @@ import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
+import {ScreenIdContext} from '@context/ScreensIDsContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
 
 function useBackButton(handler) {
   useEffect(() => {
@@ -35,8 +43,50 @@ function useBackButton(handler) {
 
 export default function ProfileScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
+  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
+  const {actualizaEtiquetas,tags,updateTags,} = useContext(ScreentagContext);
 
-  useEffect(() => {}, []);
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {} 
+
+  let idScreen = '0';
+
+  const [labels, setLabels] = useState({
+    cerrar: '',
+    codigov: '',
+    editar: '',
+    perfil: '',
+  });
+
+
+  useEffect(() => {
+    async function obtenerEtiquetas() {
+      ScreenId.forEach(screen => {
+        if (screen.code == PROFILE_SCREEN_ID) {
+          idScreen = screen._id;
+          console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
+        }
+      });
+      console.log('ID Del screen', idScreen);
+      let etiquetas = await apiScreen(idScreen);
+      if (etiquetas.length != 0) {
+        setLabels({
+          cerrar: etiquetas[0].description,
+          codigov: etiquetas[1].description,
+          editar: etiquetas[2].description,
+          perfil: etiquetas[3].description,
+        });
+      }
+      console.log(etiquetas, 'etiquetas en PROFILE');
+    }
+    obtenerEtiquetas();
+    if(isFocused){ 
+      getInitialData();
+      console.log('isFocused')
+  }
+  console.log('LAS ETIQUETAS GENERALES',tags)
+    return () => {};
+  }, [props, isFocused]);
 
   useBackButton(desconectarse);
   return (
@@ -49,7 +99,7 @@ export default function ProfileScreen(props) {
         />
 
         <ToolBar
-          titulo="Perfil"
+          titulo={labels.perfil != '' ? labels.perfil :"Perfil"}
           onPressLeft={() => goToScreen('Home')}
           iconLeft={true}
         />
@@ -95,21 +145,21 @@ export default function ProfileScreen(props) {
             {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
           </Text>
           <MyTextButton
-            titulo="Editar datos personales"
+            titulo={labels.editar != '' ? labels.editar :"Editar datos personales"}
             style={{marginBottom: 20}}
             onPress={() => goToScreen('PersonalData')}
           />
         </View>
-        <Text style={styles.txtComponente}>Codigo de vendedor</Text>
+        <Text style={styles.txtComponente}>{labels.codigov != '' ? labels.codigov :'Codigo de vendedor'}</Text>
         <View style={{backgroundColor: color.WHITE}}>
           <Text style={styles.txtComponente}>
             {loginUser.usuario.id_number}
           </Text>
         </View>
-
+        <View style={styles.boxTransparent2} />
         <View style={{backgroundColor: color.WHITE}}>
           <TouchableOpacity onPress={() => desconectarse()}>
-            <Text style={styles.txtComponente}>Cerrar Sesión</Text>
+            <Text style={styles.txtComponente}>{labels.cerrar != '' ? labels.cerrar :'Cerrar Sesión'}</Text>
           </TouchableOpacity>
         </View>
         <View style={mainStyles.logo}>
@@ -158,6 +208,9 @@ const styles = StyleSheet.create({
   },
   boxTransparent: {
     marginBottom: Dimensions.get('screen').height * 0.01,
+  },
+  boxTransparent2: {
+    marginBottom: Dimensions.get('screen').height * 0.05,
   },
   headerContainer: {
     flex: 1,

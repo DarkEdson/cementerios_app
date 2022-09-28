@@ -11,6 +11,8 @@ import {
 import {Icon} from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
+//Recarga la screen
+import { useIsFocused } from "@react-navigation/native";
 //Configuracion general
 import {HOME_SCREEN_ID} from '@utils/config';
 //Estilos generales
@@ -35,6 +37,8 @@ export default function InitialScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {} 
 
   const [ubicaciones, setubicaciones] = useState([
     {label: 'Guatemala, GT', value: 'GTM'},
@@ -42,11 +46,10 @@ export default function InitialScreen(props) {
   ]);
 
   const [labels, setLabels] = useState({
-    btnlogin: '',
-    contrasena: '',
-    inputpassword: '',
-    inputusuario: '',
-    label1: '',
+    inputsearch: '',
+    labelcementarios: '',
+    labelvertodos: '',
+    ubica: '',
   });
 
   let idScreen = '0';
@@ -134,7 +137,6 @@ export default function InitialScreen(props) {
 
   useEffect(() => {
     async function obtenerEtiquetas() {
-      console.log('Listado de Screen', ScreenId);
       ScreenId.forEach(screen => {
         if (screen.code == HOME_SCREEN_ID) {
           idScreen = screen._id;
@@ -145,17 +147,21 @@ export default function InitialScreen(props) {
       let etiquetas = await apiScreen(idScreen);
       if (etiquetas.length != 0) {
         setLabels({
-          btnlogin: etiquetas[0].description,
-          contrasena: etiquetas[1].description,
-          inputpassword: etiquetas[2].description,
-          inputusuario: etiquetas[3].description,
+          inputsearch: etiquetas[0].description,
+          labelcementarios: etiquetas[1].description,
+          labelvertodos: etiquetas[2].description,
+          ubica: etiquetas[3].description,
         });
       }
       console.log(etiquetas, 'etiquetas en HOME');
     }
     obtenerEtiquetas();
+    if(isFocused){ 
+      getInitialData();
+      console.log('isFocused')
+  }
     return () => {};
-  }, []);
+  }, [props, isFocused]);
 
   return (
     <View>
@@ -165,7 +171,7 @@ export default function InitialScreen(props) {
         translucent={true}
       />
       <ToolBarSession
-        titulo="Ubicación"
+        titulo={labels.ubica != '' ? labels.ubica : "Ubicación"}
         ubicaciones={ubicaciones}
         onSelectUbication={() => {
           console.log('cambia ubicacion seleccionada');
@@ -179,8 +185,8 @@ export default function InitialScreen(props) {
           <SelectDropdown
             data={data}
             search
-            defaultButtonText="Cementerios, arrecifes o flores..."
-            searchPlaceHolder="Cementerios, arrecifes o flores..."
+            defaultButtonText={labels.inputsearch != '' ? labels.inputsearch : "Cementerios, arrecifes o flores..."}
+            searchPlaceHolder={labels.inputsearch != '' ? labels.inputsearch : "Cementerios, arrecifes o flores..."}
             buttonTextStyle={{textAlign: 'left'}}
             buttonStyle={styles.btnStyle}
             renderDropdownIcon={isOpened => {
@@ -240,9 +246,9 @@ export default function InitialScreen(props) {
             />
           </View>
           <View style={[styles.categories, styles.titles]}>
-            <Text style={styles.titleText}>Cementerios</Text>
+            <Text style={styles.titleText}>{labels.labelcementarios != '' ? labels.labelcementarios :'Cementerios'}</Text>
             <MyTextButton
-              titulo="Ver todos"
+              titulo={labels.labelvertodos != '' ? labels.labelvertodos :"Ver todos"}
               underline={true}
               color="blue"
               onPress={() => goToScreen('Cementeries')}

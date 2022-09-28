@@ -12,6 +12,7 @@ import {splashStyles} from '@styles/stylesGeneral';
 import {UsuarioContext} from '@context/UsuarioContext';
 import {LanguaguesContext} from '@context/LanguaguesContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
 //Apis
 import {apiLanguage, apiIdScreens} from '@Apis/ApisGenerales';
 //Async Storages
@@ -23,6 +24,8 @@ export default function SplashScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
+  const {actualizaEtiquetas,tags,updateTags,} = useContext(ScreentagContext);
+
   const [bienvenida, setbienvenida] = useState('es');
   let deviceLanguage =
     Platform.OS === ' ios'
@@ -107,9 +110,10 @@ export default function SplashScreen(props) {
   async function fetchSesion(loginAction) {
     const response = await getUsuario();
     const pantallasID = await apiIdScreens();
-    console.log('PANTALLAS OBTENIDAS', pantallasID);
     setScreenId(pantallasID);
-    console.log('DATOS DE SESION GUARDADOS', response);
+    pantallasID.forEach((pantalla)=>{
+      updateTags(pantalla);
+    })
     if (response == null) {
       setTimeout(() => {
         goToScreen('Login');

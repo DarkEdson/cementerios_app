@@ -32,15 +32,12 @@ export default function RegistroScreen(props) {
   const [registerUser, registerAction] = useContext(RegisterContext);
 
   const [labels, setLabels] = useState({
-    btnapple: '',
-    btnsiguiente: '',
-    header1: '',
-    inputconfpassword: '',
-    inputcorreo: '',
-    inputpassword1: '',
-    inputtipo: '',
-    inputusuario1: '',
-    label2: '',
+    btncompletar: '',
+    completa: '',
+    inputapellidos: '',
+    inputnombres: '',
+    inputnumid: '',
+    inputpaypalid: '',
   });
 
   let idScreen = '0';
@@ -66,15 +63,12 @@ export default function RegistroScreen(props) {
       let etiquetas = await apiScreen(idScreen);
       if (etiquetas.length != 0) {
         setLabels({
-          btnapple: etiquetas[0].description,
-          btnsiguiente: etiquetas[1].description,
-          header1: etiquetas[2].description,
-          inputconfpassword: etiquetas[3].description,
-          inputcorreo: etiquetas[4].description,
-          inputpassword1: etiquetas[5].description,
-          inputtipo: etiquetas[6].description,
-          inputusuario1: etiquetas[7].description,
-          label2: etiquetas[8].description,
+          btncompletar: etiquetas[0].description,
+          completa: etiquetas[1].description,
+          inputapellidos: etiquetas[2].description,
+          inputnombres: etiquetas[3].description,
+          inputnumid: etiquetas[4].description,
+          inputpaypalid: etiquetas[5].description,
         });
       }
       console.log(etiquetas, 'etiquetas en REGISTRO');
@@ -96,14 +90,14 @@ export default function RegistroScreen(props) {
       style={{backgroundColor: color.WHITE}}>
       <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
       <ToolBar
-        titulo="Completa tus datos"
+        titulo={ labels.completa != '' ? labels.completa : "Completa tus datos"}
         onPressLeft={() => goToScreen('Registro')}
         iconLeft={true}
       />
       <View style={mainStyles.container}>
         <MyTextInput
           keyboardType={null}
-          placeholder="Nombres"
+          placeholder={ labels.inputnombres != '' ? labels.inputnombres : "Nombres"}
           value={data.name}
           onChangeText={nombre => setData({...data, name: nombre})}
           image="account-circle"
@@ -112,21 +106,21 @@ export default function RegistroScreen(props) {
           keyboardType={null}
           value={data.lastname}
           onChangeText={apellido => setData({...data, lastname: apellido})}
-          placeholder="Apellidos"
+          placeholder={ labels.inputapellidos != '' ? labels.inputapellidos : "Apellidos"}
           image="account-circle"
         />
         <MyTextInput
           keyboardType={null}
           value={data.id_number}
           onChangeText={numeroID => setData({...data, id_number: numeroID})}
-          placeholder="Número de ID"
+          placeholder={ labels.inputnumid != '' ? labels.inputnumid : "Número de ID"}
           image="card-account-details"
         />
         <MyTextInput
           keyboardType={null}
           value={data.paypal_id}
           onChangeText={paypalID => setData({...data, paypal_id: paypalID})}
-          placeholder="PayPal ID"
+          placeholder={ labels.inputpaypalid != '' ? labels.inputpaypalid : "PayPal ID"}
           image="credit-card-outline"
         />
 
@@ -144,7 +138,7 @@ export default function RegistroScreen(props) {
           checkedColor={color.PRINCIPALCOLOR}
         />
         <MyButton
-          titulo="COMPLETAR REGISTRO"
+          titulo={ labels.btncompletar != '' ? labels.btncompletar : "COMPLETAR REGISTRO"}
           onPress={() => goToScreen('Login')}
         />
       </View>

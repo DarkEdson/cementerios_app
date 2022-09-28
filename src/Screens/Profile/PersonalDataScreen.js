@@ -23,12 +23,16 @@ import color from '@styles/colors';
 //Contextos
 import {LanguaguesContext} from '@context/LanguaguesContext';
 import {UsuarioContext} from '@context/UsuarioContext';
+import {ScreenIdContext} from '@context/ScreensIDsContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
 //Async Storage
 import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 
 export default function PersonalDataScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
+  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
+  const {actualizaEtiquetas,tags,updateTags,} = useContext(ScreentagContext);
   const [lenguajes, setLenguajes] = useState([]);
   const [defaultLanguage, setdefaultLanguage] = useState({});
   const [nuevoLenguaje, setnuevoLenguaje] = useState({});
@@ -45,6 +49,7 @@ export default function PersonalDataScreen(props) {
     });
     setLenguajes(arrayLenguajes);
     lenguajeDefault();
+    console.log('LAS ETIQUETAS GENERALES CAMBIADAS',tags)
     console.log(defaultLanguage);
     console.log(Languagues);
   }, [nuevoLenguaje]);
@@ -128,6 +133,9 @@ export default function PersonalDataScreen(props) {
                 Languagues.forEach(item => {
                   if (item.code == selectedItem.value) {
                     setnuevoLenguaje(item);
+                    ScreenId.forEach((pantalla)=>{
+                      updateTags(pantalla);
+                    })
                     saveLanguague(item).then(msg => {
                       console.log('lenguaje cambiado correctamente');
                     });

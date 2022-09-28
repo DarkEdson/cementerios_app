@@ -23,6 +23,8 @@ export default function RegistroScreen(props) {
 
   const [labels, setLabels] = useState({
     btnapple: '',
+    btnfacebook: '',
+    btngoogle: '',
     btnsiguiente: '',
     header1: '',
     inputconfpassword: '',
@@ -57,14 +59,16 @@ export default function RegistroScreen(props) {
       if (etiquetas.length != 0) {
         setLabels({
           btnapple: etiquetas[0].description,
-          btnsiguiente: etiquetas[1].description,
-          header1: etiquetas[2].description,
-          inputconfpassword: etiquetas[3].description,
-          inputcorreo: etiquetas[4].description,
-          inputpassword1: etiquetas[5].description,
-          inputtipo: etiquetas[6].description,
-          inputusuario1: etiquetas[7].description,
-          label2: etiquetas[8].description,
+          btnfacebook:  etiquetas[1].description,
+          btngoogle: etiquetas[2].description,
+          btnsiguiente: etiquetas[3].description,
+          header1: etiquetas[4].description,
+          inputconfpassword: etiquetas[5].description,
+          inputcorreo: etiquetas[6].description,
+          inputpassword1: etiquetas[7].description,
+          inputtipo: etiquetas[8].description,
+          inputusuario1: etiquetas[9].description,
+          label2: etiquetas[10].description,
         });
       }
       console.log(etiquetas, 'etiquetas en REGISTRO');
@@ -211,15 +215,27 @@ export default function RegistroScreen(props) {
         <View style={registroStyles.containerSocial}>
           <SocialIcon
             style={registroStyles.buttonSocialIcon}
-            title="Continuar con Facebook"
+            title={labels.btnfacebook != ''
+            ? labels.btnfacebook
+            : "Continuar con Facebook"}
             button
             type="facebook"
           />
           <SocialIcon
             style={registroStyles.buttonSocialIcon}
-            title="Continuar con Google"
+            title={labels.btngoogle != ''
+            ? labels.btngoogle
+            : "Continuar con Google"}
             button
             type="google-plus-official"
+          />
+          <SocialIcon
+            style={registroStyles.buttonSocialIcon}
+            title={labels.btnapple != ''
+            ? labels.btnapple
+            : "Continuar con Apple"}
+            button
+            type="twitter"
           />
         </View>
         <View style={loginStyles.boxTransparent} />

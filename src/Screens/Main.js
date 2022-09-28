@@ -6,7 +6,8 @@ import {AuthProvider} from '@context/AuthContext';
 import {RegisterProvider} from '@context/RegisterContext';
 import {CreditCardProvider} from '@context/CreditCardContext';
 import {LanguaguesProvider} from '@context/LanguaguesContext';
-import {ScreenIdProvider} from '../context/ScreensIDsContext';
+import {ScreenIdProvider} from '@context/ScreensIDsContext';
+import {ScreentagProvider} from '@context/ScreentagsContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -14,6 +15,7 @@ const MainPage = () => {
   }, []);
   return (
     <AuthProvider>
+      <ScreentagProvider>
       <ScreenIdProvider>
         <LanguaguesProvider>
           <UsuarioProvider>
@@ -27,6 +29,7 @@ const MainPage = () => {
           </UsuarioProvider>
         </LanguaguesProvider>
       </ScreenIdProvider>
+      </ScreentagProvider>
     </AuthProvider>
   );
 };

@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 async function apiLanguage() {
   let url = `${BASE_URL}/language.index`;
-  console.log(url);
   let lenguajes = [];
   try {
     await fetch(url, {
@@ -15,8 +14,6 @@ async function apiLanguage() {
       .then(res => res.json())
       .catch(error => console.error('Error', error))
       .then(response => {
-        console.log('dentro del API Lenguaje');
-        console.log(response);
         response.forEach(language => {
           lenguajes.push({
             _id: language._id,
@@ -33,13 +30,10 @@ async function apiLanguage() {
 
 async function apiScreen(idScreen) {
   const lenguajer = await getLanguague();
-  console.log(lenguajer, 'LENGUAJE GUARDADO');
 
   const lenguaje = {_id: '633225cf5531aa122f71a7e4'};
-  console.log(lenguaje);
 
-  let url = `${BASE_URL}/view.labels.getbyidandlan/${idScreen}/${lenguaje._id}`;
-  console.log(url);
+  let url = `${BASE_URL}/view.labels.getbyidandlan/${idScreen}/${lenguajer._id}`;
   let etiquetas = [];
   try {
     await fetch(url, {
@@ -49,8 +43,6 @@ async function apiScreen(idScreen) {
       .then(res => res.json())
       .catch(error => console.error('Error', error))
       .then(response => {
-        console.log('dentro del API Screen');
-        console.log(response);
         response.forEach(tag => {
           etiquetas.push({
             _id: tag._id,
@@ -67,7 +59,6 @@ async function apiScreen(idScreen) {
 
 async function apiIdScreens() {
   let url = `${BASE_URL}/view.index`;
-  console.log(url);
   let screens = [];
   try {
     await fetch(url, {
@@ -77,8 +68,6 @@ async function apiIdScreens() {
       .then(res => res.json())
       .catch(error => console.error('Error', error))
       .then(response => {
-        console.log('dentro del API Pantallas');
-        console.log(response);
         screens = response;
       });
     return screens;
