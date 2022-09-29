@@ -50,25 +50,18 @@ export default function PersonalDataScreen(props) {
   //tags.personalDataScreen.titulo
 
   useEffect(() => {
-    //  setLoading(true)
     async function lenguajeDefault() {
       const lenguaje = await getLanguague();
       console.log(lenguaje, 'lenguaje que esta guardado en Personal Data');
       setdefaultLanguage({label: lenguaje.name, value: lenguaje.code});
     }
-
     Languagues.forEach(item => {
       arrayLenguajes.push({label: item.name, value: item.code});
     });
-
     setLenguajes(arrayLenguajes);
     lenguajeDefault();
+    console.log('PANTALLAS EXISTENTES', ScreenId);
     console.log('LAS ETIQUETAS GENERALES CAMBIADAS', tags);
-    /*
-    setTimeout(() => {
-      setLoading(false)
-    },1500);
-    */
   }, [nuevoLenguaje]);
 
   return (

@@ -52,7 +52,6 @@ export default function ProfileScreen(props) {
       getInitialData();
       console.log('isFocused Profile');
     }
-    console.log('LAS ETIQUETAS GENERALES', tags);
     return () => {};
   }, [props, isFocused]);
 

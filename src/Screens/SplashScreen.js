@@ -37,8 +37,11 @@ export default function SplashScreen(props) {
       : NativeModules.I18nManager.localeIdentifier;
   let defaultLanguage = deviceLanguage.substr(0, 2);
 
+  //variable para limpiar el async storage
   const clear = false;
+
   useEffect(() => {
+    //limpia el async storage por completo cambiando la variable clear a TRUE
     if (clear) {
       console.log(clear);
       clearAsyncStorage = async () => {
