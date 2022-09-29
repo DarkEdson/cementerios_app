@@ -2,40 +2,25 @@ import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, StatusBar, ScrollView} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {SocialIcon} from '@rneui/themed';
-//Configuracion general
-import {REGISTER_SCREEN_ID} from '@utils/config';
+//Recarga la screen
+import { useIsFocused } from "@react-navigation/native";
 //Estilos generales
 import color from '@styles/colors';
 import {mainStyles, registroStyles, loginStyles} from '@styles/stylesGeneral';
-//Apis Generales
-import {apiScreen} from '@Apis/ApisGenerales';
 //Componentes
 import MyTextInput from '@Components/common/MyTextInput';
 import ToolBar from '@Components/common/toolBar';
 import MyButton from '@Components/common/MyButton';
 //Contextos
 import {RegisterContext} from '@context/RegisterContext';
-import {ScreenIdContext} from '@context/ScreensIDsContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.registerScreen.ubica
 export default function RegistroScreen(props) {
   const [registerUser, registerAction] = useContext(RegisterContext);
-  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
-
-  const [labels, setLabels] = useState({
-    btnapple: '',
-    btnfacebook: '',
-    btngoogle: '',
-    btnsiguiente: '',
-    header1: '',
-    inputconfpassword: '',
-    inputcorreo: '',
-    inputpassword1: '',
-    inputtipo: '',
-    inputusuario1: '',
-    label2: '',
-  });
-
-  let idScreen = '0';
+  const {tags,updateTags,} = useContext(ScreentagContext);
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {} 
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -46,36 +31,12 @@ export default function RegistroScreen(props) {
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
 
   useEffect(() => {
-    async function obtenerEtiquetas() {
-      console.log('Listado de Screen', ScreenId);
-      ScreenId.forEach(screen => {
-        if (screen.code == REGISTER_SCREEN_ID) {
-          idScreen = screen._id;
-          console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
-        }
-      });
-      console.log('ID Del screen', idScreen);
-      let etiquetas = await apiScreen(idScreen);
-      if (etiquetas.length != 0) {
-        setLabels({
-          btnapple: etiquetas[0].description,
-          btnfacebook:  etiquetas[1].description,
-          btngoogle: etiquetas[2].description,
-          btnsiguiente: etiquetas[3].description,
-          header1: etiquetas[4].description,
-          inputconfpassword: etiquetas[5].description,
-          inputcorreo: etiquetas[6].description,
-          inputpassword1: etiquetas[7].description,
-          inputtipo: etiquetas[8].description,
-          inputusuario1: etiquetas[9].description,
-          label2: etiquetas[10].description,
-        });
-      }
-      console.log(etiquetas, 'etiquetas en REGISTRO');
-    }
-    obtenerEtiquetas();
+    if(isFocused){ 
+      getInitialData();
+      console.log('isFocused')
+  }
     return () => {};
-  }, []);
+  }, [props, isFocused]);
 
   const handlePasswordChange = val => {
     if (confirmPassword != '') {
@@ -140,7 +101,7 @@ export default function RegistroScreen(props) {
       style={{backgroundColor: color.WHITE}}>
       <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
       <ToolBar
-        titulo={labels.header1 != '' ? labels.header1 : 'Introduce tus datos'}
+        titulo={tags.registerScreen.header1 != '' ? tags.registerScreen.header1 : 'Introduce tus datos'}
         onPressLeft={() => goToScreen('Login')}
         iconLeft={true}
       />
@@ -148,7 +109,7 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder={
-            labels.inputusuario1 != '' ? labels.inputusuario1 : 'Usuario'
+            tags.registerScreen.inputusuario1 != '' ? tags.registerScreen.inputusuario1 : 'Usuario'
           }
           image="account-circle"
           value={username}
@@ -158,7 +119,7 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType="email-address"
           placeholder={
-            labels.inputcorreo != '' ? labels.inputcorreo : 'Correo electrónico'
+            tags.registerScreen.inputcorreo != '' ? tags.registerScreen.inputcorreo : 'Correo electrónico'
           }
           image="email"
           value={email}
@@ -167,7 +128,7 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder={
-            labels.inputpassword1 != '' ? labels.inputpassword1 : 'Password'
+            tags.registerScreen.inputpassword1 != '' ? tags.registerScreen.inputpassword1 : 'Password'
           }
           image="lock"
           value={password}
@@ -180,8 +141,8 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder={
-            labels.inputconfpassword != ''
-              ? labels.inputconfpassword
+            tags.registerScreen.inputconfpassword != ''
+              ? tags.registerScreen.inputconfpassword
               : 'Confirmar Password'
           }
           image="lock"
@@ -195,44 +156,44 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder={
-            labels.inputtipo != '' ? labels.inputtipo : 'Tipo usuario'
+            tags.registerScreen.inputtipo != '' ? tags.registerScreen.inputtipo : 'Tipo usuario'
           }
           image="account-circle"
           value={usertype}
           onChangeText={usertype => setUsertype(usertype)}
         />
         <MyButton
-          titulo={labels.btnsiguiente != '' ? labels.btnsiguiente : 'SIGUIENTE'}
+          titulo={tags.registerScreen.btnsiguiente != '' ? tags.registerScreen.btnsiguiente : 'SIGUIENTE'}
           onPress={() => registroParcial()}
         />
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{color: color.GRAY, fontSize: 16}}>
-            {labels.label2 != ''
-              ? labels.label2
+            {tags.registerScreen.label2 != ''
+              ? tags.registerScreen.label2
               : 'o crea tu cuenta con tus redes sociales.'}
           </Text>
         </View>
         <View style={registroStyles.containerSocial}>
           <SocialIcon
             style={registroStyles.buttonSocialIcon}
-            title={labels.btnfacebook != ''
-            ? labels.btnfacebook
+            title={tags.registerScreen.btnfacebook != ''
+            ? tags.registerScreen.btnfacebook
             : "Continuar con Facebook"}
             button
             type="facebook"
           />
           <SocialIcon
             style={registroStyles.buttonSocialIcon}
-            title={labels.btngoogle != ''
-            ? labels.btngoogle
+            title={tags.registerScreen.btngoogle != ''
+            ? tags.registerScreen.btngoogle
             : "Continuar con Google"}
             button
             type="google-plus-official"
           />
           <SocialIcon
             style={registroStyles.buttonSocialIcon}
-            title={labels.btnapple != ''
-            ? labels.btnapple
+            title={tags.registerScreen.btnapple != ''
+            ? tags.registerScreen.btnapple
             : "Continuar con Apple"}
             button
             type="twitter"

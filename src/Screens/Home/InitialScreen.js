@@ -13,13 +13,9 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 //Recarga la screen
 import { useIsFocused } from "@react-navigation/native";
-//Configuracion general
-import {HOME_SCREEN_ID} from '@utils/config';
 //Estilos generales
 import {mainStyles, loginStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
-//Apis Generales
-import {apiScreen} from '@Apis/ApisGenerales';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {CementeryContext} from '@context/CementeryContext';
