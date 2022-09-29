@@ -13,7 +13,7 @@ import {UsuarioContext} from '@context/UsuarioContext';
 import {LanguaguesContext} from '@context/LanguaguesContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
-import { CountriesContext } from '@context/CountriesContext';
+import {CountriesContext} from '@context/CountriesContext';
 //Apis
 import {apiLanguage, apiIdScreens} from '@Apis/ApisGenerales';
 import locationsApi from '@Apis/LocationsApi';
@@ -26,8 +26,8 @@ export default function SplashScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
-  const [countries, setCountries] = useContext(CountriesContext)
-  const {tags,updateTags,} = useContext(ScreentagContext);
+  const [countries, setCountries] = useContext(CountriesContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
 
   const [bienvenida, setbienvenida] = useState('es');
   let deviceLanguage =
@@ -48,7 +48,6 @@ export default function SplashScreen(props) {
     }
     console.log('LENGUAJE DE SISTEMA', deviceLanguage.substr(0, 2));
     obtenerLenguaje(defaultLanguage);
-    fetchCountries();
     fetchSesion(loginAction);
   }, []);
 
@@ -110,19 +109,19 @@ export default function SplashScreen(props) {
       setbienvenida(lenguaje.code);
     }
   }
-  async function fetchCountries(){
+  async function fetchCountries() {
     const response = await locationsApi();
-    console.log('LOCATIONS', response)
-    setCountries(response)
+    console.log('LOCATIONS', response);
+    setCountries(response);
   }
 
   async function fetchSesion(loginAction) {
     const response = await getUsuario();
     const pantallasID = await apiIdScreens();
     setScreenId(pantallasID);
-    pantallasID.forEach((pantalla)=>{
+    pantallasID.forEach(pantalla => {
       updateTags(pantalla);
-    })
+    });
     if (response == null) {
       setTimeout(() => {
         goToScreen('Login');
@@ -130,6 +129,7 @@ export default function SplashScreen(props) {
       return;
     }
     loginAction({type: 'sign-in', data: response});
+    fetchCountries();
     setTimeout(() => {
       goToScreen('Home');
     }, 1000);
