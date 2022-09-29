@@ -1,4 +1,5 @@
 export const BASE_URL = 'http://proyectocementeriogt.gq:4000/api';
+export const BASE_URL_IMG = 'http://proyectocementeriogt.gq/images/';
 export const LOGIN_SCREEN_ID = 'v01';
 export const REGISTER_SCREEN_ID = 'v02';
 export const REGISTER_ADD_SCREEN_ID = 'v03';

@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
+//URL de server
+import {BASE_URL_IMG} from '@utils/config';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 //Contextos

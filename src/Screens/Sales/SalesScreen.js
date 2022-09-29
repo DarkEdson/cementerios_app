@@ -10,47 +10,41 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-
+//URL de server
+import {BASE_URL_IMG} from '@utils/config';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardProductoVenta from '@Components/CardSellProduct/';
+//Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
-import {UsuarioContext} from '@context/UsuarioContext';
-
+//tags.SellsScreen.labelfechafin != '' ? tags.SellsScreen.labelfechafin :
+//tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :
 export default function SalesScreen(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   // Cargar informacion de la vista
   useEffect(() => {
-    // Actualizar valores de la vista
-    setPropsVista({
-      label1: 'Compra',
-      label2: 'Subtotal',
-      label3: '% de Comisión',
-      label4: 'Comisión',
-      label5: 'Agregar mas productos',
-      label6: 'Codigo de Promocion',
-      label7: 'Pagar',
-    });
-
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 120,
       comision: 10,
       total: 110,
     });
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Ventas Detail');
+    }
+  }, [props, isFocused]);
 
-  const [login, loginAction] = useContext(UsuarioContext);
-  // Variables de la vista
-  const [propsVista, setPropsVista] = useState({
-    label1: '',
-    label2: '',
-    label3: '',
-    label4: '',
-    label5: '',
-    label6: '',
-    label7: '',
-  });
   const [valoresVenta, setValoresVenta] = useState({
     subTotal: 0,
     comision: 0,
@@ -65,7 +59,9 @@ export default function SalesScreen(props) {
         translucent={true}
       />
       <ToolBar
-        titulo="Ventas"
+        titulo={
+          tags.SellsScreen.ventas != '' ? tags.SellsScreen.ventas : 'Ventas'
+        }
         onPressLeft={() => goToScreen('Initial')}
         iconLeft={true}
       />
@@ -95,16 +91,26 @@ export default function SalesScreen(props) {
             cantidad="9"
           />
           <View style={styles.espacio2}>
-            <Text style={styles.txtTitulo}>{propsVista.label2}</Text>
+            <Text style={styles.txtTitulo}>
+              {tags.SellsScreen.subtotal1 != ''
+                ? tags.SellsScreen.subtotal1
+                : ' Subtotal'}
+            </Text>
             <Text style={styles.valorCuenta}>$ {valoresVenta.subTotal}</Text>
           </View>
           <View style={styles.espacio}>
-            <Text style={styles.txtTitulo}>{propsVista.label3}</Text>
+            <Text style={styles.txtTitulo}>
+              {tags.SellsScreen.comisionpct != ''
+                ? tags.SellsScreen.comisionpct
+                : '% de Comisión'}
+            </Text>
             <Text style={styles.valorCuenta}>$ {valoresVenta.comision}</Text>
           </View>
           <View style={styles.espacio}>
             <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-              {propsVista.label4}
+              {tags.SellsScreen.comision != ''
+                ? tags.SellsScreen.comision
+                : ' Comisión'}
             </Text>
             <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
           </View>

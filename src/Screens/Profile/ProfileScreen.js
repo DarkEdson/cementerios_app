@@ -24,6 +24,8 @@ import color from '@styles/colors';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+//URL de server
+import {BASE_URL_IMG} from '@utils/config';
 
 //tags.perfilScreen.perfil
 /*function useBackButton(handler) {
@@ -81,7 +83,7 @@ export default function ProfileScreen(props) {
               <Avatar
                 rounded
                 source={{
-                  uri: `https://proyectocementeriogt.gq/images/${loginUser.usuario.avatar}`,
+                  uri: `${BASE_URL_IMG}${loginUser.usuario.avatar}`,
                 }}
                 size="large"
               />

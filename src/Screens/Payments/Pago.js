@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -6,24 +6,26 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//URL de server
+import {BASE_URL_IMG} from '@utils/config';
+//Componentes
 import CardProducto from '@Components/CardProducto/index';
 import ToolBar from '@Components/common/toolBar';
 import LargeButton from '@Components/common/largeButton';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.PaymentScreen.agregar != '' ? tags.PaymentScreen.agregar :
 export default function VistaPago(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   // Cargar informacion de la vista
   useEffect(() => {
-    // Actualizar valores de la vista
-    setPropsVista({
-      label1: 'Compra',
-      label2: 'Subtotal',
-      label3: 'Entrega',
-      label4: 'Total (incl. IVA)',
-      label5: 'Agregar mas productos',
-      label6: 'Codigo de Promocion',
-      label7: 'Pagar',
-    });
-
     // Productos del carrito
     setProductosCarrito([
       {
@@ -54,18 +56,11 @@ export default function VistaPago(props) {
       entrega: 10,
       total: 110,
     });
-  }, []);
-
-  // Variables de la vista
-  const [propsVista, setPropsVista] = useState({
-    label1: '',
-    label2: '',
-    label3: '',
-    label4: '',
-    label5: '',
-    label6: '',
-    label7: '',
-  });
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Payment');
+    }
+  }, [props, isFocused]);
 
   // Variables del carrito de compras
   const [productosCarrito, setProductosCarrito] = useState([]);
@@ -78,7 +73,9 @@ export default function VistaPago(props) {
   return (
     <View style={styles.vista}>
       <ToolBar
-        titulo={propsVista.label1}
+        titulo={
+          tags.PaymentScreen.compra != '' ? tags.PaymentScreen.compra : 'Compra'
+        }
         onPressLeft={() => goToScreen('Productos')}
         iconLeft={true}
       />
@@ -97,35 +94,58 @@ export default function VistaPago(props) {
             })}
           </View>
           <View style={styles.espacio}>
-            <Text style={styles.txtTitulo}>{propsVista.label2}</Text>
+            <Text style={styles.txtTitulo}>
+              {tags.PaymentScreen.subtotal != ''
+                ? tags.PaymentScreen.subtotal
+                : 'Subtotal'}
+            </Text>
             <Text style={styles.valorCuenta}>$ {valoresVenta.subTotal}</Text>
           </View>
           <View style={styles.espacio}>
-            <Text style={styles.txtTitulo}>{propsVista.label3}</Text>
+            <Text style={styles.txtTitulo}>
+              {tags.PaymentScreen.entrega != ''
+                ? tags.PaymentScreen.entrega
+                : 'Entrega'}
+            </Text>
             <Text style={styles.valorCuenta}>$ {valoresVenta.entrega}</Text>
           </View>
           <View style={styles.espacio}>
             <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-              {propsVista.label4}
+              {tags.PaymentScreen.total != ''
+                ? tags.PaymentScreen.total
+                : 'Total (incl. IVA)'}
             </Text>
             <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
           </View>
           <View style={styles.espacio}>
             <LargeButton
-              titulo={propsVista.label5}
+              titulo={
+                tags.PaymentScreen.agregar != ''
+                  ? tags.PaymentScreen.agregar
+                  : 'Agregar mas productos'
+              }
               onPressRight={() => goToScreen('Productos')}
               iconRight={true}
             />
           </View>
           <View style={styles.espacio}>
             <LargeButton
-              titulo={propsVista.label6}
+              titulo={
+                tags.PaymentScreen.codigo != ''
+                  ? tags.PaymentScreen.codigo
+                  : 'Codigo de Promocion'
+              }
               onPressRight={() => goToScreen('PromoCode')}
               iconRight={true}
             />
           </View>
           <TouchableOpacity style={styles.btnAgregar}>
-            <Text style={styles.txtAgregar}> {propsVista.label7} </Text>
+            <Text style={styles.txtAgregar}>
+              {' '}
+              {tags.PaymentScreen.pagar != ''
+                ? tags.PaymentScreen.pagar
+                : 'Pagar'}{' '}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {BASE_URL_IMG} from '@utils/config';
 import {mainStyles} from '@styles/stylesGeneral';
 import SelectDropdown from 'react-native-select-dropdown';
 
@@ -8,7 +9,6 @@ import {Icon, Avatar} from '@rneui/themed';
 import color from '@styles/colors';
 
 export default function ToolBarSession(props) {
-
   return (
     <View style={[props.style, mainStyles.toolBarSessionStyle]}>
       {props.titulo && (
@@ -50,7 +50,7 @@ export default function ToolBarSession(props) {
             <Avatar
               rounded
               source={{
-                uri: `https://proyectocementeriogt.gq/images/${props.image}`,
+                uri: `${BASE_URL_IMG}${props.image}`,
               }}
               size="medium"
             />
