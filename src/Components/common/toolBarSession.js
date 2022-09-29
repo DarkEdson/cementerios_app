@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {mainStyles} from '@styles/stylesGeneral';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -8,15 +8,17 @@ import {Icon, Avatar} from '@rneui/themed';
 import color from '@styles/colors';
 
 export default function ToolBarSession(props) {
-  const [items, setItems] = useState(props.ubicaciones);
+
   return (
     <View style={[props.style, mainStyles.toolBarSessionStyle]}>
       {props.titulo && (
         <Text style={mainStyles.toolBarSessionText}>{props.titulo}</Text>
       )}
       <SelectDropdown
-        data={items}
+        data={props.ubicaciones}
         defaultValueByIndex={0}
+        defaultValue={props.ubicaciones[0]}
+        defaultButtonText="Seleccione Pais"
         buttonTextStyle={{textAlign: 'left'}}
         buttonStyle={styles.btnStyle}
         dropdownStyle={{marginLeft: 15}}

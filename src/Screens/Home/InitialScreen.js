@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,18 +8,19 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import {Icon} from '@rneui/themed';
+import { Icon } from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
-import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
+import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 //Recarga la screen
 import { useIsFocused } from "@react-navigation/native";
 //Estilos generales
-import {mainStyles, loginStyles} from '@styles/stylesGeneral';
+import { mainStyles, loginStyles } from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Contextos
-import {UsuarioContext} from '@context/UsuarioContext';
-import {CementeryContext} from '@context/CementeryContext';
-import {ScreentagContext} from '@context/ScreentagsContext';
+import { UsuarioContext } from '@context/UsuarioContext';
+import { CementeryContext } from '@context/CementeryContext';
+import { ScreentagContext } from '@context/ScreentagsContext';
+import { CountriesContext } from '@context/CountriesContext';
 //Componentes
 import CardPromocion from '@Components/CardPromocion/';
 import BtnCategoria from '@Components/BtnCategoria/';
@@ -30,18 +31,17 @@ import CardColaborador from '@Components/CardColaborador/';
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
 
-  //tags.HomeScreen.ubica
-  //tags.HomeScreen.ubica != '' ? tags.HomeScreen.ubica :
+//tags.HomeScreen.ubica
+//tags.HomeScreen.ubica != '' ? tags.HomeScreen.ubica :
 export default function InitialScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
-  const {tags,updateTags,} = useContext(ScreentagContext);
+  const [countries, setCountries] = useContext(CountriesContext)
+  const { tags, updateTags, } = useContext(ScreentagContext);
   const isFocused = useIsFocused();
-  const getInitialData = async () => {} 
+  const getInitialData = async () => { }
 
   const [ubicaciones, setubicaciones] = useState([
-    {label: 'Guatemala, GT', value: 'GTM'},
-    {label: 'Mexico, MX', value: 'MXN'},
   ]);
 
 
@@ -53,16 +53,16 @@ export default function InitialScreen(props) {
     height: PAGE_WIDTH * 0.56,
   };
   const [data, setData] = useState([
-    {id: 1, name: 'angellist'},
-    {id: 2, name: 'codepen'},
-    {id: 3, name: 'envelope'},
-    {id: 4, name: 'etsy'},
-    {id: 5, name: 'facebook'},
-    {id: 6, name: 'foursquare'},
-    {id: 7, name: 'github-alt'},
-    {id: 8, name: 'github'},
-    {id: 9, name: 'gitlab'},
-    {id: 10, name: 'instagram'},
+    { id: 1, name: 'angellist' },
+    { id: 2, name: 'codepen' },
+    { id: 3, name: 'envelope' },
+    { id: 4, name: 'etsy' },
+    { id: 5, name: 'facebook' },
+    { id: 6, name: 'foursquare' },
+    { id: 7, name: 'github-alt' },
+    { id: 8, name: 'github' },
+    { id: 9, name: 'gitlab' },
+    { id: 10, name: 'instagram' },
   ]);
   const [categorias, setCategorias] = useState([
     {
@@ -128,12 +128,20 @@ export default function InitialScreen(props) {
   ]);
 
   useEffect(() => {
+    function misUbicaciones() {
+      let getUbicaciones = []
+      countries.forEach(country => {
+        getUbicaciones.push({ label: `${country.name}, ${country.code}`, value: country.code })
+      })
+      setubicaciones(getUbicaciones)
+    }
 
-    if(isFocused){ 
+    if (isFocused) {
       getInitialData();
       console.log('isFocused')
-  }
-    return () => {};
+    }
+    misUbicaciones()
+    return () => { };
   }, [props, isFocused]);
 
   return (
@@ -160,7 +168,7 @@ export default function InitialScreen(props) {
             search
             defaultButtonText={tags.HomeScreen.inputsearch != '' ? tags.HomeScreen.inputsearch : "Cementerios, arrecifes o flores..."}
             searchPlaceHolder={tags.HomeScreen.inputsearch != '' ? tags.HomeScreen.inputsearch : "Cementerios, arrecifes o flores..."}
-            buttonTextStyle={{textAlign: 'left'}}
+            buttonTextStyle={{ textAlign: 'left' }}
             buttonStyle={styles.btnStyle}
             renderDropdownIcon={isOpened => {
               return (
@@ -191,7 +199,7 @@ export default function InitialScreen(props) {
             autoPlay={true}
             autoPlayInterval={2000}
             data={categorias}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <CardPromocion
                 titulo="30% de descuento"
                 descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
@@ -219,9 +227,9 @@ export default function InitialScreen(props) {
             />
           </View>
           <View style={[styles.categories, styles.titles]}>
-            <Text style={styles.titleText}>{tags.HomeScreen.labelcementarios != '' ? tags.HomeScreen.labelcementarios :'Cementerios'}</Text>
+            <Text style={styles.titleText}>{tags.HomeScreen.labelcementarios != '' ? tags.HomeScreen.labelcementarios : 'Cementerios'}</Text>
             <MyTextButton
-              titulo={tags.HomeScreen.labelvertodos != '' ? tags.HomeScreen.labelvertodos :"Ver todos"}
+              titulo={tags.HomeScreen.labelvertodos != '' ? tags.HomeScreen.labelvertodos : "Ver todos"}
               underline={true}
               color="blue"
               onPress={() => goToScreen('Cementeries')}
@@ -230,13 +238,13 @@ export default function InitialScreen(props) {
           <Carousel
             {...baseOptions}
             loop={true}
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             autoPlay={true}
             autoPlayInterval={2000}
             data={categorias}
             pagingEnabled={true}
             //onSnapToItem={(index) => console.log('current index:', index)}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <View style={styles.categories}>
                 <CardColaborador
                   urlImagen={item.urlImagen}

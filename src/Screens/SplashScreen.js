@@ -13,8 +13,10 @@ import {UsuarioContext} from '@context/UsuarioContext';
 import {LanguaguesContext} from '@context/LanguaguesContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import { CountriesContext } from '@context/CountriesContext';
 //Apis
 import {apiLanguage, apiIdScreens} from '@Apis/ApisGenerales';
+import locationsApi from '@Apis/LocationsApi';
 //Async Storages
 import {getUsuario} from '@storage/UsuarioAsyncStorage';
 import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
@@ -24,6 +26,7 @@ export default function SplashScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
+  const [countries, setCountries] = useContext(CountriesContext)
   const {tags,updateTags,} = useContext(ScreentagContext);
 
   const [bienvenida, setbienvenida] = useState('es');
@@ -45,6 +48,7 @@ export default function SplashScreen(props) {
     }
     console.log('LENGUAJE DE SISTEMA', deviceLanguage.substr(0, 2));
     obtenerLenguaje(defaultLanguage);
+    fetchCountries();
     fetchSesion(loginAction);
   }, []);
 
@@ -105,6 +109,11 @@ export default function SplashScreen(props) {
 
       setbienvenida(lenguaje.code);
     }
+  }
+  async function fetchCountries(){
+    const response = await locationsApi();
+    console.log('LOCATIONS', response)
+    setCountries(response)
   }
 
   async function fetchSesion(loginAction) {

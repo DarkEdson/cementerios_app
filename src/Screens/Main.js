@@ -8,6 +8,7 @@ import { CreditCardProvider } from '@context/CreditCardContext';
 import { LanguaguesProvider } from '@context/LanguaguesContext';
 import { ScreenIdProvider } from '@context/ScreensIDsContext';
 import { ScreentagProvider } from '@context/ScreentagsContext';
+import { CountriesProvider } from '../context/CountriesContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -20,11 +21,13 @@ const MainPage = () => {
           <LanguaguesProvider>
             <UsuarioProvider>
               <RegisterProvider>
-                <CementeryProvider>
-                  <CreditCardProvider>
-                    <AppNavigations />
-                  </CreditCardProvider>
-                </CementeryProvider>
+                <CountriesProvider>
+                  <CementeryProvider>
+                    <CreditCardProvider>
+                      <AppNavigations />
+                    </CreditCardProvider>
+                  </CementeryProvider>
+                </CountriesProvider>
               </RegisterProvider>
             </UsuarioProvider>
           </LanguaguesProvider>
