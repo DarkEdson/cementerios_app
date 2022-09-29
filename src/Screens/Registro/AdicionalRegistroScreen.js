@@ -8,13 +8,11 @@ import {
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {CheckBox} from '@rneui/themed';
-//Configuracion general
-import {REGISTER_ADD_SCREEN_ID} from '@utils/config';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
 import {mainStyles, registroStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
-//Apis Generales
-import {apiScreen} from '@Apis/ApisGenerales';
 //Componentes
 import MyTextInput from '@Components/common/MyTextInput';
 import ToolBar from '@Components/common/toolBar';
@@ -23,24 +21,17 @@ import MyButton from '@Components/common/MyButton';
 import {RegisterContext} from '@context/RegisterContext';
 import {AuthContext} from '@context/AuthContext';
 import {UsuarioContext} from '@context/UsuarioContext';
-import {ScreenIdContext} from '@context/ScreensIDsContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.registerAddScreen.ubica
 export default function RegistroScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
-  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
   const {register} = useContext(AuthContext);
   const [registerUser, registerAction] = useContext(RegisterContext);
 
-  const [labels, setLabels] = useState({
-    btncompletar: '',
-    completa: '',
-    inputapellidos: '',
-    inputnombres: '',
-    inputnumid: '',
-    inputpaypalid: '',
-  });
-
-  let idScreen = '0';
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
 
   const [TC, setTC] = useState(false);
   const [data, setData] = useState({
@@ -51,37 +42,19 @@ export default function RegistroScreen(props) {
   });
 
   useEffect(() => {
-    async function obtenerEtiquetas() {
-      console.log('Listado de Screen', ScreenId);
-      ScreenId.forEach(screen => {
-        if (screen.code == REGISTER_ADD_SCREEN_ID) {
-          idScreen = screen._id;
-          console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
-        }
-      });
-      console.log('ID Del screen', idScreen);
-      let etiquetas = await apiScreen(idScreen);
-      if (etiquetas.length != 0) {
-        setLabels({
-          btncompletar: etiquetas[0].description,
-          completa: etiquetas[1].description,
-          inputapellidos: etiquetas[2].description,
-          inputnombres: etiquetas[3].description,
-          inputnumid: etiquetas[4].description,
-          inputpaypalid: etiquetas[5].description,
-        });
-      }
-      console.log(etiquetas, 'etiquetas en REGISTRO');
-    }
-    obtenerEtiquetas();
     setData({
       ...data,
       email: registerUser.email,
       password: registerUser.password,
       username: registerUser.username,
     });
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Register ADD');
+    }
+
     return () => {};
-  }, []);
+  }, [props, isFocused]);
 
   return (
     <ScrollView
@@ -90,14 +63,22 @@ export default function RegistroScreen(props) {
       style={{backgroundColor: color.WHITE}}>
       <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
       <ToolBar
-        titulo={ labels.completa != '' ? labels.completa : "Completa tus datos"}
+        titulo={
+          tags.registerAddScreen.completa != ''
+            ? tags.registerAddScreen.completa
+            : 'Completa tus datos'
+        }
         onPressLeft={() => goToScreen('Registro')}
         iconLeft={true}
       />
       <View style={mainStyles.container}>
         <MyTextInput
           keyboardType={null}
-          placeholder={ labels.inputnombres != '' ? labels.inputnombres : "Nombres"}
+          placeholder={
+            tags.registerAddScreen.inputnombres != ''
+              ? tags.registerAddScreen.inputnombres
+              : 'Nombres'
+          }
           value={data.name}
           onChangeText={nombre => setData({...data, name: nombre})}
           image="account-circle"
@@ -106,21 +87,33 @@ export default function RegistroScreen(props) {
           keyboardType={null}
           value={data.lastname}
           onChangeText={apellido => setData({...data, lastname: apellido})}
-          placeholder={ labels.inputapellidos != '' ? labels.inputapellidos : "Apellidos"}
+          placeholder={
+            tags.registerAddScreen.inputapellidos != ''
+              ? tags.registerAddScreen.inputapellidos
+              : 'Apellidos'
+          }
           image="account-circle"
         />
         <MyTextInput
           keyboardType={null}
           value={data.id_number}
           onChangeText={numeroID => setData({...data, id_number: numeroID})}
-          placeholder={ labels.inputnumid != '' ? labels.inputnumid : "Número de ID"}
+          placeholder={
+            tags.registerAddScreen.inputnumid != ''
+              ? tags.registerAddScreen.inputnumid
+              : 'Número de ID'
+          }
           image="card-account-details"
         />
         <MyTextInput
           keyboardType={null}
           value={data.paypal_id}
           onChangeText={paypalID => setData({...data, paypal_id: paypalID})}
-          placeholder={ labels.inputpaypalid != '' ? labels.inputpaypalid : "PayPal ID"}
+          placeholder={
+            tags.registerAddScreen.inputpaypalid != ''
+              ? tags.registerAddScreen.inputpaypalid
+              : 'PayPal ID'
+          }
           image="credit-card-outline"
         />
 
@@ -138,7 +131,11 @@ export default function RegistroScreen(props) {
           checkedColor={color.PRINCIPALCOLOR}
         />
         <MyButton
-          titulo={ labels.btncompletar != '' ? labels.btncompletar : "COMPLETAR REGISTRO"}
+          titulo={
+            tags.registerAddScreen.btncompletar != ''
+              ? tags.registerAddScreen.btncompletar
+              : 'COMPLETAR REGISTRO'
+          }
           onPress={() => goToScreen('Login')}
         />
       </View>

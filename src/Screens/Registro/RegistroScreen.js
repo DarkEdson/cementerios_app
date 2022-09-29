@@ -3,7 +3,7 @@ import {View, Text, StatusBar, ScrollView} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {SocialIcon} from '@rneui/themed';
 //Recarga la screen
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
 import color from '@styles/colors';
 import {mainStyles, registroStyles, loginStyles} from '@styles/stylesGeneral';
@@ -18,9 +18,9 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 //tags.registerScreen.ubica
 export default function RegistroScreen(props) {
   const [registerUser, registerAction] = useContext(RegisterContext);
-  const {tags,updateTags,} = useContext(ScreentagContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
   const isFocused = useIsFocused();
-  const getInitialData = async () => {} 
+  const getInitialData = async () => {};
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -31,10 +31,10 @@ export default function RegistroScreen(props) {
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
 
   useEffect(() => {
-    if(isFocused){ 
+    if (isFocused) {
       getInitialData();
-      console.log('isFocused')
-  }
+      console.log('isFocused Register');
+    }
     return () => {};
   }, [props, isFocused]);
 
@@ -101,7 +101,11 @@ export default function RegistroScreen(props) {
       style={{backgroundColor: color.WHITE}}>
       <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
       <ToolBar
-        titulo={tags.registerScreen.header1 != '' ? tags.registerScreen.header1 : 'Introduce tus datos'}
+        titulo={
+          tags.registerScreen.header1 != ''
+            ? tags.registerScreen.header1
+            : 'Introduce tus datos'
+        }
         onPressLeft={() => goToScreen('Login')}
         iconLeft={true}
       />
@@ -109,7 +113,9 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder={
-            tags.registerScreen.inputusuario1 != '' ? tags.registerScreen.inputusuario1 : 'Usuario'
+            tags.registerScreen.inputusuario1 != ''
+              ? tags.registerScreen.inputusuario1
+              : 'Usuario'
           }
           image="account-circle"
           value={username}
@@ -119,7 +125,9 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType="email-address"
           placeholder={
-            tags.registerScreen.inputcorreo != '' ? tags.registerScreen.inputcorreo : 'Correo electrónico'
+            tags.registerScreen.inputcorreo != ''
+              ? tags.registerScreen.inputcorreo
+              : 'Correo electrónico'
           }
           image="email"
           value={email}
@@ -128,7 +136,9 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder={
-            tags.registerScreen.inputpassword1 != '' ? tags.registerScreen.inputpassword1 : 'Password'
+            tags.registerScreen.inputpassword1 != ''
+              ? tags.registerScreen.inputpassword1
+              : 'Password'
           }
           image="lock"
           value={password}
@@ -156,14 +166,20 @@ export default function RegistroScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder={
-            tags.registerScreen.inputtipo != '' ? tags.registerScreen.inputtipo : 'Tipo usuario'
+            tags.registerScreen.inputtipo != ''
+              ? tags.registerScreen.inputtipo
+              : 'Tipo usuario'
           }
           image="account-circle"
           value={usertype}
           onChangeText={usertype => setUsertype(usertype)}
         />
         <MyButton
-          titulo={tags.registerScreen.btnsiguiente != '' ? tags.registerScreen.btnsiguiente : 'SIGUIENTE'}
+          titulo={
+            tags.registerScreen.btnsiguiente != ''
+              ? tags.registerScreen.btnsiguiente
+              : 'SIGUIENTE'
+          }
           onPress={() => registroParcial()}
         />
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
@@ -176,25 +192,31 @@ export default function RegistroScreen(props) {
         <View style={registroStyles.containerSocial}>
           <SocialIcon
             style={registroStyles.buttonSocialIcon}
-            title={tags.registerScreen.btnfacebook != ''
-            ? tags.registerScreen.btnfacebook
-            : "Continuar con Facebook"}
+            title={
+              tags.registerScreen.btnfacebook != ''
+                ? tags.registerScreen.btnfacebook
+                : 'Continuar con Facebook'
+            }
             button
             type="facebook"
           />
           <SocialIcon
             style={registroStyles.buttonSocialIcon}
-            title={tags.registerScreen.btngoogle != ''
-            ? tags.registerScreen.btngoogle
-            : "Continuar con Google"}
+            title={
+              tags.registerScreen.btngoogle != ''
+                ? tags.registerScreen.btngoogle
+                : 'Continuar con Google'
+            }
             button
             type="google-plus-official"
           />
           <SocialIcon
             style={registroStyles.buttonSocialIcon}
-            title={tags.registerScreen.btnapple != ''
-            ? tags.registerScreen.btnapple
-            : "Continuar con Apple"}
+            title={
+              tags.registerScreen.btnapple != ''
+                ? tags.registerScreen.btnapple
+                : 'Continuar con Apple'
+            }
             button
             type="twitter"
           />

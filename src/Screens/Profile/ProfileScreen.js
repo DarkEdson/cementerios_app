@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import {Icon, Avatar} from '@rneui/themed';
 //Recarga la screen
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import MyTextButton from '@Components/common/MyTextButton';
 import ToolBar from '@Components/common/toolBar';
@@ -24,7 +24,6 @@ import color from '@styles/colors';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
-
 
 //tags.perfilScreen.perfil
 /*function useBackButton(handler) {
@@ -41,22 +40,21 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 
 export default function ProfileScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
-  const {tags,updateTags,} = useContext(ScreentagContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => {} 
+  const getInitialData = async () => {};
 
   useEffect(() => {
-
-    if(isFocused){ 
+    if (isFocused) {
       getInitialData();
-      console.log('isFocused')
-  }
-  console.log('LAS ETIQUETAS GENERALES',tags)
+      console.log('isFocused Profile');
+    }
+    console.log('LAS ETIQUETAS GENERALES', tags);
     return () => {};
   }, [props, isFocused]);
 
- // useBackButton(desconectarse);
+  // useBackButton(desconectarse);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -67,7 +65,9 @@ export default function ProfileScreen(props) {
         />
 
         <ToolBar
-          titulo={tags.perfilScreen.perfil != '' ? tags.perfilScreen.perfil :"Perfil"}
+          titulo={
+            tags.perfilScreen.perfil != '' ? tags.perfilScreen.perfil : 'Perfil'
+          }
           onPressLeft={() => goToScreen('Home')}
           iconLeft={true}
         />
@@ -113,12 +113,20 @@ export default function ProfileScreen(props) {
             {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
           </Text>
           <MyTextButton
-            titulo={tags.perfilScreen.editar != '' ? tags.perfilScreen.editar :"Editar datos personales"}
+            titulo={
+              tags.perfilScreen.editar != ''
+                ? tags.perfilScreen.editar
+                : 'Editar datos personales'
+            }
             style={{marginBottom: 20}}
             onPress={() => goToScreen('PersonalData')}
           />
         </View>
-        <Text style={styles.txtComponente}>{tags.perfilScreen.codigov != '' ? tags.perfilScreen.codigov :'Codigo de vendedor'}</Text>
+        <Text style={styles.txtComponente}>
+          {tags.perfilScreen.codigov != ''
+            ? tags.perfilScreen.codigov
+            : 'Codigo de vendedor'}
+        </Text>
         <View style={{backgroundColor: color.WHITE}}>
           <Text style={styles.txtComponente}>
             {loginUser.usuario.id_number}
@@ -127,7 +135,11 @@ export default function ProfileScreen(props) {
         <View style={styles.boxTransparent2} />
         <View style={{backgroundColor: color.WHITE}}>
           <TouchableOpacity onPress={() => desconectarse()}>
-            <Text style={styles.txtComponente}>{tags.perfilScreen.cerrar != '' ? tags.perfilScreen.cerrar :'Cerrar Sesión'}</Text>
+            <Text style={styles.txtComponente}>
+              {tags.perfilScreen.cerrar != ''
+                ? tags.perfilScreen.cerrar
+                : 'Cerrar Sesión'}
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={mainStyles.logo}>

@@ -10,15 +10,13 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import BtnCategoria from '@Components/BtnCategoria/';
+
 import ToolBar from '@Components/common/toolBar';
-import CardColaborador from '@Components/CardColaborador/';
 import CardProductoVenta from '@Components/CardSellProduct/';
-import CardPromocion from '@Components/CardPromocion/';
 import {mainStyles} from '@styles/stylesGeneral';
-import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
-import MyButton from '@Components/common/MyButton';
+
+import {UsuarioContext} from '@context/UsuarioContext';
 
 export default function SalesScreen(props) {
   // Cargar informacion de la vista
@@ -37,7 +35,7 @@ export default function SalesScreen(props) {
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 120,
-      entrega: 10,
+      comision: 10,
       total: 110,
     });
   }, []);
@@ -55,7 +53,7 @@ export default function SalesScreen(props) {
   });
   const [valoresVenta, setValoresVenta] = useState({
     subTotal: 0,
-    entrega: 0,
+    comision: 0,
     total: 0,
   });
 
@@ -102,7 +100,7 @@ export default function SalesScreen(props) {
           </View>
           <View style={styles.espacio}>
             <Text style={styles.txtTitulo}>{propsVista.label3}</Text>
-            <Text style={styles.valorCuenta}>$ {valoresVenta.entrega}</Text>
+            <Text style={styles.valorCuenta}>$ {valoresVenta.comision}</Text>
           </View>
           <View style={styles.espacio}>
             <Text style={{...styles.txtTitulo, fontWeight: '700'}}>

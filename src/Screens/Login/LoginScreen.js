@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 //Recarga la screen
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
 import {mainStyles, loginStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
@@ -25,9 +25,9 @@ import {AuthContext} from '@context/AuthContext';
 export default function LoginScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const {login} = useContext(AuthContext);
-  const {tags,updateTags,} = useContext(ScreentagContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
   const isFocused = useIsFocused();
-  const getInitialData = async () => {} 
+  const getInitialData = async () => {};
   const [hidePassword, setHidePassword] = useState(true);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -35,10 +35,10 @@ export default function LoginScreen(props) {
   useEffect(() => {
     setEmail('');
     setPassword('');
-    if(isFocused){ 
+    if (isFocused) {
       getInitialData();
-      console.log('isFocused')
-  }
+      console.log('isFocused in Login');
+    }
     return () => {};
   }, [props, isFocused]);
 
@@ -60,7 +60,9 @@ export default function LoginScreen(props) {
         <MyTextInput
           keyboardType="email-address"
           placeholder={
-            tags.loginScreen.inputusuario != '' ? tags.loginScreen.inputusuario : 'Usuario.'
+            tags.loginScreen.inputusuario != ''
+              ? tags.loginScreen.inputusuario
+              : 'Usuario.'
           }
           image="account-circle"
           value={email}
@@ -69,7 +71,9 @@ export default function LoginScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder={
-            tags.loginScreen.inputpassword != '' ? tags.loginScreen.inputpassword : 'Password.'
+            tags.loginScreen.inputpassword != ''
+              ? tags.loginScreen.inputpassword
+              : 'Password.'
           }
           image="lock"
           value={password}
@@ -88,7 +92,11 @@ export default function LoginScreen(props) {
           onPress={() => goToScreen('Registro')}
         />
         <MyButton
-          titulo={tags.loginScreen.btnlogin != '' ? tags.loginScreen.btnlogin : 'LOGIN.'}
+          titulo={
+            tags.loginScreen.btnlogin != ''
+              ? tags.loginScreen.btnlogin
+              : 'LOGIN.'
+          }
           onPress={() => iniciarSesion()}
         />
         <MyTextButton

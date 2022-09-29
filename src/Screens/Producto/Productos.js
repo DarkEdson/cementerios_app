@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -9,11 +9,23 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
-import ToolBar from '@Components/common/toolBar';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Estilos Generales
 import color from '@styles/colors';
+//Componentes
+import ToolBar from '@Components/common/toolBar';
 import CardProducto from '@Components/CardProducto/index';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   // Cargar informacion de la vista
   useEffect(() => {
     // Actualizar valores de la vista
@@ -166,7 +178,11 @@ export default function VistaProductos(props) {
         idCementerio: 2,
       },
     ]);
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused in Products');
+    }
+  }, [props, isFocused]);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
@@ -186,7 +202,11 @@ export default function VistaProductos(props) {
         translucent={true}
       />
       <ToolBar
-        titulo={propsVista.label1}
+        titulo={
+          tags.ProductsScreen.labelproductos != ''
+            ? tags.ProductsScreen.labelproductos
+            : 'Productos'
+        }
         onPressLeft={() => goToScreen('Initial')}
         iconLeft={true}
       />
@@ -194,7 +214,11 @@ export default function VistaProductos(props) {
         <View style={styles.searchSection}>
           <TextInput
             style={styles.input}
-            placeholder={propsVista.labelSearch}
+            placeholder={
+              tags.ProductsScreen.labelsearch1 != ''
+                ? tags.ProductsScreen.labelsearch1
+                : 'Cementerio, Producto, Categoría...'
+            }
             onChangeText={val => {
               setArrProductosDisp(
                 propsVista.productos.filter(

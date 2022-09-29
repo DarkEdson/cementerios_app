@@ -344,7 +344,7 @@ const informationIconStyles = StyleSheet.create({
   },
 });
 
-//Estilos para RegistroScreen
+//Estilos para Boton Flotante
 const floatButtonStyles = StyleSheet.create({
   circleRounded: {
     position: 'absolute',
@@ -381,6 +381,82 @@ const floatButtonStyles = StyleSheet.create({
   },
 });
 
+//Estilos para Carrito Compras Boton Flotante
+const shoppingCarFloatStyles = StyleSheet.create({
+  circleRounded: {
+    position: 'absolute',
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.9,
+    shadowRadius: 8,
+    elevation: 30,
+    bottom: Dimensions.get('screen').height * 0.02,
+    left: Dimensions.get('screen').width * 0.1,
+    right: Dimensions.get('screen').width * 0.1,
+    paddingTop: 3,
+    height: 70,
+    width: Dimensions.get('screen').width * 0.8,
+    alignItems: 'center',
+    borderRadius: 15,
+    backgroundColor: color.WHITE,
+  },
+  iconContainer: {
+    position: 'absolute',
+    left: Dimensions.get('screen').width * -0.376,
+    top: 3,
+    borderRadius: 15,
+    height: Dimensions.get('screen').height * 0.075,
+    width: Dimensions.get('screen').width * 0.13,
+    backgroundColor: color.GRAY2,
+  },
+  textContainer: {
+    alignItems: 'center',
+    position: 'absolute',
+    left: Dimensions.get('screen').width * -0.23,
+    top: 3,
+    height: Dimensions.get('screen').height * 0.075,
+    width: Dimensions.get('screen').width * 0.45,
+  },
+  titleText: {
+    fontSize: 16.5,
+    fontWeight: 'bold',
+    color: color.BLACK,
+  },
+  subtitleText: {
+    fontWeight: '400',
+    color: color.GRAY3,
+    justifyContent: 'center',
+    fontSize: 13,
+  },
+  priceContainer: {
+    paddingTop: Dimensions.get('screen').height * 0.01,
+    alignItems: 'center',
+    position: 'absolute',
+    left: Dimensions.get('screen').width * 0.235,
+    top: Dimensions.get('screen').height * 0.015,
+    height: Dimensions.get('screen').height * 0.055,
+    width: Dimensions.get('screen').width * 0.15,
+  },
+  items: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  btnMain: {
+    width: Dimensions.get('screen').width * 0.9,
+    marginTop: 40,
+    marginBottom: 20,
+    alignItems: 'center',
+    backgroundColor: color.PRINCIPALCOLOR,
+    borderRadius: 15,
+  },
+  btntxt: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: color.PRINCIPALCOLOR,
+  },
+});
+
 export {
   mainStyles,
   splashStyles,
@@ -389,4 +465,5 @@ export {
   informationIconStyles,
   CementeryScreen,
   floatButtonStyles,
+  shoppingCarFloatStyles,
 };

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -8,16 +8,28 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Componentes
 import MyFloatButton from '@Components/common/MyFloatButton';
 import InformationIcon from '@Components/common/InformationIcon';
+//Estilos Generales
 import color from '@styles/colors';
 import {
   mainStyles,
   CementeryScreen,
   informationIconStyles,
 } from '@styles/stylesGeneral';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.ProductDetailScreen.btnagregar != '' ? tags.ProductDetailScreen.btnagregar :
 export default function VistaProducto(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   // Cargar informacion de la vista
   useEffect(() => {
     // Actualizar valores de la vista
@@ -38,7 +50,6 @@ export default function VistaProducto(props) {
         valor: 4.9,
         label: 'Ratink',
       },
-      label1: 'Detalle',
       detalleProd: 'Perla, cemento, cremacion, traslado, hundimiento.',
       urlMultimedia: [
         'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
@@ -47,7 +58,6 @@ export default function VistaProducto(props) {
         'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
         'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
       ],
-      label2: 'Agregar',
     });
 
     // Actualizar valores de la sede seleccionada
@@ -55,7 +65,11 @@ export default function VistaProducto(props) {
       nombre: 'Campeche',
       id: 10,
     });
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused in Product Detail');
+    }
+  }, [props, isFocused]);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
@@ -75,10 +89,8 @@ export default function VistaProducto(props) {
       valor: 0,
       label: '',
     },
-    label1: '',
     detalleProd: '',
     urlMultimedia: [],
-    label2: '',
   });
   // Variables de trabajo
   const [sede, setSede] = useState({
@@ -138,7 +150,12 @@ export default function VistaProducto(props) {
       </View>
       <ScrollView>
         <View style={styles.detalleProd}>
-          <Text style={styles.titulo2}> {propsVista.label1} </Text>
+          <Text style={styles.titulo2}>
+            {' '}
+            {tags.ProductDetailScreen.detalle != ''
+              ? tags.ProductDetailScreen.detalle
+              : 'Detalle'}{' '}
+          </Text>
           <Text style={styles.descDato} numberOfLines={2}>
             {propsVista.detalleProd}
           </Text>
@@ -185,7 +202,11 @@ export default function VistaProducto(props) {
         <TouchableOpacity
           style={styles.btnAgregar}
           onPress={() => goToScreen('Payments')}>
-          <Text style={styles.txtAgregar}>{propsVista.label2}</Text>
+          <Text style={styles.txtAgregar}>
+            {tags.ProductDetailScreen.btnagregar != ''
+              ? tags.ProductDetailScreen.btnagregar
+              : 'Agregar'}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
