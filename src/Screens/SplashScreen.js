@@ -24,7 +24,7 @@ export default function SplashScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
-  const {actualizaEtiquetas,tags,updateTags,} = useContext(ScreentagContext);
+  const {tags,updateTags,} = useContext(ScreentagContext);
 
   const [bienvenida, setbienvenida] = useState('es');
   let deviceLanguage =
