@@ -1,6 +1,13 @@
 import React from 'react';
 import color from '@styles/colors';
-import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
 export default function CardProductoVenta(props) {
   return (
@@ -23,7 +30,7 @@ export default function CardProductoVenta(props) {
       <View
         style={{
           marginHorizontal: '7%',
-          marginVertical: 5,
+          marginVertical: 2.5,
           width: '85%',
           borderBottomColor: color.GRAY,
           borderBottomWidth: 2,
@@ -36,56 +43,57 @@ export default function CardProductoVenta(props) {
 const styles = StyleSheet.create({
   cuerpoCard: {
     marginLeft: '5%',
-    marginVertical: '2.5%',
+    marginVertical: '2%',
     width: '90%',
-    height: 100,
+    height: 85,
     backgroundColor: '#fff',
   },
   view: {
     flexDirection: 'row',
   },
   center: {
-    width: '52%',
+    width: '55%',
     height: '100%',
     flexDirection: 'column',
     paddingLeft: 10,
   },
   left: {
-    width: '23%',
+    width: '25%',
     height: '100%',
     paddingTop: 10,
     flexDirection: 'column',
     paddingLeft: 10,
   },
   right: {
-    width: '25%',
-    height: '100%',
+    marginTop: 10,
+    width: '20%',
+    height: '75%',
     flexDirection: 'column',
   },
   titulo: {
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 15,
     marginTop: 10,
     marginBottom: 6,
   },
   descripcion: {
     fontWeight: '400',
     color: 'grey',
-    fontSize: 15,
+    fontSize: 13,
     marginBottom: 10,
   },
   cantidad: {
     fontWeight: '600',
     color: 'grey',
-    fontSize: 15,
-    marginLeft: 55,
+    fontSize: 13,
+    marginLeft: 50,
     marginTop: 25,
     marginBottom: 10,
   },
   precio: {
     fontWeight: 'bold',
     color: 'skyblue',
-    fontSize: 15,
+    fontSize: 14,
   },
   imgPromocion: {
     height: '100%',

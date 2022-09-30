@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   espacio2: {
+    marginTop: Dimensions.get('screen').height * 0.02,
     width: Dimensions.get('screen').width * 0.9,
     marginLeft: '5%',
     marginRight: '5%',
