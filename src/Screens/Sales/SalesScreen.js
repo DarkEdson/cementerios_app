@@ -153,10 +153,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   espacio2: {
-    width: '90%',
+    width: Dimensions.get('screen').width * 0.9,
     marginLeft: '5%',
     marginRight: '5%',
-    height: 50,
+    height: Dimensions.get('screen').height * 0.07,
     marginBottom: 3,
     borderBottomWidth: 0,
     borderColor: 'grey',
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   txtTitulo: {
     fontSize: 17,
     textAlign: 'left',
-    width: '50%',
+    width: Dimensions.get('screen').width * 0.45,
     alignSelf: 'center',
   },
   valorCuenta: {
