@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native';
 //URL de server
-import {BASE_URL_IMG} from '@utils/config';
+import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
@@ -69,7 +69,7 @@ export default function SalesScreen(props) {
         <View style={styles.container}>
           <Text style={styles.txtNuevoComponente}> Card de productos </Text>
           <CardProductoVenta
-            urlImagen="https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg"
+            urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`}
             titulo="Perla Magistral"
             descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
             precio="$ 12.50"
@@ -77,14 +77,14 @@ export default function SalesScreen(props) {
           />
 
           <CardProductoVenta
-            urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
+            urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`}
             titulo="Perla oceano 2"
             descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
             precio="$ 16.90"
             cantidad="5"
           />
           <CardProductoVenta
-            urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
+            urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`}
             titulo="Perla oceano 3"
             descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
             precio="$ 11.93"

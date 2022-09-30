@@ -9,6 +9,8 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
+//URL de server
+import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Estilos Generales
@@ -34,8 +36,7 @@ export default function VistaProductos(props) {
       labelSearch: 'Cementerio, Producto, Categoría...',
       productos: [
         {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`,
           titulo: 'Perla Magistral 2',
           descripcion: 'Diamante, Oro..',
           precio: '$ 16.90',
@@ -44,8 +45,7 @@ export default function VistaProductos(props) {
           idCementerio: 1,
         },
         {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
           titulo: 'Perla oceano 2',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
           precio: '$ 16.90',
@@ -54,8 +54,7 @@ export default function VistaProductos(props) {
           idCementerio: 2,
         },
         {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`,
           titulo: 'Perla Magistral 2',
           descripcion: 'Diamante, Oro..',
           precio: '$ 16.90',
@@ -64,8 +63,7 @@ export default function VistaProductos(props) {
           idCementerio: 1,
         },
         {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_4.jpg`,
           titulo: 'Perla oceano 2',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
           precio: '$ 16.90',
@@ -74,8 +72,7 @@ export default function VistaProductos(props) {
           idCementerio: 2,
         },
         {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_5.jpg`,
           titulo: 'Perla oceano 2',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
           precio: '$ 16.90',
@@ -84,8 +81,7 @@ export default function VistaProductos(props) {
           idCementerio: 2,
         },
         {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_6.jpg`,
           titulo: 'Perla Magistral 2',
           descripcion: 'Diamante, Oro..',
           precio: '$ 16.90',
@@ -94,8 +90,7 @@ export default function VistaProductos(props) {
           idCementerio: 1,
         },
         {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_7.jpg`,
           titulo: 'Perla oceano 2',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
           precio: '$ 16.90',
@@ -108,8 +103,7 @@ export default function VistaProductos(props) {
 
     setArrProductosDisp([
       {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`,
         titulo: 'Perla Magistral 2',
         descripcion: 'Diamante, Oro..',
         precio: '$ 16.90',
@@ -118,8 +112,7 @@ export default function VistaProductos(props) {
         idCementerio: 1,
       },
       {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
         titulo: 'Perla oceano 2',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
         precio: '$ 16.90',
@@ -128,8 +121,7 @@ export default function VistaProductos(props) {
         idCementerio: 2,
       },
       {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`,
         titulo: 'Perla Magistral 2',
         descripcion: 'Diamante, Oro..',
         precio: '$ 16.90',
@@ -138,8 +130,7 @@ export default function VistaProductos(props) {
         idCementerio: 1,
       },
       {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_4.jpg`,
         titulo: 'Perla oceano 2',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
         precio: '$ 16.90',
@@ -148,8 +139,7 @@ export default function VistaProductos(props) {
         idCementerio: 2,
       },
       {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_5.jpg`,
         titulo: 'Perla oceano 2',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
         precio: '$ 16.90',
@@ -158,8 +148,7 @@ export default function VistaProductos(props) {
         idCementerio: 2,
       },
       {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_6.jpg`,
         titulo: 'Perla Magistral 2',
         descripcion: 'Diamante, Oro..',
         precio: '$ 16.90',
@@ -168,8 +157,7 @@ export default function VistaProductos(props) {
         idCementerio: 1,
       },
       {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_7.jpg`,
         titulo: 'Perla oceano 2',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
         precio: '$ 16.90',
