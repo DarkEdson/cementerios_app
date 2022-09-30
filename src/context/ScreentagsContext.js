@@ -237,6 +237,9 @@ export const ScreentagProvider = ({children}) => {
         }));
       }
     }
+    if (pantalla.code == 'v19') {
+      console.log(etiquetas, 'ETIQUETAS en V19');
+    }
   };
 
   useEffect(() => {}, []);
