@@ -3,23 +3,31 @@ import {
   View,
   Text,
   ScrollView,
-  Image,
   StyleSheet,
-  TouchableOpacity,
   StatusBar,
   Alert,
-  BackHandler,
 } from 'react-native';
-import BtnCategoria from '@Components/BtnCategoria/';
-import ToolBar from '@Components/common/toolBar';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
+import color from '@styles/colors';
+//Componentes
 import MyTextInput from '@Components/common/MyTextInput';
 import {UsuarioContext} from '@context/UsuarioContext';
-import color from '@styles/colors';
+import ToolBar from '@Components/common/toolBar';
 import MyButton from '@Components/common/MyButton';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.EditUserScreen.btn != '' ? tags.EditUserScreen.btn :
 export default function EditProfileScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   const [data, setData] = useState({
     username: '',
     name: '',
@@ -38,7 +46,11 @@ export default function EditProfileScreen(props) {
       paypal_id: loginUser.usuario.paypal_id,
       email: loginUser.usuario.email,
     });
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Promo');
+    }
+  }, [props, isFocused]);
 
   return (
     <View style={styles.container}>
@@ -48,7 +60,11 @@ export default function EditProfileScreen(props) {
         translucent={true}
       />
       <ToolBar
-        titulo="Editar Usuario"
+        titulo={
+          tags.EditUserScreen.titulo != ''
+            ? tags.EditUserScreen.titulo
+            : 'Editar Usuario'
+        }
         onPressLeft={() => goToScreen('PersonalData')}
         iconLeft={true}
       />
@@ -58,7 +74,11 @@ export default function EditProfileScreen(props) {
           <Text style={styles.titleLabel}>Username:</Text>
           <MyTextInput
             keyboardType={null}
-            placeholder="Username"
+            placeholder={
+              tags.EditUserScreen.username != ''
+                ? tags.EditUserScreen.username
+                : 'Username'
+            }
             value={data.username}
             onChangeText={user => setData({...data, username: user})}
             image="account"
@@ -66,7 +86,11 @@ export default function EditProfileScreen(props) {
           <Text style={styles.titleLabel}>Name:</Text>
           <MyTextInput
             keyboardType={null}
-            placeholder="Nombres"
+            placeholder={
+              tags.EditUserScreen.name != ''
+                ? tags.EditUserScreen.name
+                : 'Nombres'
+            }
             value={data.name}
             onChangeText={nombre => setData({...data, name: nombre})}
             image="account-circle"
@@ -76,7 +100,11 @@ export default function EditProfileScreen(props) {
             keyboardType={null}
             value={data.lastname}
             onChangeText={apellido => setData({...data, lastname: apellido})}
-            placeholder="Apellidos"
+            placeholder={
+              tags.EditUserScreen.lastname != ''
+                ? tags.EditUserScreen.lastname
+                : 'Apellidos'
+            }
             image="account-circle"
           />
           <Text style={styles.titleLabel}>e-mail</Text>
@@ -84,7 +112,11 @@ export default function EditProfileScreen(props) {
             keyboardType={null}
             value={data.email}
             onChangeText={correo => setData({...data, email: correo})}
-            placeholder="e-mail"
+            placeholder={
+              tags.EditUserScreen.email != ''
+                ? tags.EditUserScreen.email
+                : 'e-mail'
+            }
             image="email"
           />
           <Text style={styles.titleLabel}>Phone:</Text>
@@ -92,7 +124,11 @@ export default function EditProfileScreen(props) {
             keyboardType={null}
             value={data.phone}
             onChangeText={tel => setData({...data, phone: tel})}
-            placeholder="phone"
+            placeholder={
+              tags.EditUserScreen.phone != ''
+                ? tags.EditUserScreen.phone
+                : 'phone'
+            }
             image="card-account-details"
           />
           <Text style={styles.titleLabel}>Paypal ID:</Text>
@@ -100,10 +136,21 @@ export default function EditProfileScreen(props) {
             keyboardType={null}
             value={data.paypal_id}
             onChangeText={paypalID => setData({...data, paypal_id: paypalID})}
-            placeholder="PayPal ID"
+            placeholder={
+              tags.EditUserScreen.paypalid != ''
+                ? tags.EditUserScreen.paypalid
+                : 'PayPal ID'
+            }
             image="credit-card-outline"
           />
-          <MyButton titulo="Guardar Cambios" onPress={() => {}} />
+          <MyButton
+            titulo={
+              tags.EditUserScreen.btn != ''
+                ? tags.EditUserScreen.btn
+                : 'Guardar Cambios'
+            }
+            onPress={() => {}}
+          />
         </View>
       </ScrollView>
     </View>

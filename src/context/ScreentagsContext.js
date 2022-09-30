@@ -194,10 +194,34 @@ export const ScreentagProvider = ({children}) => {
       }
     }
     if (pantalla.code == 'v14') {
-      console.log(etiquetas, 'ETIQUETAS RECUPERAR PASS');
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          PasswordRecoveryScreen: {
+            btn: etiquetas[0].description,
+            email: etiquetas[1].description,
+            recuperar: etiquetas[2].description,
+            titulo: etiquetas[3].description,
+          },
+        }));
+      }
     }
     if (pantalla.code == 'v15') {
-      console.log(etiquetas, 'ETIQUETAS V15');
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          EditUserScreen: {
+            btn: etiquetas[0].description,
+            email: etiquetas[1].description,
+            lastname: etiquetas[2].description,
+            name: etiquetas[3].description,
+            paypalid: etiquetas[4].description,
+            phone: etiquetas[5].description,
+            titulo: etiquetas[6].description,
+            username: etiquetas[7].description,
+          },
+        }));
+      }
     }
     if (pantalla.code == 'v16') {
       if (etiquetas.length != 0) {
@@ -238,7 +262,31 @@ export const ScreentagProvider = ({children}) => {
       }
     }
     if (pantalla.code == 'v19') {
-      console.log(etiquetas, 'ETIQUETAS en V19');
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          PaymentCardDetailScreen: {
+            guardar: etiquetas[0].description,
+            securecode: etiquetas[1].description,
+            titular: etiquetas[2].description,
+            titulo: etiquetas[3].description,
+            vence: etiquetas[4].description,
+          },
+        }));
+      }
+    }
+    if (pantalla.code == 'v20') {
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          HomeTagsScreen: {
+            home: etiquetas[0].description,
+            products: etiquetas[1].description,
+            promo: etiquetas[2].description,
+            sells: etiquetas[3].description,
+          },
+        }));
+      }
     }
   };
 

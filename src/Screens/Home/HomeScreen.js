@@ -1,18 +1,23 @@
 import React, {useContext, useEffect} from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import color from '@styles/colors';
 import {Icon} from '@rneui/themed';
 import InitialScreen from './InitialScreen';
+//Screens
 import PrincipalScreen from '@Screens/PrincipalScreen';
 import SalesScreen from '@Screens/Sales/SalesScreen';
-import {UsuarioContext} from '@context/UsuarioContext';
 import PromoScreen from '@Screens/Promo/PromoScreen';
 import VistaProductos from '@Screens/Producto/Productos';
+//Estilos Generales
+import color from '@styles/colors';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
 const Tab = createMaterialBottomTabNavigator();
 
+//tags.HomeTagsScreen.home != '' ? tags.HomeTagsScreen.home :
 export default function HomeScreen(props) {
-  const [login, loginAction] = useContext(UsuarioContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
+
   useEffect(() => {}, []);
 
   return (
@@ -36,7 +41,10 @@ export default function HomeScreen(props) {
         name="Initial"
         component={InitialScreen}
         options={{
-          tabBarLabel: 'Inicio',
+          tabBarLabel:
+            tags.HomeTagsScreen.home != ''
+              ? tags.HomeTagsScreen.home
+              : 'Inicio',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}
@@ -52,7 +60,10 @@ export default function HomeScreen(props) {
         name="Promociones"
         component={PromoScreen}
         options={{
-          tabBarLabel: 'Promociones',
+          tabBarLabel:
+            tags.HomeTagsScreen.promo != ''
+              ? tags.HomeTagsScreen.promo
+              : 'Promociones',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}
@@ -68,7 +79,10 @@ export default function HomeScreen(props) {
         name="Productos"
         component={VistaProductos}
         options={{
-          tabBarLabel: 'Productos',
+          tabBarLabel:
+            tags.HomeTagsScreen.products != ''
+              ? tags.HomeTagsScreen.products
+              : 'Productos',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}
@@ -84,7 +98,10 @@ export default function HomeScreen(props) {
         name="Ventas"
         component={SalesScreen}
         options={{
-          tabBarLabel: 'Ventas',
+          tabBarLabel:
+            tags.HomeTagsScreen.sells != ''
+              ? tags.HomeTagsScreen.sells
+              : 'Ventas',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}

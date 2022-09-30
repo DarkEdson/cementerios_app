@@ -1,7 +1,8 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {View, Text, StatusBar, ScrollView} from 'react-native';
+import {View, Text, StatusBar, ScrollView, StyleSheet} from 'react-native';
 import Snackbar from 'react-native-snackbar';
-import {SocialIcon} from '@rneui/themed';
+import {SocialIcon, Icon} from '@rneui/themed';
+import SelectDropdown from 'react-native-select-dropdown';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
@@ -21,7 +22,16 @@ export default function RegistroScreen(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
-
+  const [tiposUsuario, settiposUsuario] = useState([
+    {
+      label: 'Vendedor',
+      value: 'seller',
+    },
+    {
+      label: 'Cliente',
+      value: 'user',
+    },
+  ]);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -163,7 +173,8 @@ export default function RegistroScreen(props) {
           onPressIcon={() => setHidePasswordConfirm(!hidePasswordConfirm)}
           onEndEditing={e => handlePasswordConfirm(e.nativeEvent.text)}
         />
-        <MyTextInput
+        {/*
+ <MyTextInput
           keyboardType={null}
           placeholder={
             tags.registerScreen.inputtipo != ''
@@ -174,6 +185,53 @@ export default function RegistroScreen(props) {
           value={usertype}
           onChangeText={usertype => setUsertype(usertype)}
         />
+      */}
+        <View style={styles.containerDropStyle}>
+          <Icon
+            style={{marginLeft: 10, marginTop: 12}}
+            type={'material-community'}
+            name={'account'}
+            color={'#444'}
+            size={25}
+          />
+          <SelectDropdown
+            data={tiposUsuario}
+            //     defaultValue={defaultLanguage}
+            //   defaultValueByIndex={0}
+            defaultButtonText={
+              tags.registerScreen.inputtipo != ''
+                ? tags.registerScreen.inputtipo
+                : 'Tipo usuario'
+            }
+            buttonTextStyle={{
+              textAlign: 'left',
+              color: color.TEXTCOLOR,
+              marginLeft: 3,
+            }}
+            buttonStyle={styles.btnDropStyle}
+            dropdownStyle={{marginLeft: 15}}
+            renderDropdownIcon={isOpened => {
+              return (
+                <Icon
+                  style={{marginRight: 15}}
+                  type={'font-awesome'}
+                  name={isOpened ? 'chevron-up' : 'chevron-down'}
+                  color={'#444'}
+                  size={20}
+                />
+              );
+            }}
+            dropdownIconPosition="right"
+            onSelect={(selectedItem, index) => setUsertype(selectedItem.value)}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              return selectedItem.label;
+            }}
+            rowTextForSelection={(item, index) => {
+              return item.label;
+            }}
+          />
+        </View>
+
         <MyButton
           titulo={
             tags.registerScreen.btnsiguiente != ''
@@ -262,3 +320,19 @@ export default function RegistroScreen(props) {
     props.navigation.navigate(routeName);
   }
 }
+
+const styles = StyleSheet.create({
+  btnDropStyle: {
+    width: '91%',
+    borderColor: color.GRAY2,
+    borderRadius: 15,
+  },
+  containerDropStyle: {
+    marginTop: 5,
+    flexDirection: 'row',
+    width: '100%',
+    height: '6.25%',
+    borderRadius: 15,
+    backgroundColor: color.INPUTCOLOR,
+  },
+});

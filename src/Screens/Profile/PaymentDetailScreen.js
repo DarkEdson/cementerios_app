@@ -9,16 +9,26 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import ToolBar from '@Components/common/toolBar';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
-import MyTextInput from '@Components/common/MyTextInput';
 import color from '@styles/colors';
+//Componentes
+import ToolBar from '@Components/common/toolBar';
 import MyButton from '@Components/common/MyButton';
 import CreditCard from 'react-native-credit-card-form-ui';
+//Contextos
 import {CreditCardContext} from '@context/CreditCardContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.PaymentCardDetailScreen.guardar != '' ? tags.PaymentCardDetailScreen.guardar :
 export default function PaymentDetailScreen(props) {
   const [creditCard, setCreditCard] = useContext(CreditCardContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
 
   const [dataCard, setDataCard] = useState({
     cardNumber: '',
@@ -52,7 +62,11 @@ export default function PaymentDetailScreen(props) {
       console.log('CARD DATA: ', data);
       console.log('CONTEXT DATA', dataCard);
     }
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Promo');
+    }
+  }, [props, isFocused]);
   return (
     <View style={styles.container}>
       <StatusBar
@@ -61,7 +75,11 @@ export default function PaymentDetailScreen(props) {
         translucent={true}
       />
       <ToolBar
-        titulo="Detalles de Tarjeta"
+        titulo={
+          tags.PaymentCardDetailScreen.titulo != ''
+            ? tags.PaymentCardDetailScreen.titulo
+            : 'Detalles de Tarjeta'
+        }
         onPressLeft={() => goToScreen('PaymentMethod')}
         iconLeft={true}
       />
@@ -77,9 +95,18 @@ export default function PaymentDetailScreen(props) {
             placeholderTextColor={color.WHITE}
             textColor={color.BLACK}
             labels={{
-              holder: 'Titular de tarjeta',
-              expiration: 'Vencimiento',
-              cvv: 'codigo de seguridad',
+              holder:
+                tags.PaymentCardDetailScreen.titular != ''
+                  ? tags.PaymentCardDetailScreen.titular
+                  : 'Titular de tarjeta',
+              expiration:
+                tags.PaymentCardDetailScreen.vence != ''
+                  ? tags.PaymentCardDetailScreen.vence
+                  : 'Vencimiento',
+              cvv:
+                tags.PaymentCardDetailScreen.securecode != ''
+                  ? tags.PaymentCardDetailScreen.securecode
+                  : 'codigo de seguridad',
             }}
             placeholders={{
               number: '0000 0000 0000 0000',
@@ -96,7 +123,14 @@ export default function PaymentDetailScreen(props) {
             }}
           />
           <View style={styles.boxTransparent} />
-          <MyButton titulo="Guardar" onPress={handleSubmit} />
+          <MyButton
+            titulo={
+              tags.PaymentCardDetailScreen.guardar != ''
+                ? tags.PaymentCardDetailScreen.guardar
+                : 'Guardar'
+            }
+            onPress={handleSubmit}
+          />
         </KeyboardAvoidingView>
       </View>
     </View>
