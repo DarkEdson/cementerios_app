@@ -1,42 +1,35 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import React, { createContext, useEffect, useState } from 'react';
-import Snackbar from 'react-native-snackbar';
-import { BASE_URL } from '@utils/config';
+import React, {createContext, useEffect, useState} from 'react';
 //Apis
-import { apiScreen, apiIdScreens } from '@Apis/ApisGenerales';
-// async storage
-import { getLanguague, saveLanguague } from '@storage/LanguagueAsyncStorage';
+import {apiScreen, apiIdScreens} from '@Apis/ApisGenerales';
 
 export const ScreentagContext = createContext();
 
-export const ScreentagProvider = ({ children }) => {
+export const ScreentagProvider = ({children}) => {
   const [tags, setTags] = useState({});
-  const [personalTag, setpersonalTag] = useState({})
 
-
-
-  const updateTags = async (pantalla) => {
+  const updateTags = async pantalla => {
     let etiquetas = await apiScreen(pantalla._id);
     etiquetas.sort((a, b) => a.code.localeCompare(b.code));
 
     if (pantalla.code == 'v01') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, loginScreen: {
+          ...prevState,
+          loginScreen: {
             btnlogin: etiquetas[0].description,
             contrasena: etiquetas[1].description,
             inputpassword: etiquetas[2].description,
             inputusuario: etiquetas[3].description,
             label1: etiquetas[4].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v02') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, registerScreen: {
+          ...prevState,
+          registerScreen: {
             btnapple: etiquetas[0].description,
             btnfacebook: etiquetas[1].description,
             btngoogle: etiquetas[2].description,
@@ -48,81 +41,88 @@ export const ScreentagProvider = ({ children }) => {
             inputtipo: etiquetas[8].description,
             inputusuario1: etiquetas[9].description,
             label2: etiquetas[10].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v03') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, registerAddScreen: {
+          ...prevState,
+          registerAddScreen: {
             btncompletar: etiquetas[0].description,
             completa: etiquetas[1].description,
             inputapellidos: etiquetas[2].description,
             inputnombres: etiquetas[3].description,
             inputnumid: etiquetas[4].description,
             inputpaypalid: etiquetas[5].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v04') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, HomeScreen: {
+          ...prevState,
+          HomeScreen: {
             inputsearch: etiquetas[0].description,
             labelcementarios: etiquetas[1].description,
             labelvertodos: etiquetas[2].description,
             ubica: etiquetas[3].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v05') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, PromotionsScreen: {
+          ...prevState,
+          PromotionsScreen: {
             labelpromociones: etiquetas[0].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v06') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, ProductsScreen: {
+          ...prevState,
+          ProductsScreen: {
             labelproductos: etiquetas[0].description,
             labelsearch1: etiquetas[1].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v07') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, CompanyDetailScreen: {
+          ...prevState,
+          CompanyDetailScreen: {
             label1p: etiquetas[0].description,
             label1s: etiquetas[1].description,
             mas: etiquetas[2].description,
             todos: etiquetas[3].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v08') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, ProductDetailScreen: {
+          ...prevState,
+          ProductDetailScreen: {
             btnagregar: etiquetas[0].description,
             detalle: etiquetas[1].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v09') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, PaymentScreen: {
+          ...prevState,
+          PaymentScreen: {
             agregar: etiquetas[0].description,
             codigo: etiquetas[1].description,
             compra: etiquetas[2].description,
@@ -130,44 +130,47 @@ export const ScreentagProvider = ({ children }) => {
             pagar: etiquetas[4].description,
             subtotal: etiquetas[5].description,
             total: etiquetas[6].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v10') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, PromoScreen: {
+          ...prevState,
+          PromoScreen: {
             labelbtn: etiquetas[0].description,
             placeholder: etiquetas[1].description,
             titulo: etiquetas[2].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v11') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, SellsScreen: {
+          ...prevState,
+          SellsScreen: {
             comision: etiquetas[0].description,
             comisionpct: etiquetas[1].description,
             labelfechafin: etiquetas[2].description,
             labelfechainicio: etiquetas[3].description,
             subtotal1: etiquetas[4].description,
             ventas: etiquetas[5].description,
-          }
+          },
         }));
       }
     }
     if (pantalla.code == 'v12') {
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, perfilScreen: {
+          ...prevState,
+          perfilScreen: {
             cerrar: etiquetas[0].description,
             codigov: etiquetas[1].description,
             editar: etiquetas[2].description,
             perfil: etiquetas[3].description,
-          }
+          },
         }));
       }
     }
@@ -175,7 +178,8 @@ export const ScreentagProvider = ({ children }) => {
       etiquetas.sort((a, b) => a.code.localeCompare(b.code));
       if (etiquetas.length != 0) {
         setTags(prevState => ({
-          ...prevState, personalDataScreen: {
+          ...prevState,
+          personalDataScreen: {
             codigo: etiquetas[0].description,
             contrasena: etiquetas[1].description,
             editar: etiquetas[2].description,
@@ -185,20 +189,57 @@ export const ScreentagProvider = ({ children }) => {
             metodos: etiquetas[6].description,
             nombre: etiquetas[7].description,
             titulo: etiquetas[8].description,
-          }
+          },
         }));
-
       }
     }
-
-
+    if (pantalla.code == 'v14') {
+      console.log(etiquetas, 'ETIQUETAS RECUPERAR PASS');
+    }
+    if (pantalla.code == 'v15') {
+      console.log(etiquetas, 'ETIQUETAS V15');
+    }
+    if (pantalla.code == 'v16') {
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          changePasswordScreen: {
+            btn: etiquetas[0].description,
+            confpass: etiquetas[1].description,
+            newpass: etiquetas[2].description,
+            password: etiquetas[3].description,
+            titulo: etiquetas[4].description,
+          },
+        }));
+      }
+    }
+    if (pantalla.code == 'v17') {
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          paymentMethodsScreen: {
+            btn: etiquetas[0].description,
+            preferido: etiquetas[1].description,
+            tarjetas: etiquetas[2].description,
+            titulo: etiquetas[3].description,
+          },
+        }));
+      }
+    }
+    if (pantalla.code == 'v18') {
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          CementeriesScreen: {
+            placeholder: etiquetas[0].description,
+            titulo: etiquetas[1].description,
+          },
+        }));
+      }
+    }
   };
 
-
-
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <ScreentagContext.Provider

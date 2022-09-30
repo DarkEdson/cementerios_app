@@ -3,26 +3,33 @@ import {
   View,
   Text,
   ScrollView,
-  Image,
   StyleSheet,
-  TouchableOpacity,
   StatusBar,
   Alert,
-  BackHandler,
 } from 'react-native';
-import BtnCategoria from '@Components/BtnCategoria/';
-import ToolBar from '@Components/common/toolBar';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//URL de server
+import {BASE_URL_IMG} from '@utils/config';
+//Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
-import PaymentButton from '@Components/common/paymentButton';
-import MyTextInput from '@Components/common/MyTextInput';
-import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
+//Componentes
+import ToolBar from '@Components/common/toolBar';
+import PaymentButton from '@Components/common/paymentButton';
 import MyButton from '@Components/common/MyButton';
+//Contextos
 import {CreditCardContext} from '@context/CreditCardContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.paymentMethodsScreen.btn != '' ? tags.paymentMethodsScreen.btn :
 export default function PaymentMethodScreen(props) {
-  const [loginUser, loginAction] = useContext(UsuarioContext);
   const [creditCard, setCreditCard] = useContext(CreditCardContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   const [data, setData] = useState({
     cardNumber: '',
     cardHolderName: '',
@@ -43,7 +50,11 @@ export default function PaymentMethodScreen(props) {
       securityCode: '',
       brand: 'mastercard',
     });
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Promo Code');
+    }
+  }, [props, isFocused]);
 
   return (
     <View style={styles.container}>
@@ -53,20 +64,32 @@ export default function PaymentMethodScreen(props) {
         translucent={true}
       />
       <ToolBar
-        titulo="Metodos de Pago"
+        titulo={
+          tags.paymentMethodsScreen.titulo != ''
+            ? tags.paymentMethodsScreen.titulo
+            : 'Metodos de Pago'
+        }
         onPressLeft={() => goToScreen('PersonalData')}
         iconLeft={true}
       />
 
       <ScrollView>
         <View style={styles.editField}>
-          <Text style={styles.titleLabel}>Preferido:</Text>
+          <Text style={styles.titleLabel}>
+            {tags.paymentMethodsScreen.preferido != ''
+              ? tags.paymentMethodsScreen.preferido
+              : 'Preferido:'}
+          </Text>
           <PaymentButton
             iconLeft={true}
             titulo={'XXXX-XXXX-XXXX-5678'}
             iconRight={true}
           />
-          <Text style={styles.titleLabel}>Tarjetas:</Text>
+          <Text style={styles.titleLabel}>
+            {tags.paymentMethodsScreen.tarjetas != ''
+              ? tags.paymentMethodsScreen.tarjetas
+              : 'Tarjetas:'}
+          </Text>
           <PaymentButton
             iconLeft={true}
             titulo={'XXXX-XXXX-XXXX-0123'}
@@ -82,14 +105,21 @@ export default function PaymentMethodScreen(props) {
             iconLeft={true}
             titulo={'XXXX-XXXX-XXXX-2345'}
             iconRight={true}
-          //  onPress={() => goToScreen("PaymentMethodDetail")}
+            //  onPress={() => goToScreen("PaymentMethodDetail")}
           />
           <PaymentButton
             iconLeft={true}
             titulo={'XXXX-XXXX-XXXX-4567'}
             iconRight={true}
           />
-          <MyButton titulo="Guardar Cambios" onPress={() => {}} />
+          <MyButton
+            titulo={
+              tags.paymentMethodsScreen.btn != ''
+                ? tags.paymentMethodsScreen.btn
+                : 'Guardar Cambios'
+            }
+            onPress={() => {}}
+          />
         </View>
       </ScrollView>
     </View>

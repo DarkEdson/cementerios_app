@@ -11,18 +11,29 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//URL de server
+import {BASE_URL_IMG} from '@utils/config';
+//Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
-import {UsuarioContext} from '@context/UsuarioContext';
-import ToolBar from '@Components/common/toolBar';
-import {CementeryContext} from '@context/CementeryContext';
 import color from '@styles/colors';
-import MyButton from '@Components/common/MyButton';
+//Contextos
+import {CementeryContext} from '@context/CementeryContext';
+import {UsuarioContext} from '@context/UsuarioContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
+//Componentes
+import ToolBar from '@Components/common/toolBar';
 import CardColaborador from '@Components/CardColaborador/';
-import CardPromocion from '@Components/CardPromocion/';
 
+//tags.CementeriesScreen.placeholder != '' ? tags.CementeriesScreen.placeholder :
 export default function CompanyScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
@@ -176,7 +187,11 @@ export default function CompanyScreen(props) {
         id: 7,
       },
     ]);
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Cementeries All');
+    }
+  }, [props, isFocused]);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
@@ -196,7 +211,11 @@ export default function CompanyScreen(props) {
         translucent={true}
       />
       <ToolBar
-        titulo="Cementerios"
+        titulo={
+          tags.CementeriesScreen.titulo != ''
+            ? tags.CementeriesScreen.titulo
+            : 'Cementerios'
+        }
         onPressLeft={() => goToScreen('Initial')}
         iconLeft={true}
       />
@@ -204,7 +223,11 @@ export default function CompanyScreen(props) {
         <View style={styles.searchSection}>
           <TextInput
             style={styles.input}
-            placeholder={propsVista.labelSearch}
+            placeholder={
+              tags.CementeriesScreen.placeholder != ''
+                ? tags.CementeriesScreen.placeholder
+                : 'Cementerio, Producto, Categoría...'
+            }
             onChangeText={val => {
               setArrProductosDisp(
                 propsVista.productos.filter(
