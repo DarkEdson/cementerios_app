@@ -16,6 +16,13 @@ import ToolBar from '@Components/common/toolBar';
 import LargeButton from '@Components/common/largeButton';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
+//Estilos Generales
+import color from '@styles/colors';
+import {
+  mainStyles,
+  CementeryScreen,
+  informationIconStyles,
+} from '@styles/stylesGeneral';
 
 //tags.PaymentScreen.agregar != '' ? tags.PaymentScreen.agregar :
 export default function VistaPago(props) {
@@ -82,9 +89,10 @@ export default function VistaPago(props) {
       <ScrollView>
         <View>
           <View style={styles.productos}>
-            {productosCarrito.map(promo => {
+            {productosCarrito.map((promo, key) => {
               return (
                 <CardProducto
+                  key={key}
                   urlImagen={promo.urlImagen}
                   titulo={promo.titulo}
                   descripcion={promo.descripcion}
@@ -109,7 +117,7 @@ export default function VistaPago(props) {
             </Text>
             <Text style={styles.valorCuenta}>$ {valoresVenta.entrega}</Text>
           </View>
-          <View style={styles.espacio}>
+          <View style={styles.espacio2}>
             <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
               {tags.PaymentScreen.total != ''
                 ? tags.PaymentScreen.total
@@ -147,6 +155,7 @@ export default function VistaPago(props) {
                 : 'Pagar'}{' '}
             </Text>
           </TouchableOpacity>
+          <View style={mainStyles.boxTransparent} />
         </View>
       </ScrollView>
     </View>
@@ -170,6 +179,9 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   productos: {
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%',
     marginBottom: 30,
     borderBottomWidth: 1,
     paddingBottom: 40,
@@ -197,7 +209,17 @@ const styles = StyleSheet.create({
     marginRight: '5%',
     height: 50,
     marginBottom: 3,
-    borderBottomWidth: 1,
+
+    borderColor: 'grey',
+    flexDirection: 'row',
+  },
+  espacio2: {
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%',
+    height: 50,
+    marginBottom: 3,
+    borderBottomWidth: 2,
     borderColor: 'grey',
     flexDirection: 'row',
   },

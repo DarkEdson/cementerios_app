@@ -245,9 +245,49 @@ const CementeryScreen = StyleSheet.create({
     marginBottom: 25,
     justifyContent: 'space-evenly',
   },
-  FooterView: {
+  vista: {
+    height: '100%',
+    backgroundColor: color.WHITE,
+  },
+  descripcion: {
+    paddingLeft: 20,
+    paddingTop: 10,
+    paddingRight: 20,
+    borderBottomWidth: 3,
+    borderColor: '#dbdbdb',
+  },
+  detalleProd: {
+    paddingLeft: 20,
+    paddingTop: 10,
+    paddingRight: 20,
     marginTop: 5,
-    flex: 1,
+  },
+  titulo: {
+    fontWeight: '700',
+    fontSize: 23,
+    textAlign: 'left',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  categorias: {
+    fontWeight: '600',
+    fontSize: 15,
+    textAlign: 'left',
+    color: 'grey',
+  },
+  imgProducto: {
+    height: 300,
+    width: '100%',
+  },
+  logoImage: {
+    width: 230,
+    height: 185,
+    marginVertical: Dimensions.get('screen').height * 0.1,
+    marginHorizontal: Dimensions.get('screen').width * 0.2,
+  },
+  FooterView: {
+    marginTop: Dimensions.get('screen').height * 0.48,
+
     backgroundColor: color.WHITE,
   },
   container: {

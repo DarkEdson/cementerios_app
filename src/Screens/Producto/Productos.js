@@ -232,9 +232,10 @@ export default function VistaProductos(props) {
 
       <ScrollView style={styles.scroll}>
         <View style={styles.containerHeader}>
-          {arrProductosDisp.map(promo => {
+          {arrProductosDisp.map((promo, key) => {
             return (
               <CardProducto
+                key={key}
                 onPressProduct={() => goToScreen('Product')}
                 urlImagen={promo.urlImagen}
                 titulo={promo.titulo}

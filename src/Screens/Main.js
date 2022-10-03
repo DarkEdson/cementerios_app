@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import AppNavigations from '@routes/AppNavigationV2';
-import { UsuarioProvider } from '@context/UsuarioContext';
-import { CementeryProvider } from '@context/CementeryContext';
-import { AuthProvider } from '@context/AuthContext';
-import { RegisterProvider } from '@context/RegisterContext';
-import { CreditCardProvider } from '@context/CreditCardContext';
-import { LanguaguesProvider } from '@context/LanguaguesContext';
-import { ScreenIdProvider } from '@context/ScreensIDsContext';
-import { ScreentagProvider } from '@context/ScreentagsContext';
-import { CountriesProvider } from '../context/CountriesContext';
+import {UsuarioProvider} from '@context/UsuarioContext';
+import {CementeryProvider} from '@context/CementeryContext';
+import {AuthProvider} from '@context/AuthContext';
+import {RegisterProvider} from '@context/RegisterContext';
+import {CreditCardProvider} from '@context/CreditCardContext';
+import {LanguaguesProvider} from '@context/LanguaguesContext';
+import {ScreenIdProvider} from '@context/ScreensIDsContext';
+import {ScreentagProvider} from '@context/ScreentagsContext';
+import {CountriesProvider} from '../context/CountriesContext';
+import {ProductProvider} from '../context/ProductContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -23,9 +24,11 @@ const MainPage = () => {
               <RegisterProvider>
                 <CountriesProvider>
                   <CementeryProvider>
-                    <CreditCardProvider>
-                      <AppNavigations />
-                    </CreditCardProvider>
+                    <ProductProvider>
+                      <CreditCardProvider>
+                        <AppNavigations />
+                      </CreditCardProvider>
+                    </ProductProvider>
                   </CementeryProvider>
                 </CountriesProvider>
               </RegisterProvider>
