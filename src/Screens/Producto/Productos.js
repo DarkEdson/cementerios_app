@@ -20,10 +20,12 @@ import ToolBar from '@Components/common/toolBar';
 import CardProducto from '@Components/CardProducto/index';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
+import { ProductContext } from '@context/ProductContext';
 
 //tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
+  const [Product, setProduct] = useContext(ProductContext)
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -48,52 +50,52 @@ export default function VistaProductos(props) {
           urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
           titulo: 'Perla oceano 2',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
+          precio: '$ 14.90',
           categoria: 'Buseo',
           cementerio: 'cementerio del mar',
           idCementerio: 2,
         },
         {
           urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`,
-          titulo: 'Perla Magistral 2',
+          titulo: 'Perla Magistral 3',
           descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
+          precio: '$ 15.90',
           categoria: 'CMar',
           cementerio: 'capillas',
-          idCementerio: 1,
+          idCementerio: 3,
         },
         {
           urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_4.jpg`,
-          titulo: 'Perla oceano 2',
+          titulo: 'Perla oceano 3',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
+          precio: '$ 10.90',
           categoria: 'Buseo',
           cementerio: 'cementerio del mar',
-          idCementerio: 2,
+          idCementerio: 4,
         },
         {
           urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_5.jpg`,
-          titulo: 'Perla oceano 2',
+          titulo: 'Perla oceano',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
+          precio: '$ 26.90',
           categoria: 'Buseo',
           cementerio: 'cementerio del mar',
-          idCementerio: 2,
+          idCementerio: 3,
         },
         {
           urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_6.jpg`,
-          titulo: 'Perla Magistral 2',
+          titulo: 'Perla Magistral 4',
           descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
+          precio: '$ 16.50',
           categoria: 'CMar',
           cementerio: 'capillas',
           idCementerio: 1,
         },
         {
           urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_7.jpg`,
-          titulo: 'Perla oceano 2',
+          titulo: 'Perla oceano 4',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
+          precio: '$ 16.40',
           categoria: 'Buseo',
           cementerio: 'cementerio del mar',
           idCementerio: 2,
@@ -115,52 +117,52 @@ export default function VistaProductos(props) {
         urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
         titulo: 'Perla oceano 2',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
+        precio: '$ 14.90',
         categoria: 'Buseo',
         cementerio: 'cementerio del mar',
         idCementerio: 2,
       },
       {
         urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`,
-        titulo: 'Perla Magistral 2',
+        titulo: 'Perla Magistral 3',
         descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
+        precio: '$ 15.90',
         categoria: 'CMar',
         cementerio: 'capillas',
-        idCementerio: 1,
+        idCementerio: 3,
       },
       {
         urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_4.jpg`,
-        titulo: 'Perla oceano 2',
+        titulo: 'Perla oceano 3',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
+        precio: '$ 10.90',
         categoria: 'Buseo',
         cementerio: 'cementerio del mar',
-        idCementerio: 2,
+        idCementerio: 4,
       },
       {
         urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_5.jpg`,
-        titulo: 'Perla oceano 2',
+        titulo: 'Perla oceano',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
+        precio: '$ 26.90',
         categoria: 'Buseo',
         cementerio: 'cementerio del mar',
-        idCementerio: 2,
+        idCementerio: 3,
       },
       {
         urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_6.jpg`,
-        titulo: 'Perla Magistral 2',
+        titulo: 'Perla Magistral 4',
         descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
+        precio: '$ 16.50',
         categoria: 'CMar',
         cementerio: 'capillas',
         idCementerio: 1,
       },
       {
         urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_7.jpg`,
-        titulo: 'Perla oceano 2',
+        titulo: 'Perla oceano 4',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
+        precio: '$ 16.40',
         categoria: 'Buseo',
         cementerio: 'cementerio del mar',
         idCementerio: 2,
@@ -232,15 +234,15 @@ export default function VistaProductos(props) {
 
       <ScrollView style={styles.scroll}>
         <View style={styles.containerHeader}>
-          {arrProductosDisp.map((promo, key) => {
+          {arrProductosDisp.map((product, key) => {
             return (
               <CardProducto
                 key={key}
-                onPressProduct={() => goToScreen('Product')}
-                urlImagen={promo.urlImagen}
-                titulo={promo.titulo}
-                descripcion={promo.descripcion}
-                precio={promo.precio}
+                onPressProduct={() => selectedProduct(product, 'Product') }
+                urlImagen={product.urlImagen}
+                titulo={product.titulo}
+                descripcion={product.descripcion}
+                precio={product.precio}
               />
             );
           })}
@@ -249,6 +251,12 @@ export default function VistaProductos(props) {
       </ScrollView>
     </View>
   );
+
+  function selectedProduct(producto, routeName) {
+    setProduct(producto);
+    goToScreen(routeName);
+  }
+
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
   }

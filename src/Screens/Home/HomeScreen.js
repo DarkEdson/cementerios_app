@@ -42,9 +42,7 @@ export default function HomeScreen(props) {
         component={InitialScreen}
         options={{
           tabBarLabel:
-            tags.HomeTagsScreen.home != ''
-              ? tags.HomeTagsScreen.home
-              : 'Inicio',
+            'Inicio',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}

@@ -29,22 +29,34 @@ import {
 //Contextos
 import {CementeryContext} from '@context/CementeryContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import { ShoppingCartContext } from '@context/ShoppingCartContext';
 
 //tags.CompanyDetailScreen.mas != '' ? tags.CompanyDetailScreen.mas : 'Mas Populares'
 export default function CompanyScreen(props) {
   const [cementery] = useContext(CementeryContext);
   const {tags, updateTags} = useContext(ScreentagContext);
+  const {ShoppingCart, carrito} = useContext(ShoppingCartContext)
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
+  const [infoCart, setinfoCart] = useState('')
   const [cant, setcant] = useState(2);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
-  const [shoppingCard, setShoppingCard] = useState(true);
+  const [shoppingCard, setShoppingCard] = useState(false);
 
   // Cargar informacion de la vista
   useEffect(() => {
+    setcant(ShoppingCart.length)
+    let info = ''
+    ShoppingCart.forEach(
+      titulo=>{
+        info = info + titulo.titulo + ', '
+      }
+    )
+    console.log(info)
+    setinfoCart(info)
     console.log(cementery);
     if (isFocused) {
       getInitialData();
@@ -69,6 +81,7 @@ export default function CompanyScreen(props) {
           style={CementeryScreen.logoImage}
         />
       </ImageBackground>
+      <ScrollView>
       <View style={CementeryScreen.descripcion}>
         <Text style={CementeryScreen.titulo}> {cementery.titulo} </Text>
         <Text style={CementeryScreen.categorias}>
@@ -102,7 +115,7 @@ export default function CompanyScreen(props) {
           />
         </View>
       </View>
-      <ScrollView>
+      
         <View style={CementeryScreen.detalleProd}>
           <View style={[CementeryScreen.categories, CementeryScreen.titles]}>
             <TouchableOpacity>
@@ -151,7 +164,7 @@ export default function CompanyScreen(props) {
         }}
       />
       {/* Seccion de carrito de compra */}
-      {shoppingCard ? (
+      {carrito ? (
         <ShoppingCarCard
           tipo="ionicons"
           image="shopping-basket"
@@ -166,7 +179,7 @@ export default function CompanyScreen(props) {
               ? tags.CompanyDetailScreen.label1s
               : 'Producto Agregado'
           }
-          info="Perla, cemento, cremacion, traslado, hundimiento.."
+          info={infoCart}
           total="$150.53"
         />
       ) : null}

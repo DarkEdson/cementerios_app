@@ -11,11 +11,12 @@ import {useIsFocused} from '@react-navigation/native';
 //URL de server
 import {BASE_URL_IMG} from '@utils/config';
 //Componentes
-import CardProducto from '@Components/CardProducto/index';
+import CardProductoVenta from '@Components/CardSellProduct/';
 import ToolBar from '@Components/common/toolBar';
 import LargeButton from '@Components/common/largeButton';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
+import { ShoppingCartContext } from '@context/ShoppingCartContext';
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -27,36 +28,15 @@ import {
 //tags.PaymentScreen.agregar != '' ? tags.PaymentScreen.agregar :
 export default function VistaPago(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
-
+  const {ShoppingCart, removeItemtoCart} = useContext(ShoppingCartContext)
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
+    
     // Productos del carrito
-    setProductosCarrito([
-      {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        idCementerio: 1,
-      },
-      {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        idCementerio: 2,
-      },
-    ]);
-
+    console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR')
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 120,
@@ -89,15 +69,17 @@ export default function VistaPago(props) {
       <ScrollView>
         <View>
           <View style={styles.productos}>
-            {productosCarrito.map((promo, key) => {
+            {ShoppingCart.map((promo, key) => {
               return (
-                <CardProducto
-                  key={key}
-                  urlImagen={promo.urlImagen}
-                  titulo={promo.titulo}
-                  descripcion={promo.descripcion}
-                  precio={promo.precio}
-                />
+                <CardProductoVenta
+                key={key}
+                urlImagen={promo.urlImagen}
+                titulo={promo.titulo}
+                descripcion={promo.descripcion}
+                precio={promo.precio}
+            cantidad={promo.cantidad}
+          />
+           
               );
             })}
           </View>

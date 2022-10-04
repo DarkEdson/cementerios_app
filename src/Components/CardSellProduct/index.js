@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 export default function CardProductoVenta(props) {
+
   return (
     <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressProduct}>
       <View style={{...styles.view, backgroundColor: props.bgColor}}>
@@ -32,7 +33,7 @@ export default function CardProductoVenta(props) {
           marginHorizontal: '7%',
           marginVertical: 2.5,
           width: '85%',
-          borderBottomColor: color.GRAY,
+          borderBottomColor: color.GRAY2,
           borderBottomWidth: 2,
         }}
       />

@@ -253,14 +253,15 @@ export default function CompanyScreen(props) {
 
       <ScrollView>
         <View style={styles.containerHeader}>
-          {arrProductosDisp.map(promo => {
+          {arrProductosDisp.map((company,key) => {
             return (
               <CardColaborador
-                onPressColab={() => selectCementery(promo, 'Company')}
-                urlImagen={promo.urlImagen}
-                nombre={promo.titulo}
-                descripcion={promo.descripcion}
-                precio={promo.precio}
+              key={key}
+                onPressColab={() => selectCementery(company, 'Company')}
+                urlImagen={company.urlImagen}
+                nombre={company.titulo}
+                descripcion={company.descripcion}
+                precio={company.precio}
               />
             );
           })}

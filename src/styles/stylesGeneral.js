@@ -151,7 +151,7 @@ const mainStyles = StyleSheet.create({
     height: 50,
     marginBottom: 3,
     borderBottomWidth: 1,
-    borderColor: 'grey',
+    borderColor: color.GRAY2,
     flexDirection: 'row',
   },
 });

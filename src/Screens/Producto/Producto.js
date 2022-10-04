@@ -35,13 +35,17 @@ import {
 } from '@styles/stylesGeneral';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
-import CardMultimedia from '../../Components/CardMultimedia';
+import CardMultimedia from '@Components/CardMultimedia';
+import { ProductContext } from '@context/ProductContext';
+import { ShoppingCartContext } from '@context/ShoppingCartContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
 //tags.ProductDetailScreen.btnagregar != '' ? tags.ProductDetailScreen.btnagregar :
 export default function VistaProducto(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
+  const [Product, setProduct] = useContext(ProductContext);
+  const {addItemtoCart} = useContext(ShoppingCartContext)
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
 
@@ -57,14 +61,12 @@ export default function VistaProducto(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
+    console.log('Producto escogido',Product)
     // Actualizar valores de la vista
     setPropsVista({
-      nombre: 'Perla Oceano',
-      urlImagenPrincipal: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
       tags: '$ Arrecife - Perla - Diamante',
       precio: {
         label: 'Precio',
-        valor: 'USD 12.50',
       },
       ubicaciones: {
         label: 'Sede',
@@ -74,7 +76,6 @@ export default function VistaProducto(props) {
         valor: 4.9,
         label: 'Ratink',
       },
-      detalleProd: 'Perla, cemento, cremacion, traslado, hundimiento.',
       urlMultimedia: [
         `${BASE_URL_IMG}${PRODUCTS_URL}Producto_3.jpg`,
         `${BASE_URL_IMG}${PRODUCTS_URL}Producto_4.jpg`,
@@ -97,12 +98,9 @@ export default function VistaProducto(props) {
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
-    nombre: '',
-    urlImagenPrincipal: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
     tags: '',
     precio: {
       label: '',
-      valor: 0,
     },
     ubicaciones: {
       label: '',
@@ -112,7 +110,6 @@ export default function VistaProducto(props) {
       valor: 0,
       label: '',
     },
-    detalleProd: '',
     urlMultimedia: [],
   });
   // Variables de trabajo
@@ -145,17 +142,18 @@ export default function VistaProducto(props) {
       <Image
         style={styles.imgProducto}
         source={{
-          uri: propsVista.urlImagenPrincipal,
+          uri: Product.urlImagen,
         }}
       />
+      <ScrollView>
       <View style={styles.descripcion}>
-        <Text style={styles.titulo}> {propsVista.nombre} </Text>
+        <Text style={styles.titulo}> {Product.titulo} </Text>
         <Text style={styles.categorias}> {propsVista.tags} </Text>
         <View style={CementeryScreen.HeaderView}>
           <InformationIcon
             tipo="font-awesome-5"
             image="dollar-sign"
-            titulo={propsVista.precio.valor}
+            titulo={Product.precio}
             subtitulo={propsVista.precio.label}
             onPress={() => {}}
           />
@@ -176,7 +174,7 @@ export default function VistaProducto(props) {
           />
         </View>
       </View>
-      <ScrollView>
+      
         <View style={styles.detalleProd}>
           <Text style={styles.titulo2}>
             {' '}
@@ -185,7 +183,7 @@ export default function VistaProducto(props) {
               : 'Detalle'}{' '}
           </Text>
           <Text style={styles.descDato} numberOfLines={2}>
-            {propsVista.detalleProd}
+            {Product.descripcion}
           </Text>
           <View style={styles.multimedia}>
             <Carousel
@@ -266,7 +264,7 @@ export default function VistaProducto(props) {
             </View>
             <TouchableOpacity
               style={styles.btnAgregar}
-              onPress={() => goToScreen('Payments')}>
+              onPress={() => itemToCart(Product,'Payments')}>
               <Text style={styles.txtAgregar}>
                 {tags.ProductDetailScreen.btnagregar != ''
                   ? tags.ProductDetailScreen.btnagregar
@@ -282,7 +280,7 @@ export default function VistaProducto(props) {
         tipo="material-icon-community"
         image="chevron-left"
         left={true}
-        onPress={() => goToScreen('Initial')}
+        onPress={() => goToScreen('Productos')}
       />
       {customModal == false ? null : (
         <CustomModal
@@ -332,6 +330,13 @@ export default function VistaProducto(props) {
         />
       </View>
     );
+  }
+
+  function itemToCart(producto, routeName) {
+    let item = {...producto,cantidad:cantProductos}
+    console.log(item)
+    addItemtoCart(item);
+    goToScreen(routeName);
   }
 }
 
