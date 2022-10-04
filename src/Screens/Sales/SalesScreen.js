@@ -10,52 +10,44 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import BtnCategoria from '@Components/BtnCategoria/';
+//URL de server
+import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Componentes
 import ToolBar from '@Components/common/toolBar';
-import CardColaborador from '@Components/CardColaborador/';
 import CardProductoVenta from '@Components/CardSellProduct/';
-import CardPromocion from '@Components/CardPromocion/';
+//Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
-import {UsuarioContext} from '@context/UsuarioContext';
 import color from '@styles/colors';
-import MyButton from '@Components/common/MyButton';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.SellsScreen.labelfechafin != '' ? tags.SellsScreen.labelfechafin :
+//tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :
 export default function SalesScreen(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   // Cargar informacion de la vista
   useEffect(() => {
-    // Actualizar valores de la vista
-    setPropsVista({
-      label1: 'Compra',
-      label2: 'Subtotal',
-      label3: '% de Comisión',
-      label4: 'Comisión',
-      label5: 'Agregar mas productos',
-      label6: 'Codigo de Promocion',
-      label7: 'Pagar',
-    });
-
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 120,
-      entrega: 10,
+      comision: 10,
       total: 110,
     });
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Ventas Detail');
+    }
+  }, [props, isFocused]);
 
-  const [login, loginAction] = useContext(UsuarioContext);
-  // Variables de la vista
-  const [propsVista, setPropsVista] = useState({
-    label1: '',
-    label2: '',
-    label3: '',
-    label4: '',
-    label5: '',
-    label6: '',
-    label7: '',
-  });
   const [valoresVenta, setValoresVenta] = useState({
     subTotal: 0,
-    entrega: 0,
+    comision: 0,
     total: 0,
   });
 
@@ -67,7 +59,9 @@ export default function SalesScreen(props) {
         translucent={true}
       />
       <ToolBar
-        titulo="Ventas"
+        titulo={
+          tags.SellsScreen.ventas != '' ? tags.SellsScreen.ventas : 'Ventas'
+        }
         onPressLeft={() => goToScreen('Initial')}
         iconLeft={true}
       />
@@ -75,7 +69,7 @@ export default function SalesScreen(props) {
         <View style={styles.container}>
           <Text style={styles.txtNuevoComponente}> Card de productos </Text>
           <CardProductoVenta
-            urlImagen="https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg"
+            urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`}
             titulo="Perla Magistral"
             descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
             precio="$ 12.50"
@@ -83,30 +77,40 @@ export default function SalesScreen(props) {
           />
 
           <CardProductoVenta
-            urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
+            urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`}
             titulo="Perla oceano 2"
             descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
             precio="$ 16.90"
             cantidad="5"
           />
           <CardProductoVenta
-            urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
+            urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`}
             titulo="Perla oceano 3"
             descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
             precio="$ 11.93"
             cantidad="9"
           />
           <View style={styles.espacio2}>
-            <Text style={styles.txtTitulo}>{propsVista.label2}</Text>
+            <Text style={styles.txtTitulo}>
+              {tags.SellsScreen.subtotal1 != ''
+                ? tags.SellsScreen.subtotal1
+                : ' Subtotal'}
+            </Text>
             <Text style={styles.valorCuenta}>$ {valoresVenta.subTotal}</Text>
           </View>
           <View style={styles.espacio}>
-            <Text style={styles.txtTitulo}>{propsVista.label3}</Text>
-            <Text style={styles.valorCuenta}>$ {valoresVenta.entrega}</Text>
+            <Text style={styles.txtTitulo}>
+              {tags.SellsScreen.comisionpct != ''
+                ? tags.SellsScreen.comisionpct
+                : '% de Comisión'}
+            </Text>
+            <Text style={styles.valorCuenta}>$ {valoresVenta.comision}</Text>
           </View>
           <View style={styles.espacio}>
             <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-              {propsVista.label4}
+              {tags.SellsScreen.comision != ''
+                ? tags.SellsScreen.comision
+                : ' Comisión'}
             </Text>
             <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
           </View>
@@ -149,10 +153,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   espacio2: {
-    width: '90%',
+    marginTop: Dimensions.get('screen').height * 0.02,
+    width: Dimensions.get('screen').width * 0.9,
     marginLeft: '5%',
     marginRight: '5%',
-    height: 50,
+    height: Dimensions.get('screen').height * 0.07,
     marginBottom: 3,
     borderBottomWidth: 0,
     borderColor: 'grey',
@@ -161,7 +166,7 @@ const styles = StyleSheet.create({
   txtTitulo: {
     fontSize: 17,
     textAlign: 'left',
-    width: '50%',
+    width: Dimensions.get('screen').width * 0.45,
     alignSelf: 'center',
   },
   valorCuenta: {

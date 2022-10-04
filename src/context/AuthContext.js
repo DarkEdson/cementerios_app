@@ -42,7 +42,7 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.removeItem('errorInfo');
         setIsLoading(false);
         setErrorInfo(null);
-        goToScreen('Home');
+        goToScreen('Splash');
       })
       .catch(e => {
         console.log(`register error ${e}`);
@@ -62,7 +62,7 @@ export const AuthProvider = ({children}) => {
 
   function login(email, password, goToScreen, loginAction) {
     setIsLoading(true);
-    console.log(email, password, 'dentro de loginauth')
+    console.log(email, password, 'dentro de loginauth');
     axios
       .post(`${BASE_URL}/auth/signin`, {
         email,
@@ -82,7 +82,7 @@ export const AuthProvider = ({children}) => {
           type: 'sign',
           data: userInfo,
         });
-        goToScreen('Home');
+        goToScreen('Splash');
       })
       .catch(e => {
         let errorInfo = e.response.data;

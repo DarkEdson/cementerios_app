@@ -14,11 +14,7 @@ import {
 } from 'react-native';
 import {Icon, Avatar} from '@rneui/themed';
 //Recarga la screen
-import { useIsFocused } from "@react-navigation/native";
-//Configuracion general
-import {PROFILE_SCREEN_ID} from '@utils/config';
-//Apis Generales
-import {apiScreen} from '@Apis/ApisGenerales';
+import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import MyTextButton from '@Components/common/MyTextButton';
 import ToolBar from '@Components/common/toolBar';
@@ -27,68 +23,39 @@ import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
-import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+//URL de server
+import {BASE_URL_IMG} from '@utils/config';
 
-function useBackButton(handler) {
+//tags.perfilScreen.perfil
+/*function useBackButton(handler) {
+  console.log('dentro de buttonback')
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handler);
-
+    console.log('me agrega?')
     return () => {
-      console.log('hardwareBackPress Close');
+      console.log('hardwareBackPress Close', handler);
       BackHandler.removeEventListener('hardwareBackPress', handler);
     };
   }, [handler]);
-}
+}*/
 
 export default function ProfileScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
-  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
-  const {actualizaEtiquetas,tags,updateTags,} = useContext(ScreentagContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => {} 
-
-  let idScreen = '0';
-
-  const [labels, setLabels] = useState({
-    cerrar: '',
-    codigov: '',
-    editar: '',
-    perfil: '',
-  });
-
+  const getInitialData = async () => {};
 
   useEffect(() => {
-    async function obtenerEtiquetas() {
-      ScreenId.forEach(screen => {
-        if (screen.code == PROFILE_SCREEN_ID) {
-          idScreen = screen._id;
-          console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
-        }
-      });
-      console.log('ID Del screen', idScreen);
-      let etiquetas = await apiScreen(idScreen);
-      if (etiquetas.length != 0) {
-        setLabels({
-          cerrar: etiquetas[0].description,
-          codigov: etiquetas[1].description,
-          editar: etiquetas[2].description,
-          perfil: etiquetas[3].description,
-        });
-      }
-      console.log(etiquetas, 'etiquetas en PROFILE');
-    }
-    obtenerEtiquetas();
-    if(isFocused){ 
+    if (isFocused) {
       getInitialData();
-      console.log('isFocused')
-  }
-  console.log('LAS ETIQUETAS GENERALES',tags)
+      console.log('isFocused Profile');
+    }
     return () => {};
   }, [props, isFocused]);
 
-  useBackButton(desconectarse);
+  // useBackButton(desconectarse);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -99,7 +66,9 @@ export default function ProfileScreen(props) {
         />
 
         <ToolBar
-          titulo={labels.perfil != '' ? labels.perfil :"Perfil"}
+          titulo={
+            tags.perfilScreen.perfil != '' ? tags.perfilScreen.perfil : 'Perfil'
+          }
           onPressLeft={() => goToScreen('Home')}
           iconLeft={true}
         />
@@ -113,7 +82,7 @@ export default function ProfileScreen(props) {
               <Avatar
                 rounded
                 source={{
-                  uri: `https://proyectocementeriogt.gq/images/${loginUser.usuario.avatar}`,
+                  uri: `${BASE_URL_IMG}${loginUser.usuario.avatar}`,
                 }}
                 size="large"
               />
@@ -145,12 +114,20 @@ export default function ProfileScreen(props) {
             {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
           </Text>
           <MyTextButton
-            titulo={labels.editar != '' ? labels.editar :"Editar datos personales"}
+            titulo={
+              tags.perfilScreen.editar != ''
+                ? tags.perfilScreen.editar
+                : 'Editar datos personales'
+            }
             style={{marginBottom: 20}}
             onPress={() => goToScreen('PersonalData')}
           />
         </View>
-        <Text style={styles.txtComponente}>{labels.codigov != '' ? labels.codigov :'Codigo de vendedor'}</Text>
+        <Text style={styles.txtComponente}>
+          {tags.perfilScreen.codigov != ''
+            ? tags.perfilScreen.codigov
+            : 'Codigo de vendedor'}
+        </Text>
         <View style={{backgroundColor: color.WHITE}}>
           <Text style={styles.txtComponente}>
             {loginUser.usuario.id_number}
@@ -159,7 +136,11 @@ export default function ProfileScreen(props) {
         <View style={styles.boxTransparent2} />
         <View style={{backgroundColor: color.WHITE}}>
           <TouchableOpacity onPress={() => desconectarse()}>
-            <Text style={styles.txtComponente}>{labels.cerrar != '' ? labels.cerrar :'Cerrar Sesión'}</Text>
+            <Text style={styles.txtComponente}>
+              {tags.perfilScreen.cerrar != ''
+                ? tags.perfilScreen.cerrar
+                : 'Cerrar Sesión'}
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={mainStyles.logo}>

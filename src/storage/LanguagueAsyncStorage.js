@@ -11,6 +11,16 @@ async function saveLanguague(languague) {
     return 'Error de sintaxis';
   }
 }
+async function updateLanguage(languague, tagFunction) {
+  try {
+    await AsyncStorage.setItem(LANGUAGUE_KEY, JSON.stringify(languague));
+    tagFunction();
+    return JSON.stringify(languague);
+  } catch (error) {
+    console.log('Error de sintaxis');
+    return 'Error de sintaxis';
+  }
+}
 
 async function getLanguague() {
   try {
@@ -33,4 +43,4 @@ async function deleteLanguague() {
   }
 }
 
-export {saveLanguague, getLanguague, deleteLanguague};
+export {saveLanguague, getLanguague, deleteLanguague, updateLanguage};

@@ -1,64 +1,87 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
-  View,
   Text,
+  View,
+  Platform,
+  ImageBackground,
+  StyleSheet,
   ScrollView,
   Image,
-  ImageBackground,
   TouchableOpacity,
-  StatusBar,
-  Alert,
 } from 'react-native';
+//URL de server
+import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Componentes
+import CardProducto from '@Components/CardProducto/';
+import MyFloatButton from '@Components/common/MyFloatButton';
+import ShoppingCarCard from '@Components/ShoppingCarCard/ShoppingCarCard';
+import InformationIcon from '@Components/common/InformationIcon';
+import CustomModal from '@Components/CustomModal/CustomModal';
+//Estilos Generales
+import color from '@styles/colors';
 import {
   mainStyles,
   CementeryScreen,
   informationIconStyles,
 } from '@styles/stylesGeneral';
-import {UsuarioContext} from '@context/UsuarioContext';
-import CardProducto from '@Components/CardProducto/';
+//Contextos
 import {CementeryContext} from '@context/CementeryContext';
-import MyFloatButton from '@Components/common/MyFloatButton';
-import color from '@styles/colors';
-import InformationIcon from '@Components/common/InformationIcon';
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.CompanyDetailScreen.mas != '' ? tags.CompanyDetailScreen.mas : 'Mas Populares'
 export default function CompanyScreen(props) {
-  const [login, loginAction] = useContext(UsuarioContext);
   const [cementery] = useContext(CementeryContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
+  const [customModal, setCustomModal] = useState(false);
+  const [imagenModal, setimagenModal] = useState(null);
+  const [cant, setcant] = useState(2);
 
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
+  const [shoppingCard, setShoppingCard] = useState(true);
+
+  // Cargar informacion de la vista
   useEffect(() => {
     console.log(cementery);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Company Detail');
+    }
     return () => {};
-  }, []);
+  }, [props, isFocused]);
+
+  function abrirModal(multimedia) {
+    setCustomModal(true);
+    setimagenModal(multimedia);
+  }
+
   return (
-    <ScrollView>
-      <View style={CementeryScreen.container}>
-        <StatusBar
-          backgroundColor={color.PRINCIPALCOLOR}
-          barStyle="dark-content"
-          translucent={true}
+    <View style={CementeryScreen.vista}>
+      <ImageBackground
+        source={{uri: cementery.urlImagen}}
+        resizeMode="stretch"
+        style={CementeryScreen.imgProducto}>
+        <Image
+          source={require('@images/logo.png')}
+          style={CementeryScreen.logoImage}
         />
-        <View>
-          <ImageBackground
-            source={{uri: cementery.urlImagen}}
-            resizeMode="stretch"
-            style={mainStyles.headerBackground}>
-            <Image
-              source={require('@images/logo.png')}
-              style={mainStyles.logoImage}
-            />
-          </ImageBackground>
-          <Text style={CementeryScreen.titleText}>{cementery.titulo}</Text>
-          <Text style={CementeryScreen.subtitleText}>
-            $$ • Mar • Arrecife • Perla
-          </Text>
-        </View>
+      </ImageBackground>
+      <View style={CementeryScreen.descripcion}>
+        <Text style={CementeryScreen.titulo}> {cementery.titulo} </Text>
+        <Text style={CementeryScreen.categorias}>
+          {' '}
+          $$ • Mar • Arrecife • Perla
+        </Text>
         <View style={CementeryScreen.HeaderView}>
           <InformationIcon
             tipo="font-awesome-5"
             image="dollar-sign"
             titulo="Free"
             subtitulo="Tour"
-            onPress={()=>{}}
+            onPress={() => {}}
           />
           <View style={informationIconStyles.verticleLine} />
           <InformationIcon
@@ -66,6 +89,7 @@ export default function CompanyScreen(props) {
             image="location-pin"
             titulo="Campeche"
             subtitulo="Ubicaciones"
+            onPress={() => {}}
           />
           <View style={informationIconStyles.verticleLine} />
           <InformationIcon
@@ -74,48 +98,87 @@ export default function CompanyScreen(props) {
             image="star"
             titulo="4.3"
             subtitulo="(200+ Ratings)"
+            onPress={() => {}}
           />
         </View>
-        <MyFloatButton
-          tipo="material-icon-community"
-          image="chevron-left"
-          left={true}
-          onPress={() => goToScreen('Home')}
-        />
-        <MyFloatButton
-          tipo="font-awesome-5"
-          image="expand"
-          onPress={() => {}}
-        />
       </View>
-      <View style={CementeryScreen.FooterView}>
-        <View style={[CementeryScreen.categories, CementeryScreen.titles]}>
-          <TouchableOpacity>
-            <Text style={CementeryScreen.titleFooterText}>
-              Todos los Productos
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={CementeryScreen.subtitleFooterText}>Perlas</Text>
-          </TouchableOpacity>
+      <ScrollView>
+        <View style={CementeryScreen.detalleProd}>
+          <View style={[CementeryScreen.categories, CementeryScreen.titles]}>
+            <TouchableOpacity>
+              <Text style={CementeryScreen.titleFooterText}>
+                {tags.CompanyDetailScreen.todos != ''
+                  ? tags.CompanyDetailScreen.todos
+                  : 'Todos los Productos'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text style={CementeryScreen.subtitleFooterText}>Perlas</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={CementeryScreen.title2Text}>
+            {tags.CompanyDetailScreen.mas != ''
+              ? tags.CompanyDetailScreen.mas
+              : 'Mas Populares'}
+          </Text>
+          <CardProducto
+            urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
+            titulo="Perla Magistral"
+            descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
+            precio="$ 12.50"
+          />
+          <CardProducto
+            urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
+            titulo="Perla oceano 2"
+            descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
+            precio="$ 16.90"
+          />
+          <View style={mainStyles.boxTransparent} />
         </View>
-        <Text style={CementeryScreen.title2Text}>Mas Populares</Text>
-        <CardProducto
-          urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
-          titulo="Perla Magistral"
-          descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-          precio="$ 12.50"
+      </ScrollView>
+      {/* Boton para regresar a la vista anterior */}
+      <MyFloatButton
+        tipo="material-icon-community"
+        image="chevron-left"
+        left={true}
+        onPress={() => goToScreen('Home')}
+      />
+      <MyFloatButton
+        tipo="font-awesome-5"
+        image="expand"
+        onPress={() => {
+          abrirModal(cementery.urlImagen);
+        }}
+      />
+      {/* Seccion de carrito de compra */}
+      {shoppingCard ? (
+        <ShoppingCarCard
+          tipo="ionicons"
+          image="shopping-basket"
+          onPress={() => {}}
+          cantidad={cant}
+          titulo={
+            cant > 1
+              ? tags.CompanyDetailScreen.label1p != ''
+                ? tags.CompanyDetailScreen.label1p
+                : ' Productos Agregados'
+              : tags.CompanyDetailScreen.label1s != ''
+              ? tags.CompanyDetailScreen.label1s
+              : 'Producto Agregado'
+          }
+          info="Perla, cemento, cremacion, traslado, hundimiento.."
+          total="$150.53"
         />
-        <CardProducto
-          urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
-          titulo="Perla oceano 2"
-          descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-          precio="$ 16.90"
+      ) : null}
+      {customModal == false ? null : (
+        <CustomModal
+          customModal={customModal}
+          setCustomModal={setCustomModal}
+          urlImagen={imagenModal}
         />
-      </View>
-    </ScrollView>
+      )}
+    </View>
   );
-
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
   }

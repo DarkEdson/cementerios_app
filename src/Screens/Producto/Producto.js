@@ -1,30 +1,66 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
   Platform,
+  Dimensions,
   StyleSheet,
   ScrollView,
   Image,
   TouchableOpacity,
 } from 'react-native';
+import Carousel from 'react-native-reanimated-carousel';
+
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+
+//URL de server
+import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Componentes
 import MyFloatButton from '@Components/common/MyFloatButton';
 import InformationIcon from '@Components/common/InformationIcon';
+import CustomModal from '@Components/CustomModal/CustomModal';
+//Estilos Generales
 import color from '@styles/colors';
 import {
   mainStyles,
   CementeryScreen,
   informationIconStyles,
 } from '@styles/stylesGeneral';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
+import CardMultimedia from '../../Components/CardMultimedia';
 
+const PAGE_WIDTH = Dimensions.get('screen').width;
+
+//tags.ProductDetailScreen.btnagregar != '' ? tags.ProductDetailScreen.btnagregar :
 export default function VistaProducto(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+  const [customModal, setCustomModal] = useState(false);
+  const [imagenModal, setimagenModal] = useState(null);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
+  const progressValue = useSharedValue(0);
+  const baseOptions = {
+    vertical: false,
+    width: PAGE_WIDTH,
+    height: PAGE_WIDTH * 0.41,
+  };
+
   // Cargar informacion de la vista
   useEffect(() => {
     // Actualizar valores de la vista
     setPropsVista({
       nombre: 'Perla Oceano',
-      urlImagenPrincipal:
-        'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+      urlImagenPrincipal: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
       tags: '$ Arrecife - Perla - Diamante',
       precio: {
         label: 'Precio',
@@ -38,16 +74,14 @@ export default function VistaProducto(props) {
         valor: 4.9,
         label: 'Ratink',
       },
-      label1: 'Detalle',
       detalleProd: 'Perla, cemento, cremacion, traslado, hundimiento.',
       urlMultimedia: [
-        'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_3.jpg`,
+        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_4.jpg`,
+        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_5.jpg`,
+        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_6.jpg`,
+        `${BASE_URL_IMG}${PRODUCTS_URL}perla/perla_vid1.mp4`,
       ],
-      label2: 'Agregar',
     });
 
     // Actualizar valores de la sede seleccionada
@@ -55,13 +89,16 @@ export default function VistaProducto(props) {
       nombre: 'Campeche',
       id: 10,
     });
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused in Product Detail');
+    }
+  }, [props, isFocused]);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
     nombre: '',
-    urlImagenPrincipal:
-      'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+    urlImagenPrincipal: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
     tags: '',
     precio: {
       label: '',
@@ -75,10 +112,8 @@ export default function VistaProducto(props) {
       valor: 0,
       label: '',
     },
-    label1: '',
     detalleProd: '',
     urlMultimedia: [],
-    label2: '',
   });
   // Variables de trabajo
   const [sede, setSede] = useState({
@@ -98,6 +133,11 @@ export default function VistaProducto(props) {
     let disminuye = cantProductos;
     console.log(disminuye, 'disminuye');
     setCantProductos(disminuye - 1);
+  }
+
+  function abrirModal(multimedia) {
+    setCustomModal(true);
+    setimagenModal(multimedia);
   }
 
   return (
@@ -138,21 +178,102 @@ export default function VistaProducto(props) {
       </View>
       <ScrollView>
         <View style={styles.detalleProd}>
-          <Text style={styles.titulo2}> {propsVista.label1} </Text>
+          <Text style={styles.titulo2}>
+            {' '}
+            {tags.ProductDetailScreen.detalle != ''
+              ? tags.ProductDetailScreen.detalle
+              : 'Detalle'}{' '}
+          </Text>
           <Text style={styles.descDato} numberOfLines={2}>
             {propsVista.detalleProd}
           </Text>
           <View style={styles.multimedia}>
-            <ScrollView horizontal={true}>
-              {propsVista.urlMultimedia.map(url => {
-                <Image
-                  style={styles.imgDetalle}
-                  source={{
-                    uri: url,
-                  }}
-                />;
-              })}
-            </ScrollView>
+            <Carousel
+              {...baseOptions}
+              style={{
+                justifyContent: 'center',
+                alignSelf: 'center',
+              }}
+              loop={true}
+              pagingEnabled={true}
+              snapEnabled={true}
+              autoPlay={true}
+              autoPlayInterval={1500}
+              onProgressChange={(_, absoluteProgress) =>
+                (progressValue.value = absoluteProgress)
+              }
+              mode="parallax"
+              modeConfig={{
+                parallaxScrollingScale: 0.85,
+                parallaxScrollingOffset: 260,
+              }}
+              data={propsVista.urlMultimedia}
+              renderItem={({item}) => {
+                return (
+                  <CardMultimedia
+                    style={styles.imgDetalle}
+                    urlImagen={item}
+                    onPressMultimedia={() => {
+                      abrirModal(item);
+                    }}
+                    textStyle={styles.imgTitulo}
+                  />
+                );
+              }}
+            />
+            {!!progressValue && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: 100,
+                  marginTop: 10,
+                  alignSelf: 'center',
+                }}>
+                {propsVista.urlMultimedia.map((item, index) => {
+                  console.log('EN BOTONCITOS', index, item);
+                  return (
+                    <PaginationItem
+                      animValue={progressValue}
+                      index={index}
+                      key={index}
+                      length={propsVista.urlMultimedia.length}
+                    />
+                  );
+                })}
+              </View>
+            )}
+            <View style={styles.numCant}>
+              <TouchableOpacity
+                style={styles.btnCant}
+                onPress={() => {
+                  if (cantProductos <= 1) {
+                    console.log('no puede ser 0');
+                  } else {
+                    resta();
+                  }
+                }}>
+                <Text style={styles.txtCantBtn}> - </Text>
+              </TouchableOpacity>
+              <Text style={styles.txtCant}> {cantProductos} </Text>
+              <TouchableOpacity
+                style={styles.btnCant}
+                onPress={() => {
+                  suma();
+                }}>
+                <Text style={styles.txtCantBtn}> + </Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={styles.btnAgregar}
+              onPress={() => goToScreen('Payments')}>
+              <Text style={styles.txtAgregar}>
+                {tags.ProductDetailScreen.btnagregar != ''
+                  ? tags.ProductDetailScreen.btnagregar
+                  : 'Agregar'}
+              </Text>
+            </TouchableOpacity>
+            <View style={mainStyles.boxTransparent} />
           </View>
         </View>
       </ScrollView>
@@ -163,35 +284,54 @@ export default function VistaProducto(props) {
         left={true}
         onPress={() => goToScreen('Initial')}
       />
-      {/* Seccion para agregar producto al carrito */}
-      <View style={styles.agregarProducto}>
-        <View style={styles.numCant}>
-          <TouchableOpacity
-            style={styles.btnCant}
-            onPress={() => {
-              resta();
-            }}>
-            <Text style={styles.txtCantBtn}> - </Text>
-          </TouchableOpacity>
-          <Text style={styles.txtCant}> {cantProductos} </Text>
-          <TouchableOpacity
-            style={styles.btnCant}
-            onPress={() => {
-              suma();
-            }}>
-            <Text style={styles.txtCantBtn}> + </Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={styles.btnAgregar}
-          onPress={() => goToScreen('Payments')}>
-          <Text style={styles.txtAgregar}>{propsVista.label2}</Text>
-        </TouchableOpacity>
-      </View>
+      {customModal == false ? null : (
+        <CustomModal
+          customModal={customModal}
+          setCustomModal={setCustomModal}
+          urlImagen={imagenModal}
+        />
+      )}
     </View>
   );
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
+  }
+
+  function PaginationItem(index, length, animValue) {
+    const width = 10;
+
+    const animStyle = useAnimatedStyle(() => {
+      return {
+        width: animValue?.value,
+      };
+    }, [width]);
+
+    return (
+      <View
+        style={{
+          backgroundColor: 'white',
+          width,
+          height: width,
+          borderRadius: 50,
+          overflow: 'hidden',
+          transform: [
+            {
+              rotateZ: '0deg',
+            },
+          ],
+        }}>
+        <Animated.View
+          style={[
+            {
+              borderRadius: 50,
+              backgroundColor: color.PRINCIPALCOLOR,
+              flex: 1,
+            },
+            animStyle,
+          ]}
+        />
+      </View>
+    );
   }
 }
 
@@ -276,10 +416,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   imgDetalle: {
-    height: 140,
-    width: 140,
+    height: 150,
+    width: 150,
     borderRadius: 20,
-    marginRight: 20,
+  },
+  imgTitulo: {
+    fontWeight: '700',
+    fontSize: 16,
+    textAlign: 'left',
+    marginTop: 5,
+    marginBottom: 5,
   },
   scroll: {
     height: '80%',

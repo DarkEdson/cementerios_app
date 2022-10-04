@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -7,38 +7,59 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//URL de server
+import {BASE_URL_IMG} from '@utils/config';
+//Componentes
 import ToolBar from '@Components/common/toolBar';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.PromotionsScreen.labelpromociones
+//tags.PromoScreen.labelbtn != '' ? tags.PromoScreen.labelbtn :
 export default function VistaCodigoPromocion(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   // Cargar informacion de la vista
   useEffect(() => {
-    // Actualizar valores de la vista
-    setPropsVista({
-      label1: 'Agregar una promoción',
-      labelInput: 'Ingresa el código de promo...',
-      labelBtn: 'Agregar una promo',
-    });
-  }, []);
-
-  // Variables de la vista
-  const [propsVista, setPropsVista] = useState({
-    label1: '',
-    labelInput: '',
-    labelBtn: '',
-  });
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Promo Code');
+    }
+  }, [props, isFocused]);
 
   return (
     <View style={styles.vista}>
       <ToolBar
-        titulo={propsVista.label1}
+        titulo={
+          tags.PromoScreen.titulo != ''
+            ? tags.PromoScreen.titulo
+            : 'Agregar una promoción'
+        }
         onPressLeft={() => goToScreen('Payments')}
         iconLeft={true}
       />
       <View style={styles.searchSection}>
-        <TextInput style={styles.input} placeholder={propsVista.labelInput} />
+        <TextInput
+          style={styles.input}
+          placeholder={
+            tags.PromoScreen.placeholder != ''
+              ? tags.PromoScreen.placeholder
+              : 'Ingresa el código de promo...'
+          }
+        />
       </View>
       <TouchableOpacity style={styles.btnAgregar}>
-        <Text style={styles.txtAgregar}> {propsVista.labelBtn} </Text>
+        <Text style={styles.txtAgregar}>
+          {' '}
+          {tags.PromoScreen.labelbtn != ''
+            ? tags.PromoScreen.labelbtn
+            : 'Agregar una promo'}{' '}
+        </Text>
       </TouchableOpacity>
     </View>
   );

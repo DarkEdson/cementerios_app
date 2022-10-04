@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,12 +10,30 @@ import {
   ScrollView,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Estilos Generales
 import {mainStyles, loginStyles} from '@styles/stylesGeneral';
-import MyTextInput from '@Components/common/MyTextInput';
 import color from '@styles/colors';
+//Componentes
+import MyTextInput from '@Components/common/MyTextInput';
 import ToolBar from '@Components/common/toolBar';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.PasswordRecoveryScreen.btn != '' ? tags.PasswordRecoveryScreen.btn :
 export default function RecuperarPasswordScreen(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
+  useEffect(() => {
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Promo');
+    }
+  }, [props, isFocused]);
   return (
     <ScrollView
       keyboardDismissMode="on-drag"
@@ -23,7 +41,11 @@ export default function RecuperarPasswordScreen(props) {
       style={{backgroundColor: color.WHITE}}>
       <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
       <ToolBar
-        titulo="Contraseña"
+        titulo={
+          tags.PasswordRecoveryScreen.titulo != ''
+            ? tags.PasswordRecoveryScreen.titulo
+            : 'Contraseña'
+        }
         onPressLeft={() => goToScreen('Login')}
         iconLeft={true}
       />
@@ -41,15 +63,28 @@ export default function RecuperarPasswordScreen(props) {
             />
           </ImageBackground>
         </View>
-        <Text style={mainStyles.titleText}>Recuperar{'\n'}Contraseña</Text>
+        <Text style={mainStyles.titleText}>
+          {tags.PasswordRecoveryScreen.recuperar != ''
+            ? tags.PasswordRecoveryScreen.recuperar
+            : 'Recuperar Contraseña'}
+        </Text>
         <MyTextInput
           keyboardType="email-address"
-          placeholder="E-mail"
+          placeholder={
+            tags.PasswordRecoveryScreen.email != ''
+              ? tags.PasswordRecoveryScreen.email
+              : 'E-mail'
+          }
           image="account-circle"
         />
         <View style={mainStyles.btnMain}>
           <TouchableOpacity onPress={() => recuperarClave()}>
-            <Text style={mainStyles.btntxt}> Recuperar</Text>
+            <Text style={mainStyles.btntxt}>
+              {' '}
+              {tags.PasswordRecoveryScreen.btn != ''
+                ? tags.PasswordRecoveryScreen.btn
+                : 'Recuperar'}
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={loginStyles.boxTransparent} />

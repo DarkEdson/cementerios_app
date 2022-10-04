@@ -1,15 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Text, View, StyleSheet, StatusBar, ScrollView} from 'react-native';
-import ToolBar from '@Components/common/toolBar';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Estilos Generales
 import color from '@styles/colors';
+//Componentes
+import ToolBar from '@Components/common/toolBar';
 import CardPromocion from '@Components/CardPromocion/';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.PromotionsScreen.labelpromociones
+//tags.PromotionsScreen.labelpromociones != '' ? tags.PromotionsScreen.labelpromociones :
 export default function PromoScreen(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   // Cargar informacion de la vista
   useEffect(() => {
     // Actualizar valores de la vista
     setPropsVista({
-      label1: 'Promociones',
       descuentos: [
         {
           titulo: '30% de descuento',
@@ -88,11 +100,14 @@ export default function PromoScreen(props) {
         },
       ],
     });
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Promo');
+    }
+  }, [props, isFocused]);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
-    label1: '',
     descuentos: [],
   });
 
@@ -104,7 +119,11 @@ export default function PromoScreen(props) {
         translucent={true}
       />
       <ToolBar
-        titulo={propsVista.label1}
+        titulo={
+          tags.PromotionsScreen.labelpromociones != ''
+            ? tags.PromotionsScreen.labelpromociones
+            : 'Promociones.'
+        }
         onPressLeft={() => goToScreen('Initial')}
         iconLeft={true}
       />

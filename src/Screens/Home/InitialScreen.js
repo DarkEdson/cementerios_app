@@ -12,18 +12,15 @@ import {Icon} from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 //Recarga la screen
-import { useIsFocused } from "@react-navigation/native";
-//Configuracion general
-import {HOME_SCREEN_ID} from '@utils/config';
+import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
 import {mainStyles, loginStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
-//Apis Generales
-import {apiScreen} from '@Apis/ApisGenerales';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {CementeryContext} from '@context/CementeryContext';
-import {ScreenIdContext} from '@context/ScreensIDsContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
+import {CountriesContext} from '@context/CountriesContext';
 //Componentes
 import CardPromocion from '@Components/CardPromocion/';
 import BtnCategoria from '@Components/BtnCategoria/';
@@ -33,26 +30,17 @@ import CardColaborador from '@Components/CardColaborador/';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
+//tags.HomeScreen.ubica
+//tags.HomeScreen.ubica != '' ? tags.HomeScreen.ubica :
 export default function InitialScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
-  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
+  const [countries, setCountries] = useContext(CountriesContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
   const isFocused = useIsFocused();
-  const getInitialData = async () => {} 
+  const getInitialData = async () => {};
 
-  const [ubicaciones, setubicaciones] = useState([
-    {label: 'Guatemala, GT', value: 'GTM'},
-    {label: 'Mexico, MX', value: 'MXN'},
-  ]);
-
-  const [labels, setLabels] = useState({
-    inputsearch: '',
-    labelcementarios: '',
-    labelvertodos: '',
-    ubica: '',
-  });
-
-  let idScreen = '0';
+  const [ubicaciones, setubicaciones] = useState([]);
 
   const ref = useRef < ICarouselInstance > null;
   const baseOptions = {
@@ -136,30 +124,22 @@ export default function InitialScreen(props) {
   ]);
 
   useEffect(() => {
-    async function obtenerEtiquetas() {
-      ScreenId.forEach(screen => {
-        if (screen.code == HOME_SCREEN_ID) {
-          idScreen = screen._id;
-          console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
-        }
-      });
-      console.log('ID Del screen', idScreen);
-      let etiquetas = await apiScreen(idScreen);
-      if (etiquetas.length != 0) {
-        setLabels({
-          inputsearch: etiquetas[0].description,
-          labelcementarios: etiquetas[1].description,
-          labelvertodos: etiquetas[2].description,
-          ubica: etiquetas[3].description,
+    function misUbicaciones() {
+      let getUbicaciones = [];
+      countries.forEach(country => {
+        getUbicaciones.push({
+          label: `${country.name}, ${country.code.toUpperCase()}`,
+          value: country.code,
         });
-      }
-      console.log(etiquetas, 'etiquetas en HOME');
+      });
+      setubicaciones(getUbicaciones);
     }
-    obtenerEtiquetas();
-    if(isFocused){ 
+
+    if (isFocused) {
       getInitialData();
-      console.log('isFocused')
-  }
+      console.log('isFocused in Start Screen');
+    }
+    misUbicaciones();
     return () => {};
   }, [props, isFocused]);
 
@@ -171,7 +151,9 @@ export default function InitialScreen(props) {
         translucent={true}
       />
       <ToolBarSession
-        titulo={labels.ubica != '' ? labels.ubica : "Ubicación"}
+        titulo={
+          tags.HomeScreen.ubica != '' ? tags.HomeScreen.ubica : 'Ubicación'
+        }
         ubicaciones={ubicaciones}
         onSelectUbication={() => {
           console.log('cambia ubicacion seleccionada');
@@ -185,8 +167,16 @@ export default function InitialScreen(props) {
           <SelectDropdown
             data={data}
             search
-            defaultButtonText={labels.inputsearch != '' ? labels.inputsearch : "Cementerios, arrecifes o flores..."}
-            searchPlaceHolder={labels.inputsearch != '' ? labels.inputsearch : "Cementerios, arrecifes o flores..."}
+            defaultButtonText={
+              tags.HomeScreen.inputsearch != ''
+                ? tags.HomeScreen.inputsearch
+                : 'Cementerios, arrecifes o flores...'
+            }
+            searchPlaceHolder={
+              tags.HomeScreen.inputsearch != ''
+                ? tags.HomeScreen.inputsearch
+                : 'Cementerios, arrecifes o flores...'
+            }
             buttonTextStyle={{textAlign: 'left'}}
             buttonStyle={styles.btnStyle}
             renderDropdownIcon={isOpened => {
@@ -246,9 +236,17 @@ export default function InitialScreen(props) {
             />
           </View>
           <View style={[styles.categories, styles.titles]}>
-            <Text style={styles.titleText}>{labels.labelcementarios != '' ? labels.labelcementarios :'Cementerios'}</Text>
+            <Text style={styles.titleText}>
+              {tags.HomeScreen.labelcementarios != ''
+                ? tags.HomeScreen.labelcementarios
+                : 'Cementerios'}
+            </Text>
             <MyTextButton
-              titulo={labels.labelvertodos != '' ? labels.labelvertodos :"Ver todos"}
+              titulo={
+                tags.HomeScreen.labelvertodos != ''
+                  ? tags.HomeScreen.labelvertodos
+                  : 'Ver todos'
+              }
               underline={true}
               color="blue"
               onPress={() => goToScreen('Cementeries')}

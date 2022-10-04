@@ -7,68 +7,40 @@ import {
   ScrollView,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
-//Configuracion general
-import {LOGIN_SCREEN_ID} from '@utils/config';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
 import {mainStyles, loginStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
-//Apis Generales
-import {apiScreen} from '@Apis/ApisGenerales';
 //Componentes
 import MyTextInput from '@Components/common/MyTextInput';
 import MyButton from '@Components/common/MyButton';
 import MyTextButton from '@Components/common/MyTextButton';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
-import {LanguaguesContext} from '@context/LanguaguesContext';
-import {ScreenIdContext} from '@context/ScreensIDsContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
 import {AuthContext} from '@context/AuthContext';
 
+//tags.loginScreen.ubica
 export default function LoginScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
-  const [Languagues, setLanguagues] = useContext(LanguaguesContext);
-  const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const {login} = useContext(AuthContext);
-  const [labels, setLabels] = useState({
-    btnlogin: '',
-    contrasena: '',
-    inputpassword: '',
-    inputusuario: '',
-    label1: '',
-  });
+  const {tags, updateTags} = useContext(ScreentagContext);
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
   const [hidePassword, setHidePassword] = useState(true);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  let idScreen = '0';
 
   useEffect(() => {
-    async function obtenerEtiquetas() {
-      console.log('Listado de Screen', ScreenId);
-      ScreenId.forEach(screen => {
-        if (screen.code == LOGIN_SCREEN_ID) {
-          idScreen = screen._id;
-          console.log('DATOS DEL SCREEN A OBTENER ETIQUETAS', screen);
-        }
-      });
-      console.log('ID Del screen', idScreen);
-      let etiquetas = await apiScreen(idScreen);
-      if (etiquetas.length != 0) {
-        setLabels({
-          btnlogin: etiquetas[0].description,
-          contrasena: etiquetas[1].description,
-          inputpassword: etiquetas[2].description,
-          inputusuario: etiquetas[3].description,
-          label1: etiquetas[4].description,
-        });
-      }
-      console.log(etiquetas, 'etiquetas en LOGIN');
-    }
-    obtenerEtiquetas();
     setEmail('');
     setPassword('');
-    console.log(Languagues);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused in Login');
+    }
     return () => {};
-  }, []);
+  }, [props, isFocused]);
 
   return (
     <ScrollView>
@@ -88,7 +60,9 @@ export default function LoginScreen(props) {
         <MyTextInput
           keyboardType="email-address"
           placeholder={
-            labels.inputusuario != '' ? labels.inputusuario : 'Usuario.'
+            tags.loginScreen.inputusuario != ''
+              ? tags.loginScreen.inputusuario
+              : 'Usuario.'
           }
           image="account-circle"
           value={email}
@@ -97,7 +71,9 @@ export default function LoginScreen(props) {
         <MyTextInput
           keyboardType={null}
           placeholder={
-            labels.inputpassword != '' ? labels.inputpassword : 'Password.'
+            tags.loginScreen.inputpassword != ''
+              ? tags.loginScreen.inputpassword
+              : 'Password.'
           }
           image="lock"
           value={password}
@@ -108,21 +84,25 @@ export default function LoginScreen(props) {
         />
         <MyTextButton
           titulo={
-            labels.label1 != ''
-              ? labels.label1
+            tags.loginScreen.label1 != ''
+              ? tags.loginScreen.label1
               : 'Si no tiene cuenta, suscribase.'
           }
           margin={true}
           onPress={() => goToScreen('Registro')}
         />
         <MyButton
-          titulo={labels.btnlogin != '' ? labels.btnlogin : 'LOGIN.'}
+          titulo={
+            tags.loginScreen.btnlogin != ''
+              ? tags.loginScreen.btnlogin
+              : 'LOGIN.'
+          }
           onPress={() => iniciarSesion()}
         />
         <MyTextButton
           titulo={
-            labels.contrasena != ''
-              ? labels.contrasena
+            tags.loginScreen.contrasena != ''
+              ? tags.loginScreen.contrasena
               : 'Olvide mi Contraseña.'
           }
           underline={true}

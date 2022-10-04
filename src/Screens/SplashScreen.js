@@ -13,8 +13,10 @@ import {UsuarioContext} from '@context/UsuarioContext';
 import {LanguaguesContext} from '@context/LanguaguesContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {CountriesContext} from '@context/CountriesContext';
 //Apis
 import {apiLanguage, apiIdScreens} from '@Apis/ApisGenerales';
+import locationsApi from '@Apis/LocationsApi';
 //Async Storages
 import {getUsuario} from '@storage/UsuarioAsyncStorage';
 import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
@@ -24,7 +26,8 @@ export default function SplashScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
-  const {actualizaEtiquetas,tags,updateTags,} = useContext(ScreentagContext);
+  const [countries, setCountries] = useContext(CountriesContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
 
   const [bienvenida, setbienvenida] = useState('es');
   let deviceLanguage =
@@ -34,8 +37,11 @@ export default function SplashScreen(props) {
       : NativeModules.I18nManager.localeIdentifier;
   let defaultLanguage = deviceLanguage.substr(0, 2);
 
+  //variable para limpiar el async storage
   const clear = false;
+
   useEffect(() => {
+    //limpia el async storage por completo cambiando la variable clear a TRUE
     if (clear) {
       console.log(clear);
       clearAsyncStorage = async () => {
@@ -106,14 +112,19 @@ export default function SplashScreen(props) {
       setbienvenida(lenguaje.code);
     }
   }
+  async function fetchCountries() {
+    const response = await locationsApi();
+    console.log('LOCATIONS', response);
+    setCountries(response);
+  }
 
   async function fetchSesion(loginAction) {
     const response = await getUsuario();
     const pantallasID = await apiIdScreens();
     setScreenId(pantallasID);
-    pantallasID.forEach((pantalla)=>{
+    pantallasID.forEach(pantalla => {
       updateTags(pantalla);
-    })
+    });
     if (response == null) {
       setTimeout(() => {
         goToScreen('Login');
@@ -121,6 +132,7 @@ export default function SplashScreen(props) {
       return;
     }
     loginAction({type: 'sign-in', data: response});
+    fetchCountries();
     setTimeout(() => {
       goToScreen('Home');
     }, 1000);

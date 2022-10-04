@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -9,11 +9,25 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
-import ToolBar from '@Components/common/toolBar';
+//URL de server
+import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+//Recarga la screen
+import {useIsFocused} from '@react-navigation/native';
+//Estilos Generales
 import color from '@styles/colors';
+//Componentes
+import ToolBar from '@Components/common/toolBar';
 import CardProducto from '@Components/CardProducto/index';
+//Contextos
+import {ScreentagContext} from '@context/ScreentagsContext';
 
+//tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
+  const {tags, updateTags} = useContext(ScreentagContext);
+
+  const isFocused = useIsFocused();
+  const getInitialData = async () => {};
+
   // Cargar informacion de la vista
   useEffect(() => {
     // Actualizar valores de la vista
@@ -22,8 +36,7 @@ export default function VistaProductos(props) {
       labelSearch: 'Cementerio, Producto, Categoría...',
       productos: [
         {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`,
           titulo: 'Perla Magistral 2',
           descripcion: 'Diamante, Oro..',
           precio: '$ 16.90',
@@ -32,8 +45,7 @@ export default function VistaProductos(props) {
           idCementerio: 1,
         },
         {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
           titulo: 'Perla oceano 2',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
           precio: '$ 16.90',
@@ -42,8 +54,7 @@ export default function VistaProductos(props) {
           idCementerio: 2,
         },
         {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`,
           titulo: 'Perla Magistral 2',
           descripcion: 'Diamante, Oro..',
           precio: '$ 16.90',
@@ -52,8 +63,7 @@ export default function VistaProductos(props) {
           idCementerio: 1,
         },
         {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_4.jpg`,
           titulo: 'Perla oceano 2',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
           precio: '$ 16.90',
@@ -62,8 +72,7 @@ export default function VistaProductos(props) {
           idCementerio: 2,
         },
         {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_5.jpg`,
           titulo: 'Perla oceano 2',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
           precio: '$ 16.90',
@@ -72,8 +81,7 @@ export default function VistaProductos(props) {
           idCementerio: 2,
         },
         {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_6.jpg`,
           titulo: 'Perla Magistral 2',
           descripcion: 'Diamante, Oro..',
           precio: '$ 16.90',
@@ -82,8 +90,7 @@ export default function VistaProductos(props) {
           idCementerio: 1,
         },
         {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_7.jpg`,
           titulo: 'Perla oceano 2',
           descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
           precio: '$ 16.90',
@@ -96,8 +103,7 @@ export default function VistaProductos(props) {
 
     setArrProductosDisp([
       {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`,
         titulo: 'Perla Magistral 2',
         descripcion: 'Diamante, Oro..',
         precio: '$ 16.90',
@@ -106,8 +112,7 @@ export default function VistaProductos(props) {
         idCementerio: 1,
       },
       {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
         titulo: 'Perla oceano 2',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
         precio: '$ 16.90',
@@ -116,8 +121,7 @@ export default function VistaProductos(props) {
         idCementerio: 2,
       },
       {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`,
         titulo: 'Perla Magistral 2',
         descripcion: 'Diamante, Oro..',
         precio: '$ 16.90',
@@ -126,8 +130,7 @@ export default function VistaProductos(props) {
         idCementerio: 1,
       },
       {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_4.jpg`,
         titulo: 'Perla oceano 2',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
         precio: '$ 16.90',
@@ -136,8 +139,7 @@ export default function VistaProductos(props) {
         idCementerio: 2,
       },
       {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_5.jpg`,
         titulo: 'Perla oceano 2',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
         precio: '$ 16.90',
@@ -146,8 +148,7 @@ export default function VistaProductos(props) {
         idCementerio: 2,
       },
       {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_6.jpg`,
         titulo: 'Perla Magistral 2',
         descripcion: 'Diamante, Oro..',
         precio: '$ 16.90',
@@ -156,8 +157,7 @@ export default function VistaProductos(props) {
         idCementerio: 1,
       },
       {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
+        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_7.jpg`,
         titulo: 'Perla oceano 2',
         descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
         precio: '$ 16.90',
@@ -166,7 +166,11 @@ export default function VistaProductos(props) {
         idCementerio: 2,
       },
     ]);
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused in Products');
+    }
+  }, [props, isFocused]);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
@@ -186,7 +190,11 @@ export default function VistaProductos(props) {
         translucent={true}
       />
       <ToolBar
-        titulo={propsVista.label1}
+        titulo={
+          tags.ProductsScreen.labelproductos != ''
+            ? tags.ProductsScreen.labelproductos
+            : 'Productos'
+        }
         onPressLeft={() => goToScreen('Initial')}
         iconLeft={true}
       />
@@ -194,7 +202,11 @@ export default function VistaProductos(props) {
         <View style={styles.searchSection}>
           <TextInput
             style={styles.input}
-            placeholder={propsVista.labelSearch}
+            placeholder={
+              tags.ProductsScreen.labelsearch1 != ''
+                ? tags.ProductsScreen.labelsearch1
+                : 'Cementerio, Producto, Categoría...'
+            }
             onChangeText={val => {
               setArrProductosDisp(
                 propsVista.productos.filter(
@@ -220,9 +232,10 @@ export default function VistaProductos(props) {
 
       <ScrollView style={styles.scroll}>
         <View style={styles.containerHeader}>
-          {arrProductosDisp.map(promo => {
+          {arrProductosDisp.map((promo, key) => {
             return (
               <CardProducto
+                key={key}
                 onPressProduct={() => goToScreen('Product')}
                 urlImagen={promo.urlImagen}
                 titulo={promo.titulo}
