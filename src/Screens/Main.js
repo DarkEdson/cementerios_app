@@ -11,7 +11,8 @@ import {ScreentagProvider} from '@context/ScreentagsContext';
 import {CountriesProvider} from '@context/CountriesContext';
 import {ProductProvider} from '@context/ProductContext';
 import {ShoppingCartProvider} from '@context/ShoppingCartContext';
-import {RouteBackProvider} from '../context/RouteBackContext';
+import {RouteBackProvider} from '@context/RouteBackContext';
+import {CountryProvider} from '@context/CountryContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -26,21 +27,23 @@ const MainPage = () => {
               <RegisterProvider>
                 <ShoppingCartProvider>
                   <CountriesProvider>
-                    <CementeryProvider>
-                      <ProductProvider>
-                        <CreditCardProvider>
-                          <RouteBackProvider>
-                            {
-                              //el ultimo nivel, la app
-                            }
-                            <AppNavigations />
-                            {
-                              //
-                            }
-                          </RouteBackProvider>
-                        </CreditCardProvider>
-                      </ProductProvider>
-                    </CementeryProvider>
+                    <CountryProvider>
+                      <CementeryProvider>
+                        <ProductProvider>
+                          <CreditCardProvider>
+                            <RouteBackProvider>
+                              {
+                                //el ultimo nivel, la app
+                              }
+                              <AppNavigations />
+                              {
+                                //
+                              }
+                            </RouteBackProvider>
+                          </CreditCardProvider>
+                        </ProductProvider>
+                      </CementeryProvider>
+                    </CountryProvider>
                   </CountriesProvider>
                 </ShoppingCartProvider>
               </RegisterProvider>

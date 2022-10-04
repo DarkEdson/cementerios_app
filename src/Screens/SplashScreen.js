@@ -14,6 +14,7 @@ import {LanguaguesContext} from '@context/LanguaguesContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {CountriesContext} from '@context/CountriesContext';
+import {CountryContext} from '@context/CountryContext';
 //Apis
 import {apiLanguage, apiIdScreens} from '@Apis/ApisGenerales';
 import locationsApi from '@Apis/LocationsApi';
@@ -21,12 +22,14 @@ import locationsApi from '@Apis/LocationsApi';
 import {getUsuario} from '@storage/UsuarioAsyncStorage';
 import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getcountry} from '@storage/CountryAsyncStorage';
 
 export default function SplashScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
   const [countries, setCountries] = useContext(CountriesContext);
+  const {saveDefaultCountry, updateDefaultCountry} = useContext(CountryContext);
   const {tags, updateTags} = useContext(ScreentagContext);
 
   const [bienvenida, setbienvenida] = useState('es');
@@ -78,35 +81,26 @@ export default function SplashScreen(props) {
   async function obtenerLenguaje(defecto) {
     const response = await apiLanguage();
     setLanguagues(response);
-    console.log('ARRAY de lenguajes', response);
     const lenguaje = await getLanguague();
     console.log(lenguaje, 'lenguaje que esta guardado');
     if (lenguaje == null) {
       response.forEach(element => {
         if (element.code == defecto) {
           setbienvenida(element.code);
-          saveLanguague(element).then(msg => {
-            console.log('lenguaje defecto guardado');
-          });
+          saveLanguague(element).then(msg => {});
         } else {
           setbienvenida(response[0].code);
-          saveLanguague(response[0]).then(msg => {
-            console.log('lenguaje posicion 1 guardado');
-          });
+          saveLanguague(response[0]).then(msg => {});
         }
       });
     } else {
       response.forEach(element => {
         if (element._id == lenguaje._id) {
           setbienvenida(lenguaje.code);
-          saveLanguague(lenguaje).then(msg => {
-            console.log('lenguaje confirmado guardado ');
-          });
+          saveLanguague(lenguaje).then(msg => {});
         } else if (element.code == lenguaje.code) {
           setbienvenida(element.code);
-          saveLanguague(element).then(msg => {
-            console.log('lenguaje actualizado');
-          });
+          saveLanguague(element).then(msg => {});
         }
       });
 
@@ -115,8 +109,15 @@ export default function SplashScreen(props) {
   }
   async function fetchCountries() {
     const response = await locationsApi();
-    console.log('LOCATIONS', response);
+    const pais = await getcountry();
     setCountries(response);
+    if (response != null) {
+      if (pais == null) {
+        saveDefaultCountry(response[0]);
+      } else {
+        updateDefaultCountry(pais);
+      }
+    }
   }
 
   async function fetchSesion(loginAction) {

@@ -4,6 +4,7 @@ import {
   Text,
   ScrollView,
   StyleSheet,
+  ActivityIndicator,
   Dimensions,
   StatusBar,
   Alert,
@@ -22,6 +23,7 @@ import {CementeryContext} from '@context/CementeryContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {CountriesContext} from '@context/CountriesContext';
 import {RouteBackContext} from '@context/RouteBackContext';
+import {CountryContext} from '@context/CountryContext';
 //Componentes
 import CardPromocion from '@Components/CardPromocion/';
 import BtnCategoria from '@Components/BtnCategoria/';
@@ -40,6 +42,9 @@ export default function InitialScreen(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
+  const {country, updateDefaultCountry, isLoadingCountry, getDefaultCountry} =
+    useContext(CountryContext);
+
   const [ubicationSelect, setubicationSelect] = useState({
     label: `${countries[0].name}, ${countries[0].code.toUpperCase()}`,
     value: countries[0].code,
@@ -146,7 +151,7 @@ export default function InitialScreen(props) {
           value: country.code,
         });
       });
-      console.log(ubicationSelect, 'DEFAULT');
+      console.log(country, 'DEFAULT');
       setubicaciones(getUbicaciones);
     }
 
@@ -161,141 +166,156 @@ export default function InitialScreen(props) {
       labelcementarios: tags.HomeScreen.labelcementarios,
       labelvertodos: tags.HomeScreen.labelvertodos,
     });
-
+    getDefaultCountry();
     return () => {};
   }, []);
 
   return (
     <View>
-      <StatusBar
-        backgroundColor={color.PRINCIPALCOLOR}
-        barStyle="dark-content"
-        translucent={true}
-      />
-      <ToolBarSession
-        titulo={homeTags.ubica != '' ? homeTags.ubica : 'Ubicación'}
-        ubicaciones={ubicaciones}
-        ubicationSelect={ubicationSelect}
-        onSelectUbication={item => {
-          console.log('cambia ubicacion seleccionada', item);
-          setubicationSelect(item);
-        }}
-        onPressLeft={() => goToScreen('Profile')}
-        iconLeft={true}
-        image={loginUser.usuario.avatar}
-      />
-      <ScrollView>
-        <View style={styles.container}>
-          <SelectDropdown
-            data={data}
-            search
-            defaultButtonText={
-              homeTags.inputsearch != ''
-                ? homeTags.inputsearch
-                : 'Cementerios, arrecifes o flores...'
-            }
-            searchPlaceHolder={
-              homeTags.inputsearch != ''
-                ? homeTags.inputsearch
-                : 'Cementerios, arrecifes o flores...'
-            }
-            buttonTextStyle={{textAlign: 'left'}}
-            buttonStyle={styles.btnStyle}
-            renderDropdownIcon={isOpened => {
-              return (
-                <Icon
-                  type={'material-community'}
-                  name={isOpened ? 'magnify-expand' : 'magnify'}
-                  color={'#444'}
-                  size={16}
-                />
-              );
-            }}
-            dropdownIconPosition="left"
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem.name, index);
-              Alert.alert(JSON.stringify(selectedItem));
-            }}
-            buttonTextAfterSelection={(selectedItem, index) => {
-              return selectedItem.name;
-            }}
-            rowTextForSelection={(item, index) => {
-              return item.name;
-            }}
+      {isLoadingCountry ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <ActivityIndicator size="large" />
+        </View>
+      ) : (
+        <View>
+          <StatusBar
+            backgroundColor={color.PRINCIPALCOLOR}
+            barStyle="dark-content"
+            translucent={true}
           />
-          <Carousel
-            width={400}
-            height={175}
-            loop
-            autoPlay={true}
-            autoPlayInterval={2000}
-            data={categorias}
-            renderItem={({item}) => (
-              <CardPromocion
-                titulo="30% de descuento"
-                descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
-                bgColor="#fadf8e"
-                urlImagen="https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000"
+          <ToolBarSession
+            titulo={homeTags.ubica != '' ? homeTags.ubica : 'Ubicación'}
+            ubicaciones={ubicaciones}
+            ubicationSelect={ubicationSelect}
+            defaultCountry={country}
+            onSelectUbication={item => {
+              console.log('cambia ubicacion seleccionada', item);
+              setubicationSelect(item);
+              updateDefaultCountry(item);
+            }}
+            onPressLeft={() => goToScreen('Profile')}
+            iconLeft={true}
+            image={loginUser.usuario.avatar}
+          />
+          <ScrollView>
+            <View style={styles.container}>
+              <SelectDropdown
+                data={data}
+                search
+                defaultButtonText={
+                  homeTags.inputsearch != ''
+                    ? homeTags.inputsearch
+                    : 'Cementerios, arrecifes o flores...'
+                }
+                searchPlaceHolder={
+                  homeTags.inputsearch != ''
+                    ? homeTags.inputsearch
+                    : 'Cementerios, arrecifes o flores...'
+                }
+                buttonTextStyle={{textAlign: 'left'}}
+                buttonStyle={styles.btnStyle}
+                renderDropdownIcon={isOpened => {
+                  return (
+                    <Icon
+                      type={'material-community'}
+                      name={isOpened ? 'magnify-expand' : 'magnify'}
+                      color={'#444'}
+                      size={16}
+                    />
+                  );
+                }}
+                dropdownIconPosition="left"
+                onSelect={(selectedItem, index) => {
+                  console.log(selectedItem.name, index);
+                  Alert.alert(JSON.stringify(selectedItem));
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return selectedItem.name;
+                }}
+                rowTextForSelection={(item, index) => {
+                  return item.name;
+                }}
               />
-            )}
-          />
-          <View style={styles.categories}>
-            <BtnCategoria
-              urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
-              titulo="Viajes en Lancha"
-            />
-            <BtnCategoria
-              urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvvrsxGFFwp4ylemzQNDVJQXBU-PCB3FP1og&usqp=CAU"
-              titulo="Flores"
-            />
-            <BtnCategoria
-              urlImagen="https://flyclipart.com/thumb2/flat-location-logo-icons-png-934757.png"
-              titulo="Ubicaciones"
-            />
-            <BtnCategoria
-              urlImagen="https://img2.freepng.es/20190208/aqt/kisspng-diving-mask-snorkeling-underwater-diving-scuba-div-spearfishing-today-mexicoampaposs-top-caribbean-5c5d6a5d360982.2594144115496259492214.jpg"
-              titulo="Buceo"
-            />
-          </View>
-          <View style={[styles.categories, styles.titles]}>
-            <Text style={styles.titleText}>
-              {homeTags.labelcementarios != ''
-                ? homeTags.labelcementarios
-                : 'Cementerios'}
-            </Text>
-            <MyTextButton
-              titulo={
-                homeTags.labelvertodos != ''
-                  ? homeTags.labelvertodos
-                  : 'Ver todos'
-              }
-              underline={true}
-              color="blue"
-              onPress={() => goToScreen('Cementeries')}
-            />
-          </View>
-          <Carousel
-            {...baseOptions}
-            loop={true}
-            style={{width: '100%'}}
-            autoPlay={true}
-            autoPlayInterval={2000}
-            data={categorias}
-            pagingEnabled={true}
-            //onSnapToItem={(index) => console.log('current index:', index)}
-            renderItem={({item}) => (
+              <Carousel
+                width={400}
+                height={175}
+                loop
+                autoPlay={true}
+                autoPlayInterval={2000}
+                data={categorias}
+                renderItem={({item}) => (
+                  <CardPromocion
+                    titulo="30% de descuento"
+                    descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
+                    bgColor="#fadf8e"
+                    urlImagen="https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000"
+                  />
+                )}
+              />
               <View style={styles.categories}>
-                <CardColaborador
-                  urlImagen={item.urlImagen}
-                  nombre={item.titulo}
-                  onPressColab={() => selectCementery(item, 'Company')}
+                <BtnCategoria
+                  urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
+                  titulo="Viajes en Lancha"
+                />
+                <BtnCategoria
+                  urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvvrsxGFFwp4ylemzQNDVJQXBU-PCB3FP1og&usqp=CAU"
+                  titulo="Flores"
+                />
+                <BtnCategoria
+                  urlImagen="https://flyclipart.com/thumb2/flat-location-logo-icons-png-934757.png"
+                  titulo="Ubicaciones"
+                />
+                <BtnCategoria
+                  urlImagen="https://img2.freepng.es/20190208/aqt/kisspng-diving-mask-snorkeling-underwater-diving-scuba-div-spearfishing-today-mexicoampaposs-top-caribbean-5c5d6a5d360982.2594144115496259492214.jpg"
+                  titulo="Buceo"
                 />
               </View>
-            )}
-          />
+              <View style={[styles.categories, styles.titles]}>
+                <Text style={styles.titleText}>
+                  {homeTags.labelcementarios != ''
+                    ? homeTags.labelcementarios
+                    : 'Cementerios'}
+                </Text>
+                <MyTextButton
+                  titulo={
+                    homeTags.labelvertodos != ''
+                      ? homeTags.labelvertodos
+                      : 'Ver todos'
+                  }
+                  underline={true}
+                  color="blue"
+                  onPress={() => goToScreen('Cementeries')}
+                />
+              </View>
+              <Carousel
+                {...baseOptions}
+                loop={true}
+                style={{width: '100%'}}
+                autoPlay={true}
+                autoPlayInterval={2000}
+                data={categorias}
+                pagingEnabled={true}
+                //onSnapToItem={(index) => console.log('current index:', index)}
+                renderItem={({item}) => (
+                  <View style={styles.categories}>
+                    <CardColaborador
+                      urlImagen={item.urlImagen}
+                      nombre={item.titulo}
+                      onPressColab={() => selectCementery(item, 'Company')}
+                    />
+                  </View>
+                )}
+              />
+            </View>
+            <View style={styles.boxTransparent} />
+          </ScrollView>
         </View>
-        <View style={styles.boxTransparent} />
-      </ScrollView>
+      )}
     </View>
   );
 

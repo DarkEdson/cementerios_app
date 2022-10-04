@@ -9,6 +9,11 @@ import {Icon, Avatar} from '@rneui/themed';
 import color from '@styles/colors';
 
 export default function ToolBarSession(props) {
+  const [paisDefault, setpaisDefault] = useState(props.defaultCountry);
+  useEffect(() => {
+    setpaisDefault(props.defaultCountry);
+    console.log(paisDefault, ' SELECTED?');
+  }, []);
   return (
     <View style={[props.style, mainStyles.toolBarSessionStyle]}>
       {props.titulo && (
@@ -16,12 +21,7 @@ export default function ToolBarSession(props) {
       )}
       <SelectDropdown
         data={props.ubicaciones}
-        defaultValueByIndex={0}
-        defaultValue={
-          props.ubicationSelect.label == ''
-            ? props.ubicaciones[0]
-            : props.ubicationSelect
-        }
+        defaultValue={paisDefault}
         defaultButtonText="Seleccione Pais"
         buttonTextStyle={{textAlign: 'left'}}
         buttonStyle={styles.btnStyle}
