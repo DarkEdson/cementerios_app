@@ -17,7 +17,11 @@ export default function ToolBarSession(props) {
       <SelectDropdown
         data={props.ubicaciones}
         defaultValueByIndex={0}
-        defaultValue={props.ubicaciones[0]}
+        defaultValue={
+          props.ubicationSelect.label == ''
+            ? props.ubicaciones[0]
+            : props.ubicationSelect
+        }
         defaultButtonText="Seleccione Pais"
         buttonTextStyle={{textAlign: 'left'}}
         buttonStyle={styles.btnStyle}
@@ -35,7 +39,7 @@ export default function ToolBarSession(props) {
         dropdownIconPosition="right"
         onSelect={(selectedItem, index) => {
           console.log(selectedItem.label, index);
-          props.onSelectUbication();
+          props.onSelectUbication(selectedItem);
         }}
         buttonTextAfterSelection={(selectedItem, index) => {
           return selectedItem.label;

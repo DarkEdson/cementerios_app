@@ -40,7 +40,8 @@ export default function LoginScreen(props) {
       console.log('isFocused in Login');
     }
     return () => {};
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   return (
     <ScrollView>

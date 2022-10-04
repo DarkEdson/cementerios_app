@@ -104,7 +104,8 @@ export default function PromoScreen(props) {
       getInitialData();
       console.log('isFocused Promo');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({

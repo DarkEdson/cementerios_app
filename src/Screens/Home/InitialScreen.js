@@ -21,6 +21,7 @@ import {UsuarioContext} from '@context/UsuarioContext';
 import {CementeryContext} from '@context/CementeryContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {CountriesContext} from '@context/CountriesContext';
+import {RouteBackContext} from '@context/RouteBackContext';
 //Componentes
 import CardPromocion from '@Components/CardPromocion/';
 import BtnCategoria from '@Components/BtnCategoria/';
@@ -37,6 +38,19 @@ export default function InitialScreen(props) {
   const [cementery, setCementery] = useContext(CementeryContext);
   const [countries, setCountries] = useContext(CountriesContext);
   const {tags, updateTags} = useContext(ScreentagContext);
+  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
+    useContext(RouteBackContext);
+  const [ubicationSelect, setubicationSelect] = useState({
+    label: `${countries[0].name}, ${countries[0].code.toUpperCase()}`,
+    value: countries[0].code,
+  });
+  const [homeTags, sethomeTags] = useState({
+    ubica: 'Ubicación',
+    inputsearch: 'Cementerios, arrecifes o flores...',
+    labelcementarios: 'Cementerios',
+    labelvertodos: 'Ver Todos',
+  });
+
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
@@ -132,6 +146,7 @@ export default function InitialScreen(props) {
           value: country.code,
         });
       });
+      console.log(ubicationSelect, 'DEFAULT');
       setubicaciones(getUbicaciones);
     }
 
@@ -140,8 +155,15 @@ export default function InitialScreen(props) {
       console.log('isFocused in Start Screen');
     }
     misUbicaciones();
+    sethomeTags({
+      ubica: tags.HomeScreen.ubica,
+      inputsearch: tags.HomeScreen.inputsearch,
+      labelcementarios: tags.HomeScreen.labelcementarios,
+      labelvertodos: tags.HomeScreen.labelvertodos,
+    });
+
     return () => {};
-  }, [props, isFocused]);
+  }, []);
 
   return (
     <View>
@@ -151,12 +173,12 @@ export default function InitialScreen(props) {
         translucent={true}
       />
       <ToolBarSession
-        titulo={
-          tags.HomeScreen.ubica != '' ? tags.HomeScreen.ubica : 'Ubicación'
-        }
+        titulo={homeTags.ubica != '' ? homeTags.ubica : 'Ubicación'}
         ubicaciones={ubicaciones}
-        onSelectUbication={() => {
-          console.log('cambia ubicacion seleccionada');
+        ubicationSelect={ubicationSelect}
+        onSelectUbication={item => {
+          console.log('cambia ubicacion seleccionada', item);
+          setubicationSelect(item);
         }}
         onPressLeft={() => goToScreen('Profile')}
         iconLeft={true}
@@ -168,13 +190,13 @@ export default function InitialScreen(props) {
             data={data}
             search
             defaultButtonText={
-              tags.HomeScreen.inputsearch != ''
-                ? tags.HomeScreen.inputsearch
+              homeTags.inputsearch != ''
+                ? homeTags.inputsearch
                 : 'Cementerios, arrecifes o flores...'
             }
             searchPlaceHolder={
-              tags.HomeScreen.inputsearch != ''
-                ? tags.HomeScreen.inputsearch
+              homeTags.inputsearch != ''
+                ? homeTags.inputsearch
                 : 'Cementerios, arrecifes o flores...'
             }
             buttonTextStyle={{textAlign: 'left'}}
@@ -237,14 +259,14 @@ export default function InitialScreen(props) {
           </View>
           <View style={[styles.categories, styles.titles]}>
             <Text style={styles.titleText}>
-              {tags.HomeScreen.labelcementarios != ''
-                ? tags.HomeScreen.labelcementarios
+              {homeTags.labelcementarios != ''
+                ? homeTags.labelcementarios
                 : 'Cementerios'}
             </Text>
             <MyTextButton
               titulo={
-                tags.HomeScreen.labelvertodos != ''
-                  ? tags.HomeScreen.labelvertodos
+                homeTags.labelvertodos != ''
+                  ? homeTags.labelvertodos
                   : 'Ver todos'
               }
               underline={true}
@@ -280,6 +302,7 @@ export default function InitialScreen(props) {
   function selectCementery(cementery, routeName) {
     setCementery(cementery);
     goToScreen(routeName);
+    setRouteBackComp('Home');
   }
 
   function goToScreen(routeName) {

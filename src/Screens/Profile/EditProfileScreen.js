@@ -50,7 +50,8 @@ export default function EditProfileScreen(props) {
       getInitialData();
       console.log('isFocused Promo');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   return (
     <View style={styles.container}>

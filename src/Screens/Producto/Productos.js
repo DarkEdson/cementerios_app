@@ -20,12 +20,14 @@ import ToolBar from '@Components/common/toolBar';
 import CardProducto from '@Components/CardProducto/index';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
-import { ProductContext } from '@context/ProductContext';
+import {ProductContext} from '@context/ProductContext';
+import {RouteBackContext} from '@context/RouteBackContext';
 
 //tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
-  const [Product, setProduct] = useContext(ProductContext)
+  const [Product, setProduct] = useContext(ProductContext);
+  const {RouteBack, setRouteBack} = useContext(RouteBackContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -172,7 +174,8 @@ export default function VistaProductos(props) {
       getInitialData();
       console.log('isFocused in Products');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
@@ -238,7 +241,7 @@ export default function VistaProductos(props) {
             return (
               <CardProducto
                 key={key}
-                onPressProduct={() => selectedProduct(product, 'Product') }
+                onPressProduct={() => selectedProduct(product, 'Product')}
                 urlImagen={product.urlImagen}
                 titulo={product.titulo}
                 descripcion={product.descripcion}
@@ -255,6 +258,7 @@ export default function VistaProductos(props) {
   function selectedProduct(producto, routeName) {
     setProduct(producto);
     goToScreen(routeName);
+    setRouteBack('Productos');
   }
 
   function goToScreen(routeName) {

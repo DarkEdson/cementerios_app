@@ -53,7 +53,8 @@ export default function ProfileScreen(props) {
       console.log('isFocused Profile');
     }
     return () => {};
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   // useBackButton(desconectarse);
   return (

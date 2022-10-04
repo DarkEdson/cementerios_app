@@ -54,7 +54,8 @@ export default function RegistroScreen(props) {
     }
 
     return () => {};
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   return (
     <ScrollView

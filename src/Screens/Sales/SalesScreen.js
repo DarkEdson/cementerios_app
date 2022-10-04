@@ -43,7 +43,8 @@ export default function SalesScreen(props) {
       getInitialData();
       console.log('isFocused Ventas Detail');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   const [valoresVenta, setValoresVenta] = useState({
     subTotal: 0,

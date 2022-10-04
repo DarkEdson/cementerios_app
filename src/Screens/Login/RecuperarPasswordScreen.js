@@ -33,7 +33,8 @@ export default function RecuperarPasswordScreen(props) {
       getInitialData();
       console.log('isFocused Promo');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
   return (
     <ScrollView
       keyboardDismissMode="on-drag"

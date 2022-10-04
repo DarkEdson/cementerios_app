@@ -30,7 +30,8 @@ export default function VistaCodigoPromocion(props) {
       getInitialData();
       console.log('isFocused Promo Code');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   return (
     <View style={styles.vista}>

@@ -46,7 +46,8 @@ export default function RegistroScreen(props) {
       console.log('isFocused Register');
     }
     return () => {};
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   const handlePasswordChange = val => {
     if (confirmPassword != '') {

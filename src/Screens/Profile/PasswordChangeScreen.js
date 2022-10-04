@@ -43,7 +43,8 @@ export default function PasswordChangeScreen(props) {
       getInitialData();
       console.log('isFocused Promo Code');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   const handlePasswordChange = val => {
     if (data.newpasswordConfirm != '') {

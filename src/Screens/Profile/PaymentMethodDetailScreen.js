@@ -58,7 +58,8 @@ export default function PaymentMethodDetailScreen(props) {
       getInitialData();
       console.log('isFocused Promo');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   return (
     <View style={{flex: 1, alignItems: 'center'}}>

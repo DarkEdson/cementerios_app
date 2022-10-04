@@ -49,6 +49,7 @@ export default function SplashScreen(props) {
       };
       clearAsyncStorage();
     }
+
     console.log('LENGUAJE DE SISTEMA', deviceLanguage.substr(0, 2));
     obtenerLenguaje(defaultLanguage);
     fetchSesion(loginAction);

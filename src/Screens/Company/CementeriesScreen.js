@@ -22,6 +22,7 @@ import color from '@styles/colors';
 import {CementeryContext} from '@context/CementeryContext';
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {RouteBackContext} from '@context/RouteBackContext';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardColaborador from '@Components/CardColaborador/';
@@ -30,6 +31,8 @@ import CardColaborador from '@Components/CardColaborador/';
 export default function CompanyScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
+  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
+    useContext(RouteBackContext);
   const {tags, updateTags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
@@ -191,7 +194,8 @@ export default function CompanyScreen(props) {
       getInitialData();
       console.log('isFocused Cementeries All');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
@@ -253,10 +257,10 @@ export default function CompanyScreen(props) {
 
       <ScrollView>
         <View style={styles.containerHeader}>
-          {arrProductosDisp.map((company,key) => {
+          {arrProductosDisp.map((company, key) => {
             return (
               <CardColaborador
-              key={key}
+                key={key}
                 onPressColab={() => selectCementery(company, 'Company')}
                 urlImagen={company.urlImagen}
                 nombre={company.titulo}
@@ -272,6 +276,7 @@ export default function CompanyScreen(props) {
   function selectCementery(cementery, routeName) {
     setCementery(cementery);
     goToScreen(routeName);
+    setRouteBackComp('Cementeries');
   }
 
   function goToScreen(routeName) {

@@ -29,17 +29,52 @@ import {
 //Contextos
 import {CementeryContext} from '@context/CementeryContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
-import { ShoppingCartContext } from '@context/ShoppingCartContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
+import {ProductContext} from '@context/ProductContext';
+import {RouteBackContext} from '@context/RouteBackContext';
 
 //tags.CompanyDetailScreen.mas != '' ? tags.CompanyDetailScreen.mas : 'Mas Populares'
 export default function CompanyScreen(props) {
   const [cementery] = useContext(CementeryContext);
   const {tags, updateTags} = useContext(ScreentagContext);
-  const {ShoppingCart, carrito} = useContext(ShoppingCartContext)
+  const {ShoppingCart, carrito} = useContext(ShoppingCartContext);
+  const [Product, setProduct] = useContext(ProductContext);
+  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
+    useContext(RouteBackContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
-  const [infoCart, setinfoCart] = useState('')
+  const [infoCart, setinfoCart] = useState('');
   const [cant, setcant] = useState(2);
+
+  const productos = [
+    {
+      urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`,
+      titulo: 'Perla Magistral 2',
+      descripcion: 'Diamante, Oro..',
+      precio: '$ 16.90',
+      categoria: 'CMar',
+      cementerio: 'capillas',
+      idCementerio: 1,
+    },
+    {
+      urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
+      titulo: 'Perla oceano 2',
+      descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
+      precio: '$ 14.90',
+      categoria: 'Buseo',
+      cementerio: 'cementerio del mar',
+      idCementerio: 2,
+    },
+    {
+      urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`,
+      titulo: 'Perla Magistral 3',
+      descripcion: 'Diamante, Oro..',
+      precio: '$ 15.90',
+      categoria: 'CMar',
+      cementerio: 'capillas',
+      idCementerio: 3,
+    },
+  ];
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -48,22 +83,21 @@ export default function CompanyScreen(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
-    setcant(ShoppingCart.length)
-    let info = ''
-    ShoppingCart.forEach(
-      titulo=>{
-        info = info + titulo.titulo + ', '
-      }
-    )
-    console.log(info)
-    setinfoCart(info)
+    setcant(ShoppingCart.length);
+    let info = '';
+    ShoppingCart.forEach(titulo => {
+      info = info + titulo.titulo + ', ';
+    });
+    console.log(info);
+    setinfoCart(info);
     console.log(cementery);
     if (isFocused) {
       getInitialData();
       console.log('isFocused Company Detail');
     }
     return () => {};
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   function abrirModal(multimedia) {
     setCustomModal(true);
@@ -82,40 +116,40 @@ export default function CompanyScreen(props) {
         />
       </ImageBackground>
       <ScrollView>
-      <View style={CementeryScreen.descripcion}>
-        <Text style={CementeryScreen.titulo}> {cementery.titulo} </Text>
-        <Text style={CementeryScreen.categorias}>
-          {' '}
-          $$ • Mar • Arrecife • Perla
-        </Text>
-        <View style={CementeryScreen.HeaderView}>
-          <InformationIcon
-            tipo="font-awesome-5"
-            image="dollar-sign"
-            titulo="Free"
-            subtitulo="Tour"
-            onPress={() => {}}
-          />
-          <View style={informationIconStyles.verticleLine} />
-          <InformationIcon
-            tipo="ionicons"
-            image="location-pin"
-            titulo="Campeche"
-            subtitulo="Ubicaciones"
-            onPress={() => {}}
-          />
-          <View style={informationIconStyles.verticleLine} />
-          <InformationIcon
-            transparent={true}
-            tipo="ant-design"
-            image="star"
-            titulo="4.3"
-            subtitulo="(200+ Ratings)"
-            onPress={() => {}}
-          />
+        <View style={CementeryScreen.descripcion}>
+          <Text style={CementeryScreen.titulo}> {cementery.titulo} </Text>
+          <Text style={CementeryScreen.categorias}>
+            {' '}
+            $$ • Mar • Arrecife • Perla
+          </Text>
+          <View style={CementeryScreen.HeaderView}>
+            <InformationIcon
+              tipo="font-awesome-5"
+              image="dollar-sign"
+              titulo="Free"
+              subtitulo="Tour"
+              onPress={() => {}}
+            />
+            <View style={informationIconStyles.verticleLine} />
+            <InformationIcon
+              tipo="ionicons"
+              image="location-pin"
+              titulo="Campeche"
+              subtitulo="Ubicaciones"
+              onPress={() => {}}
+            />
+            <View style={informationIconStyles.verticleLine} />
+            <InformationIcon
+              transparent={true}
+              tipo="ant-design"
+              image="star"
+              titulo="4.3"
+              subtitulo="(200+ Ratings)"
+              onPress={() => {}}
+            />
+          </View>
         </View>
-      </View>
-      
+
         <View style={CementeryScreen.detalleProd}>
           <View style={[CementeryScreen.categories, CementeryScreen.titles]}>
             <TouchableOpacity>
@@ -134,18 +168,18 @@ export default function CompanyScreen(props) {
               ? tags.CompanyDetailScreen.mas
               : 'Mas Populares'}
           </Text>
-          <CardProducto
-            urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
-            titulo="Perla Magistral"
-            descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-            precio="$ 12.50"
-          />
-          <CardProducto
-            urlImagen="https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg"
-            titulo="Perla oceano 2"
-            descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-            precio="$ 16.90"
-          />
+          {productos.map((product, key) => {
+            return (
+              <CardProducto
+                key={key}
+                onPressProduct={() => selectedProduct(product, 'Product')}
+                urlImagen={product.urlImagen}
+                titulo={product.titulo}
+                descripcion={product.descripcion}
+                precio={product.precio}
+              />
+            );
+          })}
           <View style={mainStyles.boxTransparent} />
         </View>
       </ScrollView>
@@ -154,7 +188,7 @@ export default function CompanyScreen(props) {
         tipo="material-icon-community"
         image="chevron-left"
         left={true}
-        onPress={() => goToScreen('Home')}
+        onPress={() => goToScreen(RouteBackComp)}
       />
       <MyFloatButton
         tipo="font-awesome-5"
@@ -194,5 +228,10 @@ export default function CompanyScreen(props) {
   );
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
+  }
+  function selectedProduct(producto, routeName) {
+    setProduct(producto);
+    goToScreen(routeName);
+    setRouteBack('Company');
   }
 }

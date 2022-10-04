@@ -16,7 +16,7 @@ import ToolBar from '@Components/common/toolBar';
 import LargeButton from '@Components/common/largeButton';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
-import { ShoppingCartContext } from '@context/ShoppingCartContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -28,15 +28,14 @@ import {
 //tags.PaymentScreen.agregar != '' ? tags.PaymentScreen.agregar :
 export default function VistaPago(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
-  const {ShoppingCart, removeItemtoCart} = useContext(ShoppingCartContext)
+  const {ShoppingCart, removeItemtoCart} = useContext(ShoppingCartContext);
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
-    
     // Productos del carrito
-    console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR')
+    console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 120,
@@ -47,7 +46,8 @@ export default function VistaPago(props) {
       getInitialData();
       console.log('isFocused Payment');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   // Variables del carrito de compras
   const [productosCarrito, setProductosCarrito] = useState([]);
@@ -72,14 +72,13 @@ export default function VistaPago(props) {
             {ShoppingCart.map((promo, key) => {
               return (
                 <CardProductoVenta
-                key={key}
-                urlImagen={promo.urlImagen}
-                titulo={promo.titulo}
-                descripcion={promo.descripcion}
-                precio={promo.precio}
-            cantidad={promo.cantidad}
-          />
-           
+                  key={key}
+                  urlImagen={promo.urlImagen}
+                  titulo={promo.titulo}
+                  descripcion={promo.descripcion}
+                  precio={promo.precio}
+                  cantidad={promo.cantidad}
+                />
               );
             })}
           </View>

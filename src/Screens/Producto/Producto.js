@@ -36,8 +36,9 @@ import {
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
 import CardMultimedia from '@Components/CardMultimedia';
-import { ProductContext } from '@context/ProductContext';
-import { ShoppingCartContext } from '@context/ShoppingCartContext';
+import {ProductContext} from '@context/ProductContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
+import {RouteBackContext} from '@context/RouteBackContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
@@ -45,7 +46,8 @@ const PAGE_WIDTH = Dimensions.get('screen').width;
 export default function VistaProducto(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
   const [Product, setProduct] = useContext(ProductContext);
-  const {addItemtoCart} = useContext(ShoppingCartContext)
+  const {addItemtoCart} = useContext(ShoppingCartContext);
+  const {RouteBack, setRouteBack} = useContext(RouteBackContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
 
@@ -61,7 +63,7 @@ export default function VistaProducto(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
-    console.log('Producto escogido',Product)
+    console.log('Producto escogido', Product);
     // Actualizar valores de la vista
     setPropsVista({
       tags: '$ Arrecife - Perla - Diamante',
@@ -94,7 +96,8 @@ export default function VistaProducto(props) {
       getInitialData();
       console.log('isFocused in Product Detail');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
@@ -146,35 +149,35 @@ export default function VistaProducto(props) {
         }}
       />
       <ScrollView>
-      <View style={styles.descripcion}>
-        <Text style={styles.titulo}> {Product.titulo} </Text>
-        <Text style={styles.categorias}> {propsVista.tags} </Text>
-        <View style={CementeryScreen.HeaderView}>
-          <InformationIcon
-            tipo="font-awesome-5"
-            image="dollar-sign"
-            titulo={Product.precio}
-            subtitulo={propsVista.precio.label}
-            onPress={() => {}}
-          />
-          <View style={informationIconStyles.verticleLine} />
-          <InformationIcon
-            tipo="ionicons"
-            image="location-pin"
-            titulo={sede.nombre}
-            subtitulo={propsVista.ubicaciones.label}
-          />
-          <View style={informationIconStyles.verticleLine} />
-          <InformationIcon
-            transparent={true}
-            tipo="ant-design"
-            image="star"
-            titulo={propsVista.rating.valor}
-            subtitulo={propsVista.rating.label}
-          />
+        <View style={styles.descripcion}>
+          <Text style={styles.titulo}> {Product.titulo} </Text>
+          <Text style={styles.categorias}> {propsVista.tags} </Text>
+          <View style={CementeryScreen.HeaderView}>
+            <InformationIcon
+              tipo="font-awesome-5"
+              image="dollar-sign"
+              titulo={Product.precio}
+              subtitulo={propsVista.precio.label}
+              onPress={() => {}}
+            />
+            <View style={informationIconStyles.verticleLine} />
+            <InformationIcon
+              tipo="ionicons"
+              image="location-pin"
+              titulo={sede.nombre}
+              subtitulo={propsVista.ubicaciones.label}
+            />
+            <View style={informationIconStyles.verticleLine} />
+            <InformationIcon
+              transparent={true}
+              tipo="ant-design"
+              image="star"
+              titulo={propsVista.rating.valor}
+              subtitulo={propsVista.rating.label}
+            />
+          </View>
         </View>
-      </View>
-      
+
         <View style={styles.detalleProd}>
           <Text style={styles.titulo2}>
             {' '}
@@ -264,7 +267,7 @@ export default function VistaProducto(props) {
             </View>
             <TouchableOpacity
               style={styles.btnAgregar}
-              onPress={() => itemToCart(Product,'Payments')}>
+              onPress={() => itemToCart(Product, 'Payments')}>
               <Text style={styles.txtAgregar}>
                 {tags.ProductDetailScreen.btnagregar != ''
                   ? tags.ProductDetailScreen.btnagregar
@@ -280,7 +283,7 @@ export default function VistaProducto(props) {
         tipo="material-icon-community"
         image="chevron-left"
         left={true}
-        onPress={() => goToScreen('Productos')}
+        onPress={() => goToScreen(RouteBack)}
       />
       {customModal == false ? null : (
         <CustomModal
@@ -333,8 +336,8 @@ export default function VistaProducto(props) {
   }
 
   function itemToCart(producto, routeName) {
-    let item = {...producto,cantidad:cantProductos}
-    console.log(item)
+    let item = {...producto, cantidad: cantProductos};
+    console.log(item);
     addItemtoCart(item);
     goToScreen(routeName);
   }
