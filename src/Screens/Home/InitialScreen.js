@@ -160,12 +160,19 @@ export default function InitialScreen(props) {
       console.log('isFocused in Start Screen');
     }
     misUbicaciones();
-    sethomeTags({
-      ubica: tags.HomeScreen.ubica,
-      inputsearch: tags.HomeScreen.inputsearch,
-      labelcementarios: tags.HomeScreen.labelcementarios,
-      labelvertodos: tags.HomeScreen.labelvertodos,
-    });
+    if (Object.keys(tags).length != 0) {
+      console.log(Object.keys(tags).length);
+      if (Object.keys(tags.HomeScreen).length != 0) {
+        console.log(Object.keys(tags.HomeScreen).length);
+        sethomeTags({
+          ubica: tags.HomeScreen.ubica,
+          inputsearch: tags.HomeScreen.inputsearch,
+          labelcementarios: tags.HomeScreen.labelcementarios,
+          labelvertodos: tags.HomeScreen.labelvertodos,
+        });
+      }
+    }
+
     getDefaultCountry();
     return () => {};
   }, []);

@@ -13,7 +13,7 @@ import {
   BackHandler,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-import {Icon} from '@rneui/themed';
+import {Icon, FAB} from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
@@ -74,12 +74,19 @@ export default function PersonalDataScreen(props) {
               alignItems: 'center',
               marginTop: '50%',
             }}>
-            <Text>
+            <Text style={{paddingVertical: 10}}>
               {nuevoLenguaje.code == 'en'
                 ? 'Updating Configuration'
                 : 'Actualizando Configuracion'}
             </Text>
-            <ActivityIndicator size="large" />
+
+            <FAB
+              loading
+              color={color.PRINCIPALCOLOR}
+              visible={isLoading}
+              icon={{name: 'add', color: 'white'}}
+              size="small"
+            />
           </View>
         ) : (
           <View>

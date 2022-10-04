@@ -95,7 +95,8 @@ export default function ProfileScreen(props) {
                 name="account"
               />
             )}
-            <View
+            <Avatar.Accessory size={23} />
+            {/*<View
               style={{
                 zIndex: 2,
                 bottom: 21,
@@ -109,7 +110,7 @@ export default function ProfileScreen(props) {
                 type={'material-community'}
                 name="pencil"
               />
-            </View>
+            </View>*/}
           </TouchableOpacity>
           <Text style={styles.txtNuevoComponente}>
             {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}

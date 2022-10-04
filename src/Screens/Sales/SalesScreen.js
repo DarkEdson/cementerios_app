@@ -27,6 +27,8 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 //tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :
 export default function SalesScreen(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
+  const [fechaInicio, setfechaInicio] = useState('');
+  const [fechaFin, setfechaFin] = useState('');
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};

@@ -4,11 +4,13 @@ import {
   View,
   Platform,
   Dimensions,
+  ActivityIndicator,
   StyleSheet,
   ScrollView,
-  Image,
+  //Image,
   TouchableOpacity,
 } from 'react-native';
+import {Image} from '@rneui/themed';
 import Carousel from 'react-native-reanimated-carousel';
 
 import Animated, {
@@ -143,7 +145,8 @@ export default function VistaProducto(props) {
   return (
     <View style={styles.vista}>
       <Image
-        style={styles.imgProducto}
+        containerStyle={styles.imgProducto}
+        PlaceholderContent={<ActivityIndicator />}
         source={{
           uri: Product.urlImagen,
         }}
@@ -215,6 +218,7 @@ export default function VistaProducto(props) {
                     style={styles.imgDetalle}
                     urlImagen={item}
                     onPressMultimedia={() => {
+                      console.log(item);
                       abrirModal(item);
                     }}
                     textStyle={styles.imgTitulo}
@@ -232,7 +236,6 @@ export default function VistaProducto(props) {
                   alignSelf: 'center',
                 }}>
                 {propsVista.urlMultimedia.map((item, index) => {
-                  console.log('EN BOTONCITOS', index, item);
                   return (
                     <PaginationItem
                       animValue={progressValue}

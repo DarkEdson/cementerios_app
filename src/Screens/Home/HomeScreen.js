@@ -39,6 +39,22 @@ export default function HomeScreen(props) {
         })
         .catch(error => console.error('Error', error));
     }
+    if (Object.keys(tags).length != 0) {
+      console.log(Object.keys(tags).length, 'length tags');
+      if (Object.keys(tags.HomeTagsScreen).length != 0) {
+        console.log(
+          Object.keys(tags.HomeTagsScreen).length,
+          'length hometagsscreen',
+        );
+        sethomeTags({
+          home: tags.HomeTagsScreen.home,
+          promo: tags.HomeTagsScreen.promo,
+          products: tags.HomeTagsScreen.products,
+          sells: tags.HomeTagsScreen.sells,
+        });
+      }
+    }
+
     sethomeTags({
       home: tags.HomeTagsScreen.home,
       promo: tags.HomeTagsScreen.promo,
