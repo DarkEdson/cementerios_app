@@ -5,7 +5,7 @@ import { productbyCountry, productbyCategory, productbyHeadquarters } from '@Api
 export const ProductsContext = createContext();
 
 export const ProductsProvider = ({ children }) => {
-    const [Products, setProducts] = useState([]);
+    const [ProductsCountry, setProductsCountry] = useState([]);
     const [ProductsCategory, setProductsCategory] = useState([]);
     const [ProductsSedes, setProductsSede] = useState([]);
     const [isLoadingProducts, setisLoadingProducts] = useState(true)
@@ -17,7 +17,7 @@ export const ProductsProvider = ({ children }) => {
         productbyCountry(country, languaje).then(res => {
             res.sort((a, b) => a.code.localeCompare(b.code));
             console.log('PRODUCTOS por PAIS', res)
-            setProducts(res)
+            setProductsCountry(res)
             setisLoadingProducts(false);
         });
 
@@ -50,7 +50,7 @@ export const ProductsProvider = ({ children }) => {
     return (
         <ProductsContext.Provider
             value={{
-                Products,
+                ProductsCountry,
                 ProductsCategory,
                 ProductsSedes,
                 isLoadingProducts,
