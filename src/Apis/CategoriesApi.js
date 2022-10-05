@@ -26,5 +26,6 @@ export default async function categoriesApi(country,lenguaje) {
     return categorias;
   } catch (error) {
     console.error(error);
+    return categorias;
   }
 }

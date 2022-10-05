@@ -25,5 +25,6 @@ export default async function cementeriesApi(country) {
     return cementerios;
   } catch (error) {
     console.error(error);
+    return cementerios;
   }
 }

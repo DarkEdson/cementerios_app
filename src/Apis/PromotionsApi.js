@@ -29,5 +29,6 @@ export default async function promotionsApi(country, lenguaje) {
         return promociones;
     } catch (error) {
         console.error(error, 'ERROR EN PROMOCION');
+        return promociones;
     }
 }
