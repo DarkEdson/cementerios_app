@@ -20,8 +20,6 @@ const Tab = createMaterialBottomTabNavigator();
 //tags.HomeTagsScreen.home != '' ? tags.HomeTagsScreen.home :
 export default function HomeScreen(props) {
   const {tags} = useContext(ScreentagContext);
-  const [isLoading, setLoading] = useState(false);
-  const [lenguaje, setlenguaje] = useState('es');
   const [homeTags, sethomeTags] = useState({
     home: 'Inicio',
     promo: 'Promociones',
@@ -30,15 +28,6 @@ export default function HomeScreen(props) {
   });
 
   useEffect(() => {
-    async function lenguajeDefault() {
-      setLoading(true);
-      getLanguague()
-        .then(res => {
-          setlenguaje(res.code);
-          setLoading(false);
-        })
-        .catch(error => console.error('Error', error));
-    }
     if (Object.keys(tags).length != 0) {
       console.log(Object.keys(tags).length, 'length tags');
       if (Object.keys(tags.HomeTagsScreen).length != 0) {
@@ -61,8 +50,6 @@ export default function HomeScreen(props) {
       products: tags.HomeTagsScreen.products,
       sells: tags.HomeTagsScreen.sells,
     });
-    lenguajeDefault();
-    console.log(lenguaje, 'lenguaje que esta guardado en Home');
   }, []);
 
   return (
