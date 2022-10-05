@@ -81,20 +81,10 @@ export default function InitialScreen(props) {
     height: PAGE_WIDTH * 0.56,
   };
   const [data, setData] = useState([
-    { id: 1, name: 'angellist' },
-    { id: 2, name: 'codepen' },
-    { id: 3, name: 'envelope' },
-    { id: 4, name: 'etsy' },
-    { id: 5, name: 'facebook' },
-    { id: 6, name: 'foursquare' },
-    { id: 7, name: 'github-alt' },
-    { id: 8, name: 'github' },
-    { id: 9, name: 'gitlab' },
-    { id: 10, name: 'instagram' },
+    { id: 1, name: 'example' },
   ]);
 
   useEffect(() => {
-
     function misUbicaciones() {
       let getUbicaciones = [];
       console.log(countries)
@@ -111,13 +101,11 @@ export default function InitialScreen(props) {
       getCementeries(country)
       setubicaciones(getUbicaciones);
     }
-
     if (isFocused) {
       getInitialData();
       console.log('isFocused in Start Screen');
     }
     misUbicaciones();
-
     getDefaultCountry();
     return () => { };
   }, []);
@@ -161,6 +149,7 @@ export default function InitialScreen(props) {
               <SelectDropdown
                 data={data}
                 search
+                onFocus={() => arrayBusqueda()}
                 defaultButtonText={
                   tags.HomeScreen.inputsearch != ''
                     ? tags.HomeScreen.inputsearch
@@ -174,6 +163,7 @@ export default function InitialScreen(props) {
                 buttonTextStyle={{ textAlign: 'left' }}
                 buttonStyle={styles.btnStyle}
                 renderDropdownIcon={isOpened => {
+
                   return (
                     <Icon
                       type={'material-community'}
@@ -212,28 +202,28 @@ export default function InitialScreen(props) {
                     />
                     <View style={styles.boxTransparent} />
                   </View>
-                ) : Promotions.length >=1 ? (
+                ) : Promotions.length >= 1 ? (
                   <View>
                     <Carousel
-                width={400}
-                height={175}
-                loop
-                autoPlay={true}
-                autoPlayInterval={2000}
-                data={Promotions}
-                renderItem={({ item }) => (
-                  <CardPromocion
-                    titulo="30% de descuento"
-                    descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
-                    bgColor="#fadf8e"
-                    urlImagen="https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000"
-                  />
-                )}
-              />
-                  </View>): (<View style={styles.noPromoView}>
+                      width={400}
+                      height={175}
+                      loop
+                      autoPlay={true}
+                      autoPlayInterval={2000}
+                      data={Promotions}
+                      renderItem={({ item }) => (
+                        <CardPromocion
+                          titulo="30% de descuento"
+                          descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
+                          bgColor="#fadf8e"
+                          urlImagen="https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000"
+                        />
+                      )}
+                    />
+                  </View>) : (<View style={styles.noPromoView}>
                     <Text style={styles.promoText}>No Promos</Text>
-                    </View>)}
-              </View>             
+                  </View>)}
+              </View>
               <View>
                 {isLoadingCategories ? (
                   <View
@@ -303,20 +293,20 @@ export default function InitialScreen(props) {
                     <Carousel
                       {...baseOptions}
                       loop={true}
-                      style={{ width: '100%' , flex:1}}
+                      style={{ width: '100%', flex: 1 }}
                       autoPlay={true}
                       autoPlayInterval={2000}
                       data={Cementeries}
                       pagingEnabled={true}
                       //onSnapToItem={(index) => console.log('current index:', index)}
                       renderItem={({ item }) => (
-                        
-                          <CardColaborador
-                            urlImagen={item.urlImagen}
-                            nombre={item.name}
-                            onPressColab={() => selectCementery(item, 'Company')}
-                          />
-                       
+
+                        <CardColaborador
+                          urlImagen={item.urlImagen}
+                          nombre={item.name}
+                          onPressColab={() => selectCementery(item, 'Company')}
+                        />
+
                       )}
                     />
                   </View>)}
@@ -329,6 +319,21 @@ export default function InitialScreen(props) {
       )}
     </View>
   );
+
+  function arrayBusqueda() {
+    let array = []
+    categories.forEach(category => {
+      array.push({ id: category._id, name: category.name },)
+    })
+    Cementeries.forEach(cementery => {
+      array.push({ id: cementery._id, name: cementery.name },)
+    })
+    Promotions.forEach(promotion => {
+      array.push({ id: promotion._id, name: promotion.name },)
+    })
+    console.log('ARRAY DE BUSQUEDA', array)
+    setData(array)
+  }
 
   function cambiaPais(pais) {
     console.log('cambia ubicacion seleccionada', pais);
