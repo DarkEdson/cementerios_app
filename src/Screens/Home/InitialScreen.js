@@ -9,14 +9,20 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import { Icon,FAB } from '@rneui/themed';
+import { Icon, FAB } from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
-import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
+import Carousel from 'react-native-reanimated-carousel';
 //Recarga la screen
 import { useIsFocused } from '@react-navigation/native';
 //Estilos generales
 import { mainStyles, loginStyles } from '@styles/stylesGeneral';
 import color from '@styles/colors';
+//Componentes
+import CardPromocion from '@Components/CardPromocion/';
+import BtnCategoria from '@Components/BtnCategoria/';
+import ToolBarSession from '@Components/common/toolBarSession';
+import MyTextButton from '@Components/common/MyTextButton';
+import CardColaborador from '@Components/CardColaborador/';
 //Contextos
 import { UsuarioContext } from '@context/UsuarioContext';
 import { CementeryContext } from '@context/CementeryContext';
@@ -27,16 +33,7 @@ import { CountryContext } from '@context/CountryContext';
 import { GlobalLanguageContext } from '@context/LanguageContext';
 import { CategoriesContext } from '@context/CategoriesContext';
 import { CementeriesContext } from '@context/CementeriesContext';
-//Storages
-import { getLanguague, saveLanguague } from '@storage/LanguagueAsyncStorage';
-//Componentes
-import CardPromocion from '@Components/CardPromocion/';
-import BtnCategoria from '@Components/BtnCategoria/';
-import ToolBarSession from '@Components/common/toolBarSession';
-import MyTextButton from '@Components/common/MyTextButton';
-import CardColaborador from '@Components/CardColaborador/';
-
-
+import { PromotionsContext } from '@context/PromotionsContext';
 
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
@@ -60,6 +57,11 @@ export default function InitialScreen(props) {
     isLoadingCementeries,
     getCementeries,
   } = useContext(CementeriesContext)
+  const {
+    Promotions,
+    isLoadingPromotions,
+    getPromotions,
+  } = useContext(PromotionsContext)
   const { country, updateDefaultCountry, isLoadingCountry, getDefaultCountry } =
     useContext(CountryContext);
 
@@ -73,7 +75,6 @@ export default function InitialScreen(props) {
 
   const [ubicaciones, setubicaciones] = useState([]);
 
-  const ref = useRef < ICarouselInstance > null;
   const baseOptions = {
     vertical: false,
     width: PAGE_WIDTH * 0.85,
@@ -106,6 +107,7 @@ export default function InitialScreen(props) {
       console.log(country, 'DEFAULT');
       console.log(GlobalLanguage, 'LENGUAJE GLOBAL EN HOME')
       getCategories(country, GlobalLanguage)
+      getPromotions(country, GlobalLanguage)
       getCementeries(country)
       setubicaciones(getUbicaciones);
     }
@@ -130,12 +132,12 @@ export default function InitialScreen(props) {
             marginTop: '50%',
           }}>
           <FAB
-              loading
-              color={color.PRINCIPALCOLOR}
-              visible={isLoadingCountry}
-              icon={{name: 'add', color: 'white'}}
-              size="small"
-            />
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingCountry}
+            icon={{ name: 'add', color: 'white' }}
+            size="small"
+          />
         </View>
       ) : (
         <View>
@@ -193,13 +195,32 @@ export default function InitialScreen(props) {
                   return item.name;
                 }}
               />
-              <Carousel
+              <View>
+                {isLoadingPromotions ? (
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <View style={styles.boxTransparent} />
+                    <FAB
+                      loading
+                      color={color.PRINCIPALCOLOR}
+                      visible={isLoadingPromotions}
+                      icon={{ name: 'add', color: 'white' }}
+                      size="small"
+                    />
+                    <View style={styles.boxTransparent} />
+                  </View>
+                ) : Promotions.length >=1 ? (
+                  <View>
+                    <Carousel
                 width={400}
                 height={175}
                 loop
                 autoPlay={true}
                 autoPlayInterval={2000}
-                data={Cementeries}
+                data={Promotions}
                 renderItem={({ item }) => (
                   <CardPromocion
                     titulo="30% de descuento"
@@ -209,6 +230,10 @@ export default function InitialScreen(props) {
                   />
                 )}
               />
+                  </View>): (<View style={styles.noPromoView}>
+                    <Text style={styles.promoText}>No Promos</Text>
+                    </View>)}
+              </View>             
               <View>
                 {isLoadingCategories ? (
                   <View
@@ -217,12 +242,12 @@ export default function InitialScreen(props) {
                       alignItems: 'center',
                     }}>
                     <FAB
-              loading
-              color={color.PRINCIPALCOLOR}
-              visible={isLoadingCategories}
-              icon={{name: 'add', color: 'white'}}
-              size="small"
-            />
+                      loading
+                      color={color.PRINCIPALCOLOR}
+                      visible={isLoadingCategories}
+                      icon={{ name: 'add', color: 'white' }}
+                      size="small"
+                    />
                   </View>
                 ) : (
                   <View style={styles.categories}>
@@ -239,7 +264,7 @@ export default function InitialScreen(props) {
 
                   </View>)}
               </View>
-              <View style={[styles.categories, styles.titles]}>
+              <View style={[styles.cementeriestitle, styles.titles]}>
                 <Text style={styles.titleText}>
                   {tags.HomeScreen.labelcementarios != ''
                     ? tags.HomeScreen.labelcementarios
@@ -257,46 +282,44 @@ export default function InitialScreen(props) {
                 />
               </View>
               <View>
-              {isLoadingCementeries ? (
+                {isLoadingCementeries ? (
                   <View
                     style={{
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                       <View style={styles.boxTransparent} />
+                    <View style={styles.boxTransparent} />
                     <FAB
-              loading
-              color={color.PRINCIPALCOLOR}
-              visible={isLoadingCementeries}
-              icon={{name: 'add', color: 'white'}}
-              size="small"
-            />
-             <View style={styles.boxTransparent} />
+                      loading
+                      color={color.PRINCIPALCOLOR}
+                      visible={isLoadingCementeries}
+                      icon={{ name: 'add', color: 'white' }}
+                      size="small"
+                    />
+                    <View style={styles.boxTransparent} />
                   </View>
                 ) : (
                   <View>
                     <Carousel
-                {...baseOptions}
-                loop={true}
-                style={{ width: '100%' }}
-                autoPlay={true}
-                autoPlayInterval={2000}
-                data={Cementeries}
-                pagingEnabled={true}
-                //onSnapToItem={(index) => console.log('current index:', index)}
-                renderItem={({ item }) => (
-                  <View style={styles.categories}>
-                    <CardColaborador
-                      urlImagen={item.urlImagen}
-                      nombre={item.name}
-                      onPressColab={() => selectCementery(item, 'Company')}
+                      {...baseOptions}
+                      loop={true}
+                      style={{ width: '100%' , flex:1}}
+                      autoPlay={true}
+                      autoPlayInterval={2000}
+                      data={Cementeries}
+                      pagingEnabled={true}
+                      //onSnapToItem={(index) => console.log('current index:', index)}
+                      renderItem={({ item }) => (
+                        
+                          <CardColaborador
+                            urlImagen={item.urlImagen}
+                            nombre={item.name}
+                            onPressColab={() => selectCementery(item, 'Company')}
+                          />
+                       
+                      )}
                     />
-                  </View>
-                )}
-              />
-
                   </View>)}
-              
               </View>
             </View>
             <View style={styles.boxTransparent} />
@@ -307,12 +330,13 @@ export default function InitialScreen(props) {
     </View>
   );
 
-  function cambiaPais(pais){
+  function cambiaPais(pais) {
     console.log('cambia ubicacion seleccionada', pais);
-              setubicationSelect(pais);
-              updateDefaultCountry(pais);
-              getCategories(pais, GlobalLanguage)
-              getCementeries(pais)
+    setubicationSelect(pais);
+    updateDefaultCountry(pais);
+    getCategories(pais, GlobalLanguage)
+    getPromotions(pais, GlobalLanguage)
+    getCementeries(pais)
   }
 
   function selectCementery(cementery, routeName) {
@@ -346,6 +370,14 @@ const styles = StyleSheet.create({
   },
   categories: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  cementeries: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  cementeriestitle: {
+    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   titleText: {
@@ -354,8 +386,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: color.BLACK,
   },
+  promoText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: color.PRINCIPALCOLOR,
+  },
   titles: {
     marginRight: 20,
+  },
+  noPromoView: {
+    textAlign: 'center',
+    alignContent: 'center',
+    alignItems: 'center'
   },
   promociones: {
     width: '100%',

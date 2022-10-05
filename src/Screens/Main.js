@@ -15,7 +15,8 @@ import { RouteBackProvider } from '@context/RouteBackContext';
 import { CountryProvider } from '@context/CountryContext';
 import { GlobalLanguageProvider } from '@context/LanguageContext';
 import { CategoriesProvider } from '@context/CategoriesContext';
-import { CementeriesProvider } from '../context/CementeriesContext';
+import { CementeriesProvider } from '@context/CementeriesContext';
+import { PromotionsProvider } from '@context/PromotionsContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -34,21 +35,23 @@ const MainPage = () => {
                       <CountryProvider>
                         <CementeriesProvider>
                           <CategoriesProvider>
-                            <CementeryProvider>
-                              <ProductProvider>
-                                <CreditCardProvider>
-                                  <RouteBackProvider>
-                                    {
-                                      //el ultimo nivel, la app
-                                    }
-                                    <AppNavigations />
-                                    {
-                                      //
-                                    }
-                                  </RouteBackProvider>
-                                </CreditCardProvider>
-                              </ProductProvider>
-                            </CementeryProvider>
+                            <PromotionsProvider>
+                              <CementeryProvider>
+                                <ProductProvider>
+                                  <CreditCardProvider>
+                                    <RouteBackProvider>
+                                      {
+                                        //el ultimo nivel, la app
+                                      }
+                                      <AppNavigations />
+                                      {
+                                        //
+                                      }
+                                    </RouteBackProvider>
+                                  </CreditCardProvider>
+                                </ProductProvider>
+                              </CementeryProvider>
+                            </PromotionsProvider>
                           </CategoriesProvider>
                         </CementeriesProvider>
                       </CountryProvider>

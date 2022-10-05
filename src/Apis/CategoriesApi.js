@@ -1,5 +1,5 @@
 
-import {BASE_URL} from '@utils/config';
+import {BASE_URL,BASE_URL_IMG, CATEGORIES_URL} from '@utils/config';
 
 
 export default async function categoriesApi(country,lenguaje) {
@@ -11,13 +11,13 @@ export default async function categoriesApi(country,lenguaje) {
       redirect: 'follow',
     })
       .then(res => res.json())
-      .catch(error => console.error('Error', error))
+      .catch(error => console.error('Error Categoria', error))
       .then(response => {
         response.forEach(categoria => {
             categorias.push({
             _id: categoria._id,
             code: categoria.code,
-            image: categoria.image,
+            image: `${BASE_URL_IMG}${CATEGORIES_URL}${categoria.image}`,
             name:categoria.labels[0].name,
             description:categoria.labels[0].description,
           });

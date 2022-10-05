@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -12,17 +12,18 @@ import {
   TextInput,
 } from 'react-native';
 //Recarga la screen
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 //URL de server
-import {BASE_URL_IMG} from '@utils/config';
+import { BASE_URL_IMG } from '@utils/config';
 //Estilos Generales
-import {mainStyles} from '@styles/stylesGeneral';
+import { mainStyles } from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Contextos
-import {CementeryContext} from '@context/CementeryContext';
-import {UsuarioContext} from '@context/UsuarioContext';
-import {ScreentagContext} from '@context/ScreentagsContext';
-import {RouteBackContext} from '@context/RouteBackContext';
+import { CementeryContext } from '@context/CementeryContext';
+import { UsuarioContext } from '@context/UsuarioContext';
+import { ScreentagContext } from '@context/ScreentagsContext';
+import { RouteBackContext } from '@context/RouteBackContext';
+import { CementeriesContext } from '@context/CementeriesContext';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardColaborador from '@Components/CardColaborador/';
@@ -31,165 +32,21 @@ import CardColaborador from '@Components/CardColaborador/';
 export default function CompanyScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
-  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
+  const { RouteBack, setRouteBack, RouteBackComp, setRouteBackComp } =
     useContext(RouteBackContext);
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const {
+    Cementeries,
+  } = useContext(CementeriesContext)
+  const { tags, updateTags } = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => {};
+  const getInitialData = async () => { };
 
   // Cargar informacion de la vista
   useEffect(() => {
+    setcementeriosTotal(Cementeries)
     // Actualizar valores de la vista
-    setPropsVista({
-      label1: 'Productos',
-      labelSearch: 'Cementerio, Producto, Categoría...',
-      productos: [
-        {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-          titulo: 'Perla Magistral 2',
-          descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
-          categoria: 'CMar',
-          cementerio: 'capillas',
-          idCementerio: 1,
-        },
-        {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-        {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-          titulo: 'Perla Magistral 2',
-          descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
-          categoria: 'CMar',
-          cementerio: 'capillas',
-          idCementerio: 1,
-        },
-        {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-        {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-        {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-          titulo: 'Perla Magistral 2',
-          descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
-          categoria: 'CMar',
-          cementerio: 'capillas',
-          idCementerio: 1,
-        },
-        {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-      ],
-    });
-
-    setArrProductosDisp([
-      {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        id: 1,
-      },
-      {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        id: 2,
-      },
-      {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        id: 3,
-      },
-      {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        id: 4,
-      },
-      {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        id: 5,
-      },
-      {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        id: 6,
-      },
-      {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        id: 7,
-      },
-    ]);
+    //setArrProductosDisp(Cementeries);
     if (isFocused) {
       getInitialData();
       console.log('isFocused Cementeries All');
@@ -198,14 +55,10 @@ export default function CompanyScreen(props) {
   }, []);
 
   // Variables de la vista
-  const [propsVista, setPropsVista] = useState({
-    label1: '',
-    labelSearch: '',
-    productos: [],
-  });
+  const [cementeriosTotal, setcementeriosTotal] = useState([]);
 
   // Variable de trabajo
-  const [arrProductosDisp, setArrProductosDisp] = useState([]);
+  const [arrCementeriosDisp, setArrCementeriosDisp] = useState([]);
 
   return (
     <View style={styles.container}>
@@ -233,21 +86,12 @@ export default function CompanyScreen(props) {
                 : 'Cementerio, Producto, Categoría...'
             }
             onChangeText={val => {
-              setArrProductosDisp(
-                propsVista.productos.filter(
-                  p =>
-                    p.cementerio
+              setArrCementeriosDisp(
+                Cementeries.filter(
+                  c =>
+                    c.name
                       .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) ||
-                    p.titulo
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) ||
-                    p.categoria
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) ||
-                    p.descripcion
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()),
+                      .includes(val.toLocaleLowerCase()) 
                 ),
               );
             }}
@@ -257,15 +101,22 @@ export default function CompanyScreen(props) {
 
       <ScrollView>
         <View style={styles.containerHeader}>
-          {arrProductosDisp.map((company, key) => {
+          {arrCementeriosDisp.length >=1? arrCementeriosDisp.map((company, key) => {
             return (
               <CardColaborador
                 key={key}
                 onPressColab={() => selectCementery(company, 'Company')}
-                urlImagen={company.urlImagen}
-                nombre={company.titulo}
-                descripcion={company.descripcion}
-                precio={company.precio}
+                urlImagen={'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg'}
+                nombre={company.name}
+              />
+            );
+          }) : Cementeries.map((company, key) => {
+            return (
+              <CardColaborador
+                key={key}
+                onPressColab={() => selectCementery(company, 'Company')}
+                urlImagen={'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg'}
+                nombre={company.name}
               />
             );
           })}

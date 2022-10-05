@@ -1,5 +1,5 @@
 
-import {BASE_URL} from '@utils/config';
+import {BASE_URL,BASE_URL_IMG, COMPANIES_URL} from '@utils/config';
 
 
 export default async function cementeriesApi(country) {
@@ -18,6 +18,7 @@ export default async function cementeriesApi(country) {
             _id: cementerio._id,
             code: cementerio.code,
             name:cementerio.name,
+            image: `${BASE_URL_IMG}${COMPANIES_URL}${cementerio.image}`
           });
         });
       });

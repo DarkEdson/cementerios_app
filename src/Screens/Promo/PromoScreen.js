@@ -9,11 +9,15 @@ import ToolBar from '@Components/common/toolBar';
 import CardPromocion from '@Components/CardPromocion/';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
+import { PromotionsContext } from '@context/PromotionsContext';
 
 //tags.PromotionsScreen.labelpromociones
 //tags.PromotionsScreen.labelpromociones != '' ? tags.PromotionsScreen.labelpromociones :
 export default function PromoScreen(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
+  const {
+    Promotions,
+  } = useContext(PromotionsContext)
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -21,96 +25,12 @@ export default function PromoScreen(props) {
   // Cargar informacion de la vista
   useEffect(() => {
     // Actualizar valores de la vista
-    setPropsVista({
-      descuentos: [
-        {
-          titulo: '30% de descuento',
-          descripcion:
-            'Descuesto en momentos y memorias al adquir un espacio en el cementerio',
-          bgColor: '#fadf8e',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-        {
-          titulo: '40% de descuento',
-          descripcion: 'Descuento en viaje en lancha en acuatic.',
-          bgColor: '#f5c48c',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-        {
-          titulo: '30% de descuento',
-          descripcion:
-            'Descuesto en momentos y memorias al adquir un espacio en el cementerio',
-          bgColor: '#fadf8e',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-        {
-          titulo: '40% de descuento',
-          descripcion: 'Descuento en viaje en lancha en acuatic.',
-          bgColor: '#f5c48c',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-        {
-          titulo: '30% de descuento',
-          descripcion:
-            'Descuesto en momentos y memorias al adquir un espacio en el cementerio',
-          bgColor: '#fadf8e',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-        {
-          titulo: '40% de descuento',
-          descripcion: 'Descuento en viaje en lancha en acuatic.',
-          bgColor: '#f5c48c',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-        {
-          titulo: '30% de descuento',
-          descripcion:
-            'Descuesto en momentos y memorias al adquir un espacio en el cementerio',
-          bgColor: '#fadf8e',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-        {
-          titulo: '40% de descuento',
-          descripcion: 'Descuento en viaje en lancha en acuatic.',
-          bgColor: '#f5c48c',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-        {
-          titulo: '30% de descuento',
-          descripcion:
-            'Descuesto en momentos y memorias al adquir un espacio en el cementerio',
-          bgColor: '#fadf8e',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-        {
-          titulo: '40% de descuento',
-          descripcion: 'Descuento en viaje en lancha en acuatic.',
-          bgColor: '#f5c48c',
-          urlImagen:
-            'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000',
-        },
-      ],
-    });
     if (isFocused) {
       getInitialData();
       console.log('isFocused Promo');
     }
     //props, isFocused
   }, []);
-
-  // Variables de la vista
-  const [propsVista, setPropsVista] = useState({
-    descuentos: [],
-  });
 
   return (
     <View>
@@ -131,14 +51,14 @@ export default function PromoScreen(props) {
 
       <ScrollView style={styles.scroll}>
         <View>
-          {propsVista.descuentos.map((promo, key) => {
+          {Promotions.map((promo, key) => {
             return (
               <CardPromocion
                 key={key}
-                titulo={promo.titulo}
-                descripcion={promo.descripcion}
-                bgColor={promo.bgColor}
-                urlImagen={promo.urlImagen}
+                titulo={promo.name}
+                descripcion={promo.description}
+                bgColor={'#f5c48c'}
+                urlImagen={'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000'}
               />
             );
           })}
