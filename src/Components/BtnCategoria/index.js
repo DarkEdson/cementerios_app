@@ -4,7 +4,7 @@ import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 export default function BtnCategoria(props) {
   return (
-    <TouchableOpacity style={styles.cuerpoCard}>
+    <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressCategorie}>
       <Card>
         <View style={styles.view}>
           <View style={styles.top}>

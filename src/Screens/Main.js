@@ -14,6 +14,7 @@ import { ShoppingCartProvider } from '@context/ShoppingCartContext';
 import { RouteBackProvider } from '@context/RouteBackContext';
 import { CountryProvider } from '@context/CountryContext';
 import { GlobalLanguageProvider } from '@context/LanguageContext';
+import { CategoriesProvider } from '@context/CategoriesContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -30,21 +31,23 @@ const MainPage = () => {
                   <ShoppingCartProvider>
                     <CountriesProvider>
                       <CountryProvider>
-                        <CementeryProvider>
-                          <ProductProvider>
-                            <CreditCardProvider>
-                              <RouteBackProvider>
-                                {
-                                  //el ultimo nivel, la app
-                                }
-                                <AppNavigations />
-                                {
-                                  //
-                                }
-                              </RouteBackProvider>
-                            </CreditCardProvider>
-                          </ProductProvider>
-                        </CementeryProvider>
+                        <CategoriesProvider>
+                          <CementeryProvider>
+                            <ProductProvider>
+                              <CreditCardProvider>
+                                <RouteBackProvider>
+                                  {
+                                    //el ultimo nivel, la app
+                                  }
+                                  <AppNavigations />
+                                  {
+                                    //
+                                  }
+                                </RouteBackProvider>
+                              </CreditCardProvider>
+                            </ProductProvider>
+                          </CementeryProvider>
+                        </CategoriesProvider>
                       </CountryProvider>
                     </CountriesProvider>
                   </ShoppingCartProvider>

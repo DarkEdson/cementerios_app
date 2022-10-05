@@ -25,6 +25,7 @@ import {CountriesContext} from '@context/CountriesContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 import {CountryContext} from '@context/CountryContext';
 import { GlobalLanguageContext } from '@context/LanguageContext';
+import { CategoriesContext } from '@context/CategoriesContext';
 //Storages
 import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 //Componentes
@@ -33,6 +34,8 @@ import BtnCategoria from '@Components/BtnCategoria/';
 import ToolBarSession from '@Components/common/toolBarSession';
 import MyTextButton from '@Components/common/MyTextButton';
 import CardColaborador from '@Components/CardColaborador/';
+
+
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
@@ -43,6 +46,11 @@ export default function InitialScreen(props) {
   const [cementery, setCementery] = useContext(CementeryContext);
   const [countries, setCountries] = useContext(CountriesContext);
   const {tags, updateTags} = useContext(ScreentagContext);
+  const {
+    categories,
+    isLoadingCategories,
+    getCategories,
+  } = useContext(CategoriesContext)
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
   const {country, updateDefaultCountry, isLoadingCountry, getDefaultCountry} =
@@ -122,6 +130,7 @@ export default function InitialScreen(props) {
       });
       console.log(country, 'DEFAULT');
       console.log(GlobalLanguage,'LENGUAJE GLOBAL EN HOME')
+      getCategories(country,GlobalLanguage)
       setubicaciones(getUbicaciones);
     }
 
@@ -131,7 +140,9 @@ export default function InitialScreen(props) {
     }
     misUbicaciones();
     
-    
+    if(isLoadingCategories){
+      console.log(categories)
+    }
     getDefaultCountry();
     return () => {};
   }, []);
@@ -227,6 +238,7 @@ export default function InitialScreen(props) {
                 <BtnCategoria
                   urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
                   titulo="Viajes en Lancha"
+                  onPressCategorie={()=>{console.log(categories)}}
                 />
                 <BtnCategoria
                   urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvvrsxGFFwp4ylemzQNDVJQXBU-PCB3FP1og&usqp=CAU"
