@@ -15,6 +15,7 @@ import { RouteBackProvider } from '@context/RouteBackContext';
 import { CountryProvider } from '@context/CountryContext';
 import { GlobalLanguageProvider } from '@context/LanguageContext';
 import { CategoriesProvider } from '@context/CategoriesContext';
+import { CementeriesProvider } from '../context/CementeriesContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -31,23 +32,25 @@ const MainPage = () => {
                   <ShoppingCartProvider>
                     <CountriesProvider>
                       <CountryProvider>
-                        <CategoriesProvider>
-                          <CementeryProvider>
-                            <ProductProvider>
-                              <CreditCardProvider>
-                                <RouteBackProvider>
-                                  {
-                                    //el ultimo nivel, la app
-                                  }
-                                  <AppNavigations />
-                                  {
-                                    //
-                                  }
-                                </RouteBackProvider>
-                              </CreditCardProvider>
-                            </ProductProvider>
-                          </CementeryProvider>
-                        </CategoriesProvider>
+                        <CementeriesProvider>
+                          <CategoriesProvider>
+                            <CementeryProvider>
+                              <ProductProvider>
+                                <CreditCardProvider>
+                                  <RouteBackProvider>
+                                    {
+                                      //el ultimo nivel, la app
+                                    }
+                                    <AppNavigations />
+                                    {
+                                      //
+                                    }
+                                  </RouteBackProvider>
+                                </CreditCardProvider>
+                              </ProductProvider>
+                            </CementeryProvider>
+                          </CategoriesProvider>
+                        </CementeriesProvider>
                       </CountryProvider>
                     </CountriesProvider>
                   </ShoppingCartProvider>

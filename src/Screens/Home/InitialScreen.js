@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,25 +9,26 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import {Icon} from '@rneui/themed';
+import { Icon,FAB } from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
-import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
+import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 //Recarga la screen
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 //Estilos generales
-import {mainStyles, loginStyles} from '@styles/stylesGeneral';
+import { mainStyles, loginStyles } from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Contextos
-import {UsuarioContext} from '@context/UsuarioContext';
-import {CementeryContext} from '@context/CementeryContext';
-import {ScreentagContext} from '@context/ScreentagsContext';
-import {CountriesContext} from '@context/CountriesContext';
-import {RouteBackContext} from '@context/RouteBackContext';
-import {CountryContext} from '@context/CountryContext';
+import { UsuarioContext } from '@context/UsuarioContext';
+import { CementeryContext } from '@context/CementeryContext';
+import { ScreentagContext } from '@context/ScreentagsContext';
+import { CountriesContext } from '@context/CountriesContext';
+import { RouteBackContext } from '@context/RouteBackContext';
+import { CountryContext } from '@context/CountryContext';
 import { GlobalLanguageContext } from '@context/LanguageContext';
 import { CategoriesContext } from '@context/CategoriesContext';
+import { CementeriesContext } from '@context/CementeriesContext';
 //Storages
-import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
+import { getLanguague, saveLanguague } from '@storage/LanguagueAsyncStorage';
 //Componentes
 import CardPromocion from '@Components/CardPromocion/';
 import BtnCategoria from '@Components/BtnCategoria/';
@@ -37,32 +38,38 @@ import CardColaborador from '@Components/CardColaborador/';
 
 
 
+
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
 //tags.HomeScreen.ubica
 //tags.HomeScreen.ubica != '' ? tags.HomeScreen.ubica :
 export default function InitialScreen(props) {
-  const [loginUser, loginAction] = useContext(UsuarioContext);
+  const [loginUser] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
-  const [countries, setCountries] = useContext(CountriesContext);
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const [countries] = useContext(CountriesContext);
+  const [GlobalLanguage] = useContext(GlobalLanguageContext)
+  const { tags } = useContext(ScreentagContext);
+  const { setRouteBackComp } = useContext(RouteBackContext);
   const {
     categories,
     isLoadingCategories,
     getCategories,
   } = useContext(CategoriesContext)
-  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
-    useContext(RouteBackContext);
-  const {country, updateDefaultCountry, isLoadingCountry, getDefaultCountry} =
+  const {
+    Cementeries,
+    isLoadingCementeries,
+    getCementeries,
+  } = useContext(CementeriesContext)
+  const { country, updateDefaultCountry, isLoadingCountry, getDefaultCountry } =
     useContext(CountryContext);
-    const [GlobalLanguage, setGlobalLanguage] = useContext(GlobalLanguageContext)
+
   const [ubicationSelect, setubicationSelect] = useState({
     label: `${countries[0].name}, ${countries[0].code.toUpperCase()}`,
     value: countries[0].code,
   });
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => {};
+  const getInitialData = async () => { };
 
   const [ubicaciones, setubicaciones] = useState([]);
 
@@ -73,52 +80,20 @@ export default function InitialScreen(props) {
     height: PAGE_WIDTH * 0.56,
   };
   const [data, setData] = useState([
-    {id: 1, name: 'angellist'},
-    {id: 2, name: 'codepen'},
-    {id: 3, name: 'envelope'},
-    {id: 4, name: 'etsy'},
-    {id: 5, name: 'facebook'},
-    {id: 6, name: 'foursquare'},
-    {id: 7, name: 'github-alt'},
-    {id: 8, name: 'github'},
-    {id: 9, name: 'gitlab'},
-    {id: 10, name: 'instagram'},
-  ]);
-  const [categorias, setCategorias] = useState([
-    {
-      id: 1,
-      titulo: 'Cementerios del Mar',
-      urlImagen:
-        'https://img.europapress.es/fotoweb/fotonoticia_20180301191246_1200.jpg',
-    },
-    {
-      id: 2,
-      titulo: 'Capillas Señoriales',
-      urlImagen:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4HjGP0stpZVJ6HPn06tbnaxp6oWpD4Kps1g&usqp=CAU',
-    },
-    {
-      id: 3,
-      titulo: 'Ubicaciones',
-      urlImagen:
-        'https://flyclipart.com/thumb2/flat-location-logo-icons-png-934757.png',
-    },
-    {
-      id: 4,
-      titulo: 'Buceo',
-      urlImagen:
-        'https://img2.freepng.es/20190208/aqt/kisspng-diving-mask-snorkeling-underwater-diving-scuba-div-spearfishing-today-mexicoampaposs-top-caribbean-5c5d6a5d360982.2594144115496259492214.jpg',
-    },
-    {
-      id: 5,
-      titulo: 'Viajes en Lancha',
-      urlImagen:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU',
-    },
+    { id: 1, name: 'angellist' },
+    { id: 2, name: 'codepen' },
+    { id: 3, name: 'envelope' },
+    { id: 4, name: 'etsy' },
+    { id: 5, name: 'facebook' },
+    { id: 6, name: 'foursquare' },
+    { id: 7, name: 'github-alt' },
+    { id: 8, name: 'github' },
+    { id: 9, name: 'gitlab' },
+    { id: 10, name: 'instagram' },
   ]);
 
   useEffect(() => {
-    
+
     function misUbicaciones() {
       let getUbicaciones = [];
       console.log(countries)
@@ -129,8 +104,9 @@ export default function InitialScreen(props) {
         });
       });
       console.log(country, 'DEFAULT');
-      console.log(GlobalLanguage,'LENGUAJE GLOBAL EN HOME')
-      getCategories(country,GlobalLanguage)
+      console.log(GlobalLanguage, 'LENGUAJE GLOBAL EN HOME')
+      getCategories(country, GlobalLanguage)
+      getCementeries(country)
       setubicaciones(getUbicaciones);
     }
 
@@ -139,12 +115,9 @@ export default function InitialScreen(props) {
       console.log('isFocused in Start Screen');
     }
     misUbicaciones();
-    
-    if(isLoadingCategories){
-      console.log(categories)
-    }
+
     getDefaultCountry();
-    return () => {};
+    return () => { };
   }, []);
 
   return (
@@ -156,7 +129,13 @@ export default function InitialScreen(props) {
             alignItems: 'center',
             marginTop: '50%',
           }}>
-          <ActivityIndicator size="large" />
+          <FAB
+              loading
+              color={color.PRINCIPALCOLOR}
+              visible={isLoadingCountry}
+              icon={{name: 'add', color: 'white'}}
+              size="small"
+            />
         </View>
       ) : (
         <View>
@@ -170,11 +149,7 @@ export default function InitialScreen(props) {
             ubicaciones={ubicaciones}
             ubicationSelect={ubicationSelect}
             defaultCountry={country}
-            onSelectUbication={item => {
-              console.log('cambia ubicacion seleccionada', item);
-              setubicationSelect(item);
-              updateDefaultCountry(item);
-            }}
+            onSelectUbication={item => cambiaPais(item)}
             onPressLeft={() => goToScreen('Profile')}
             iconLeft={true}
             image={loginUser.usuario.avatar}
@@ -194,7 +169,7 @@ export default function InitialScreen(props) {
                     ? tags.HomeScreen.inputsearch
                     : 'Cementerios, arrecifes o flores...'
                 }
-                buttonTextStyle={{textAlign: 'left'}}
+                buttonTextStyle={{ textAlign: 'left' }}
                 buttonStyle={styles.btnStyle}
                 renderDropdownIcon={isOpened => {
                   return (
@@ -224,8 +199,8 @@ export default function InitialScreen(props) {
                 loop
                 autoPlay={true}
                 autoPlayInterval={2000}
-                data={categorias}
-                renderItem={({item}) => (
+                data={Cementeries}
+                renderItem={({ item }) => (
                   <CardPromocion
                     titulo="30% de descuento"
                     descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
@@ -234,24 +209,35 @@ export default function InitialScreen(props) {
                   />
                 )}
               />
-              <View style={styles.categories}>
-                <BtnCategoria
-                  urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
-                  titulo="Viajes en Lancha"
-                  onPressCategorie={()=>{console.log(categories)}}
-                />
-                <BtnCategoria
-                  urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvvrsxGFFwp4ylemzQNDVJQXBU-PCB3FP1og&usqp=CAU"
-                  titulo="Flores"
-                />
-                <BtnCategoria
-                  urlImagen="https://flyclipart.com/thumb2/flat-location-logo-icons-png-934757.png"
-                  titulo="Ubicaciones"
-                />
-                <BtnCategoria
-                  urlImagen="https://img2.freepng.es/20190208/aqt/kisspng-diving-mask-snorkeling-underwater-diving-scuba-div-spearfishing-today-mexicoampaposs-top-caribbean-5c5d6a5d360982.2594144115496259492214.jpg"
-                  titulo="Buceo"
-                />
+              <View>
+                {isLoadingCategories ? (
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <FAB
+              loading
+              color={color.PRINCIPALCOLOR}
+              visible={isLoadingCategories}
+              icon={{name: 'add', color: 'white'}}
+              size="small"
+            />
+                  </View>
+                ) : (
+                  <View style={styles.categories}>
+                    {categories.map((category, key) => {
+                      return (
+                        <BtnCategoria
+                          key={key}
+                          urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
+                          titulo={category.name}
+                          onPressCategorie={() => { console.log(categories) }}
+                        />
+                      );
+                    })}
+
+                  </View>)}
               </View>
               <View style={[styles.categories, styles.titles]}>
                 <Text style={styles.titleText}>
@@ -270,32 +256,64 @@ export default function InitialScreen(props) {
                   onPress={() => goToScreen('Cementeries')}
                 />
               </View>
-              <Carousel
+              <View>
+              {isLoadingCementeries ? (
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                       <View style={styles.boxTransparent} />
+                    <FAB
+              loading
+              color={color.PRINCIPALCOLOR}
+              visible={isLoadingCementeries}
+              icon={{name: 'add', color: 'white'}}
+              size="small"
+            />
+             <View style={styles.boxTransparent} />
+                  </View>
+                ) : (
+                  <View>
+                    <Carousel
                 {...baseOptions}
                 loop={true}
-                style={{width: '100%'}}
+                style={{ width: '100%' }}
                 autoPlay={true}
                 autoPlayInterval={2000}
-                data={categorias}
+                data={Cementeries}
                 pagingEnabled={true}
                 //onSnapToItem={(index) => console.log('current index:', index)}
-                renderItem={({item}) => (
+                renderItem={({ item }) => (
                   <View style={styles.categories}>
                     <CardColaborador
                       urlImagen={item.urlImagen}
-                      nombre={item.titulo}
+                      nombre={item.name}
                       onPressColab={() => selectCementery(item, 'Company')}
                     />
                   </View>
                 )}
               />
+
+                  </View>)}
+              
+              </View>
             </View>
+            <View style={styles.boxTransparent} />
             <View style={styles.boxTransparent} />
           </ScrollView>
         </View>
       )}
     </View>
   );
+
+  function cambiaPais(pais){
+    console.log('cambia ubicacion seleccionada', pais);
+              setubicationSelect(pais);
+              updateDefaultCountry(pais);
+              getCategories(pais, GlobalLanguage)
+              getCementeries(pais)
+  }
 
   function selectCementery(cementery, routeName) {
     setCementery(cementery);

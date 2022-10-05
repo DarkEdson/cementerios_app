@@ -5,7 +5,7 @@ import categoriesApi from '@Apis/CategoriesApi';
 export const CategoriesContext = createContext();
 
 export const CategoriesProvider = ({children}) => {
-  const [categories, setCategories] = useState({});
+  const [categories, setCategories] = useState([]);
   const [isLoadingCategories, setisLoadingCategories] = useState(true)
 
 
@@ -14,6 +14,7 @@ export const CategoriesProvider = ({children}) => {
     setisLoadingCategories(true)
     categoriesApi(country,languaje).then(res => {
         res.sort((a, b) => a.code.localeCompare(b.code));
+        console.log('CATEGORIAS',res)
         setCategories(res)
         setisLoadingCategories(false);
       });

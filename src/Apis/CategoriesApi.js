@@ -13,7 +13,6 @@ export default async function categoriesApi(country,lenguaje) {
       .then(res => res.json())
       .catch(error => console.error('Error', error))
       .then(response => {
-        console.log(response)
         response.forEach(categoria => {
             categorias.push({
             _id: categoria._id,
