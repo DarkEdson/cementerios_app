@@ -16,11 +16,11 @@ function CountryProvider({children}) {
     setLoadingCountry(true);
     setCountry({
       label: `${country.name}, ${country.code.toUpperCase()}`,
-      value: country.code,
+      value: country._id,
     });
     savecountry({
       label: `${country.name}, ${country.code.toUpperCase()}`,
-      value: country.code,
+      value: country._id,
     }).then(res => {
       setLoadingCountry(false);
     });

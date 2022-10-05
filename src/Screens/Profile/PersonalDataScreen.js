@@ -27,6 +27,7 @@ import {LanguaguesContext} from '@context/LanguaguesContext';
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import { GlobalLanguageContext } from '@context/LanguageContext';
 //Async Storage
 import {
   getLanguague,
@@ -41,6 +42,7 @@ export default function PersonalDataScreen(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
   const [lenguajes, setLenguajes] = useState([]);
   const [defaultLanguage, setdefaultLanguage] = useState({});
+  const [GlobalLanguage, setGlobalLanguage] = useContext(GlobalLanguageContext)
   const [nuevoLenguaje, setnuevoLenguaje] = useState({});
   let arrayLenguajes = [];
   const [isLoading, setLoading] = useState(false);
@@ -52,8 +54,9 @@ export default function PersonalDataScreen(props) {
   useEffect(() => {
     async function lenguajeDefault() {
       const lenguaje = await getLanguague();
-      console.log(lenguaje, 'lenguaje que esta guardado en Personal Data');
+      console.log(lenguaje, 'lenguaje que esta guardado en Personal Data', GlobalLanguage);
       setdefaultLanguage({label: lenguaje.name, value: lenguaje.code});
+      setGlobalLanguage(lenguaje)
     }
     Languagues.forEach(item => {
       arrayLenguajes.push({label: item.name, value: item.code});
@@ -205,8 +208,8 @@ export default function PersonalDataScreen(props) {
                     Languagues.forEach(item => {
                       if (item.code == selectedItem.value) {
                         setnuevoLenguaje(item);
-
                         updateLanguage(item, actualizaTags);
+                        setGlobalLanguage(item)
                       }
                     });
                   }}

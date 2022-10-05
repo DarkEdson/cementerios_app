@@ -24,6 +24,9 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 import {CountriesContext} from '@context/CountriesContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 import {CountryContext} from '@context/CountryContext';
+import { GlobalLanguageContext } from '@context/LanguageContext';
+//Storages
+import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 //Componentes
 import CardPromocion from '@Components/CardPromocion/';
 import BtnCategoria from '@Components/BtnCategoria/';
@@ -44,16 +47,10 @@ export default function InitialScreen(props) {
     useContext(RouteBackContext);
   const {country, updateDefaultCountry, isLoadingCountry, getDefaultCountry} =
     useContext(CountryContext);
-
+    const [GlobalLanguage, setGlobalLanguage] = useContext(GlobalLanguageContext)
   const [ubicationSelect, setubicationSelect] = useState({
     label: `${countries[0].name}, ${countries[0].code.toUpperCase()}`,
     value: countries[0].code,
-  });
-  const [homeTags, sethomeTags] = useState({
-    ubica: 'Ubicación',
-    inputsearch: 'Cementerios, arrecifes o flores...',
-    labelcementarios: 'Cementerios',
-    labelvertodos: 'Ver Todos',
   });
 
   const isFocused = useIsFocused();
@@ -110,48 +107,21 @@ export default function InitialScreen(props) {
       urlImagen:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU',
     },
-    {
-      id: 6,
-      titulo: 'Flores',
-      urlImagen:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU',
-    },
-    {
-      id: 7,
-      titulo: 'Ubicaciones',
-      urlImagen:
-        'https://flyclipart.com/thumb2/flat-location-logo-icons-png-934757.png',
-    },
-    {
-      id: 8,
-      titulo: 'Buceo',
-      urlImagen:
-        'https://img2.freepng.es/20190208/aqt/kisspng-diving-mask-snorkeling-underwater-diving-scuba-div-spearfishing-today-mexicoampaposs-top-caribbean-5c5d6a5d360982.2594144115496259492214.jpg',
-    },
-    {
-      id: 9,
-      titulo: 'Viajes en Lancha',
-      urlImagen:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU',
-    },
-    {
-      id: 10,
-      titulo: 'Flores',
-      urlImagen:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU',
-    },
   ]);
 
   useEffect(() => {
+    
     function misUbicaciones() {
       let getUbicaciones = [];
+      console.log(countries)
       countries.forEach(country => {
         getUbicaciones.push({
           label: `${country.name}, ${country.code.toUpperCase()}`,
-          value: country.code,
+          value: country._id,
         });
       });
       console.log(country, 'DEFAULT');
+      console.log(GlobalLanguage,'LENGUAJE GLOBAL EN HOME')
       setubicaciones(getUbicaciones);
     }
 
@@ -160,19 +130,8 @@ export default function InitialScreen(props) {
       console.log('isFocused in Start Screen');
     }
     misUbicaciones();
-    if (Object.keys(tags).length != 0) {
-      console.log(Object.keys(tags).length);
-      if (Object.keys(tags.HomeScreen).length != 0) {
-        console.log(Object.keys(tags.HomeScreen).length);
-        sethomeTags({
-          ubica: tags.HomeScreen.ubica,
-          inputsearch: tags.HomeScreen.inputsearch,
-          labelcementarios: tags.HomeScreen.labelcementarios,
-          labelvertodos: tags.HomeScreen.labelvertodos,
-        });
-      }
-    }
-
+    
+    
     getDefaultCountry();
     return () => {};
   }, []);
@@ -196,7 +155,7 @@ export default function InitialScreen(props) {
             translucent={true}
           />
           <ToolBarSession
-            titulo={homeTags.ubica != '' ? homeTags.ubica : 'Ubicación'}
+            titulo={tags.HomeScreen.ubica != '' ? tags.HomeScreen.ubica : 'Ubicación'}
             ubicaciones={ubicaciones}
             ubicationSelect={ubicationSelect}
             defaultCountry={country}
@@ -215,13 +174,13 @@ export default function InitialScreen(props) {
                 data={data}
                 search
                 defaultButtonText={
-                  homeTags.inputsearch != ''
-                    ? homeTags.inputsearch
+                  tags.HomeScreen.inputsearch != ''
+                    ? tags.HomeScreen.inputsearch
                     : 'Cementerios, arrecifes o flores...'
                 }
                 searchPlaceHolder={
-                  homeTags.inputsearch != ''
-                    ? homeTags.inputsearch
+                  tags.HomeScreen.inputsearch != ''
+                    ? tags.HomeScreen.inputsearch
                     : 'Cementerios, arrecifes o flores...'
                 }
                 buttonTextStyle={{textAlign: 'left'}}
@@ -284,14 +243,14 @@ export default function InitialScreen(props) {
               </View>
               <View style={[styles.categories, styles.titles]}>
                 <Text style={styles.titleText}>
-                  {homeTags.labelcementarios != ''
-                    ? homeTags.labelcementarios
+                  {tags.HomeScreen.labelcementarios != ''
+                    ? tags.HomeScreen.labelcementarios
                     : 'Cementerios'}
                 </Text>
                 <MyTextButton
                   titulo={
-                    homeTags.labelvertodos != ''
-                      ? homeTags.labelvertodos
+                    tags.HomeScreen.labelvertodos != ''
+                      ? tags.HomeScreen.labelvertodos
                       : 'Ver todos'
                   }
                   underline={true}

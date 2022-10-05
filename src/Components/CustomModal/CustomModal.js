@@ -1,7 +1,7 @@
 //import liraries
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Modal, Pressable, Image} from 'react-native';
-import {Icon} from '@rneui/themed';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Modal, Pressable, Image } from 'react-native';
+import { Icon } from '@rneui/themed';
 import color from '@styles/colors';
 import Video from 'react-native-video';
 import MyButton from '@Components/common/MyButton';
@@ -17,7 +17,7 @@ const CustomModal = props => {
     setimgName(extension[extension.length - 2]);
 
     setextensionFile(extension[extension.length - 1]);
-    return () => {};
+    return () => { };
   }, []);
 
   function ocultarModal() {
@@ -43,8 +43,8 @@ const CustomModal = props => {
             width: '100%',
             height: '100%',
           }}>
-          <View style={{padding: '1%'}}>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{ padding: '1%' }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Pressable style={styles.btnIconBack2} onPress={ocultarModal}>
                 <Icon
                   style={styles.searchIcon}
@@ -58,12 +58,13 @@ const CustomModal = props => {
             <View style={styles.textContainer} />
             {extensionsImg.includes(extensionFile) ? (
               <View style={styles.imgContainer}>
-                <Image style={styles.imagen} source={{uri: props.urlImagen}} />
+                <Image style={styles.imagen} source={{ uri: props.urlImagen }} />
               </View>
             ) : (
               <View>
                 <View style={styles.imgContainer}>
-                  <Video
+
+                <Video
                     style={styles.video}
                     source={{uri: props.urlImagen}}
                     paused={false}
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
   video: {
     alignSelf: 'center',
     width: '95%',
-    height: '85%',
+    height: '80%',
   },
   container: {
     flex: 1,

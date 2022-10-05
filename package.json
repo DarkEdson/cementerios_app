@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-community/slider": "^4.3.2",
     "@react-navigation/bottom-tabs": "^6.3.3",
     "@react-navigation/material-bottom-tabs": "^6.2.3",
     "@react-navigation/native": "^6.0.12",
@@ -42,7 +43,7 @@
     "react-native-system-setting": "^1.7.6",
     "react-native-vector-icons": "^9.2.0",
     "react-native-video": "^5.2.1",
-    "react-native-video-basic-controls": "^0.1.12",
+    "react-native-video-controls": "^2.8.1",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4"
   },

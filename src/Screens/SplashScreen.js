@@ -15,6 +15,7 @@ import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {CountriesContext} from '@context/CountriesContext';
 import {CountryContext} from '@context/CountryContext';
+import { GlobalLanguageContext } from '@context/LanguageContext';
 //Apis
 import {apiLanguage, apiIdScreens} from '@Apis/ApisGenerales';
 import locationsApi from '@Apis/LocationsApi';
@@ -24,6 +25,7 @@ import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getcountry} from '@storage/CountryAsyncStorage';
 
+
 export default function SplashScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
@@ -31,6 +33,7 @@ export default function SplashScreen(props) {
   const [countries, setCountries] = useContext(CountriesContext);
   const {saveDefaultCountry, updateDefaultCountry} = useContext(CountryContext);
   const {tags, updateTags} = useContext(ScreentagContext);
+  const [GlobalLanguage, setGlobalLanguage] = useContext(GlobalLanguageContext)
 
   const [bienvenida, setbienvenida] = useState('es');
   let deviceLanguage =
@@ -88,9 +91,11 @@ export default function SplashScreen(props) {
         if (element.code == defecto) {
           setbienvenida(element.code);
           saveLanguague(element).then(msg => {});
+          setGlobalLanguage(element)
         } else {
           setbienvenida(response[0].code);
           saveLanguague(response[0]).then(msg => {});
+          setGlobalLanguage(response[0])
         }
       });
     } else {
@@ -98,9 +103,11 @@ export default function SplashScreen(props) {
         if (element._id == lenguaje._id) {
           setbienvenida(lenguaje.code);
           saveLanguague(lenguaje).then(msg => {});
+          setGlobalLanguage(lenguaje)
         } else if (element.code == lenguaje.code) {
           setbienvenida(element.code);
           saveLanguague(element).then(msg => {});
+          setGlobalLanguage(element)
         }
       });
 
@@ -137,7 +144,7 @@ export default function SplashScreen(props) {
     fetchCountries();
     setTimeout(() => {
       goToScreen('Home');
-    }, 1000);
+    }, 3000);
   }
 
   function goToScreen(routeName) {

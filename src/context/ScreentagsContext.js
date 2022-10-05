@@ -6,8 +6,10 @@ export const ScreentagContext = createContext();
 
 export const ScreentagProvider = ({children}) => {
   const [tags, setTags] = useState({});
+  const [isLoadingTags, setisLoadingTags] = useState(true)
 
   const updateTags = async pantalla => {
+    setisLoadingTags(true)
     let etiquetas = await apiScreen(pantalla._id);
     etiquetas.sort((a, b) => a.code.localeCompare(b.code));
 
