@@ -26,7 +26,7 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 //tags.registerAddScreen.ubica
 export default function RegistroScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const {tags} = useContext(ScreentagContext);
   const {register} = useContext(AuthContext);
   const [registerUser, registerAction] = useContext(RegisterContext);
 
@@ -38,7 +38,7 @@ export default function RegistroScreen(props) {
     name: '',
     lastname: '',
     paypal_id: '',
-    id_number: '',
+    phone: ''
   });
 
   useEffect(() => {
@@ -47,6 +47,7 @@ export default function RegistroScreen(props) {
       email: registerUser.email,
       password: registerUser.password,
       username: registerUser.username,
+      role: registerUser.role,
     });
     if (isFocused) {
       getInitialData();
@@ -97,17 +98,6 @@ export default function RegistroScreen(props) {
         />
         <MyTextInput
           keyboardType={null}
-          value={data.id_number}
-          onChangeText={numeroID => setData({...data, id_number: numeroID})}
-          placeholder={
-            tags.registerAddScreen.inputnumid != ''
-              ? tags.registerAddScreen.inputnumid
-              : 'Número de ID'
-          }
-          image="card-account-details"
-        />
-        <MyTextInput
-          keyboardType={null}
           value={data.paypal_id}
           onChangeText={paypalID => setData({...data, paypal_id: paypalID})}
           placeholder={
@@ -117,8 +107,20 @@ export default function RegistroScreen(props) {
           }
           image="credit-card-outline"
         />
+        <MyTextInput
+          keyboardType={'phone-pad'}
+          value={data.phone}
+          onChangeText={phones => setData({...data, phone: phones})}
+          placeholder={
+            tags.registerAddScreen.phone != ''
+              ? tags.registerAddScreen.phone
+              : 'Phone'
+          }
+          image="phone"
+        />
 
-        <CheckBox
+    {  /*
+      <CheckBox
           containerStyle={registroStyles.checkBox}
           textStyle={{color: color.PRINCIPALCOOR}}
           onPress={() => {
@@ -131,23 +133,24 @@ export default function RegistroScreen(props) {
           title="He leído y acepto los términos y condiciones"
           checkedColor={color.PRINCIPALCOLOR}
         />
+        */}
         <MyButton
           titulo={
             tags.registerAddScreen.btncompletar != ''
               ? tags.registerAddScreen.btncompletar
               : 'COMPLETAR REGISTRO'
           }
-          onPress={() => goToScreen('Login')}
+          onPress={() => registrar()}
         />
       </View>
     </ScrollView>
   );
   function registrar() {
     console.log(data);
-    if (email == '' || password == '') {
+    if (data.name == '' || data.name == ' ') {
       Alert.alert(
         'Datos en blanco',
-        '¿Debe Ingresar un Usuario y7o una Contraseña ?',
+        '¿Debe Ingresar un Nombre',
         [
           {
             text: 'Ok',
@@ -156,7 +159,43 @@ export default function RegistroScreen(props) {
           },
         ],
       );
-    } else {
+    } else if (data.lastname == '' || data.lastname == ' ') {
+      Alert.alert(
+        'Datos en blanco',
+        '¿Debe Ingresar un Apellido',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+            style: 'cancel',
+          },
+        ],
+      );
+    } else if (data.paypal_id == '' || data.paypal_id == ' ') {
+      Alert.alert(
+        'Datos en blanco',
+        '¿Debe Ingresar un ID de PayPal',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+            style: 'cancel',
+          },
+        ],
+      );
+    } else if (data.phone == '' || data.phone == ' ') {
+      Alert.alert(
+        'Datos en blanco',
+        '¿Debe Ingresar un numero de telefono',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+            style: 'cancel',
+          },
+        ],
+      );
+    } else  {
       register(data, goToScreen, loginAction);
     }
   }

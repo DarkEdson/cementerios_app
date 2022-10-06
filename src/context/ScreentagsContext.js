@@ -58,6 +58,7 @@ export const ScreentagProvider = ({children}) => {
             inputnombres: etiquetas[3].description,
             inputnumid: etiquetas[4].description,
             inputpaypalid: etiquetas[5].description,
+            phone: etiquetas[6].description,
           },
         }));
       }

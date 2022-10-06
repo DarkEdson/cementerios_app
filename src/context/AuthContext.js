@@ -22,10 +22,10 @@ export const AuthProvider = ({children}) => {
         name: userNew.name,
         email: userNew.email,
         password: userNew.password,
+        role: userNew.role,
         lastname: userNew.lastname,
         paypal_id: userNew.paypal_id,
-        id_number: userNew.id_number,
-        phone: '',
+        phone: userNew.phone,
       })
       .then(res => {
         let userInfo = res.data;

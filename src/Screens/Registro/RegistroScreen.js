@@ -36,7 +36,7 @@ export default function RegistroScreen(props) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
-  const [usertype, setUsertype] = useState('');
+  const [role, setUsertype] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
 
@@ -299,8 +299,8 @@ export default function RegistroScreen(props) {
     } else if (
       username == ' ' ||
       username == '' ||
-      usertype == '' ||
-      usertype == ' '
+      role == '' ||
+      role == ' '
     ) {
       Snackbar.show({
         text: 'No se admiten campos vacios, revise usuario o tipo de usuario',
@@ -311,7 +311,7 @@ export default function RegistroScreen(props) {
         username,
         email,
         password,
-        usertype,
+        role,
       });
       goToScreen('RegistroAdd');
     }
