@@ -148,18 +148,18 @@ export default function VistaProducto(props) {
         containerStyle={styles.imgProducto}
         PlaceholderContent={<ActivityIndicator />}
         source={{
-          uri: Product.urlImagen,
+          uri: Product.principalImage,
         }}
       />
       <ScrollView>
         <View style={styles.descripcion}>
-          <Text style={styles.titulo}> {Product.titulo} </Text>
+          <Text style={styles.titulo}> {Product.name} </Text>
           <Text style={styles.categorias}> {propsVista.tags} </Text>
           <View style={CementeryScreen.HeaderView}>
             <InformationIcon
               tipo="font-awesome-5"
               image="dollar-sign"
-              titulo={Product.precio}
+              titulo={Product.price}
               subtitulo={propsVista.precio.label}
               onPress={() => {}}
             />
@@ -189,7 +189,7 @@ export default function VistaProducto(props) {
               : 'Detalle'}{' '}
           </Text>
           <Text style={styles.descDato} numberOfLines={2}>
-            {Product.descripcion}
+            {Product.description}
           </Text>
           <View style={styles.multimedia}>
             <Carousel

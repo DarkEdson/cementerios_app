@@ -17,6 +17,7 @@ import { GlobalLanguageProvider } from '@context/LanguageContext';
 import { CategoriesProvider } from '@context/CategoriesContext';
 import { CementeriesProvider } from '@context/CementeriesContext';
 import { PromotionsProvider } from '@context/PromotionsContext';
+import { ProductsProvider } from '@context/ProductsContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -37,19 +38,21 @@ const MainPage = () => {
                           <CategoriesProvider>
                             <PromotionsProvider>
                               <CementeryProvider>
-                                <ProductProvider>
-                                  <CreditCardProvider>
-                                    <RouteBackProvider>
-                                      {
-                                        //el ultimo nivel, la app
-                                      }
-                                      <AppNavigations />
-                                      {
-                                        //
-                                      }
-                                    </RouteBackProvider>
-                                  </CreditCardProvider>
-                                </ProductProvider>
+                                <ProductsProvider>
+                                  <ProductProvider>
+                                    <CreditCardProvider>
+                                      <RouteBackProvider>
+                                        {
+                                          //el ultimo nivel, la app
+                                        }
+                                        <AppNavigations />
+                                        {
+                                          //
+                                        }
+                                      </RouteBackProvider>
+                                    </CreditCardProvider>
+                                  </ProductProvider>
+                                </ProductsProvider>
                               </CementeryProvider>
                             </PromotionsProvider>
                           </CategoriesProvider>

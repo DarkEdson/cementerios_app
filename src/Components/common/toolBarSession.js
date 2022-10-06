@@ -12,7 +12,6 @@ export default function ToolBarSession(props) {
   const [paisDefault, setpaisDefault] = useState(props.defaultCountry);
   useEffect(() => {
     setpaisDefault(props.defaultCountry);
-    console.log(paisDefault, ' SELECTED?');
   }, []);
   return (
     <View style={[props.style, mainStyles.toolBarSessionStyle]}>

@@ -34,6 +34,7 @@ import { GlobalLanguageContext } from '@context/LanguageContext';
 import { CategoriesContext } from '@context/CategoriesContext';
 import { CementeriesContext } from '@context/CementeriesContext';
 import { PromotionsContext } from '@context/PromotionsContext';
+import { ProductsContext } from "@context/ProductsContext";
 
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
@@ -62,6 +63,12 @@ export default function InitialScreen(props) {
     isLoadingPromotions,
     getPromotions,
   } = useContext(PromotionsContext)
+  const {
+    ProductsCountry,
+                isLoadingProducts,
+                getProductsbyCountry,
+                getProductsbyCategory,
+  } = useContext(ProductsContext)
   const { country, updateDefaultCountry, isLoadingCountry, getDefaultCountry } =
     useContext(CountryContext);
 
@@ -87,7 +94,6 @@ export default function InitialScreen(props) {
   useEffect(() => {
     function misUbicaciones() {
       let getUbicaciones = [];
-      console.log(countries)
       countries.forEach(country => {
         getUbicaciones.push({
           label: `${country.name}, ${country.code.toUpperCase()}`,
@@ -98,6 +104,7 @@ export default function InitialScreen(props) {
       console.log(GlobalLanguage, 'LENGUAJE GLOBAL EN HOME')
       getCategories(country, GlobalLanguage)
       getPromotions(country, GlobalLanguage)
+      getProductsbyCountry(country, GlobalLanguage);
       getCementeries(country)
       setubicaciones(getUbicaciones);
     }
@@ -331,6 +338,9 @@ export default function InitialScreen(props) {
     Promotions.forEach(promotion => {
       array.push({ id: promotion._id, name: promotion.name },)
     })
+    ProductsCountry.forEach(Product => {
+      array.push({ id: Product._id, name: Product.name },)
+    })
     console.log('ARRAY DE BUSQUEDA', array)
     setData(array)
   }
@@ -341,6 +351,7 @@ export default function InitialScreen(props) {
     updateDefaultCountry(pais);
     getCategories(pais, GlobalLanguage)
     getPromotions(pais, GlobalLanguage)
+    getProductsbyCountry(pais, GlobalLanguage);
     getCementeries(pais)
   }
 
