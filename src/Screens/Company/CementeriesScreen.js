@@ -106,7 +106,7 @@ export default function CompanyScreen(props) {
               <CardColaborador
                 key={key}
                 onPressColab={() => selectCementery(company, 'Company')}
-                urlImagen={'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg'}
+                urlImagen={company.image}
                 nombre={company.name}
               />
             );
@@ -115,7 +115,7 @@ export default function CompanyScreen(props) {
               <CardColaborador
                 key={key}
                 onPressColab={() => selectCementery(company, 'Company')}
-                urlImagen={'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg'}
+                urlImagen={company.image}
                 nombre={company.name}
               />
             );

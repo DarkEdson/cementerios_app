@@ -50,7 +50,7 @@ export default function InitialScreen(props) {
   const [countries] = useContext(CountriesContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext)
   const { tags } = useContext(ScreentagContext);
-  const { setRouteBackComp } = useContext(RouteBackContext);
+  const {setRouteBack, setRouteBackComp } = useContext(RouteBackContext);
   const { setisCategory, setCategory } = useContext(CategoryContext);
   const [Product, setProduct] = useContext(ProductContext);
   const {
@@ -391,12 +391,14 @@ export default function InitialScreen(props) {
         setisCategory(true)
         setCategory(category)
         getProductsbyCategory(category)
+        setRouteBackComp('Initial')
         routeName = 'Productos'
       }
     })
     Cementeries.forEach(cementery => {
       if (item.id == cementery._id) {
         setCementery(cementery);
+        setRouteBackComp('Initial')
         routeName = 'Company'
       }
     })
@@ -409,6 +411,7 @@ export default function InitialScreen(props) {
     ProductsCountry.forEach(Product => {
       if (item.id == Product._id) {
         setProduct(Product);
+        setRouteBack('Initial');
         routeName = 'Product'
       }
     })
