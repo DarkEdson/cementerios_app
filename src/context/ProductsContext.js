@@ -5,6 +5,7 @@ import {
   productbyCategory,
   productbyHeadquarters,
   productFullbyCategory,
+  multimediabyProduct,
 } from '@Apis/ProductsApi';
 
 export const ProductsContext = createContext();
@@ -12,6 +13,7 @@ export const ProductsContext = createContext();
 export const ProductsProvider = ({children}) => {
   const [ProductsCountry, setProductsCountry] = useState([]);
   const [ProductsCategory, setProductsCategory] = useState([]);
+  const [ProductMultimedia, setProductMultimedia] = useState([]);
   const [ProductsFullCategory, setProductsFullCategory] = useState([]);
   const [ProductsSedes, setProductsSede] = useState([]);
   const [isLoadingProducts, setisLoadingProducts] = useState(true);
@@ -60,6 +62,16 @@ export const ProductsProvider = ({children}) => {
     });
   };
 
+  const getMultimediabyProduct = async product => {
+    setisLoadingProducts(true);
+    multimediabyProduct(product).then(res => {
+      res.sort((a, b) => a.code.localeCompare(b.code));
+      console.log('MULTIMEDIA por PRODUCTO', res);
+      setProductMultimedia(res);
+      setisLoadingProducts(false);
+    });
+  };
+
   useEffect(() => {}, []);
 
   return (
@@ -70,10 +82,12 @@ export const ProductsProvider = ({children}) => {
         ProductsFullCategory,
         ProductsSedes,
         isLoadingProducts,
+        ProductMultimedia,
         getProductsbyCountry,
         getProductsbyCategory,
         getProductsbySede,
         getProductsFullbyCategory,
+        getMultimediabyProduct,
       }}>
       {children}
     </ProductsContext.Provider>

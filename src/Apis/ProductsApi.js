@@ -120,9 +120,38 @@ async function productbyHeadquarters(Sede, lenguaje) {
   }
 }
 
+async function multimediabyProduct(product) {
+  let url = `${BASE_URL}/product.multimedia.getmultimediabyid/${product._id}`;
+  let multimedia = [];
+  try {
+    await fetch(url, {
+      method: 'GET',
+      redirect: 'follow',
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error', error))
+      .then(response => {
+        response.forEach(producto => {
+          multimedia.push({
+            _id: producto._id,
+            idProduct: producto.idProduct,
+            code: producto.code,
+            name: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.name}`,
+            description: producto.description,
+          });
+        });
+      });
+    return multimedia;
+  } catch (error) {
+    console.error(error);
+    return multimedia;
+  }
+}
+
 export {
   productbyCountry,
   productbyCategory,
   productbyHeadquarters,
   productFullbyCategory,
+  multimediabyProduct,
 };

@@ -128,6 +128,21 @@ export default function InitialScreen(props) {
             size="small"
           />
         </View>
+      ) : isLoadingSedes ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingSedes}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
+          />
+        </View>
       ) : (
         <View>
           <StatusBar
@@ -360,6 +375,7 @@ export default function InitialScreen(props) {
 
   function selectCementery(cementery, routeName) {
     setCementery(cementery);
+    getSedes(cementery, setSede);
     goToScreen(routeName);
     setRouteBackComp('Home');
   }
@@ -382,6 +398,7 @@ export default function InitialScreen(props) {
     Cementeries.forEach(cementery => {
       if (item.id == cementery._id) {
         setCementery(cementery);
+        getSedes(cementery, setSede);
         setRouteBackComp('Initial');
         routeName = 'Company';
       }

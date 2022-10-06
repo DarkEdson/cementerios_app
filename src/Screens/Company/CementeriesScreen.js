@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,19 +11,22 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
+import {Icon, FAB} from '@rneui/themed';
 //Recarga la screen
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 //URL de server
-import { BASE_URL_IMG } from '@utils/config';
+import {BASE_URL_IMG} from '@utils/config';
 //Estilos Generales
-import { mainStyles } from '@styles/stylesGeneral';
+import {mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Contextos
-import { CementeryContext } from '@context/CementeryContext';
-import { UsuarioContext } from '@context/UsuarioContext';
-import { ScreentagContext } from '@context/ScreentagsContext';
-import { RouteBackContext } from '@context/RouteBackContext';
-import { CementeriesContext } from '@context/CementeriesContext';
+import {CementeryContext} from '@context/CementeryContext';
+import {UsuarioContext} from '@context/UsuarioContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
+import {RouteBackContext} from '@context/RouteBackContext';
+import {CementeriesContext} from '@context/CementeriesContext';
+import {SedesContext} from '@context/SedesContext';
+import {SedeContext} from '@context/SedeContext';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardColaborador from '@Components/CardColaborador/';
@@ -32,19 +35,20 @@ import CardColaborador from '@Components/CardColaborador/';
 export default function CompanyScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
-  const { RouteBack, setRouteBack, RouteBackComp, setRouteBackComp } =
+  const [sede, setSede] = useContext(SedeContext);
+  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
-  const {
-    Cementeries,
-  } = useContext(CementeriesContext)
-  const { tags, updateTags } = useContext(ScreentagContext);
+  const {Cementeries} = useContext(CementeriesContext);
+  const {isLoadingSedes, getSedes} = useContext(SedesContext);
+
+  const {tags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => { };
+  const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
-    setcementeriosTotal(Cementeries)
+    setcementeriosTotal(Cementeries);
     // Actualizar valores de la vista
     //setArrProductosDisp(Cementeries);
     if (isFocused) {
@@ -87,46 +91,62 @@ export default function CompanyScreen(props) {
             }
             onChangeText={val => {
               setArrCementeriosDisp(
-                Cementeries.filter(
-                  c =>
-                    c.name
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) 
+                Cementeries.filter(c =>
+                  c.name.toLocaleLowerCase().includes(val.toLocaleLowerCase()),
                 ),
               );
             }}
           />
         </View>
       </View>
-
-      <ScrollView>
-        <View style={styles.containerHeader}>
-          {arrCementeriosDisp.length >=1? arrCementeriosDisp.map((company, key) => {
-            return (
-              <CardColaborador
-                key={key}
-                onPressColab={() => selectCementery(company, 'Company')}
-                urlImagen={company.image}
-                nombre={company.name}
-              />
-            );
-          }) : Cementeries.map((company, key) => {
-            return (
-              <CardColaborador
-                key={key}
-                onPressColab={() => selectCementery(company, 'Company')}
-                urlImagen={company.image}
-                nombre={company.name}
-              />
-            );
-          })}
+      {isLoadingSedes ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingSedes}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
+          />
         </View>
-      </ScrollView>
+      ) : (
+        <ScrollView>
+          <View style={styles.containerHeader}>
+            {arrCementeriosDisp.length >= 1
+              ? arrCementeriosDisp.map((company, key) => {
+                  return (
+                    <CardColaborador
+                      key={key}
+                      onPressColab={() => selectCementery(company, 'Company')}
+                      urlImagen={company.image}
+                      nombre={company.name}
+                    />
+                  );
+                })
+              : Cementeries.map((company, key) => {
+                  return (
+                    <CardColaborador
+                      key={key}
+                      onPressColab={() => selectCementery(company, 'Company')}
+                      urlImagen={company.image}
+                      nombre={company.name}
+                    />
+                  );
+                })}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
   function selectCementery(cementery, routeName) {
     setCementery(cementery);
     goToScreen(routeName);
+    getSedes(cementery, setSede);
     setRouteBackComp('Cementeries');
   }
 
