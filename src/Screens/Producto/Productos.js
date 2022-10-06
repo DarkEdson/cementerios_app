@@ -23,6 +23,7 @@ import { ScreentagContext } from '@context/ScreentagsContext';
 import { ProductContext } from '@context/ProductContext';
 import { RouteBackContext } from '@context/RouteBackContext';
 import { ProductsContext } from "@context/ProductsContext";
+import { CategoryContext } from '@context/CategoryContext';
 
 //tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
@@ -33,6 +34,7 @@ export default function VistaProductos(props) {
     ProductsCountry,
     ProductsCategory,
   } = useContext(ProductsContext)
+  const { Category, isCategory,setisCategory } = useContext(CategoryContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => { };
@@ -40,7 +42,7 @@ export default function VistaProductos(props) {
   // Cargar informacion de la vista
   useEffect(() => {
 
-    setArrProductosDisp(ProductsCountry);
+    setArrProductosDisp(isCategory? ProductsCategory:ProductsCountry);
     if (isFocused) {
       getInitialData();
       console.log('isFocused in Products');
@@ -64,7 +66,10 @@ export default function VistaProductos(props) {
             ? tags.ProductsScreen.labelproductos
             : 'Productos'
         }
-        onPressLeft={() => goToScreen('Initial')}
+        onPressLeft={() => {
+          setisCategory(false)
+          goToScreen('Initial')
+      }}
         iconLeft={true}
       />
       <View style={styles.containerHeader}>
@@ -78,12 +83,17 @@ export default function VistaProductos(props) {
             }
             onChangeText={val => {
               setArrProductosDisp(
-                ProductsCountry.filter(
+                isCategory? ProductsCategory.filter(
                   p =>
                     p.name
                       .toLocaleLowerCase()
                       .includes(val.toLocaleLowerCase()) 
-                ),
+                ):ProductsCountry.filter(
+                  p =>
+                    p.name
+                      .toLocaleLowerCase()
+                      .includes(val.toLocaleLowerCase()) 
+                )
               );
             }}
           />

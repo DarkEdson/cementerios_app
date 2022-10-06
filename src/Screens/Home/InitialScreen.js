@@ -35,7 +35,7 @@ import { CategoriesContext } from '@context/CategoriesContext';
 import { CementeriesContext } from '@context/CementeriesContext';
 import { PromotionsContext } from '@context/PromotionsContext';
 import { ProductsContext } from "@context/ProductsContext";
-
+import { CategoryContext } from '@context/CategoryContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
@@ -48,6 +48,7 @@ export default function InitialScreen(props) {
   const [GlobalLanguage] = useContext(GlobalLanguageContext)
   const { tags } = useContext(ScreentagContext);
   const { setRouteBackComp } = useContext(RouteBackContext);
+  const { setisCategory, setCategory } = useContext(CategoryContext);
   const {
     categories,
     isLoadingCategories,
@@ -254,7 +255,12 @@ export default function InitialScreen(props) {
                           key={key}
                           urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
                           titulo={category.name}
-                          onPressCategorie={() => { console.log(categories) }}
+                          onPressCategorie={() => { console.log(categories) 
+                            setisCategory(true)
+                            setCategory(category)
+                            getProductsbyCategory(category, GlobalLanguage)
+                          }
+                          }
                         />
                       );
                     })}

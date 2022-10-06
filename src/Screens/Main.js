@@ -18,6 +18,7 @@ import { CategoriesProvider } from '@context/CategoriesContext';
 import { CementeriesProvider } from '@context/CementeriesContext';
 import { PromotionsProvider } from '@context/PromotionsContext';
 import { ProductsProvider } from '@context/ProductsContext';
+import { CategoryProvider } from '@context/CategoryContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -36,25 +37,27 @@ const MainPage = () => {
                       <CountryProvider>
                         <CementeriesProvider>
                           <CategoriesProvider>
-                            <PromotionsProvider>
-                              <CementeryProvider>
-                                <ProductsProvider>
-                                  <ProductProvider>
-                                    <CreditCardProvider>
-                                      <RouteBackProvider>
-                                        {
-                                          //el ultimo nivel, la app
-                                        }
-                                        <AppNavigations />
-                                        {
-                                          //
-                                        }
-                                      </RouteBackProvider>
-                                    </CreditCardProvider>
-                                  </ProductProvider>
-                                </ProductsProvider>
-                              </CementeryProvider>
-                            </PromotionsProvider>
+                            <CategoryProvider>
+                              <PromotionsProvider>
+                                <CementeryProvider>
+                                  <ProductsProvider>
+                                    <ProductProvider>
+                                      <CreditCardProvider>
+                                        <RouteBackProvider>
+                                          {
+                                            //el ultimo nivel, la app
+                                          }
+                                          <AppNavigations />
+                                          {
+                                            //
+                                          }
+                                        </RouteBackProvider>
+                                      </CreditCardProvider>
+                                    </ProductProvider>
+                                  </ProductsProvider>
+                                </CementeryProvider>
+                              </PromotionsProvider>
+                            </CategoryProvider>
                           </CategoriesProvider>
                         </CementeriesProvider>
                       </CountryProvider>
