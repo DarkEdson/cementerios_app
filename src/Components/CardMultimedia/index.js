@@ -30,7 +30,7 @@ export default function CardMultimedia(props) {
         />
       )}
       <View style={{alignItems: 'center', marginLeft: '20%', marginTop: 5}}>
-        <Text style={props.textStyle}>{imgName}</Text>
+        <Text style={props.textStyle}>{props.imageNombre}</Text>
       </View>
     </TouchableOpacity>
   );

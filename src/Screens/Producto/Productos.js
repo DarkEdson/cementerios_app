@@ -39,6 +39,7 @@ export default function VistaProductos(props) {
     ProductsFullCategory,
     isLoadingProducts,
     getProductsFullbyCategory,
+    getMultimediabyProduct,
   } = useContext(ProductsContext);
   const {Category, isCategory, setisCategory} = useContext(CategoryContext);
 
@@ -161,6 +162,7 @@ export default function VistaProductos(props) {
 
   function selectedProduct(producto, routeName) {
     setProduct(producto);
+    getMultimediabyProduct(producto);
     goToScreen(routeName);
     setRouteBack('Productos');
   }
