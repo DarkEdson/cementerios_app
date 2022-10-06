@@ -1,12 +1,13 @@
 import React, { createContext, useEffect, useState } from 'react';
 //Apis
-import { productbyCountry, productbyCategory, productbyHeadquarters } from '@Apis/ProductsApi';
+import { productbyCountry, productbyCategory, productbyHeadquarters ,productFullbyCategory} from '@Apis/ProductsApi';
 
 export const ProductsContext = createContext();
 
 export const ProductsProvider = ({ children }) => {
     const [ProductsCountry, setProductsCountry] = useState([]);
     const [ProductsCategory, setProductsCategory] = useState([]);
+    const [ProductsFullCategory, setProductsFullCategory] = useState([]);
     const [ProductsSedes, setProductsSede] = useState([]);
     const [isLoadingProducts, setisLoadingProducts] = useState(true)
 
@@ -23,12 +24,23 @@ export const ProductsProvider = ({ children }) => {
 
     };
 
-    const getProductsbyCategory = async (category, languaje) => {
+    const getProductsbyCategory = async (category) => {
         setisLoadingProducts(true)
-        productbyCategory(category, languaje).then(res => {
+        productbyCategory(category).then(res => {
             res.sort((a, b) => a.code.localeCompare(b.code));
             console.log('PRODUCTOS por CATEGORIA', res)
             setProductsCategory(res)
+            setisLoadingProducts(false);
+        });
+
+    };
+
+    const getProductsFullbyCategory = async (producto, languaje) => {
+        setisLoadingProducts(true)
+        productFullbyCategory (producto, languaje).then(res => {
+            res.sort((a, b) => a.code.localeCompare(b.code));
+            console.log('PRODUCTOS COMPLETOS por CATEGORIA', res)
+            setProductsFullCategory(res)
             setisLoadingProducts(false);
         });
 
@@ -52,11 +64,13 @@ export const ProductsProvider = ({ children }) => {
             value={{
                 ProductsCountry,
                 ProductsCategory,
+                ProductsFullCategory,
                 ProductsSedes,
                 isLoadingProducts,
                 getProductsbyCountry,
                 getProductsbyCategory,
                 getProductsbySede,
+                getProductsFullbyCategory,
             }}>
             {children}
         </ProductsContext.Provider>

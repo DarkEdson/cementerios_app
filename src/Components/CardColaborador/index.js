@@ -10,6 +10,7 @@ export default function CardColaborador(props) {
           <Card>
             <Image
               style={styles.imgCategoria}
+              resizeMode='stretch'
               source={{uri: props.urlImagen}}
             />
           </Card>

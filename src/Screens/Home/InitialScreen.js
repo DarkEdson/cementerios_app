@@ -37,14 +37,16 @@ import { PromotionsContext } from '@context/PromotionsContext';
 import { ProductsContext } from "@context/ProductsContext";
 import { CategoryContext } from '@context/CategoryContext';
 import { ProductContext } from '@context/ProductContext';
+import { SedesContext } from '@context/SedesContext';
+import { SedeContext } from '@context/SedeContext';
+
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
-
 //tags.HomeScreen.ubica
-//tags.HomeScreen.ubica != '' ? tags.HomeScreen.ubica :
 export default function InitialScreen(props) {
   const [loginUser] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
+  const [sede, setSede] = useContext(SedeContext);
   const [countries] = useContext(CountriesContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext)
   const { tags } = useContext(ScreentagContext);
@@ -61,6 +63,11 @@ export default function InitialScreen(props) {
     isLoadingCementeries,
     getCementeries,
   } = useContext(CementeriesContext)
+  const {
+    Sedes,
+    isLoadingSedes,
+    getSedes,
+  } = useContext(SedesContext)
   const {
     Promotions,
     isLoadingPromotions,
@@ -122,7 +129,7 @@ export default function InitialScreen(props) {
 
   return (
     <View>
-      {isLoadingCountry ? (
+      {isLoadingProducts ? (
         <View
           style={{
             justifyContent: 'center',
@@ -132,7 +139,7 @@ export default function InitialScreen(props) {
           <FAB
             loading
             color={color.PRINCIPALCOLOR}
-            visible={isLoadingCountry}
+            visible={isLoadingProducts}
             icon={{ name: 'add', color: 'white' }}
             size="small"
           />
@@ -222,10 +229,13 @@ export default function InitialScreen(props) {
                       data={Promotions}
                       renderItem={({ item }) => (
                         <CardPromocion
-                          titulo="30% de descuento"
-                          descripcion="Descuesto en momentos y memorias al adquir un espacio en el cementerio"
-                          bgColor="#fadf8e"
-                          urlImagen="https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000"
+                          titulo={item.name}
+                          descripcion={item.description}
+                          bgColor={item.backgroundcolor}
+                          urlImagen={item.image}
+                          onPressPromotion={()=>{
+                            
+                          }}
                         />
                       )}
                     />
@@ -254,13 +264,14 @@ export default function InitialScreen(props) {
                       return (
                         <BtnCategoria
                           key={key}
-                          urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
+                          urlImagen={category.image}
                           titulo={category.name}
                           onPressCategorie={() => {
-                            console.log(categories)
+                            console.log(category)
                             setisCategory(true)
                             setCategory(category)
-                            getProductsbyCategory(category, GlobalLanguage)
+                            getProductsbyCategory(category)
+                            goToScreen('Productos')
                           }
                           }
                         />
@@ -317,7 +328,7 @@ export default function InitialScreen(props) {
                       renderItem={({ item }) => (
 
                         <CardColaborador
-                          urlImagen={item.urlImagen}
+                          urlImagen={item.image}
                           nombre={item.name}
                           onPressColab={() => selectCementery(item, 'Company')}
                         />
@@ -379,7 +390,7 @@ export default function InitialScreen(props) {
       if (item.id == category._id) {
         setisCategory(true)
         setCategory(category)
-        getProductsbyCategory(category, GlobalLanguage)
+        getProductsbyCategory(category)
         routeName = 'Productos'
       }
     })

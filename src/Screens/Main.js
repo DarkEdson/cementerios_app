@@ -19,6 +19,8 @@ import { CementeriesProvider } from '@context/CementeriesContext';
 import { PromotionsProvider } from '@context/PromotionsContext';
 import { ProductsProvider } from '@context/ProductsContext';
 import { CategoryProvider } from '@context/CategoryContext';
+import { SedesProvider } from '@context/SedesContext';
+import { SedeProvider } from '@context/SedeContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -40,21 +42,25 @@ const MainPage = () => {
                             <CategoryProvider>
                               <PromotionsProvider>
                                 <CementeryProvider>
-                                  <ProductsProvider>
-                                    <ProductProvider>
-                                      <CreditCardProvider>
-                                        <RouteBackProvider>
-                                          {
-                                            //el ultimo nivel, la app
-                                          }
-                                          <AppNavigations />
-                                          {
-                                            //
-                                          }
-                                        </RouteBackProvider>
-                                      </CreditCardProvider>
-                                    </ProductProvider>
-                                  </ProductsProvider>
+                                  <SedesProvider>
+                                    <SedeProvider>
+                                      <ProductsProvider>
+                                        <ProductProvider>
+                                          <CreditCardProvider>
+                                            <RouteBackProvider>
+                                              {
+                                                //el ultimo nivel, la app
+                                              }
+                                              <AppNavigations />
+                                              {
+                                                //
+                                              }
+                                            </RouteBackProvider>
+                                          </CreditCardProvider>
+                                        </ProductProvider>
+                                      </ProductsProvider>
+                                    </SedeProvider>
+                                  </SedesProvider>
                                 </CementeryProvider>
                               </PromotionsProvider>
                             </CategoryProvider>

@@ -124,10 +124,11 @@ export default function CompanyScreen(props) {
           </Text>
           <View style={CementeryScreen.HeaderView}>
             <InformationIcon
-              tipo="font-awesome-5"
-              image="dollar-sign"
-              titulo="Free"
-              subtitulo="Tour"
+            transparent={true}
+              tipo='material-community'
+              image="brightness-percent"
+              titulo="Promos"
+              subtitulo="Discount"
               onPress={() => {}}
             />
             <View style={informationIconStyles.verticleLine} />

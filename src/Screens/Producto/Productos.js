@@ -9,6 +9,7 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
+import { Icon, FAB } from '@rneui/themed';
 //URL de server
 import { BASE_URL_IMG, PRODUCTS_URL } from '@utils/config';
 //Recarga la screen
@@ -24,15 +25,20 @@ import { ProductContext } from '@context/ProductContext';
 import { RouteBackContext } from '@context/RouteBackContext';
 import { ProductsContext } from "@context/ProductsContext";
 import { CategoryContext } from '@context/CategoryContext';
+import { GlobalLanguageContext } from '@context/LanguageContext';
 
 //tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
   const { tags } = useContext(ScreentagContext);
+  const [GlobalLanguage] = useContext(GlobalLanguageContext)
   const [Product, setProduct] = useContext(ProductContext);
   const { setRouteBack } = useContext(RouteBackContext);
   const {
     ProductsCountry,
     ProductsCategory,
+    ProductsFullCategory,
+    isLoadingProducts,
+    getProductsFullbyCategory
   } = useContext(ProductsContext)
   const { Category, isCategory,setisCategory } = useContext(CategoryContext);
 
@@ -41,8 +47,24 @@ export default function VistaProductos(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
-
-    setArrProductosDisp(isCategory? ProductsCategory:ProductsCountry);
+    if(isCategory){
+      let arrayP=[]
+      getProductsFullbyCategory(ProductsCategory,GlobalLanguage)
+      ProductsCountry.forEach(producto=>{
+        ProductsCategory.forEach(p=>{
+          if (p._id == producto.id){
+            arrayP.push(producto)
+          }
+          
+        })
+        
+      })
+      setArrProductosDisp(arrayP);
+    }
+    else{
+      setArrProductosDisp(ProductsCountry);
+    }
+   
     if (isFocused) {
       getInitialData();
       console.log('isFocused in Products');
@@ -55,6 +77,23 @@ export default function VistaProductos(props) {
 
   return (
     <View>
+      { (isCategory && isLoadingProducts) ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingProducts}
+            icon={{ name: 'add', color: 'white' }}
+            size="small"
+          />
+        </View>
+      ) : (
+        <View>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
         barStyle="dark-content"
@@ -83,7 +122,7 @@ export default function VistaProductos(props) {
             }
             onChangeText={val => {
               setArrProductosDisp(
-                isCategory? ProductsCategory.filter(
+                isCategory? ProductsFullCategory.filter(
                   p =>
                     p.name
                       .toLocaleLowerCase()
@@ -114,9 +153,11 @@ export default function VistaProductos(props) {
               />
             );
           })}
+          <View style={styles.boxTransparent} />
         </View>
         <View style={styles.boxTransparent} />
       </ScrollView>
+    </View>)}
     </View>
   );
 

@@ -12,6 +12,18 @@ async function productbyCountry(country, lenguaje) {
             .catch(error => console.error('Error', error))
             .then(response => {
                 response.forEach(producto => {
+                    let multimediaP = []
+                    if(producto.hasOwnProperty('multimedia')){
+
+                    }
+                    producto.labels.forEach((multim, key) => {
+                        let imagen={}
+                        let nombrePerzonalizado = 'imagen'+key;
+                        let valorPerzonalizado = `${BASE_URL_IMG}${PRODUCTS_URL}${multim.price}`;
+                        imagen[nombrePerzonalizado] = valorPerzonalizado;
+                        console.log(imagen,'TEST MULTIMEDIA')
+                        multimediaP.push(imagen)
+                    })
                     productos.push({
                         _id: producto._id,
                         idCategory: producto.idCategory,
@@ -21,7 +33,7 @@ async function productbyCountry(country, lenguaje) {
                         name: producto.labels[0].name,
                         description: producto.labels[0].description,
                         price: producto.labels[0].price,
-                        multimedia: producto.labels
+                        multimedia: multimediaP
                     });
                 });
             });
@@ -32,10 +44,52 @@ async function productbyCountry(country, lenguaje) {
     }
 }
 
-async function productbyCategory(Category, lenguaje) {
+async function productFullbyCategory(product, lenguaje) {
+    let url = `${BASE_URL}/product.getprdsbycat/${product._id}/${lenguaje._id}`;
+    let productos = [];
+    try {
+        await fetch(url, {
+            method: 'GET',
+            redirect: 'follow',
+        })
+            .then(res => res.json())
+            .catch(error => console.error('Error', error))
+            .then(response => {
+                response.forEach(producto => {
+                    let multimediaP = []
+                    if(producto.hasOwnProperty('multimedia')){
+
+                    }
+                    producto.labels.forEach((multim, key) => {
+                        let nombrePerzonalizado = 'imagen'+key;
+                        let valorPerzonalizado = `${BASE_URL_IMG}${PRODUCTS_URL}${multim.price}`;
+                        imagen[nombrePerzonalizado] = valorPerzonalizado;
+                        console.log(imagen,'TEST MULTIMEDIA')
+                        multimediaP.push(imagen)
+                    })
+                    productos.push({
+                        _id: producto._id,
+                        idCategory: producto.idCategory,
+                        idHeadquarter: producto.idHeadquarter,
+                        code: producto.code,
+                        principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
+                        name: producto.labels[0].name,
+                        description: producto.labels[0].description,
+                        price: producto.labels[0].price,
+                        multimedia: multimediaP
+                    });
+                });
+            });
+        return productos;
+    } catch (error) {
+        console.error(error);
+        return productos;
+    }
+}
+
+async function productbyCategory(Category) {
     let url = `${BASE_URL}/product.getprdsbycat/${Category._id}`;
-    let product = { _id: '1' }
-    let urlComplement = `${BASE_URL}/product.getprdsbycat/${product._id}/${lenguaje._id}`;
+
     let productos = [];
     try {
         await fetch(url, {
@@ -46,34 +100,8 @@ async function productbyCategory(Category, lenguaje) {
             .catch(error => console.error('Error', error))
             .then(response => {
                 response.forEach(async producto => {
-                    product = producto;
-                    console.log(urlComplement, 'URL COMPLEMENTARIA')
-                    try {
-                        await fetch(urlComplement, {
-                            method: 'GET',
-                            redirect: 'follow',
-                        })
-                            .then(resp => resp.json())
-                            .catch(error => console.error('Error', error))
-                            .then(responseP => {
-                                responseP.forEach(productoR => {
-                                    productos.push({
-                                        _id: productoR._id,
-                                        idCategory: productoR.idCategory,
-                                        idHeadquarter: productoR.idHeadquarter,
-                                        code: productoR.code,
-                                        principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${productoR.image}`,
-                                        name: productoR.labels[0].name,
-                                        description: productoR.labels[0].description,
-                                        price: productoR.labels[0].price,
-                                        multimedia: productoR.labels
-                                    });
-                                });
-                            });
-                    } catch (error) {
-                        console.error(error);
-                        return productos;
-                    }
+
+                    productos.push(producto)
                 });
             });
         return productos;
@@ -95,6 +123,17 @@ async function productbyHeadquarters(Sede, lenguaje) {
             .catch(error => console.error('Error', error))
             .then(response => {
                 response.forEach(producto => {
+                    let multimediaP = []
+                    if(producto.hasOwnProperty('multimedia')){
+
+                    }
+                    producto.labels.forEach((multim, key) => {
+                        let nombrePerzonalizado = 'imagen'+key;
+                        let valorPerzonalizado = `${BASE_URL_IMG}${PRODUCTS_URL}${multim.price}`;
+                        imagen[nombrePerzonalizado] = valorPerzonalizado;
+                        console.log(imagen,'TEST MULTIMEDIA')
+                        multimediaP.push(imagen)
+                    })
                     productos.push({
                         _id: producto._id,
                         idCategory: producto.idCategory,
@@ -104,7 +143,7 @@ async function productbyHeadquarters(Sede, lenguaje) {
                         name: producto.labels[0].name,
                         description: producto.labels[0].description,
                         price: producto.labels[0].price,
-                        multimedia: producto.labels
+                        multimedia: multimediaP
                     });
                 });
             });
@@ -115,4 +154,4 @@ async function productbyHeadquarters(Sede, lenguaje) {
     }
 }
 
-export { productbyCountry, productbyCategory, productbyHeadquarters };
+export { productbyCountry, productbyCategory, productbyHeadquarters, productFullbyCategory };

@@ -23,6 +23,7 @@ export default async function promotionsApi(country, lenguaje) {
                         description: promocion.labels[0].description,
                         price: promocion.labels[0].price,
                         percentage: promocion.labels[0].percentage,
+                        backgroundcolor: promocion.backgroundcolor
                     });
                 });
             });

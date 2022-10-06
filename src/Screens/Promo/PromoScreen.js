@@ -57,8 +57,8 @@ export default function PromoScreen(props) {
                 key={key}
                 titulo={promo.name}
                 descripcion={promo.description}
-                bgColor={'#f5c48c'}
-                urlImagen={'https://img.freepik.com/vector-premium/chico-dibujos-animados-buceo_33070-3880.jpg?w=2000'}
+                bgColor={promo.backgroundcolor}
+                urlImagen={promo.image}
               />
             );
           })}
