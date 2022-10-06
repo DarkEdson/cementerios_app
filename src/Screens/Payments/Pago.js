@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
     marginRight: '5%',
     height: 50,
     marginBottom: 3,
-
     borderColor: 'grey',
     flexDirection: 'row',
   },
