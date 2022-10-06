@@ -36,6 +36,7 @@ import { CementeriesContext } from '@context/CementeriesContext';
 import { PromotionsContext } from '@context/PromotionsContext';
 import { ProductsContext } from "@context/ProductsContext";
 import { CategoryContext } from '@context/CategoryContext';
+import { ProductContext } from '@context/ProductContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
@@ -49,6 +50,7 @@ export default function InitialScreen(props) {
   const { tags } = useContext(ScreentagContext);
   const { setRouteBackComp } = useContext(RouteBackContext);
   const { setisCategory, setCategory } = useContext(CategoryContext);
+  const [Product, setProduct] = useContext(ProductContext);
   const {
     categories,
     isLoadingCategories,
@@ -66,9 +68,9 @@ export default function InitialScreen(props) {
   } = useContext(PromotionsContext)
   const {
     ProductsCountry,
-                isLoadingProducts,
-                getProductsbyCountry,
-                getProductsbyCategory,
+    isLoadingProducts,
+    getProductsbyCountry,
+    getProductsbyCategory,
   } = useContext(ProductsContext)
   const { country, updateDefaultCountry, isLoadingCountry, getDefaultCountry } =
     useContext(CountryContext);
@@ -183,8 +185,7 @@ export default function InitialScreen(props) {
                 }}
                 dropdownIconPosition="left"
                 onSelect={(selectedItem, index) => {
-                  console.log(selectedItem.name, index);
-                  Alert.alert(JSON.stringify(selectedItem));
+                  navSearch(selectedItem)
                 }}
                 buttonTextAfterSelection={(selectedItem, index) => {
                   return selectedItem.name;
@@ -255,7 +256,8 @@ export default function InitialScreen(props) {
                           key={key}
                           urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf6xM2nAd-gXu4cvl4MImqd-G0J1qtJGhH_w&usqp=CAU"
                           titulo={category.name}
-                          onPressCategorie={() => { console.log(categories) 
+                          onPressCategorie={() => {
+                            console.log(categories)
                             setisCategory(true)
                             setCategory(category)
                             getProductsbyCategory(category, GlobalLanguage)
@@ -369,6 +371,37 @@ export default function InitialScreen(props) {
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
+  }
+
+  function navSearch(item) {
+    let routeName = 'Initial';
+    categories.forEach(category => {
+      if (item.id == category._id) {
+        setisCategory(true)
+        setCategory(category)
+        getProductsbyCategory(category, GlobalLanguage)
+        routeName = 'Productos'
+      }
+    })
+    Cementeries.forEach(cementery => {
+      if (item.id == cementery._id) {
+        setCementery(cementery);
+        routeName = 'Company'
+      }
+    })
+    Promotions.forEach(promotion => {
+      if (item.id == promotion._id) {
+        //  setPromotion(promotion);
+        routeName = 'Promociones'
+      }
+    })
+    ProductsCountry.forEach(Product => {
+      if (item.id == Product._id) {
+        setProduct(Product);
+        routeName = 'Product'
+      }
+    })
+    goToScreen(routeName);
   }
 }
 
