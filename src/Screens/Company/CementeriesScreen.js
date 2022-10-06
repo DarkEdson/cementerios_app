@@ -49,6 +49,7 @@ export default function CompanyScreen(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
+    console.log(Cementeries);
     setcementeriosTotal(Cementeries);
     // Actualizar valores de la vista
     //setArrProductosDisp(Cementeries);
