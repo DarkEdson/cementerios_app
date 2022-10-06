@@ -12,17 +12,6 @@ async function productbyCountry(country, lenguaje) {
       .catch(error => console.error('Error', error))
       .then(response => {
         response.forEach(producto => {
-          let multimediaP = [];
-          if (producto.hasOwnProperty('multimedia')) {
-          }
-          producto.labels.forEach((multim, key) => {
-            let imagen = {};
-            let nombrePerzonalizado = 'imagen' + key;
-            let valorPerzonalizado = `${BASE_URL_IMG}${PRODUCTS_URL}${multim.price}`;
-            imagen[nombrePerzonalizado] = valorPerzonalizado;
-            console.log(imagen, 'TEST MULTIMEDIA');
-            multimediaP.push(imagen);
-          });
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
@@ -32,7 +21,6 @@ async function productbyCountry(country, lenguaje) {
             name: producto.labels[0].name,
             description: producto.labels[0].description,
             price: producto.labels[0].price,
-            multimedia: multimediaP,
           });
         });
       });
@@ -55,16 +43,6 @@ async function productFullbyCategory(product, lenguaje) {
       .catch(error => console.error('Error', error))
       .then(response => {
         response.forEach(producto => {
-          let multimediaP = [];
-          if (producto.hasOwnProperty('multimedia')) {
-          }
-          producto.labels.forEach((multim, key) => {
-            let nombrePerzonalizado = 'imagen' + key;
-            let valorPerzonalizado = `${BASE_URL_IMG}${PRODUCTS_URL}${multim.price}`;
-            imagen[nombrePerzonalizado] = valorPerzonalizado;
-            console.log(imagen, 'TEST MULTIMEDIA');
-            multimediaP.push(imagen);
-          });
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
@@ -74,7 +52,6 @@ async function productFullbyCategory(product, lenguaje) {
             name: producto.labels[0].name,
             description: producto.labels[0].description,
             price: producto.labels[0].price,
-            multimedia: multimediaP,
           });
         });
       });
@@ -120,16 +97,6 @@ async function productbyHeadquarters(Sede, lenguaje) {
       .catch(error => console.error('Error', error))
       .then(response => {
         response.forEach(producto => {
-          let multimediaP = [];
-          if (producto.hasOwnProperty('multimedia')) {
-          }
-          producto.labels.forEach((multim, key) => {
-            let nombrePerzonalizado = 'imagen' + key;
-            let valorPerzonalizado = `${BASE_URL_IMG}${PRODUCTS_URL}${multim.price}`;
-            imagen[nombrePerzonalizado] = valorPerzonalizado;
-            console.log(imagen, 'TEST MULTIMEDIA');
-            multimediaP.push(imagen);
-          });
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
@@ -139,7 +106,6 @@ async function productbyHeadquarters(Sede, lenguaje) {
             name: producto.labels[0].name,
             description: producto.labels[0].description,
             price: producto.labels[0].price,
-            multimedia: multimediaP,
           });
         });
       });
