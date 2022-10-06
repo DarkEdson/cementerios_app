@@ -34,13 +34,18 @@ export default function VistaPago(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
+    let subtotal = 0;
+    let descuento = 0;
     // Productos del carrito
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
+    ShoppingCart.forEach(item => {
+      subtotal = subtotal + item.cantidad * item.price;
+    });
     // Calcular valores de la vista
     setValoresVenta({
-      subTotal: 120,
-      entrega: 10,
-      total: 110,
+      subTotal: subtotal,
+      entrega: descuento,
+      total: subtotal - descuento,
     });
     if (isFocused) {
       getInitialData();
@@ -73,10 +78,10 @@ export default function VistaPago(props) {
               return (
                 <CardProductoVenta
                   key={key}
-                  urlImagen={promo.urlImagen}
-                  titulo={promo.titulo}
-                  descripcion={promo.descripcion}
-                  precio={promo.precio}
+                  urlImagen={promo.principalImage}
+                  titulo={promo.name}
+                  descripcion={promo.description}
+                  precio={promo.price}
                   cantidad={promo.cantidad}
                 />
               );

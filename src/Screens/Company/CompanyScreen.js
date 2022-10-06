@@ -32,18 +32,23 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {ProductContext} from '@context/ProductContext';
 import {RouteBackContext} from '@context/RouteBackContext';
+import {SedesContext} from '@context/SedesContext';
+import {SedeContext} from '@context/SedeContext';
 
 //tags.CompanyDetailScreen.mas != '' ? tags.CompanyDetailScreen.mas : 'Mas Populares'
 export default function CompanyScreen(props) {
   const [cementery] = useContext(CementeryContext);
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const {tags} = useContext(ScreentagContext);
+  const [sede, setSede] = useContext(SedeContext);
   const {ShoppingCart, carrito} = useContext(ShoppingCartContext);
   const [Product, setProduct] = useContext(ProductContext);
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
+  const {Sedes, isLoadingSedes, getSedes} = useContext(SedesContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
   const [infoCart, setinfoCart] = useState('');
+  const [totalCart, settotalCart] = useState(0);
   const [cant, setcant] = useState(2);
 
   const productos = [
@@ -83,13 +88,18 @@ export default function CompanyScreen(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
+    console.log(Sedes);
+    console.log(sede);
     setcant(ShoppingCart.length);
     let info = '';
+    let total = 0;
     ShoppingCart.forEach(titulo => {
-      info = info + titulo.titulo + ', ';
+      info = info + titulo.name + ' x' + titulo.cantidad + ', ';
+      total = total + titulo.cantidad * titulo.price;
     });
     console.log(info);
     setinfoCart(info);
+    settotalCart(total);
     console.log(cementery);
     if (isFocused) {
       getInitialData();
@@ -124,19 +134,19 @@ export default function CompanyScreen(props) {
           </Text>
           <View style={CementeryScreen.HeaderView}>
             <InformationIcon
-            transparent={true}
-              tipo='material-community'
+              transparent={true}
+              tipo="material-community"
               image="brightness-percent"
               titulo="Promos"
               subtitulo="Discount"
-              onPress={() => {}}
+              onPress={() => goToScreen('Promociones')}
             />
             <View style={informationIconStyles.verticleLine} />
             <InformationIcon
               tipo="ionicons"
               image="location-pin"
               titulo="Campeche"
-              subtitulo="Ubicaciones"
+              subtitulo="Sedes"
               onPress={() => {}}
             />
             <View style={informationIconStyles.verticleLine} />
@@ -215,7 +225,7 @@ export default function CompanyScreen(props) {
               : 'Producto Agregado'
           }
           info={infoCart}
-          total="$150.53"
+          total={'$' + totalCart}
         />
       ) : null}
       {customModal == false ? null : (

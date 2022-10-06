@@ -6,20 +6,17 @@ export const SedesContext = createContext();
 
 export const SedesProvider = ({children}) => {
   const [Sedes, setSedes] = useState([]);
-  const [isLoadingSedes, setisLoadingSedes] = useState(true)
+  const [isLoadingSedes, setisLoadingSedes] = useState(false);
 
-
-
-  const getSedes = async (cementery,setSede) => {
-    setisLoadingSedes(true)
+  const getSedes = async (cementery, setSede) => {
+    setisLoadingSedes(true);
     sedesApi(cementery).then(res => {
-        res.sort((a, b) => a.code.localeCompare(b.code));
-        console.log('SEDES',res)
-        setSedes(res)
-        setSede(res[0])
-        setisLoadingSedes(false);
-      });
-
+      res.sort((a, b) => a.code.localeCompare(b.code));
+      console.log('SEDES', res);
+      setSedes(res);
+      setSede(res[0]);
+      setisLoadingSedes(false);
+    });
   };
 
   useEffect(() => {}, []);
