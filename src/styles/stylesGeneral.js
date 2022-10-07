@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions,StatusBar} from 'react-native';
+import {StyleSheet, Dimensions, StatusBar} from 'react-native';
 import color from './colors';
 
 //Estilos para MainScreen
@@ -13,7 +13,7 @@ const mainStyles = StyleSheet.create({
   containers: {
     flex: 1,
     backgroundColor: color.WHITE,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   logoImage: {
     width: 230,
@@ -326,7 +326,7 @@ const CementeryScreen = StyleSheet.create({
     color: color.GRAY3,
   },
   subtitleFooterText: {
-    marginLeft: -20,
+    alignSelf: 'center',
     fontSize: 19,
     fontWeight: '600',
     color: color.GRAY3,

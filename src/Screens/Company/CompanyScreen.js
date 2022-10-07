@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -10,11 +10,12 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { Icon, FAB } from '@rneui/themed';
+import {Icon, FAB} from '@rneui/themed';
+import Carousel from 'react-native-reanimated-carousel';
 //URL de server
-import { BASE_URL_IMG, PRODUCTS_URL } from '@utils/config';
+import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 //Recarga la screen
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import CardProducto from '@Components/CardProducto/';
 import MyFloatButton from '@Components/common/MyFloatButton';
@@ -29,31 +30,30 @@ import {
   informationIconStyles,
 } from '@styles/stylesGeneral';
 //Contextos
-import { CementeryContext } from '@context/CementeryContext';
-import { ScreentagContext } from '@context/ScreentagsContext';
-import { ShoppingCartContext } from '@context/ShoppingCartContext';
-import { ProductContext } from '@context/ProductContext';
-import { RouteBackContext } from '@context/RouteBackContext';
-import { CategoriesContext } from '@context/CategoriesContext';
-import { CategoryContext } from '@context/CategoryContext';
-import { SedesContext } from '@context/SedesContext';
-import { SedeContext } from '@context/SedeContext';
-import { ProductsContext } from '@context/ProductsContext';
-import { GlobalLanguageContext } from '@context/LanguageContext';
+import {CementeryContext} from '@context/CementeryContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
+import {ProductContext} from '@context/ProductContext';
+import {RouteBackContext} from '@context/RouteBackContext';
+import {CategoriesContext} from '@context/CategoriesContext';
+import {CategoryContext} from '@context/CategoryContext';
+import {SedesContext} from '@context/SedesContext';
+import {SedeContext} from '@context/SedeContext';
+import {ProductsContext} from '@context/ProductsContext';
+import {GlobalLanguageContext} from '@context/LanguageContext';
 
 //tags.CompanyDetailScreen.mas != '' ? tags.CompanyDetailScreen.mas : 'Mas Populares'
 export default function CompanyScreen(props) {
   const [cementery] = useContext(CementeryContext);
-  const { tags } = useContext(ScreentagContext);
+  const {tags} = useContext(ScreentagContext);
   const [sede, setSede] = useContext(SedeContext);
-  const { ShoppingCart, carrito } = useContext(ShoppingCartContext);
+  const {ShoppingCart, carrito} = useContext(ShoppingCartContext);
   const [Product, setProduct] = useContext(ProductContext);
-  const { RouteBack, setRouteBack, RouteBackComp, setRouteBackComp } =
+  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
-  const { categories } =
-    useContext(CategoriesContext);
-  const { setCategory } = useContext(CategoryContext);
-  const { Sedes,getSede } = useContext(SedesContext);
+  const {categories} = useContext(CategoriesContext);
+  const {} = useContext(CategoryContext);
+  const {Sedes, getSede} = useContext(SedesContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
   const [infoCart, setinfoCart] = useState('');
@@ -68,13 +68,47 @@ export default function CompanyScreen(props) {
   } = useContext(ProductsContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => { };
-
+  const getInitialData = async () => {};
+  const [productsFilter, setproductsFilter] = useState([]);
+  const [isFilterC, setisFilterC] = useState(false);
+  const [isFilterS, setisFilterS] = useState(false);
+  const [categoriesArray, setcategoriesArray] = useState([
+    {
+      _id: '0',
+      code: 'c00',
+      description: 'All Products',
+      image: 'none',
+      name: 'All',
+    },
+  ]);
   // Cargar informacion de la vista
   useEffect(() => {
+    let cats = [];
+    if (GlobalLanguage.code == 'en') {
+      cats.push({
+        _id: '0',
+        code: 'c00',
+        description: 'All Products',
+        image: 'none',
+        name: 'All',
+      });
+    } else {
+      cats.push({
+        _id: '0',
+        code: 'c00',
+        description: 'Todos los Productos',
+        image: 'none',
+        name: 'Todos',
+      });
+    }
+    categories.forEach(cat => {
+      cats.push(cat);
+    });
+    cats = cats.sort((a, b) => a._id.localeCompare(b._id));
+    setcategoriesArray(cats);
     console.log('SEDES', Sedes);
     console.log('SEDE', sede);
-    getProductsbySede(sede, GlobalLanguage)
+    getProductsbySede(sede, GlobalLanguage);
     setcant(ShoppingCart.length);
     let info = '';
     let total = 0;
@@ -82,15 +116,15 @@ export default function CompanyScreen(props) {
       info = info + titulo.name + ' x' + titulo.cantidad + ', ';
       total = total + titulo.cantidad * parseFloat(titulo.price);
     });
-    console.log(info,total);
+    console.log(info, total);
     setinfoCart(info);
     settotalCart(total);
     console.log(cementery);
     if (isFocused) {
       getInitialData();
-      console.log('isFocused Company Detail');
+      console.log('isFocused COMPANY DETAIL');
     }
-    return () => { };
+    return () => {};
     //props, isFocused
   }, []);
 
@@ -100,10 +134,10 @@ export default function CompanyScreen(props) {
   }
 
   return (
-    <SafeAreaView style={mainStyles.containers} >
+    <SafeAreaView style={mainStyles.containers}>
       <View style={CementeryScreen.vista}>
         <ImageBackground
-          source={{ uri: cementery.image }}
+          source={{uri: cementery.image}}
           resizeMode="stretch"
           style={CementeryScreen.imgProducto}>
           <Image
@@ -133,7 +167,7 @@ export default function CompanyScreen(props) {
                 image="location-pin"
                 titulo={sede.name}
                 subtitulo="Sedes"
-                onPress={() => { }}
+                onPress={() => {}}
               />
               <View style={informationIconStyles.verticleLine} />
               <InformationIcon
@@ -142,7 +176,7 @@ export default function CompanyScreen(props) {
                 image="star"
                 titulo="4.3"
                 subtitulo="(200+ Ratings)"
-                onPress={() => { }}
+                onPress={() => {}}
               />
             </View>
           </View>
@@ -156,41 +190,63 @@ export default function CompanyScreen(props) {
                     : 'Todos los Productos'}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity>
-                <Text style={CementeryScreen.subtitleFooterText}>Perlas</Text>
-              </TouchableOpacity>
+              <Carousel
+                width={90}
+                height={40}
+                loop
+                onSnapToItem={index => {
+                  console.log('current index:', index);
+                  console.log('current item:', categoriesArray[index]);
+                  selectedCategory(categoriesArray[index]);
+                }}
+                autoPlay={false}
+                data={categoriesArray}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log(item);
+                    }}>
+                    <Text style={CementeryScreen.subtitleFooterText}>
+                      {item.name}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              />
             </View>
             <Text style={CementeryScreen.title2Text}>
               {tags.CompanyDetailScreen.mas != ''
                 ? tags.CompanyDetailScreen.mas
                 : 'Mas Populares'}
             </Text>
-            {isLoadingProducts ? (<View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: '25%',
-              }}>
-              <FAB
-                loading
-                color={color.PRINCIPALCOLOR}
-                visible={isLoadingProducts}
-                icon={{ name: 'add', color: 'white' }}
-                size="small"
-              />
-            </View>
-            ) : ProductsSedes.length >= 0 ? ProductsSedes.map((product, key) => {
-              return (
-                <CardProducto
-                  key={key}
-                  onPressProduct={() => selectedProduct(product, 'Product')}
-                  urlImagen={product.principalImage}
-                  titulo={product.name}
-                  descripcion={product.description}
-                  precio={product.price}
+            {isLoadingProducts ? (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '25%',
+                }}>
+                <FAB
+                  loading
+                  color={color.PRINCIPALCOLOR}
+                  visible={isLoadingProducts}
+                  icon={{name: 'add', color: 'white'}}
+                  size="small"
                 />
-              );
-            }) : null}
+              </View>
+            ) : ProductsSedes.length >= 0 ? (
+              ProductsSedes.map((product, key) => {
+                return (
+                  <CardProducto
+                    key={key}
+                    onPressProduct={() => selectedProduct(product, 'Product')}
+                    urlImagen={product.principalImage}
+                    titulo={product.name}
+                    descripcion={product.description}
+                    precio={product.price}
+                  />
+                );
+              })
+            ) : null}
             <View style={mainStyles.boxTransparent} />
           </View>
         </ScrollView>
@@ -213,7 +269,7 @@ export default function CompanyScreen(props) {
           <ShoppingCarCard
             tipo="ionicons"
             image="shopping-basket"
-            onPress={() => { }}
+            onPress={() => {}}
             cantidad={cant}
             titulo={
               cant > 1
@@ -221,8 +277,8 @@ export default function CompanyScreen(props) {
                   ? tags.CompanyDetailScreen.label1p
                   : ' Productos Agregados'
                 : tags.CompanyDetailScreen.label1s != ''
-                  ? tags.CompanyDetailScreen.label1s
-                  : 'Producto Agregado'
+                ? tags.CompanyDetailScreen.label1s
+                : 'Producto Agregado'
             }
             info={infoCart}
             total={'$' + totalCart}
@@ -233,7 +289,7 @@ export default function CompanyScreen(props) {
             customModal={customModal}
             setCustomModal={setCustomModal}
             urlImagen={imagenModal}
-            item={{ descrition: '.' }}
+            item={{descrition: '.'}}
           />
         )}
       </View>
@@ -248,11 +304,31 @@ export default function CompanyScreen(props) {
         setCategory(category);
         setProduct(producto);
         getMultimediabyProduct(producto);
-        getSede(producto.idHeadquarter, setSede)
+        getSede(producto.idHeadquarter, setSede);
         goToScreen(routeName);
         setRouteBack('Company');
       }
     });
-    
+  }
+
+  function selectedCategory(cat) {
+    //c
+    let productF = [];
+    ProductsSedes.forEach(prod => {
+      if (prod.idCategory == cat._id) {
+        productF.push(prod);
+        setisFilterC(true);
+      }
+    });
+    if (cat._id == '0') {
+      setisFilterC(false);
+      productF = [];
+    }
+    console.log(productF);
+    setproductsFilter(productF);
+  }
+
+  function selectedSede(sede) {
+    //d
   }
 }
