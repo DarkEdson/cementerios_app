@@ -26,6 +26,7 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 //tags.paymentMethodsScreen.btn != '' ? tags.paymentMethodsScreen.btn :
 export default function PaymentMethodScreen(props) {
   const [creditCard, setCreditCard] = useContext(CreditCardContext);
+
   const {tags, updateTags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
@@ -59,73 +60,73 @@ export default function PaymentMethodScreen(props) {
   }, []);
 
   return (
-    <SafeAreaView style={mainStyles.containers} > 
-    <View style={styles.container}>
-      <StatusBar
-        backgroundColor={color.PRINCIPALCOLOR}
-        barStyle="dark-content"
-        translucent={true}
-      />
-      <ToolBar
-        titulo={
-          tags.paymentMethodsScreen.titulo != ''
-            ? tags.paymentMethodsScreen.titulo
-            : 'Metodos de Pago'
-        }
-        onPressLeft={() => goToScreen('PersonalData')}
-        iconLeft={true}
-      />
+    <SafeAreaView style={mainStyles.containers}>
+      <View style={styles.container}>
+        <StatusBar
+          backgroundColor={color.PRINCIPALCOLOR}
+          barStyle="dark-content"
+          translucent={true}
+        />
+        <ToolBar
+          titulo={
+            tags.paymentMethodsScreen.titulo != ''
+              ? tags.paymentMethodsScreen.titulo
+              : 'Metodos de Pago'
+          }
+          onPressLeft={() => goToScreen('PersonalData')}
+          iconLeft={true}
+        />
 
-      <ScrollView>
-        <View style={styles.editField}>
-          <Text style={styles.titleLabel}>
-            {tags.paymentMethodsScreen.preferido != ''
-              ? tags.paymentMethodsScreen.preferido
-              : 'Preferido:'}
-          </Text>
-          <PaymentButton
-            iconLeft={true}
-            titulo={'XXXX-XXXX-XXXX-5678'}
-            iconRight={true}
-          />
-          <Text style={styles.titleLabel}>
-            {tags.paymentMethodsScreen.tarjetas != ''
-              ? tags.paymentMethodsScreen.tarjetas
-              : 'Tarjetas:'}
-          </Text>
-          <PaymentButton
-            iconLeft={true}
-            titulo={'XXXX-XXXX-XXXX-0123'}
-            iconRight={true}
-          />
-          <PaymentButton
-            iconLeft={true}
-            titulo={'XXXX-XXXX-XXXX-9595'}
-            iconRight={true}
-            onPress={() => selectCard(data)}
-          />
-          <PaymentButton
-            iconLeft={true}
-            titulo={'XXXX-XXXX-XXXX-2345'}
-            iconRight={true}
-            //  onPress={() => goToScreen("PaymentMethodDetail")}
-          />
-          <PaymentButton
-            iconLeft={true}
-            titulo={'XXXX-XXXX-XXXX-4567'}
-            iconRight={true}
-          />
-          <MyButton
-            titulo={
-              tags.paymentMethodsScreen.btn != ''
-                ? tags.paymentMethodsScreen.btn
-                : 'Guardar Cambios'
-            }
-            onPress={() => {}}
-          />
-        </View>
-      </ScrollView>
-    </View>
+        <ScrollView>
+          <View style={styles.editField}>
+            <Text style={styles.titleLabel}>
+              {tags.paymentMethodsScreen.preferido != ''
+                ? tags.paymentMethodsScreen.preferido
+                : 'Preferido:'}
+            </Text>
+            <PaymentButton
+              iconLeft={true}
+              titulo={'XXXX-XXXX-XXXX-5678'}
+              iconRight={true}
+            />
+            <Text style={styles.titleLabel}>
+              {tags.paymentMethodsScreen.tarjetas != ''
+                ? tags.paymentMethodsScreen.tarjetas
+                : 'Tarjetas:'}
+            </Text>
+            <PaymentButton
+              iconLeft={true}
+              titulo={'XXXX-XXXX-XXXX-0123'}
+              iconRight={true}
+            />
+            <PaymentButton
+              iconLeft={true}
+              titulo={'XXXX-XXXX-XXXX-9595'}
+              iconRight={true}
+              onPress={() => selectCard(data)}
+            />
+            <PaymentButton
+              iconLeft={true}
+              titulo={'XXXX-XXXX-XXXX-2345'}
+              iconRight={true}
+              //  onPress={() => goToScreen("PaymentMethodDetail")}
+            />
+            <PaymentButton
+              iconLeft={true}
+              titulo={'XXXX-XXXX-XXXX-4567'}
+              iconRight={true}
+            />
+            <MyButton
+              titulo={
+                tags.paymentMethodsScreen.btn != ''
+                  ? tags.paymentMethodsScreen.btn
+                  : 'Guardar Cambios'
+              }
+              onPress={() => {}}
+            />
+          </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 

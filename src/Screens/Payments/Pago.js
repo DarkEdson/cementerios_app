@@ -18,6 +18,7 @@ import LargeButton from '@Components/common/largeButton';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
+import {RouteBackContext} from '@context/RouteBackContext';
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -30,6 +31,7 @@ import {
 export default function VistaPago(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
   const {ShoppingCart, removeItemtoCart} = useContext(ShoppingCartContext);
+  const {RouteBack} = useContext(RouteBackContext);
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
@@ -64,89 +66,91 @@ export default function VistaPago(props) {
   });
 
   return (
-    <SafeAreaView style={mainStyles.containers} >
-    <View style={styles.vista}>
-      <ToolBar
-        titulo={
-          tags.PaymentScreen.compra != '' ? tags.PaymentScreen.compra : 'Compra'
-        }
-        onPressLeft={() => goToScreen('Productos')}
-        iconLeft={true}
-      />
-      <ScrollView>
-        <View>
-          <View style={styles.productos}>
-            {ShoppingCart.map((promo, key) => {
-              return (
-                <CardProductoVenta
-                  key={key}
-                  urlImagen={promo.principalImage}
-                  titulo={promo.name}
-                  descripcion={promo.description}
-                  precio={promo.price}
-                  cantidad={promo.cantidad}
-                />
-              );
-            })}
+    <SafeAreaView style={mainStyles.containers}>
+      <View style={styles.vista}>
+        <ToolBar
+          titulo={
+            tags.PaymentScreen.compra != ''
+              ? tags.PaymentScreen.compra
+              : 'Compra'
+          }
+          onPressLeft={() => goToScreen('Productos')}
+          iconLeft={true}
+        />
+        <ScrollView>
+          <View>
+            <View style={styles.productos}>
+              {ShoppingCart.map((promo, key) => {
+                return (
+                  <CardProductoVenta
+                    key={key}
+                    urlImagen={promo.principalImage}
+                    titulo={promo.name}
+                    descripcion={promo.description}
+                    precio={promo.price}
+                    cantidad={promo.cantidad}
+                  />
+                );
+              })}
+            </View>
+            <View style={styles.espacio}>
+              <Text style={styles.txtTitulo}>
+                {tags.PaymentScreen.subtotal != ''
+                  ? tags.PaymentScreen.subtotal
+                  : 'Subtotal'}
+              </Text>
+              <Text style={styles.valorCuenta}>$ {valoresVenta.subTotal}</Text>
+            </View>
+            <View style={styles.espacio}>
+              <Text style={styles.txtTitulo}>
+                {tags.PaymentScreen.entrega != ''
+                  ? tags.PaymentScreen.entrega
+                  : 'Entrega'}
+              </Text>
+              <Text style={styles.valorCuenta}>$ {valoresVenta.entrega}</Text>
+            </View>
+            <View style={styles.espacio2}>
+              <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
+                {tags.PaymentScreen.total != ''
+                  ? tags.PaymentScreen.total
+                  : 'Total (incl. IVA)'}
+              </Text>
+              <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
+            </View>
+            <View style={styles.espacio}>
+              <LargeButton
+                titulo={
+                  tags.PaymentScreen.agregar != ''
+                    ? tags.PaymentScreen.agregar
+                    : 'Agregar mas productos'
+                }
+                onPressRight={() => goToScreen(RouteBack)}
+                iconRight={true}
+              />
+            </View>
+            <View style={styles.espacio}>
+              <LargeButton
+                titulo={
+                  tags.PaymentScreen.codigo != ''
+                    ? tags.PaymentScreen.codigo
+                    : 'Codigo de Promocion'
+                }
+                onPressRight={() => goToScreen('PromoCode')}
+                iconRight={true}
+              />
+            </View>
+            <TouchableOpacity style={styles.btnAgregar}>
+              <Text style={styles.txtAgregar}>
+                {' '}
+                {tags.PaymentScreen.pagar != ''
+                  ? tags.PaymentScreen.pagar
+                  : 'Pagar'}{' '}
+              </Text>
+            </TouchableOpacity>
+            <View style={mainStyles.boxTransparent} />
           </View>
-          <View style={styles.espacio}>
-            <Text style={styles.txtTitulo}>
-              {tags.PaymentScreen.subtotal != ''
-                ? tags.PaymentScreen.subtotal
-                : 'Subtotal'}
-            </Text>
-            <Text style={styles.valorCuenta}>$ {valoresVenta.subTotal}</Text>
-          </View>
-          <View style={styles.espacio}>
-            <Text style={styles.txtTitulo}>
-              {tags.PaymentScreen.entrega != ''
-                ? tags.PaymentScreen.entrega
-                : 'Entrega'}
-            </Text>
-            <Text style={styles.valorCuenta}>$ {valoresVenta.entrega}</Text>
-          </View>
-          <View style={styles.espacio2}>
-            <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-              {tags.PaymentScreen.total != ''
-                ? tags.PaymentScreen.total
-                : 'Total (incl. IVA)'}
-            </Text>
-            <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
-          </View>
-          <View style={styles.espacio}>
-            <LargeButton
-              titulo={
-                tags.PaymentScreen.agregar != ''
-                  ? tags.PaymentScreen.agregar
-                  : 'Agregar mas productos'
-              }
-              onPressRight={() => goToScreen('Productos')}
-              iconRight={true}
-            />
-          </View>
-          <View style={styles.espacio}>
-            <LargeButton
-              titulo={
-                tags.PaymentScreen.codigo != ''
-                  ? tags.PaymentScreen.codigo
-                  : 'Codigo de Promocion'
-              }
-              onPressRight={() => goToScreen('PromoCode')}
-              iconRight={true}
-            />
-          </View>
-          <TouchableOpacity style={styles.btnAgregar}>
-            <Text style={styles.txtAgregar}>
-              {' '}
-              {tags.PaymentScreen.pagar != ''
-                ? tags.PaymentScreen.pagar
-                : 'Pagar'}{' '}
-            </Text>
-          </TouchableOpacity>
-          <View style={mainStyles.boxTransparent} />
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
   function goToScreen(routeName) {
