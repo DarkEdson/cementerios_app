@@ -4,13 +4,16 @@ import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 export default function BtnCategoria(props) {
   return (
-    <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressCategorie}>
+    <TouchableOpacity
+      style={styles.cuerpoCard}
+      onPress={props.onPressCategorie}>
       <Card>
         <View style={styles.view}>
           <View style={styles.top}>
             <Image
               style={styles.imgCategoria}
               source={{uri: props.urlImagen}}
+              resizeMode="center"
             />
           </View>
           <View style={styles.bottom}>
