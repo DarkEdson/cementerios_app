@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react';
 //Apis
-import {sedesApi,sedeApi} from '@Apis/SedesApi';
+import {sedesApi, sedeApi} from '@Apis/SedesApi';
 
 export const SedesContext = createContext();
 
@@ -8,7 +8,7 @@ export const SedesProvider = ({children}) => {
   const [Sedes, setSedes] = useState([]);
   const [isLoadingSedes, setisLoadingSedes] = useState(false);
 
-  const getSedes = async (cementery, setSede) => {
+  const getSedes = async (cementery, setSede, goToScreen, routeName) => {
     setisLoadingSedes(true);
     sedesApi(cementery).then(res => {
       res.sort((a, b) => a.code.localeCompare(b.code));
@@ -16,6 +16,7 @@ export const SedesProvider = ({children}) => {
       setSedes(res);
       setSede(res[0]);
       setisLoadingSedes(false);
+      goToScreen(routeName);
     });
   };
 
@@ -37,7 +38,7 @@ export const SedesProvider = ({children}) => {
         Sedes,
         isLoadingSedes,
         getSedes,
-        getSede
+        getSede,
       }}>
       {children}
     </SedesContext.Provider>

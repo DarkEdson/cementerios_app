@@ -28,13 +28,14 @@ export const ProductsProvider = ({children}) => {
     });
   };
 
-  const getProductsbyCategory = async category => {
+  const getProductsbyCategory = async (category, goToScreen, routeName) => {
     setisLoadingProducts(true);
     productbyCategory(category).then(res => {
       res.sort((a, b) => a.code.localeCompare(b.code));
       console.log('PRODUCTOS por CATEGORIA', res);
       setProductsCategory(res);
       setisLoadingProducts(false);
+      goToScreen(routeName);
     });
   };
 
