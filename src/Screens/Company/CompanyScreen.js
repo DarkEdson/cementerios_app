@@ -52,7 +52,7 @@ export default function CompanyScreen(props) {
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
   const {categories} = useContext(CategoriesContext);
-  const {} = useContext(CategoryContext);
+  const {setCategory} = useContext(CategoryContext);
   const {Sedes, getSede} = useContext(SedesContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
@@ -197,6 +197,12 @@ export default function CompanyScreen(props) {
                 onSnapToItem={index => {
                   console.log('current index:', index);
                   console.log('current item:', categoriesArray[index]);
+                  if (categoriesArray[index] != '0') {
+                    setisFilterC(true);
+                  } else {
+                    setisFilterC(false);
+                  }
+                  console.log('setIsFilter on snap', isFilterC);
                   selectedCategory(categoriesArray[index]);
                 }}
                 autoPlay={false}
@@ -233,7 +239,26 @@ export default function CompanyScreen(props) {
                   size="small"
                 />
               </View>
-            ) : ProductsSedes.length >= 0 ? (
+            ) : productsFilter.length >= 0 && isFilterC ? (
+              productsFilter.length >= 1 ? (
+                productsFilter.map((product, key) => {
+                  return (
+                    <CardProducto
+                      key={key}
+                      onPressProduct={() => selectedProduct(product, 'Product')}
+                      urlImagen={product.principalImage}
+                      titulo={product.name}
+                      descripcion={product.description}
+                      precio={product.price}
+                    />
+                  );
+                })
+              ) : (
+                <View style={mainStyles.noPromoView}>
+                  <Text style={mainStyles.promoText}>No Product</Text>
+                </View>
+              )
+            ) : ProductsSedes.length >= 1 ? (
               ProductsSedes.map((product, key) => {
                 return (
                   <CardProducto
@@ -317,14 +342,14 @@ export default function CompanyScreen(props) {
     ProductsSedes.forEach(prod => {
       if (prod.idCategory == cat._id) {
         productF.push(prod);
-        setisFilterC(true);
       }
+      setisFilterC(true);
     });
     if (cat._id == '0') {
       setisFilterC(false);
       productF = [];
     }
-    console.log(productF);
+    console.log(productF, isFilterC);
     setproductsFilter(productF);
   }
 

@@ -159,6 +159,16 @@ const mainStyles = StyleSheet.create({
     borderColor: color.GRAY2,
     flexDirection: 'row',
   },
+  noPromoView: {
+    textAlign: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  promoText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: color.PRINCIPALCOLOR,
+  },
 });
 
 //Estilos para SplashScreen
