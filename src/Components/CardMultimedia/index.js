@@ -19,7 +19,11 @@ export default function CardMultimedia(props) {
   return (
     <TouchableOpacity onPress={props.onPressMultimedia}>
       {extensionsImg.includes(extensionFile) ? (
-        <Image style={props.style} source={{uri: props.urlImagen}} />
+        <Image
+          style={props.style}
+          defaultSource={require('@images/main_logo.png')}
+          source={{uri: props.urlImagen}}
+        />
       ) : (
         <Video
           style={props.style}
@@ -30,7 +34,7 @@ export default function CardMultimedia(props) {
         />
       )}
       <View style={{alignItems: 'center', marginLeft: '20%', marginTop: 5}}>
-        <Text style={props.textStyle}>{imgName}</Text>
+        <Text style={props.textStyle}>{props.imageNombre}</Text>
       </View>
     </TouchableOpacity>
   );

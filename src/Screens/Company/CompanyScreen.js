@@ -88,8 +88,8 @@ export default function CompanyScreen(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
-    console.log(Sedes);
-    console.log(sede);
+    console.log('SEDES', Sedes);
+    console.log('SEDE', sede);
     setcant(ShoppingCart.length);
     let info = '';
     let total = 0;
@@ -117,7 +117,7 @@ export default function CompanyScreen(props) {
   return (
     <View style={CementeryScreen.vista}>
       <ImageBackground
-        source={{uri: cementery.urlImagen}}
+        source={{uri: cementery.image}}
         resizeMode="stretch"
         style={CementeryScreen.imgProducto}>
         <Image
@@ -127,7 +127,7 @@ export default function CompanyScreen(props) {
       </ImageBackground>
       <ScrollView>
         <View style={CementeryScreen.descripcion}>
-          <Text style={CementeryScreen.titulo}> {cementery.titulo} </Text>
+          <Text style={CementeryScreen.titulo}> {cementery.name} </Text>
           <Text style={CementeryScreen.categorias}>
             {' '}
             $$ • Mar • Arrecife • Perla
@@ -205,7 +205,7 @@ export default function CompanyScreen(props) {
         tipo="font-awesome-5"
         image="expand"
         onPress={() => {
-          abrirModal(cementery.urlImagen);
+          abrirModal(cementery.image);
         }}
       />
       {/* Seccion de carrito de compra */}

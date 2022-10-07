@@ -41,6 +41,7 @@ import CardMultimedia from '@Components/CardMultimedia';
 import {ProductContext} from '@context/ProductContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {RouteBackContext} from '@context/RouteBackContext';
+import {ProductsContext} from '@context/ProductsContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
@@ -52,6 +53,7 @@ export default function VistaProducto(props) {
   const {RouteBack, setRouteBack} = useContext(RouteBackContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
+  const {ProductMultimedia} = useContext(ProductsContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -192,61 +194,66 @@ export default function VistaProducto(props) {
             {Product.description}
           </Text>
           <View style={styles.multimedia}>
-            <Carousel
-              {...baseOptions}
-              style={{
-                justifyContent: 'center',
-                alignSelf: 'center',
-              }}
-              loop={true}
-              pagingEnabled={true}
-              snapEnabled={true}
-              autoPlay={true}
-              autoPlayInterval={1500}
-              onProgressChange={(_, absoluteProgress) =>
-                (progressValue.value = absoluteProgress)
-              }
-              mode="parallax"
-              modeConfig={{
-                parallaxScrollingScale: 0.85,
-                parallaxScrollingOffset: 260,
-              }}
-              data={propsVista.urlMultimedia}
-              renderItem={({item}) => {
-                return (
-                  <CardMultimedia
-                    style={styles.imgDetalle}
-                    urlImagen={item}
-                    onPressMultimedia={() => {
-                      console.log(item);
-                      abrirModal(item);
-                    }}
-                    textStyle={styles.imgTitulo}
-                  />
-                );
-              }}
-            />
-            {!!progressValue && (
-              <View
+            {ProductMultimedia.length >= 1 ? (
+              <Carousel
+                {...baseOptions}
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: 100,
-                  marginTop: 10,
+                  justifyContent: 'center',
                   alignSelf: 'center',
-                }}>
-                {propsVista.urlMultimedia.map((item, index) => {
+                }}
+                loop={true}
+                pagingEnabled={true}
+                snapEnabled={true}
+                autoPlay={true}
+                autoPlayInterval={1500}
+                onProgressChange={(_, absoluteProgress) =>
+                  (progressValue.value = absoluteProgress)
+                }
+                mode="parallax"
+                modeConfig={{
+                  parallaxScrollingScale: 0.85,
+                  parallaxScrollingOffset: 260,
+                }}
+                data={ProductMultimedia}
+                renderItem={({item}) => {
                   return (
-                    <PaginationItem
-                      animValue={progressValue}
-                      index={index}
-                      key={index}
-                      length={propsVista.urlMultimedia.length}
+                    <CardMultimedia
+                      style={styles.imgDetalle}
+                      urlImagen={item.name}
+                      imageNombre={item.code}
+                      onPressMultimedia={() => {
+                        console.log(item.name);
+                        abrirModal(item.name);
+                      }}
+                      textStyle={styles.imgTitulo}
                     />
                   );
-                })}
-              </View>
-            )}
+                }}
+              />
+            ) : null}
+            {ProductMultimedia.length >= 1
+              ? !!progressValue && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: 100,
+                      marginTop: 10,
+                      alignSelf: 'center',
+                    }}>
+                    {propsVista.urlMultimedia.map((item, index) => {
+                      return (
+                        <PaginationItem
+                          animValue={progressValue}
+                          index={index}
+                          key={index}
+                          length={propsVista.urlMultimedia.length}
+                        />
+                      );
+                    })}
+                  </View>
+                )
+              : null}
             <View style={styles.numCant}>
               <TouchableOpacity
                 style={styles.btnCant}

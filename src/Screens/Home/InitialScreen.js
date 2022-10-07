@@ -375,6 +375,7 @@ export default function InitialScreen(props) {
 
   function selectCementery(cementery, routeName) {
     setCementery(cementery);
+    getSedes(cementery, setSede);
     goToScreen(routeName);
     getSedes(cementery, setSede);
     setRouteBackComp('Home');

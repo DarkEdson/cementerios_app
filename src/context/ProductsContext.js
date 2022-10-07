@@ -38,24 +38,18 @@ export const ProductsProvider = ({children}) => {
     });
   };
 
-  const getMultimediabyProduct = async product => {
+  const getProductsFullbyCategory = async (productos, languaje) => {
     setisLoadingProducts(true);
-    multimediabyProduct(product).then(res => {
-      res.sort((a, b) => a.code.localeCompare(b.code));
-      console.log('MULTIMEDIA por PRODUCTO', res);
-      setProductMultimedia(res);
-      setisLoadingProducts(false);
+    let productsFULL = [];
+    productos.forEach(producto => {
+      productFullbyCategory(producto, languaje).then(res => {
+        console.log(res);
+        productsFULL.push(res);
+      });
     });
-  };
-
-  const getProductsFullbyCategory = async (producto, languaje) => {
-    setisLoadingProducts(true);
-    productFullbyCategory(producto, languaje).then(res => {
-      res.sort((a, b) => a.code.localeCompare(b.code));
-      console.log('PRODUCTOS COMPLETOS por CATEGORIA', res);
-      setProductsFullCategory(res);
-      setisLoadingProducts(false);
-    });
+    console.log('PRODUCTOS COMPLETOS por CATEGORIA', productsFULL);
+    setProductsFullCategory(productsFULL);
+    setisLoadingProducts(false);
   };
 
   const getProductsbySede = async (sede, languaje) => {
@@ -64,6 +58,16 @@ export const ProductsProvider = ({children}) => {
       res.sort((a, b) => a.code.localeCompare(b.code));
       console.log('PRODUCTOSpor SEDE', res);
       setProductsSede(res);
+      setisLoadingProducts(false);
+    });
+  };
+
+  const getMultimediabyProduct = async product => {
+    setisLoadingProducts(true);
+    multimediabyProduct(product).then(res => {
+      res.sort((a, b) => a.code.localeCompare(b.code));
+      console.log('MULTIMEDIA por PRODUCTO', res);
+      setProductMultimedia(res);
       setisLoadingProducts(false);
     });
   };

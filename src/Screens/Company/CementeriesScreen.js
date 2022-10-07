@@ -27,7 +27,6 @@ import {RouteBackContext} from '@context/RouteBackContext';
 import {CementeriesContext} from '@context/CementeriesContext';
 import {SedesContext} from '@context/SedesContext';
 import {SedeContext} from '@context/SedeContext';
-
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardColaborador from '@Components/CardColaborador/';
@@ -49,7 +48,6 @@ export default function CompanyScreen(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
-    console.log(Cementeries);
     setcementeriosTotal(Cementeries);
     // Actualizar valores de la vista
     //setArrProductosDisp(Cementeries);
@@ -67,7 +65,40 @@ export default function CompanyScreen(props) {
   const [arrCementeriosDisp, setArrCementeriosDisp] = useState([]);
 
   return (
-    <View>
+    <View style={styles.container}>
+      <StatusBar
+        backgroundColor={color.PRINCIPALCOLOR}
+        barStyle="dark-content"
+        translucent={true}
+      />
+      <ToolBar
+        titulo={
+          tags.CementeriesScreen.titulo != ''
+            ? tags.CementeriesScreen.titulo
+            : 'Cementerios'
+        }
+        onPressLeft={() => goToScreen('Initial')}
+        iconLeft={true}
+      />
+      <View style={styles.containerHeader}>
+        <View style={styles.searchSection}>
+          <TextInput
+            style={styles.input}
+            placeholder={
+              tags.CementeriesScreen.placeholder != ''
+                ? tags.CementeriesScreen.placeholder
+                : 'Cementerio, Producto, Categoría...'
+            }
+            onChangeText={val => {
+              setArrCementeriosDisp(
+                Cementeries.filter(c =>
+                  c.name.toLocaleLowerCase().includes(val.toLocaleLowerCase()),
+                ),
+              );
+            }}
+          />
+        </View>
+      </View>
       {isLoadingSedes ? (
         <View
           style={{
@@ -84,69 +115,31 @@ export default function CompanyScreen(props) {
           />
         </View>
       ) : (
-        <View style={styles.container}>
-          <StatusBar
-            backgroundColor={color.PRINCIPALCOLOR}
-            barStyle="dark-content"
-            translucent={true}
-          />
-          <ToolBar
-            titulo={
-              tags.CementeriesScreen.titulo != ''
-                ? tags.CementeriesScreen.titulo
-                : 'Cementerios'
-            }
-            onPressLeft={() => goToScreen('Initial')}
-            iconLeft={true}
-          />
+        <ScrollView>
           <View style={styles.containerHeader}>
-            <View style={styles.searchSection}>
-              <TextInput
-                style={styles.input}
-                placeholder={
-                  tags.CementeriesScreen.placeholder != ''
-                    ? tags.CementeriesScreen.placeholder
-                    : 'Cementerio, Producto, Categoría...'
-                }
-                onChangeText={val => {
-                  setArrCementeriosDisp(
-                    Cementeries.filter(c =>
-                      c.name
-                        .toLocaleLowerCase()
-                        .includes(val.toLocaleLowerCase()),
-                    ),
+            {arrCementeriosDisp.length >= 1
+              ? arrCementeriosDisp.map((company, key) => {
+                  return (
+                    <CardColaborador
+                      key={key}
+                      onPressColab={() => selectCementery(company, 'Company')}
+                      urlImagen={company.image}
+                      nombre={company.name}
+                    />
                   );
-                }}
-              />
-            </View>
+                })
+              : Cementeries.map((company, key) => {
+                  return (
+                    <CardColaborador
+                      key={key}
+                      onPressColab={() => selectCementery(company, 'Company')}
+                      urlImagen={company.image}
+                      nombre={company.name}
+                    />
+                  );
+                })}
           </View>
-
-          <ScrollView>
-            <View style={styles.containerHeader}>
-              {arrCementeriosDisp.length >= 1
-                ? arrCementeriosDisp.map((company, key) => {
-                    return (
-                      <CardColaborador
-                        key={key}
-                        onPressColab={() => selectCementery(company, 'Company')}
-                        urlImagen={company.image}
-                        nombre={company.name}
-                      />
-                    );
-                  })
-                : Cementeries.map((company, key) => {
-                    return (
-                      <CardColaborador
-                        key={key}
-                        onPressColab={() => selectCementery(company, 'Company')}
-                        urlImagen={company.image}
-                        nombre={company.name}
-                      />
-                    );
-                  })}
-            </View>
-          </ScrollView>
-        </View>
+        </ScrollView>
       )}
     </View>
   );
@@ -154,6 +147,7 @@ export default function CompanyScreen(props) {
     setCementery(cementery);
     getSedes(cementery, setSede);
     goToScreen(routeName);
+    getSedes(cementery, setSede);
     setRouteBackComp('Cementeries');
   }
 

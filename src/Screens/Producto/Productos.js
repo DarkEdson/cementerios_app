@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -9,75 +9,73 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
-import { Icon, FAB } from '@rneui/themed';
+import {Icon, FAB} from '@rneui/themed';
 //URL de server
-import { BASE_URL_IMG, PRODUCTS_URL } from '@utils/config';
+import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 //Recarga la screen
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 //Estilos Generales
 import color from '@styles/colors';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardProducto from '@Components/CardProducto/index';
 //Contextos
-import { ScreentagContext } from '@context/ScreentagsContext';
-import { ProductContext } from '@context/ProductContext';
-import { RouteBackContext } from '@context/RouteBackContext';
-import { ProductsContext } from "@context/ProductsContext";
-import { CategoryContext } from '@context/CategoryContext';
-import { GlobalLanguageContext } from '@context/LanguageContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
+import {ProductContext} from '@context/ProductContext';
+import {RouteBackContext} from '@context/RouteBackContext';
+import {ProductsContext} from '@context/ProductsContext';
+import {CategoryContext} from '@context/CategoryContext';
+import {GlobalLanguageContext} from '@context/LanguageContext';
 
 //tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
-  const { tags } = useContext(ScreentagContext);
-  const [GlobalLanguage] = useContext(GlobalLanguageContext)
+  const {tags} = useContext(ScreentagContext);
+  const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const [Product, setProduct] = useContext(ProductContext);
-  const { setRouteBack } = useContext(RouteBackContext);
+  const {setRouteBack} = useContext(RouteBackContext);
   const {
     ProductsCountry,
     ProductsCategory,
     ProductsFullCategory,
     isLoadingProducts,
-    getProductsFullbyCategory
-  } = useContext(ProductsContext)
-  const { Category, isCategory,setisCategory } = useContext(CategoryContext);
+    getProductsFullbyCategory,
+    getMultimediabyProduct,
+  } = useContext(ProductsContext);
+  const {Category, isCategory, setisCategory} = useContext(CategoryContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => { };
+  const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
-    if(isCategory){
-      let arrayP=[]
-      getProductsFullbyCategory(ProductsCategory,GlobalLanguage)
-      ProductsCountry.forEach(producto=>{
-        ProductsCategory.forEach(p=>{
-          if (p._id == producto.id){
-            arrayP.push(producto)
+    if (isCategory) {
+      let arrayP = [];
+      ProductsCountry.forEach(producto => {
+        ProductsCategory.forEach(p => {
+          if (p._id == producto._id) {
+            arrayP.push(producto);
           }
-          
-        })
-        
-      })
+        });
+      });
+      getProductsFullbyCategory(arrayP, GlobalLanguage);
       setArrProductosDisp(arrayP);
-    }
-    else{
+    } else {
       setArrProductosDisp(ProductsCountry);
     }
-   
+
     if (isFocused) {
       getInitialData();
       console.log('isFocused in Products');
     }
     //props, isFocused
-  }, []);
+  }, [props, isFocused]);
 
   // Variable de trabajo
   const [arrProductosDisp, setArrProductosDisp] = useState([]);
 
   return (
     <View>
-      { (isCategory && isLoadingProducts) ? (
+      {isCategory && isLoadingProducts ? (
         <View
           style={{
             justifyContent: 'center',
@@ -88,81 +86,83 @@ export default function VistaProductos(props) {
             loading
             color={color.PRINCIPALCOLOR}
             visible={isLoadingProducts}
-            icon={{ name: 'add', color: 'white' }}
+            icon={{name: 'add', color: 'white'}}
             size="small"
           />
         </View>
       ) : (
         <View>
-      <StatusBar
-        backgroundColor={color.PRINCIPALCOLOR}
-        barStyle="dark-content"
-        translucent={true}
-      />
-      <ToolBar
-        titulo={
-          tags.ProductsScreen.labelproductos != ''
-            ? tags.ProductsScreen.labelproductos
-            : 'Productos'
-        }
-        onPressLeft={() => {
-          setisCategory(false)
-          goToScreen('Initial')
-      }}
-        iconLeft={true}
-      />
-      <View style={styles.containerHeader}>
-        <View style={styles.searchSection}>
-          <TextInput
-            style={styles.input}
-            placeholder={
-              tags.ProductsScreen.labelsearch1 != ''
-                ? tags.ProductsScreen.labelsearch1
-                : 'Cementerio, Producto, Categoría...'
-            }
-            onChangeText={val => {
-              setArrProductosDisp(
-                isCategory? ProductsFullCategory.filter(
-                  p =>
-                    p.name
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) 
-                ):ProductsCountry.filter(
-                  p =>
-                    p.name
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) 
-                )
-              );
-            }}
+          <StatusBar
+            backgroundColor={color.PRINCIPALCOLOR}
+            barStyle="dark-content"
+            translucent={true}
           />
-        </View>
-      </View>
-
-      <ScrollView style={styles.scroll}>
-        <View style={styles.containerHeader}>
-          {arrProductosDisp.map((product, key) => {
-            return (
-              <CardProducto
-                key={key}
-                onPressProduct={() => selectedProduct(product, 'Product')}
-                urlImagen={product.principalImage}
-                titulo={product.name}
-                descripcion={product.description}
-                precio={product.price}
+          <ToolBar
+            titulo={
+              tags.ProductsScreen.labelproductos != ''
+                ? tags.ProductsScreen.labelproductos
+                : 'Productos'
+            }
+            onPressLeft={() => {
+              setisCategory(false);
+              goToScreen('Initial');
+            }}
+            iconLeft={true}
+          />
+          <View style={styles.containerHeader}>
+            <View style={styles.searchSection}>
+              <TextInput
+                style={styles.input}
+                placeholder={
+                  tags.ProductsScreen.labelsearch1 != ''
+                    ? tags.ProductsScreen.labelsearch1
+                    : 'Cementerio, Producto, Categoría...'
+                }
+                onChangeText={val => {
+                  setArrProductosDisp(
+                    isCategory
+                      ? ProductsFullCategory.filter(p =>
+                          p.name
+                            .toLocaleLowerCase()
+                            .includes(val.toLocaleLowerCase()),
+                        )
+                      : ProductsCountry.filter(p =>
+                          p.name
+                            .toLocaleLowerCase()
+                            .includes(val.toLocaleLowerCase()),
+                        ),
+                  );
+                }}
               />
-            );
-          })}
-          <View style={styles.boxTransparent} />
+            </View>
+          </View>
+
+          <ScrollView style={styles.scroll}>
+            <View style={styles.containerHeader}>
+              {arrProductosDisp.map((product, key) => {
+                return (
+                  <CardProducto
+                    key={key}
+                    onPressProduct={() => selectedProduct(product, 'Product')}
+                    urlImagen={product.principalImage}
+                    titulo={product.name}
+                    descripcion={product.description}
+                    precio={product.price}
+                  />
+                );
+              })}
+              <View style={styles.boxTransparent} />
+            </View>
+            <View style={styles.boxTransparent} />
+          </ScrollView>
         </View>
-        <View style={styles.boxTransparent} />
-      </ScrollView>
-    </View>)}
+      )}
     </View>
   );
 
   function selectedProduct(producto, routeName) {
     setProduct(producto);
+    getMultimediabyProduct(producto);
     goToScreen(routeName);
     setRouteBack('Productos');
   }
