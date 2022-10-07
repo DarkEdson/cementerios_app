@@ -22,6 +22,8 @@ import MyFloatButton from '@Components/common/MyFloatButton';
 import ShoppingCarCard from '@Components/ShoppingCarCard/ShoppingCarCard';
 import InformationIcon from '@Components/common/InformationIcon';
 import CustomModal from '@Components/CustomModal/CustomModal';
+import CustomModalList from '@Components/CustomModalList/CustomModalList';
+
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -66,7 +68,7 @@ export default function CompanyScreen(props) {
     getProductsbySede,
     getMultimediabyProduct,
   } = useContext(ProductsContext);
-
+  const [visible, setVisible] = useState(false);
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
   const [productsFilter, setproductsFilter] = useState([]);
@@ -133,6 +135,10 @@ export default function CompanyScreen(props) {
     setimagenModal(multimedia);
   }
 
+  const toggleDialog = () => {
+    setVisible(true);
+  };
+
   return (
     <SafeAreaView style={mainStyles.containers}>
       <View style={CementeryScreen.vista}>
@@ -167,7 +173,9 @@ export default function CompanyScreen(props) {
                 image="location-pin"
                 titulo={sede.name}
                 subtitulo="Sedes"
-                onPress={() => {}}
+                onPress={() => {
+                  toggleDialog();
+                }}
               />
               <View style={informationIconStyles.verticleLine} />
               <InformationIcon
@@ -315,6 +323,18 @@ export default function CompanyScreen(props) {
             setCustomModal={setCustomModal}
             urlImagen={imagenModal}
             item={{descrition: '.'}}
+          />
+        )}
+        {visible == false ? null : (
+          <CustomModalList
+            customModal={visible}
+            setCustomModal={setVisible}
+            sedes={Sedes}
+            sede={sede}
+            setSede={setSede}
+            getProdbySede={getProductsbySede}
+            GlobalLang={GlobalLanguage}
+            prods={ProductsSedes}
           />
         )}
       </View>

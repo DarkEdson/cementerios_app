@@ -1,93 +1,66 @@
 //import liraries
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Modal, Pressable, Image } from 'react-native';
-import { Icon } from '@rneui/themed';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, Modal, Pressable, Image} from 'react-native';
 import color from '@styles/colors';
-import Video from 'react-native-video';
+import {Dialog, CheckBox} from '@rneui/themed';
 import MyButton from '@Components/common/MyButton';
 import Card from '../Card';
 
 // create a component
-const CustomModal = props => {
+const CustomModalList = props => {
+  const [visible, setVisible] = useState(false);
+  const [sede, setsede] = useState({});
+  const [checked, setChecked] = useState(1);
+
+  const toggleDialog = () => {
+    setVisible(false);
+    props.setCustomModal(false);
+  };
+
   useEffect(() => {
-    setmyModalVisible(props.customModal);
-    let Nombre = props.urlImagen.split('/');
-
-    let extension = Nombre[Nombre.length - 1].split('.');
-    setimgName(extension[extension.length - 2]);
-
-    setextensionFile(extension[extension.length - 1]);
-    return () => { };
+    setsede(props.sede);
+    props.sedes.forEach((s, k) => {
+      if (s._id == props.sede._id) {
+        setChecked(k + 1);
+      }
+    });
+    setVisible(props.customModal);
+    return () => {};
   }, []);
 
-  function ocultarModal() {
-    setmyModalVisible(false);
-    props.setCustomModal(false);
-  }
-  const extensionsImg = ['jpg', 'JPG', 'png', 'PNG', 'jpeg', 'JPEG'];
-  const [extensionFile, setextensionFile] = useState('');
-  const [imgName, setimgName] = useState('');
-  const [myModalVisible, setmyModalVisible] = useState(false);
   return (
-    <View style={styles.container}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        onBackdropPress={() => console.log('Pressed')}
-        visible={myModalVisible}
-        onRequestClose={setmyModalVisible}>
-        <View
-          style={{
-            position: 'absolute',
-            backgroundColor: '#646363F3',
-            width: '100%',
-            height: '100%',
-          }}>
-          <View style={{ padding: '1%' }}>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Pressable style={styles.btnIconBack2} onPress={ocultarModal}>
-                <Icon
-                  style={styles.searchIcon}
-                  type="material"
-                  name="close"
-                  size={15}
-                  color="white"
-                />
-              </Pressable>
-            </View>
-            <View style={styles.textContainer} />
-            {extensionsImg.includes(extensionFile) ? (
-              <View style={styles.imgContainer}>
-                <Image style={styles.imagen} defaultSource={require('@images/loading.gif')} source={{ uri: props.urlImagen }} />
-              </View>
-            ) : (
-              <View>
-                <View style={styles.imgContainer}>
+    <Dialog isVisible={visible} onBackdropPress={toggleDialog}>
+      <Dialog.Title title="Selecciona Sede" />
+      {props.sedes.map((sede, i) => {
+        return (
+          <CheckBox
+            key={i}
+            title={sede.name}
+            containerStyle={styles.container}
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            checked={checked === i + 1}
+            onPress={() => {
+              console.log(sede, props.GlobalLang);
+              setsede(sede);
+              setChecked(i + 1);
+            }}
+          />
+        );
+      })}
 
-                <Video
-                    style={styles.video}
-                    source={{uri: props.urlImagen}}
-                    paused={false}
-                    controls={true}
-                    resizeMode="contain"
-                  />
-                </View>
-                {/*
-             <View style={styles.viewButton}>
-                    <MyButton titulo={'FullScreen.'} onPress={() => {}} />
-                  </View>
-                  */}
-              </View>
-            )}
-            <View style={{alignItems: 'center', position:'absolute', bottom:70, left:'45%'}}>
-        <Text style={props.textStyle}>{
-        props.item.description
-        }</Text>
-      </View>
-          </View>
-        </View>
-      </Modal>
-    </View>
+      <Dialog.Actions>
+        <Dialog.Button
+          title="CONFIRM"
+          onPress={() => {
+            props.setSede(sede);
+            props.getProdbySede(sede, props.GlobalLang);
+            toggleDialog();
+          }}
+        />
+        <Dialog.Button title="CANCEL" onPress={toggleDialog} />
+      </Dialog.Actions>
+    </Dialog>
   );
 };
 
@@ -129,12 +102,7 @@ const styles = StyleSheet.create({
     width: '95%',
     height: '80%',
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2c3e50',
-  },
+  container: {backgroundColor: 'white', borderWidth: 0},
   btnIconBack2: {
     alignItems: 'center',
     width: '10%',
@@ -148,4 +116,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default CustomModal;
+export default CustomModalList;
