@@ -154,10 +154,23 @@ export default function CompanyScreen(props) {
         <ScrollView>
           <View style={CementeryScreen.descripcion}>
             <Text style={CementeryScreen.titulo}> {cementery.name} </Text>
-            <Text style={CementeryScreen.categorias}>
-              {' '}
-              $$ • Mar • Arrecife • Perla
-            </Text>
+            <View style={{flexDirection: 'row'}}>
+              {categories.map((cat, key) => {
+                if (key != categories.length - 1) {
+                  return (
+                    <Text key={key} style={CementeryScreen.categorias}>
+                      {' ' + cat.name + '  •'}
+                    </Text>
+                  );
+                } else {
+                  return (
+                    <Text key={key} style={CementeryScreen.categorias}>
+                      {' ' + cat.name + '  '}
+                    </Text>
+                  );
+                }
+              })}
+            </View>
             <View style={CementeryScreen.HeaderView}>
               <InformationIcon
                 transparent={true}
