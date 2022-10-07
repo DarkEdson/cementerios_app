@@ -381,7 +381,7 @@ export default function InitialScreen(props) {
 
   function selectCementery(cementery, routeName) {
     setCementery(cementery);
-    getSedes(cementery, setSede, goToScreen, routeName);
+    getSedes(cementery, setSede, goToScreen, routeName, country);
     setRouteBackComp('Home');
   }
 
@@ -403,7 +403,7 @@ export default function InitialScreen(props) {
     Cementeries.forEach(cementery => {
       if (item.id == cementery._id) {
         setCementery(cementery);
-        getSedes(cementery, setSede, goToScreen, 'Company');
+        getSedes(cementery, setSede, goToScreen, 'Company', country);
         setRouteBackComp('Initial');
         routeName = '';
       }

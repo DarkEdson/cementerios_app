@@ -26,6 +26,7 @@ import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 import {CementeriesContext} from '@context/CementeriesContext';
+import {CountryContext} from '@context/CountryContext';
 import {SedesContext} from '@context/SedesContext';
 import {SedeContext} from '@context/SedeContext';
 //Componentes
@@ -41,6 +42,7 @@ export default function CompanyScreen(props) {
     useContext(RouteBackContext);
   const {Cementeries} = useContext(CementeriesContext);
   const {isLoadingSedes, getSedes} = useContext(SedesContext);
+  const {country} = useContext(CountryContext);
 
   const {tags} = useContext(ScreentagContext);
 
@@ -150,7 +152,7 @@ export default function CompanyScreen(props) {
   );
   function selectCementery(cementery, routeName) {
     setCementery(cementery);
-    getSedes(cementery, setSede, goToScreen, routeName);
+    getSedes(cementery, setSede, goToScreen, routeName, country);
 
     setRouteBackComp('Cementeries');
   }
