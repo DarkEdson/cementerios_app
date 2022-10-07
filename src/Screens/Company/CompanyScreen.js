@@ -66,6 +66,7 @@ export default function CompanyScreen(props) {
     ProductsSedes,
     isLoadingProducts,
     getProductsbySede,
+    getProductsbySedewithCat,
     getMultimediabyProduct,
   } = useContext(ProductsContext);
   const [visible, setVisible] = useState(false);
@@ -73,6 +74,7 @@ export default function CompanyScreen(props) {
   const getInitialData = async () => {};
   const [productsFilter, setproductsFilter] = useState([]);
   const [isFilterC, setisFilterC] = useState(false);
+  const [activeCat, setactiveCat] = useState({});
   const [isFilterS, setisFilterS] = useState(false);
   const [categoriesArray, setcategoriesArray] = useState([
     {
@@ -216,14 +218,11 @@ export default function CompanyScreen(props) {
                 height={40}
                 loop
                 onSnapToItem={index => {
-                  console.log('current index:', index);
-                  console.log('current item:', categoriesArray[index]);
                   if (categoriesArray[index] != '0') {
                     setisFilterC(true);
                   } else {
                     setisFilterC(false);
                   }
-                  console.log('setIsFilter on snap', isFilterC);
                   selectedCategory(categoriesArray[index]);
                 }}
                 autoPlay={false}
@@ -345,6 +344,9 @@ export default function CompanyScreen(props) {
             sedes={Sedes}
             sede={sede}
             setSede={setSede}
+            activeCat={activeCat}
+            selectedCategory={selectedSede}
+            getProdbySedewithCat={getProductsbySedewithCat}
             getProdbySede={getProductsbySede}
             GlobalLang={GlobalLanguage}
             prods={ProductsSedes}
@@ -378,15 +380,31 @@ export default function CompanyScreen(props) {
       }
       setisFilterC(true);
     });
+    setactiveCat(cat);
     if (cat._id == '0') {
       setisFilterC(false);
       productF = [];
+      setactiveCat({});
     }
     console.log(productF, isFilterC);
     setproductsFilter(productF);
   }
 
-  function selectedSede(sede) {
-    //d
+  function selectedSede(cat, prodSede) {
+    let productF = [];
+    prodSede.forEach(prod => {
+      if (prod.idCategory == cat._id) {
+        productF.push(prod);
+      }
+      setisFilterC(true);
+    });
+    setactiveCat(cat);
+    if (cat._id == '0') {
+      setisFilterC(false);
+      productF = [];
+      setactiveCat({});
+    }
+    console.log(productF, isFilterC, 'FILTRADOS POR SEDE Y CAT');
+    setproductsFilter(productF);
   }
 }

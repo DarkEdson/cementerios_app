@@ -63,6 +63,22 @@ export const ProductsProvider = ({children}) => {
     });
   };
 
+  const getProductsbySedewithCat = async (
+    sede,
+    languaje,
+    category,
+    selectCategory,
+  ) => {
+    setisLoadingProducts(true);
+    productbyHeadquarters(sede, languaje).then(res => {
+      res.sort((a, b) => a.code.localeCompare(b.code));
+      console.log('PRODUCTOS por SEDE', res);
+      setProductsSede(res);
+      selectCategory(category, res);
+      setisLoadingProducts(false);
+    });
+  };
+
   const getMultimediabyProduct = async product => {
     setisLoadingProducts(true);
     multimediabyProduct(product).then(res => {
@@ -87,6 +103,7 @@ export const ProductsProvider = ({children}) => {
         getProductsbyCountry,
         getProductsbyCategory,
         getProductsbySede,
+        getProductsbySedewithCat,
         getProductsFullbyCategory,
         getMultimediabyProduct,
       }}>

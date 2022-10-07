@@ -41,7 +41,6 @@ const CustomModalList = props => {
             uncheckedIcon="circle-o"
             checked={checked === i + 1}
             onPress={() => {
-              console.log(sede, props.GlobalLang);
               setsede(sede);
               setChecked(i + 1);
             }}
@@ -53,8 +52,20 @@ const CustomModalList = props => {
         <Dialog.Button
           title="CONFIRM"
           onPress={() => {
-            props.setSede(sede);
-            props.getProdbySede(sede, props.GlobalLang);
+            if (props.activeCat.hasOwnProperty('name')) {
+              console.log(props.activeCat);
+              props.setSede(sede);
+              props.getProdbySedewithCat(
+                sede,
+                props.GlobalLang,
+                props.activeCat,
+                props.selectedCategory,
+              );
+            } else {
+              props.setSede(sede);
+              props.getProdbySede(sede, props.GlobalLang);
+            }
+
             toggleDialog();
           }}
         />

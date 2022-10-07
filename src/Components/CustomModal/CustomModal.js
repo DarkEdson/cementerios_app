@@ -1,7 +1,7 @@
 //import liraries
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Modal, Pressable, Image } from 'react-native';
-import { Icon } from '@rneui/themed';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, Modal, Pressable, Image} from 'react-native';
+import {Icon} from '@rneui/themed';
 import color from '@styles/colors';
 import Video from 'react-native-video';
 import MyButton from '@Components/common/MyButton';
@@ -17,7 +17,7 @@ const CustomModal = props => {
     setimgName(extension[extension.length - 2]);
 
     setextensionFile(extension[extension.length - 1]);
-    return () => { };
+    return () => {};
   }, []);
 
   function ocultarModal() {
@@ -39,12 +39,12 @@ const CustomModal = props => {
         <View
           style={{
             position: 'absolute',
-            backgroundColor: '#646363F3',
+            backgroundColor: '#9C9A9AB0',
             width: '100%',
             height: '100%',
           }}>
-          <View style={{ padding: '1%' }}>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{padding: '1%'}}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Pressable style={styles.btnIconBack2} onPress={ocultarModal}>
                 <Icon
                   style={styles.searchIcon}
@@ -58,13 +58,16 @@ const CustomModal = props => {
             <View style={styles.textContainer} />
             {extensionsImg.includes(extensionFile) ? (
               <View style={styles.imgContainer}>
-                <Image style={styles.imagen} defaultSource={require('@images/loading.gif')} source={{ uri: props.urlImagen }} />
+                <Image
+                  style={styles.imagen}
+                  defaultSource={require('@images/loading.gif')}
+                  source={{uri: props.urlImagen}}
+                />
               </View>
             ) : (
               <View>
                 <View style={styles.imgContainer}>
-
-                <Video
+                  <Video
                     style={styles.video}
                     source={{uri: props.urlImagen}}
                     paused={false}
@@ -79,11 +82,15 @@ const CustomModal = props => {
                   */}
               </View>
             )}
-            <View style={{alignItems: 'center', position:'absolute', bottom:70, left:'45%'}}>
-        <Text style={props.textStyle}>{
-        props.item.description
-        }</Text>
-      </View>
+            <View
+              style={{
+                alignItems: 'center',
+                position: 'absolute',
+                bottom: 70,
+                left: '45%',
+              }}>
+              <Text style={props.textStyle}>{props.item.description}</Text>
+            </View>
           </View>
         </View>
       </Modal>
