@@ -7,6 +7,7 @@ import {
   Dimensions,
   ImageBackground,
   StyleSheet,
+  SafeAreaView,
   TouchableOpacity,
   StatusBar,
   Alert,
@@ -58,6 +59,7 @@ export default function ProfileScreen(props) {
 
   // useBackButton(desconectarse);
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <ScrollView>
       <View style={styles.container}>
         <StatusBar
@@ -159,6 +161,7 @@ export default function ProfileScreen(props) {
         <View style={styles.boxTransparent} />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
   function desconectarse() {
     Alert.alert('Salir', '¿Esta seguro que \ndesea cerrar sesion?', [

@@ -2,7 +2,7 @@ import React, {createContext, useState} from 'react';
 
 const initialState = {
   id: '',
-  titulo: '',
+  name: '',
   urlImagen: '',
 };
 

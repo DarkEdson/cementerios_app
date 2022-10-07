@@ -3,6 +3,7 @@ import {
   View,
   Text,
   ScrollView,
+  SafeAreaView,
   StyleSheet,
   StatusBar,
   Alert,
@@ -54,6 +55,7 @@ export default function EditProfileScreen(props) {
   }, []);
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View style={styles.container}>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -155,6 +157,7 @@ export default function EditProfileScreen(props) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 
   function goToScreen(routeName) {

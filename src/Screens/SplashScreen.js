@@ -4,10 +4,12 @@ import {
   Text,
   ImageBackground,
   Platform,
+  SafeAreaView,
   NativeModules,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {splashStyles} from '@styles/stylesGeneral';
+//Estilos Generales
+import {splashStyles,mainStyles} from '@styles/stylesGeneral';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {LanguaguesContext} from '@context/LanguaguesContext';

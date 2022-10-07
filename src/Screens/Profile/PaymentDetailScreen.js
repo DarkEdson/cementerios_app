@@ -4,6 +4,7 @@ import {
   Text,
   Image,
   Dimensions,
+  SafeAreaView,
   StyleSheet,
   KeyboardAvoidingView,
   StatusBar,
@@ -68,6 +69,7 @@ export default function PaymentDetailScreen(props) {
     }
   }, [props, isFocused]);
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View style={styles.container}>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -134,6 +136,7 @@ export default function PaymentDetailScreen(props) {
         </KeyboardAvoidingView>
       </View>
     </View>
+    </SafeAreaView>
   );
 
   function goToScreen(routeName) {

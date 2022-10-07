@@ -56,7 +56,7 @@ export const ProductsProvider = ({children}) => {
     setisLoadingProducts(true);
     productbyHeadquarters(sede, languaje).then(res => {
       res.sort((a, b) => a.code.localeCompare(b.code));
-      console.log('PRODUCTOSpor SEDE', res);
+      console.log('PRODUCTOS por SEDE', res);
       setProductsSede(res);
       setisLoadingProducts(false);
     });

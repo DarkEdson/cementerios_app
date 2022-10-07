@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions,StatusBar} from 'react-native';
 import color from './colors';
 
 //Estilos para MainScreen
@@ -9,6 +9,11 @@ const mainStyles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: color.WHITE,
     paddingHorizontal: 20,
+  },
+  containers: {
+    flex: 1,
+    backgroundColor: color.WHITE,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
   },
   logoImage: {
     width: 230,

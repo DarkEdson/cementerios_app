@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react';
 //Apis
-import sedesApi from '@Apis/SedesApi';
+import {sedesApi,sedeApi} from '@Apis/SedesApi';
 
 export const SedesContext = createContext();
 
@@ -19,6 +19,16 @@ export const SedesProvider = ({children}) => {
     });
   };
 
+  const getSede = async (sedeID, setSede) => {
+    //sedeID = idHeadquarter
+    setisLoadingSedes(true);
+    sedeApi(sedeID).then(res => {
+      console.log('SEDE SIMPLE', res);
+      setSede(res);
+      setisLoadingSedes(false);
+    });
+  };
+
   useEffect(() => {}, []);
 
   return (
@@ -27,6 +37,7 @@ export const SedesProvider = ({children}) => {
         Sedes,
         isLoadingSedes,
         getSedes,
+        getSede
       }}>
       {children}
     </SedesContext.Provider>

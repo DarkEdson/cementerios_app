@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   StatusBar,
+  SafeAreaView,
   ScrollView,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
@@ -59,6 +60,7 @@ export default function RegistroScreen(props) {
   }, []);
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <ScrollView
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="always"
@@ -144,6 +146,7 @@ export default function RegistroScreen(props) {
         />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
   function registrar() {
     console.log(data);

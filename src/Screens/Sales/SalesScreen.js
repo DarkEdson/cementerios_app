@@ -5,6 +5,7 @@ import {
   ScrollView,
   Image,
   Dimensions,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   StatusBar,
@@ -55,6 +56,7 @@ export default function SalesScreen(props) {
   });
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -121,6 +123,7 @@ export default function SalesScreen(props) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 
   function goToScreen(routeName) {

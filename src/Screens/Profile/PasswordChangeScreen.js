@@ -3,6 +3,7 @@ import {
   View,
   Text,
   ScrollView,
+  SafeAreaView,
   StyleSheet,
   StatusBar,
   Alert,
@@ -111,6 +112,7 @@ export default function PasswordChangeScreen(props) {
   };
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View style={styles.container}>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -203,6 +205,7 @@ export default function PasswordChangeScreen(props) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 
   function goToScreen(routeName) {

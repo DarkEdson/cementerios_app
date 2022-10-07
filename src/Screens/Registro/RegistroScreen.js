@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {View, Text, StatusBar, ScrollView, StyleSheet} from 'react-native';
+import {View, Text, StatusBar, ScrollView, SafeAreaView,StyleSheet} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {SocialIcon, Icon} from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -106,6 +106,7 @@ export default function RegistroScreen(props) {
   };
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <ScrollView
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="always"
@@ -283,6 +284,7 @@ export default function RegistroScreen(props) {
         <View style={loginStyles.boxTransparent} />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 
   function registroParcial() {

@@ -4,6 +4,7 @@ import {
   Text,
   Alert,
   TouchableOpacity,
+  SafeAreaView,
   StatusBar,
   Image,
   ImageBackground,
@@ -36,6 +37,7 @@ export default function RecuperarPasswordScreen(props) {
     //props, isFocused
   }, []);
   return (
+    <SafeAreaView style={mainStyles.containers} >
     <ScrollView
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="always"
@@ -91,6 +93,7 @@ export default function RecuperarPasswordScreen(props) {
         <View style={loginStyles.boxTransparent} />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 
   function recuperarClave() {

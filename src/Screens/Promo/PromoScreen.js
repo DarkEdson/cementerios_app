@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, View, StyleSheet, StatusBar, ScrollView} from 'react-native';
+import {Text, View, StyleSheet, StatusBar, SafeAreaView,ScrollView} from 'react-native';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Estilos Generales
 import color from '@styles/colors';
+import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardPromocion from '@Components/CardPromocion/';
@@ -33,6 +34,7 @@ export default function PromoScreen(props) {
   }, []);
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -65,6 +67,7 @@ export default function PromoScreen(props) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);

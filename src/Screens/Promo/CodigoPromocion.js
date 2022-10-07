@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   TextInput,
+  SafeAreaView,
   Platform,
   TouchableOpacity,
 } from 'react-native';
@@ -13,6 +14,8 @@ import {useIsFocused} from '@react-navigation/native';
 import {BASE_URL_IMG} from '@utils/config';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
+//Estilos
+import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
 
@@ -34,6 +37,7 @@ export default function VistaCodigoPromocion(props) {
   }, []);
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View style={styles.vista}>
       <ToolBar
         titulo={
@@ -63,6 +67,7 @@ export default function VistaCodigoPromocion(props) {
         </Text>
       </TouchableOpacity>
     </View>
+    </SafeAreaView>
   );
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);

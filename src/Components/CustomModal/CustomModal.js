@@ -58,7 +58,7 @@ const CustomModal = props => {
             <View style={styles.textContainer} />
             {extensionsImg.includes(extensionFile) ? (
               <View style={styles.imgContainer}>
-                <Image style={styles.imagen} source={{ uri: props.urlImagen }} />
+                <Image style={styles.imagen} defaultSource={require('@images/loading.gif')} source={{ uri: props.urlImagen }} />
               </View>
             ) : (
               <View>
@@ -79,6 +79,11 @@ const CustomModal = props => {
                   */}
               </View>
             )}
+            <View style={{alignItems: 'center', position:'absolute', bottom:70, left:'45%'}}>
+        <Text style={props.textStyle}>{
+        props.item.description
+        }</Text>
+      </View>
           </View>
         </View>
       </Modal>

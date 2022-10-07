@@ -4,6 +4,7 @@ import {
   Text,
   ScrollView,
   StyleSheet,
+  SafeAreaView,
   StatusBar,
   Alert,
 } from 'react-native';
@@ -58,6 +59,7 @@ export default function PaymentMethodScreen(props) {
   }, []);
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View style={styles.container}>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -124,6 +126,7 @@ export default function PaymentMethodScreen(props) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 
   function selectCard(card) {

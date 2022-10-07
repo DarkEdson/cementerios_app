@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  SafeAreaView,
   StatusBar,
   Alert,
   Platform,
@@ -65,6 +66,7 @@ export default function CompanyScreen(props) {
   const [arrCementeriosDisp, setArrCementeriosDisp] = useState([]);
 
   return (
+    <SafeAreaView style={mainStyles.containers} >
     <View style={styles.container}>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -142,12 +144,12 @@ export default function CompanyScreen(props) {
         </ScrollView>
       )}
     </View>
+    </SafeAreaView>
   );
   function selectCementery(cementery, routeName) {
     setCementery(cementery);
     getSedes(cementery, setSede);
     goToScreen(routeName);
-    getSedes(cementery, setSede);
     setRouteBackComp('Cementeries');
   }
 

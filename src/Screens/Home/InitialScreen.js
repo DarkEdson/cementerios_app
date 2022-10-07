@@ -1,21 +1,22 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
   ActivityIndicator,
+  SafeAreaView,
   Dimensions,
   StatusBar,
   Alert,
 } from 'react-native';
-import {Icon, FAB} from '@rneui/themed';
+import { Icon, FAB } from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
 import Carousel from 'react-native-reanimated-carousel';
 //Recarga la screen
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 //Estilos generales
-import {mainStyles, loginStyles} from '@styles/stylesGeneral';
+import { mainStyles, loginStyles } from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Componentes
 import CardPromocion from '@Components/CardPromocion/';
@@ -24,21 +25,21 @@ import ToolBarSession from '@Components/common/toolBarSession';
 import MyTextButton from '@Components/common/MyTextButton';
 import CardColaborador from '@Components/CardColaborador/';
 //Contextos
-import {UsuarioContext} from '@context/UsuarioContext';
-import {CementeryContext} from '@context/CementeryContext';
-import {ScreentagContext} from '@context/ScreentagsContext';
-import {CountriesContext} from '@context/CountriesContext';
-import {RouteBackContext} from '@context/RouteBackContext';
-import {CountryContext} from '@context/CountryContext';
-import {GlobalLanguageContext} from '@context/LanguageContext';
-import {CategoriesContext} from '@context/CategoriesContext';
-import {CementeriesContext} from '@context/CementeriesContext';
-import {PromotionsContext} from '@context/PromotionsContext';
-import {ProductsContext} from '@context/ProductsContext';
-import {CategoryContext} from '@context/CategoryContext';
-import {ProductContext} from '@context/ProductContext';
-import {SedesContext} from '@context/SedesContext';
-import {SedeContext} from '@context/SedeContext';
+import { UsuarioContext } from '@context/UsuarioContext';
+import { CementeryContext } from '@context/CementeryContext';
+import { ScreentagContext } from '@context/ScreentagsContext';
+import { CountriesContext } from '@context/CountriesContext';
+import { RouteBackContext } from '@context/RouteBackContext';
+import { CountryContext } from '@context/CountryContext';
+import { GlobalLanguageContext } from '@context/LanguageContext';
+import { CategoriesContext } from '@context/CategoriesContext';
+import { CementeriesContext } from '@context/CementeriesContext';
+import { PromotionsContext } from '@context/PromotionsContext';
+import { ProductsContext } from '@context/ProductsContext';
+import { CategoryContext } from '@context/CategoryContext';
+import { ProductContext } from '@context/ProductContext';
+import { SedesContext } from '@context/SedesContext';
+import { SedeContext } from '@context/SedeContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 //tags.HomeScreen.ubica
@@ -48,24 +49,25 @@ export default function InitialScreen(props) {
   const [sede, setSede] = useContext(SedeContext);
   const [countries] = useContext(CountriesContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const {tags} = useContext(ScreentagContext);
-  const {setRouteBack, setRouteBackComp} = useContext(RouteBackContext);
-  const {setisCategory, setCategory} = useContext(CategoryContext);
+  const { tags } = useContext(ScreentagContext);
+  const { setRouteBack, setRouteBackComp } = useContext(RouteBackContext);
+  const { setisCategory, setCategory } = useContext(CategoryContext);
   const [Product, setProduct] = useContext(ProductContext);
-  const {categories, isLoadingCategories, getCategories} =
+  const { categories, isLoadingCategories, getCategories } =
     useContext(CategoriesContext);
-  const {Cementeries, isLoadingCementeries, getCementeries} =
+  const { Cementeries, isLoadingCementeries, getCementeries } =
     useContext(CementeriesContext);
-  const {Sedes, isLoadingSedes, getSedes} = useContext(SedesContext);
-  const {Promotions, isLoadingPromotions, getPromotions} =
+  const { Sedes, isLoadingSedes, getSedes, getSede } = useContext(SedesContext);
+  const { Promotions, isLoadingPromotions, getPromotions } =
     useContext(PromotionsContext);
   const {
     ProductsCountry,
     isLoadingProducts,
     getProductsbyCountry,
     getProductsbyCategory,
+    getMultimediabyProduct
   } = useContext(ProductsContext);
-  const {country, updateDefaultCountry, isLoadingCountry, getDefaultCountry} =
+  const { country, updateDefaultCountry, isLoadingCountry, getDefaultCountry } =
     useContext(CountryContext);
 
   const [ubicationSelect, setubicationSelect] = useState({
@@ -74,7 +76,7 @@ export default function InitialScreen(props) {
   });
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => {};
+  const getInitialData = async () => { };
 
   const [ubicaciones, setubicaciones] = useState([]);
 
@@ -83,7 +85,7 @@ export default function InitialScreen(props) {
     width: PAGE_WIDTH * 0.85,
     height: PAGE_WIDTH * 0.56,
   };
-  const [data, setData] = useState([{id: 1, name: 'example'}]);
+  const [data, setData] = useState([{ id: 1, name: 'example' }]);
 
   useEffect(() => {
     function misUbicaciones() {
@@ -108,11 +110,11 @@ export default function InitialScreen(props) {
     }
     misUbicaciones();
     getDefaultCountry();
-    return () => {};
+    return () => { };
   }, []);
 
   return (
-    <View>
+    <SafeAreaView style={mainStyles.containers} >
       {isLoadingProducts ? (
         <View
           style={{
@@ -124,7 +126,7 @@ export default function InitialScreen(props) {
             loading
             color={color.PRINCIPALCOLOR}
             visible={isLoadingProducts}
-            icon={{name: 'add', color: 'white'}}
+            icon={{ name: 'add', color: 'white' }}
             size="small"
           />
         </View>
@@ -139,7 +141,7 @@ export default function InitialScreen(props) {
             loading
             color={color.PRINCIPALCOLOR}
             visible={isLoadingSedes}
-            icon={{name: 'add', color: 'white'}}
+            icon={{ name: 'add', color: 'white' }}
             size="small"
           />
         </View>
@@ -178,7 +180,7 @@ export default function InitialScreen(props) {
                     ? tags.HomeScreen.inputsearch
                     : 'Cementerios, arrecifes o flores...'
                 }
-                buttonTextStyle={{textAlign: 'left'}}
+                buttonTextStyle={{ textAlign: 'left' }}
                 buttonStyle={styles.btnStyle}
                 renderDropdownIcon={isOpened => {
                   return (
@@ -213,7 +215,7 @@ export default function InitialScreen(props) {
                       loading
                       color={color.PRINCIPALCOLOR}
                       visible={isLoadingPromotions}
-                      icon={{name: 'add', color: 'white'}}
+                      icon={{ name: 'add', color: 'white' }}
                       size="small"
                     />
                     <View style={styles.boxTransparent} />
@@ -227,13 +229,13 @@ export default function InitialScreen(props) {
                       autoPlay={true}
                       autoPlayInterval={2000}
                       data={Promotions}
-                      renderItem={({item}) => (
+                      renderItem={({ item }) => (
                         <CardPromocion
                           titulo={item.name}
                           descripcion={item.description}
                           bgColor={item.backgroundcolor}
                           urlImagen={item.image}
-                          onPressPromotion={() => {}}
+                          onPressPromotion={() => { }}
                         />
                       )}
                     />
@@ -255,7 +257,7 @@ export default function InitialScreen(props) {
                       loading
                       color={color.PRINCIPALCOLOR}
                       visible={isLoadingCategories}
-                      icon={{name: 'add', color: 'white'}}
+                      icon={{ name: 'add', color: 'white' }}
                       size="small"
                     />
                   </View>
@@ -309,7 +311,7 @@ export default function InitialScreen(props) {
                       loading
                       color={color.PRINCIPALCOLOR}
                       visible={isLoadingCementeries}
-                      icon={{name: 'add', color: 'white'}}
+                      icon={{ name: 'add', color: 'white' }}
                       size="small"
                     />
                     <View style={styles.boxTransparent} />
@@ -319,13 +321,13 @@ export default function InitialScreen(props) {
                     <Carousel
                       {...baseOptions}
                       loop={true}
-                      style={{width: '100%', flex: 1}}
+                      style={{ width: '100%', flex: 1 }}
                       autoPlay={true}
                       autoPlayInterval={2000}
                       data={Cementeries}
                       pagingEnabled={true}
                       //onSnapToItem={(index) => console.log('current index:', index)}
-                      renderItem={({item}) => (
+                      renderItem={({ item }) => (
                         <CardColaborador
                           urlImagen={item.image}
                           nombre={item.name}
@@ -342,22 +344,22 @@ export default function InitialScreen(props) {
           </ScrollView>
         </View>
       )}
-    </View>
+    </SafeAreaView >
   );
 
   function arrayBusqueda() {
     let array = [];
     categories.forEach(category => {
-      array.push({id: category._id, name: category.name});
+      array.push({ id: category._id, name: category.name });
     });
     Cementeries.forEach(cementery => {
-      array.push({id: cementery._id, name: cementery.name});
+      array.push({ id: cementery._id, name: cementery.name });
     });
     Promotions.forEach(promotion => {
-      array.push({id: promotion._id, name: promotion.name});
+      array.push({ id: promotion._id, name: promotion.name });
     });
     ProductsCountry.forEach(Product => {
-      array.push({id: Product._id, name: Product.name});
+      array.push({ id: Product._id, name: Product.name });
     });
     console.log('ARRAY DE BUSQUEDA', array);
     setData(array);
@@ -377,7 +379,6 @@ export default function InitialScreen(props) {
     setCementery(cementery);
     getSedes(cementery, setSede);
     goToScreen(routeName);
-    getSedes(cementery, setSede);
     setRouteBackComp('Home');
   }
 
@@ -412,9 +413,16 @@ export default function InitialScreen(props) {
     });
     ProductsCountry.forEach(Product => {
       if (item.id == Product._id) {
-        setProduct(Product);
-        setRouteBack('Initial');
-        routeName = 'Product';
+        categories.forEach(category => {
+          if (category._id == Product.idCategory) {
+            setCategory(category);
+            setProduct(Product);
+            getSede(Product.idHeadquarter, setSede)
+            getMultimediabyProduct(Product)
+            setRouteBack('Initial');
+            routeName = 'Product';
+          }
+        });
       }
     });
     goToScreen(routeName);
@@ -427,6 +435,13 @@ const styles = StyleSheet.create({
     backgroundColor: color.WHITE,
     marginBottom: 15,
     paddingBottom: 20,
+  },
+  containers: {
+    flex: 1,
+    backgroundColor: color.WHITE,
+    marginBottom: 15,
+    paddingBottom: 20,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
   },
   boxTransparent: {
     backgroundColor: 'white',

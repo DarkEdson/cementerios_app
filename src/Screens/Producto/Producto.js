@@ -5,12 +5,13 @@ import {
   Platform,
   Dimensions,
   ActivityIndicator,
+  SafeAreaView,
   StyleSheet,
   ScrollView,
   //Image,
   TouchableOpacity,
 } from 'react-native';
-import {Image} from '@rneui/themed';
+import {Image, FAB} from '@rneui/themed';
 import Carousel from 'react-native-reanimated-carousel';
 
 import Animated, {
@@ -42,6 +43,8 @@ import {ProductContext} from '@context/ProductContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 import {ProductsContext} from '@context/ProductsContext';
+import { CategoryContext } from '@context/CategoryContext';
+import {SedeContext} from '@context/SedeContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
@@ -50,10 +53,13 @@ export default function VistaProducto(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
   const [Product, setProduct] = useContext(ProductContext);
   const {addItemtoCart} = useContext(ShoppingCartContext);
+  const [sede, setSede] = useContext(SedeContext);
   const {RouteBack, setRouteBack} = useContext(RouteBackContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
-  const {ProductMultimedia} = useContext(ProductsContext);
+  const [itemModal, setitemModal] = useState(null)
+  const { Category } = useContext(CategoryContext);
+  const {ProductMultimedia,isLoadingProducts} = useContext(ProductsContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -64,7 +70,6 @@ export default function VistaProducto(props) {
     width: PAGE_WIDTH,
     height: PAGE_WIDTH * 0.41,
   };
-
   // Cargar informacion de la vista
   useEffect(() => {
     console.log('Producto escogido', Product);
@@ -82,20 +87,8 @@ export default function VistaProducto(props) {
         valor: 4.9,
         label: 'Ratink',
       },
-      urlMultimedia: [
-        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_3.jpg`,
-        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_4.jpg`,
-        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_5.jpg`,
-        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_6.jpg`,
-        `${BASE_URL_IMG}${PRODUCTS_URL}perla/perla_vid1.mp4`,
-      ],
     });
 
-    // Actualizar valores de la sede seleccionada
-    setSede({
-      nombre: 'Campeche',
-      id: 10,
-    });
     if (isFocused) {
       getInitialData();
       console.log('isFocused in Product Detail');
@@ -117,12 +110,6 @@ export default function VistaProducto(props) {
       valor: 0,
       label: '',
     },
-    urlMultimedia: [],
-  });
-  // Variables de trabajo
-  const [sede, setSede] = useState({
-    nombre: '',
-    id: 0,
   });
 
   const [cantProductos, setCantProductos] = useState(1);
@@ -141,10 +128,12 @@ export default function VistaProducto(props) {
 
   function abrirModal(multimedia) {
     setCustomModal(true);
-    setimagenModal(multimedia);
+    setimagenModal(multimedia.name);
+    setitemModal(multimedia);
   }
 
   return (
+ 
     <View style={styles.vista}>
       <Image
         containerStyle={styles.imgProducto}
@@ -156,7 +145,7 @@ export default function VistaProducto(props) {
       <ScrollView>
         <View style={styles.descripcion}>
           <Text style={styles.titulo}> {Product.name} </Text>
-          <Text style={styles.categorias}> {propsVista.tags} </Text>
+          <Text style={styles.categorias}> {Category.name} </Text>
           <View style={CementeryScreen.HeaderView}>
             <InformationIcon
               tipo="font-awesome-5"
@@ -169,7 +158,7 @@ export default function VistaProducto(props) {
             <InformationIcon
               tipo="ionicons"
               image="location-pin"
-              titulo={sede.nombre}
+              titulo={sede.name}
               subtitulo={propsVista.ubicaciones.label}
             />
             <View style={informationIconStyles.verticleLine} />
@@ -194,7 +183,22 @@ export default function VistaProducto(props) {
             {Product.description}
           </Text>
           <View style={styles.multimedia}>
-            {ProductMultimedia.length >= 1 ? (
+            {isLoadingProducts ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '10%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingProducts}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
+          />
+        </View>
+      ) : ProductMultimedia.length >= 1 ? (
               <Carousel
                 {...baseOptions}
                 style={{
@@ -219,18 +223,21 @@ export default function VistaProducto(props) {
                   return (
                     <CardMultimedia
                       style={styles.imgDetalle}
-                      urlImagen={item.name}
-                      imageNombre={item.code}
+                      urlImagen={item}
                       onPressMultimedia={() => {
-                        console.log(item.name);
-                        abrirModal(item.name);
+                        console.log(item);
+                        abrirModal(item);
                       }}
                       textStyle={styles.imgTitulo}
                     />
                   );
                 }}
               />
-            ) : null}
+            ) : (
+              <View style={styles.noPromoView}>
+                <Text style={styles.promoText}>No Multimedia</Text>
+              </View>
+            )}
             {ProductMultimedia.length >= 1
               ? !!progressValue && (
                   <View
@@ -241,13 +248,13 @@ export default function VistaProducto(props) {
                       marginTop: 10,
                       alignSelf: 'center',
                     }}>
-                    {propsVista.urlMultimedia.map((item, index) => {
+                    {ProductMultimedia.map((item, index) => {
                       return (
                         <PaginationItem
                           animValue={progressValue}
                           index={index}
                           key={index}
-                          length={propsVista.urlMultimedia.length}
+                          length={ProductMultimedia.length}
                         />
                       );
                     })}
@@ -300,9 +307,12 @@ export default function VistaProducto(props) {
           customModal={customModal}
           setCustomModal={setCustomModal}
           urlImagen={imagenModal}
+          textStyle={styles.imgTitulo}
+          item={itemModal}
         />
       )}
     </View>
+
   );
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
@@ -357,6 +367,16 @@ const styles = StyleSheet.create({
   vista: {
     height: '100%',
     backgroundColor: color.WHITE,
+  },
+  noPromoView: {
+    textAlign: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  promoText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: color.PRINCIPALCOLOR,
   },
   descripcion: {
     paddingLeft: 20,
@@ -444,6 +464,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginTop: 5,
     marginBottom: 5,
+    color: color.PRINCIPALCOLOR
   },
   scroll: {
     height: '80%',

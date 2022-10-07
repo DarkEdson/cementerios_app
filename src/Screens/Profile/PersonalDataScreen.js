@@ -7,6 +7,7 @@ import {
   Image,
   ImageBackground,
   StyleSheet,
+  SafeAreaView,
   TouchableOpacity,
   StatusBar,
   Alert,
@@ -72,6 +73,7 @@ export default function PersonalDataScreen(props) {
   }, [nuevoLenguaje]);
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <ScrollView>
       <View style={styles.container}>
         {isLoading ? (
@@ -230,6 +232,7 @@ export default function PersonalDataScreen(props) {
         )}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 
   function actualizaTags() {

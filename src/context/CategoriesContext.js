@@ -1,6 +1,9 @@
 import React, {createContext, useEffect, useState} from 'react';
 //Apis
-import categoriesApi from '@Apis/CategoriesApi';
+import {
+  categoriesApi,
+  categoryApi
+} from '@Apis/CategoriesApi';
 
 export const CategoriesContext = createContext();
 

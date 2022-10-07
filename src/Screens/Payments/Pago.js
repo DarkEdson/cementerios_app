@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 //Recarga la screen
@@ -39,7 +40,7 @@ export default function VistaPago(props) {
     // Productos del carrito
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
     ShoppingCart.forEach(item => {
-      subtotal = subtotal + item.cantidad * item.price;
+      subtotal = subtotal + item.cantidad * parseFloat(item.price);
     });
     // Calcular valores de la vista
     setValoresVenta({
@@ -63,6 +64,7 @@ export default function VistaPago(props) {
   });
 
   return (
+    <SafeAreaView style={mainStyles.containers} >
     <View style={styles.vista}>
       <ToolBar
         titulo={
@@ -145,6 +147,7 @@ export default function VistaPago(props) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
