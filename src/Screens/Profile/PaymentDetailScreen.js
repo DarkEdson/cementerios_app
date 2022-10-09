@@ -19,6 +19,7 @@ import color from '@styles/colors';
 import ToolBar from '@Components/common/toolBar';
 import MyButton from '@Components/common/MyButton';
 import CreditCard from 'react-native-credit-card-form-ui';
+
 //Contextos
 import {CreditCardContext} from '@context/CreditCardContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
@@ -154,7 +155,8 @@ const styles = StyleSheet.create({
     marginBottom: Dimensions.get('screen').height * 0.05,
   },
   containerCard: {
-    height: '70%',
+    flex: 1,
+    paddingTop: -50,
     alignItems: 'center',
     justifyContent: 'center',
   },

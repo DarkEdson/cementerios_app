@@ -165,7 +165,7 @@ export default function InitialScreen(props) {
             onSelectUbication={item => cambiaPais(item)}
             onPressLeft={() => goToScreen('Profile')}
             iconLeft={true}
-            image={loginUser.usuario.avatar}
+            image={loginUser.usuario.avatar?loginUser.usuario.avatar:''}
             cart={carrito}
             cantCart={ShoppingCart.length}
             onPressCart={() => goToScreen('Payments')}

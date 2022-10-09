@@ -8,6 +8,7 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //URL de server
@@ -42,7 +43,7 @@ export default function PasswordChangeScreen(props) {
   useEffect(() => {
     if (isFocused) {
       getInitialData();
-      console.log('isFocused Promo Code');
+      console.log('isFocused PASSWORD CHANGE');
     }
     //props, isFocused
   }, []);
@@ -60,7 +61,9 @@ export default function PasswordChangeScreen(props) {
             setData({...data, newPassword: val});
           } else {
             Snackbar.show({
-              text: 'La contraseña debe ser de al menos 8 caracteres',
+              text: tags.dialogAlertsScreen.g != ''
+              ? tags.dialogAlertsScreen.g
+              : 'La contraseña debe ser de al menos 8 caracteres',
               duration: Snackbar.LENGTH_LONG,
             });
           }
@@ -72,7 +75,9 @@ export default function PasswordChangeScreen(props) {
             });
           } else {
             Snackbar.show({
-              text: 'La contraseña debe ser de al menos 8 caracteres y no coinciden',
+              text:  tags.dialogAlertsScreen.i != ''
+              ? tags.dialogAlertsScreen.i
+              :  'La contraseña debe ser de al menos 8 caracteres y no coinciden',
               duration: Snackbar.LENGTH_LONG,
             });
           }
@@ -83,7 +88,9 @@ export default function PasswordChangeScreen(props) {
         setData({...data, newPassword: val});
       } else {
         Snackbar.show({
-          text: 'La contraseña debe ser de al menos 8 caracteres',
+          text: tags.dialogAlertsScreen.g != ''
+          ? tags.dialogAlertsScreen.g
+          : 'La contraseña debe ser de al menos 8 caracteres',
           duration: Snackbar.LENGTH_LONG,
         });
       }
@@ -94,7 +101,9 @@ export default function PasswordChangeScreen(props) {
       setData({...data, newpasswordConfirm: val});
     } else {
       Snackbar.show({
-        text: 'Las contraseñas no coinciden',
+        text: tags.dialogAlertsScreen.h != ''
+        ? tags.dialogAlertsScreen.h
+        : 'Las contraseñas no coinciden',
         duration: Snackbar.LENGTH_LONG,
       });
     }
@@ -200,13 +209,22 @@ export default function PasswordChangeScreen(props) {
                 ? tags.changePasswordScreen.btn
                 : 'Guardar Cambios'
             }
-            onPress={() => {}}
+            onPress={() => cambiarClave()}
           />
         </View>
       </ScrollView>
     </View>
     </SafeAreaView>
   );
+
+  function cambiarClave() {
+    Snackbar.show({
+      text: tags.dialogAlertsScreen.q != ''
+      ? tags.dialogAlertsScreen.q
+      : 'Su contraseña fue cambiada correctamente',
+      duration: Snackbar.LENGTH_LONG,
+    });
+  }
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);

@@ -83,7 +83,7 @@ export default function ProfileScreen(props) {
             onPress={() => {
               console.log('editar imagen');
             }}>
-            {loginUser.usuario.avatar != '' ? (
+            {loginUser.usuario.avatar ? (
               <Avatar
                 rounded
                 source={{
@@ -136,7 +136,7 @@ export default function ProfileScreen(props) {
         </Text>
         <View style={{backgroundColor: color.WHITE}}>
           <Text style={styles.txtComponente}>
-            {loginUser.usuario.id_number}
+            {loginUser.usuario.id_number ? loginUser.usuario.id_number : loginUser.usuario.vendorcode}
           </Text>
         </View>
         <View style={styles.boxTransparent2} />

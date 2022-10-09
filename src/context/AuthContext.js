@@ -36,10 +36,12 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.setItem('tokenUserInfo', JSON.stringify(tokenUserInfo));
         //   AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
         loginAction({
-          type: 'sign',
+          type: 'register',
           data: userInfo,
           tags:{
-            registro: 'Registro con Exito'
+            registro:  tags.q != ''
+            ? tags.q
+            : 'Registro con Exito'
 
           }
         });
@@ -87,7 +89,9 @@ export const AuthProvider = ({children}) => {
           type: 'sign',
           data: userInfo,
           tags:{
-            inicio:'Inicio de sesion con Exito',
+            inicio:  tags.p != ''
+            ? tags.p
+            : 'Inicio de sesion con Exito',
           }
         });
         goToScreen('Splash');
