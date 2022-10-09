@@ -13,10 +13,11 @@ export default function ToolBarSession(props) {
   const [cantProd, setcantProd] = useState(0)
   const [carrito, setcarrito] = useState(false)
   useEffect(() => {
+    console.log(props.cart)
     setcarrito(props.cart)
     setcantProd(props.cantCart)
     setpaisDefault(props.defaultCountry);
-  }, []);
+  }, [props.cart]);
   const BadgedIcon = withBadge(cantProd)(Icon);
   return (
     <View style={[props.style, mainStyles.toolBarSessionStyle]}>

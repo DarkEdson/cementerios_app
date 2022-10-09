@@ -58,7 +58,7 @@ export default function InitialScreen(props) {
     useContext(CategoriesContext);
   const { Cementeries, isLoadingCementeries, getCementeries } =
     useContext(CementeriesContext);
-  const {  setrutaCart, ShoppingCart, carrito,  } = useContext(ShoppingCartContext);
+  const {  setrutaCart, ShoppingCart, carrito, removeAllItemstoCart } = useContext(ShoppingCartContext);
   const { Sedes, isLoadingSedes, getSedes, getSedeDirect } = useContext(SedesContext);
   const { Promotions, isLoadingPromotions, getPromotions } =
     useContext(PromotionsContext);
@@ -114,6 +114,7 @@ export default function InitialScreen(props) {
     getDefaultCountry();
     return () => { };
   }, []);
+
 
   return (
     <SafeAreaView style={mainStyles.containers}>
@@ -377,12 +378,17 @@ export default function InitialScreen(props) {
 
   function cambiaPais(pais) {
     console.log('cambia ubicacion seleccionada', pais);
-    setubicationSelect(pais);
-    updateDefaultCountry(pais);
-    getCategories(pais, GlobalLanguage);
-    getPromotions(pais, GlobalLanguage);
-    getProductsbyCountry(pais, GlobalLanguage);
-    getCementeries(pais);
+    if (country.value == pais.value){
+      //F
+    }else{
+      setubicationSelect(pais);
+      updateDefaultCountry(pais);
+      getCategories(pais, GlobalLanguage);
+      getPromotions(pais, GlobalLanguage);
+      getProductsbyCountry(pais, GlobalLanguage);
+      getCementeries(pais);
+      removeAllItemstoCart()
+    }
   }
 
   function selectCementery(cementery, routeName) {
