@@ -36,6 +36,17 @@ export const SedesProvider = ({children}) => {
     });
   };
 
+  const getSedeDirect = async (sedeID, setSede, goToScreen, routeName) => {
+    //sedeID = idHeadquarter
+    setisLoadingSedes(true);
+    sedeApi(sedeID).then(res => {
+      console.log('SEDE SIMPLE DIRECT', res);
+      setSede(res);
+      setisLoadingSedes(false);
+      goToScreen(routeName);
+    });
+  };
+
   useEffect(() => {}, []);
 
   return (
@@ -45,6 +56,7 @@ export const SedesProvider = ({children}) => {
         isLoadingSedes,
         getSedes,
         getSede,
+        getSedeDirect,
       }}>
       {children}
     </SedesContext.Provider>

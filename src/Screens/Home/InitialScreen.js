@@ -59,7 +59,7 @@ export default function InitialScreen(props) {
   const { Cementeries, isLoadingCementeries, getCementeries } =
     useContext(CementeriesContext);
   const {  setrutaCart } = useContext(ShoppingCartContext);
-  const { Sedes, isLoadingSedes, getSedes, getSede } = useContext(SedesContext);
+  const { Sedes, isLoadingSedes, getSedes, getSedeDirect } = useContext(SedesContext);
   const { Promotions, isLoadingPromotions, getPromotions } =
     useContext(PromotionsContext);
   const {
@@ -420,15 +420,16 @@ export default function InitialScreen(props) {
           if (category._id == Product.idCategory) {
             setCategory(category);
             setProduct(Product);
-            getSede(Product.idHeadquarter, setSede);
-            getMultimediabyProduct(Product);
             setRouteBack('Initial');
-            routeName = 'Product';
+            getMultimediabyProduct(Product);
+            getSedeDirect(Product.idHeadquarter, setSede, goToScreen, 'Product');
+            routeName = '';
           }
         });
       }
     });
     if (routeName == '') {
+      //F
     } else {
       goToScreen(routeName);
     }

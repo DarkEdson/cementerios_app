@@ -55,7 +55,7 @@ export default function CompanyScreen(props) {
     useContext(RouteBackContext);
   const {categories} = useContext(CategoriesContext);
   const {setCategory} = useContext(CategoryContext);
-  const {Sedes, getSede} = useContext(SedesContext);
+  const {Sedes,isLoadingSedes, getSedeDirect} = useContext(SedesContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
   const [infoCart, setinfoCart] = useState('');
@@ -276,6 +276,21 @@ export default function CompanyScreen(props) {
                   size="small"
                 />
               </View>
+            ) : isLoadingSedes ? (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '25%',
+                }}>
+                <FAB
+                  loading
+                  color={color.PRINCIPALCOLOR}
+                  visible={isLoadingSedes}
+                  icon={{name: 'add', color: 'white'}}
+                  size="small"
+                />
+              </View>
             ) : productsFilter.length >= 0 && isFilterC ? (
               productsFilter.length >= 1 ? (
                 productsFilter.map((product, key) => {
@@ -382,9 +397,8 @@ export default function CompanyScreen(props) {
         setCategory(category);
         setProduct(producto);
         getMultimediabyProduct(producto);
-        getSede(producto.idHeadquarter, setSede);
-        goToScreen(routeName);
         setRouteBack('Company');
+        getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName);
       }
     });
   }

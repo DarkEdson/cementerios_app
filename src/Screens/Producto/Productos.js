@@ -42,7 +42,7 @@ export default function VistaProductos(props) {
   const {  setrutaCart } = useContext(ShoppingCartContext);
   const [Product, setProduct] = useContext(ProductContext);
   const [sede, setSede] = useContext(SedeContext);
-  const { getSede } = useContext(SedesContext);
+  const { isLoadingSedes,  getSedeDirect } = useContext(SedesContext);
   const { setRouteBack } = useContext(RouteBackContext);
   const {
     ProductsCountry,
@@ -100,6 +100,21 @@ export default function VistaProductos(props) {
               loading
               color={color.PRINCIPALCOLOR}
               visible={isLoadingProducts}
+              icon={{ name: 'add', color: 'white' }}
+              size="small"
+            />
+          </View>
+        ) : isLoadingSedes ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '50%',
+            }}>
+            <FAB
+              loading
+              color={color.PRINCIPALCOLOR}
+              visible={isLoadingSedes}
               icon={{ name: 'add', color: 'white' }}
               size="small"
             />
@@ -176,7 +191,6 @@ export default function VistaProductos(props) {
   );
 
   function selectedProduct(producto, routeName) {
-    setrutaCart(false)
     if (isCategory) {
       prodSel(producto, routeName, 'Productos')
 
@@ -193,11 +207,11 @@ export default function VistaProductos(props) {
   }
 
   function prodSel(producto, routeName, routeB) {
+    setrutaCart(false)
     setProduct(producto);
     getMultimediabyProduct(producto);
-    getSede(producto.idHeadquarter, setSede)
-    goToScreen(routeName);
     setRouteBack(routeB);
+    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName)
   }
 
   function goToScreen(routeName) {

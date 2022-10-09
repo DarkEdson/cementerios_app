@@ -78,7 +78,8 @@ export default function VistaProducto(props) {
   // Cargar informacion de la vista
   useEffect(() => {
     console.log('Producto escogido', Product);
-    if(!rutaCart){
+    console.log(rutaCart)
+    if(rutaCart==false){
       if (ShoppingCart.length >=1){
         if(sede.idAffiliate!=afiliateCart._id){
           console.log('LIMPIE CARRITO EN PRODUCTOS')
@@ -132,7 +133,7 @@ export default function VistaProducto(props) {
   }
 
   return (
-
+<SafeAreaView style={mainStyles.containers} >
     <View style={styles.vista}>
       <Image
         containerStyle={styles.imgProducto}
@@ -315,7 +316,7 @@ export default function VistaProducto(props) {
         />
       )}
     </View>
-
+    </SafeAreaView>
   );
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
