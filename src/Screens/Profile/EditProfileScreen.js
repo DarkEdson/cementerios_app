@@ -152,13 +152,21 @@ export default function EditProfileScreen(props) {
                 ? tags.EditUserScreen.btn
                 : 'Guardar Cambios'
             }
-            onPress={() => {}}
+            onPress={() => actualizaUsuario()}
           />
         </View>
       </ScrollView>
     </View>
     </SafeAreaView>
   );
+  function actualizaUsuario() {
+    Snackbar.show({
+      text: tags.dialogAlertsScreen.l != ''
+      ? tags.dialogAlertsScreen.l
+      : 'Actualizacion de datos Exitosamente',
+      duration: Snackbar.LENGTH_LONG,
+    });
+  }
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);

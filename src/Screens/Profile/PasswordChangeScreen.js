@@ -52,7 +52,9 @@ export default function PasswordChangeScreen(props) {
     if (data.newpasswordConfirm != '') {
       if (val == data.password) {
         Snackbar.show({
-          text: 'La contraseña es igual a la actual',
+          text: tags.dialogAlertsScreen.r != ''
+          ? tags.dialogAlertsScreen.r
+          : 'La contraseña es igual a la actual',
           duration: Snackbar.LENGTH_LONG,
         });
       } else {
@@ -70,7 +72,9 @@ export default function PasswordChangeScreen(props) {
         } else {
           if (val.trim().length >= 8) {
             Snackbar.show({
-              text: 'Las contraseñas no coinciden',
+              text:  tags.dialogAlertsScreen.h != ''
+              ? tags.dialogAlertsScreen.h
+              : 'Las contraseñas no coinciden',
               duration: Snackbar.LENGTH_LONG,
             });
           } else {
@@ -114,7 +118,9 @@ export default function PasswordChangeScreen(props) {
       setConfirmPassword(val);
     } else {
       Snackbar.show({
-        text: 'No es la contraseña actual',
+        text: tags.dialogAlertsScreen.s != ''
+        ? tags.dialogAlertsScreen.s
+        : 'No es la contraseña actual',
         duration: Snackbar.LENGTH_LONG,
       });
     }
@@ -219,8 +225,8 @@ export default function PasswordChangeScreen(props) {
 
   function cambiarClave() {
     Snackbar.show({
-      text: tags.dialogAlertsScreen.q != ''
-      ? tags.dialogAlertsScreen.q
+      text: tags.dialogAlertsScreen.k != ''
+      ? tags.dialogAlertsScreen.k
       : 'Su contraseña fue cambiada correctamente',
       duration: Snackbar.LENGTH_LONG,
     });
