@@ -32,12 +32,13 @@ export default function SalesScreen(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
   const [fechaInicio, setfechaInicio] = useState('');
   const [fechaFin, setfechaFin] = useState('');
-
+  const dateRef= React.useRef();
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
+    console.log(dateRef)
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 120,
@@ -49,7 +50,7 @@ export default function SalesScreen(props) {
       console.log('isFocused Ventas Detail');
     }
     //props, isFocused
-  }, []);
+  }, [props, isFocused]);
 
   const [valoresVenta, setValoresVenta] = useState({
     subTotal: 0,
@@ -76,6 +77,7 @@ export default function SalesScreen(props) {
         <View style={styles.container}>
 <DatePicker
 	style={ { width: '90%', height: 45, marginLeft: 20 } }
+  ref={dateRef}
   markText= 'Select Date Range'
   blockAfter={true}
   buttonText='OK'

@@ -58,7 +58,7 @@ export default function InitialScreen(props) {
     useContext(CategoriesContext);
   const { Cementeries, isLoadingCementeries, getCementeries } =
     useContext(CementeriesContext);
-  const {  setrutaCart, ShoppingCart, carrito, removeAllItemstoCart } = useContext(ShoppingCartContext);
+  const {  setrutaCart, ShoppingCart, carrito, removeAllItemstoCart, setafiliateCart } = useContext(ShoppingCartContext);
   const { Sedes, isLoadingSedes, getSedes, getSedeDirect } = useContext(SedesContext);
   const { Promotions, isLoadingPromotions, getPromotions } =
     useContext(PromotionsContext);
@@ -388,6 +388,7 @@ export default function InitialScreen(props) {
       getProductsbyCountry(pais, GlobalLanguage);
       getCementeries(pais);
       removeAllItemstoCart()
+      setafiliateCart({})
     }
   }
 
