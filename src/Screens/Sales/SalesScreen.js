@@ -11,6 +11,8 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import DatePicker from 'react-native-date-ranges';
+import { Button } from "@rneui/themed";
 //URL de server
 import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 //Recarga la screen
@@ -72,7 +74,26 @@ export default function SalesScreen(props) {
       />
       <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.txtNuevoComponente}> Card de productos </Text>
+<DatePicker
+	style={ { width: '90%', height: 45, marginLeft: 20 } }
+  markText= 'Select Date Range'
+  blockAfter={true}
+  buttonText='OK'
+  onConfirm={value=>console.log(value)}
+  customButton={(onConfirm)=><Button title="OK" onPress={onConfirm} />}
+	customStyles = { {
+		placeholderText:{ fontSize:20 }, // placeHolder style
+		headerStyle : {backgroundColor: color.PRINCIPALCOLOR  },			// title container style
+		//headerMarkTitle : { }, // title mark style 
+	//	headerDateTitle: { }, // title Date style
+	//	contentInput: {}, //content text container style
+	//	contentText: {}, //after selected text Style
+	} } // optional 
+	centerAlign // optional text will align center or not
+	allowFontScaling = {false} // optional
+	placeholder={'Apr 27, 2018 → Jul 10, 2018'}
+	mode={'range'}
+/>
           <CardProductoVenta
             urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`}
             titulo="Perla Magistral"
