@@ -124,8 +124,14 @@ export default function CompanyScreen(props) {
     let info = '';
     let total = 0;
     ShoppingCart.forEach(titulo => {
+      let precioItem
+      if (titulo.price.includes(',')){
+        precioItem = titulo.price.replace(/,/g, "");
+      }else{
+        precioItem = titulo.price
+      }  
       info = info + titulo.name + ' x' + titulo.cantidad + ', ';
-      total = total + titulo.cantidad * parseFloat(titulo.price);
+      total = total + titulo.cantidad * parseFloat(precioItem);
     });
     console.log(info, total);
     setinfoCart(info);

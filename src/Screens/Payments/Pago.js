@@ -42,7 +42,14 @@ export default function VistaPago(props) {
     // Productos del carrito
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
     ShoppingCart.forEach(item => {
-      subtotal = subtotal + item.cantidad * parseFloat(item.price);
+      let precioItem
+      if (item.price.includes(',')){
+        precioItem = item.price.replace(/,/g, "");
+      }else{
+        precioItem = item.price
+      }   
+      console.log('valor item',precioItem, parseFloat(precioItem))
+      subtotal = subtotal + item.cantidad * parseFloat(precioItem);
     });
     // Calcular valores de la vista
     setValoresVenta({
@@ -222,6 +229,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   valorCuenta: {
+    borderColor:'black',
+    borderWidth:1,
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'right',
