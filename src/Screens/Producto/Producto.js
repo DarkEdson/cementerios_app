@@ -54,7 +54,7 @@ const PAGE_WIDTH = Dimensions.get('screen').width;
 export default function VistaProducto(props) {
   const { tags } = useContext(ScreentagContext);
   const [Product, setProduct] = useContext(ProductContext);
-  const { addItemtoCart, setafiliateCart, rutaCart } = useContext(ShoppingCartContext);
+  const { addItemtoCart,ShoppingCart, setafiliateCart, removeAllItemstoCart,afiliateCart,rutaCart } = useContext(ShoppingCartContext);
   const [cementery] = useContext(CementeryContext);
   const { Cementeries } =
     useContext(CementeriesContext);
@@ -78,16 +78,18 @@ export default function VistaProducto(props) {
   // Cargar informacion de la vista
   useEffect(() => {
     console.log('Producto escogido', Product);
+    if(!rutaCart){
+      if (ShoppingCart.length >=1){
+        if(sede.idAffiliate!=afiliateCart._id){
+          console.log('LIMPIE CARRITO EN PRODUCTOS')
+          setafiliateCart({})
+          removeAllItemstoCart()
+        }
+    }
+    }
+    
     // Actualizar valores de la vista
     setPropsVista({
-      tags: '$ Arrecife - Perla - Diamante',
-      precio: {
-        label: 'Precio',
-      },
-      ubicaciones: {
-        label: 'Sede',
-        ubicaciones: [],
-      },
       rating: {
         valor: 4.9,
         label: 'Ratink',
@@ -103,14 +105,6 @@ export default function VistaProducto(props) {
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
-    tags: '',
-    precio: {
-      label: '',
-    },
-    ubicaciones: {
-      label: '',
-      ubicaciones: [],
-    },
     rating: {
       valor: 0,
       label: '',

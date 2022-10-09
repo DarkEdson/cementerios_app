@@ -39,7 +39,7 @@ import { ShoppingCartContext } from '@context/ShoppingCartContext';
 export default function VistaProductos(props) {
   const { tags } = useContext(ScreentagContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const { ShoppingCart, removeAllItemstoCart, afiliateCart, setafiliateCart, setrutaCart } = useContext(ShoppingCartContext);
+  const {  setrutaCart } = useContext(ShoppingCartContext);
   const [Product, setProduct] = useContext(ProductContext);
   const [sede, setSede] = useContext(SedeContext);
   const { getSede } = useContext(SedesContext);
@@ -194,21 +194,10 @@ export default function VistaProductos(props) {
 
   function prodSel(producto, routeName, routeB) {
     setProduct(producto);
-    clearShoppingCart();
     getMultimediabyProduct(producto);
     getSede(producto.idHeadquarter, setSede)
     goToScreen(routeName);
     setRouteBack(routeB);
-  }
-
-  function clearShoppingCart() {
-    if (ShoppingCart.length >= 1) {
-      if (sede.idAffiliate != afiliateCart._id) {
-          setafiliateCart({})
-          removeAllItemstoCart()
-      } else {
-      }
-    }
   }
 
   function goToScreen(routeName) {

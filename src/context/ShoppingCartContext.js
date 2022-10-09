@@ -55,7 +55,7 @@ function ShoppingCartProvider({ children }) {
     <ShoppingCartContext.Provider value={{
       ShoppingCart, addItemtoCart, removeItemtoCart,
       removeAllItemstoCart, afiliateCart, setafiliateCart,
-      carrito, rutaCart, setrutaCart
+       carrito, rutaCart, setrutaCart
     }}>
       {children}
     </ShoppingCartContext.Provider>

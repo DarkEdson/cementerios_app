@@ -36,7 +36,7 @@ import CardColaborador from '@Components/CardColaborador/';
 //tags.CementeriesScreen.placeholder != '' ? tags.CementeriesScreen.placeholder :
 export default function CompanyScreen(props) {
   const [cementery, setCementery] = useContext(CementeryContext);
-  const {ShoppingCart, removeAllItemstoCart,afiliateCart, setafiliateCart, setrutaCart} = useContext(ShoppingCartContext);
+  const {setrutaCart} = useContext(ShoppingCartContext);
   const [sede, setSede] = useContext(SedeContext);
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
@@ -154,12 +154,6 @@ export default function CompanyScreen(props) {
     setrutaCart(true)
     setCementery(cementery);
     getSedes(cementery, setSede, goToScreen, routeName, country);
-    if (ShoppingCart.length >=1){
-        if(sede.idAffiliate!=afiliateCart._id){
-          setafiliateCart({})
-          removeAllItemstoCart()
-        }
-    }
     setRouteBackComp('Cementeries');
   }
 

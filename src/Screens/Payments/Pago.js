@@ -124,7 +124,7 @@ export default function VistaPago(props) {
                     ? tags.PaymentScreen.agregar
                     : 'Agregar mas productos'
                 }
-                onPressRight={() => goToScreen(RouteBack)}
+                onPressRight={() => goToScreen('Initial')}
                 iconRight={true}
               />
             </View>

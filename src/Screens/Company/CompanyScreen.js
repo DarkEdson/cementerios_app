@@ -49,7 +49,7 @@ export default function CompanyScreen(props) {
   const [cementery] = useContext(CementeryContext);
   const {tags} = useContext(ScreentagContext);
   const [sede, setSede] = useContext(SedeContext);
-  const {ShoppingCart, carrito} = useContext(ShoppingCartContext);
+  const {ShoppingCart, carrito, removeAllItemstoCart,afiliateCart, setafiliateCart} = useContext(ShoppingCartContext);
   const [Product, setProduct] = useContext(ProductContext);
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
@@ -87,6 +87,13 @@ export default function CompanyScreen(props) {
   ]);
   // Cargar informacion de la vista
   useEffect(() => {
+    if (ShoppingCart.length >=1){
+      if(sede.idAffiliate!=afiliateCart._id){
+        console.log('LIMPIE CARRITO EN CEMENTERIOS')
+        setafiliateCart({})
+        removeAllItemstoCart()
+      }
+  }
     let cats = [];
     if (GlobalLanguage.code == 'en') {
       cats.push({

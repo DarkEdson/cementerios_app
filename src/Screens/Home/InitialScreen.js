@@ -58,8 +58,7 @@ export default function InitialScreen(props) {
     useContext(CategoriesContext);
   const { Cementeries, isLoadingCementeries, getCementeries } =
     useContext(CementeriesContext);
-  const { ShoppingCart, removeAllItemstoCart, afiliateCart, setafiliateCart,
-    setrutaCart } = useContext(ShoppingCartContext);
+  const {  setrutaCart } = useContext(ShoppingCartContext);
   const { Sedes, isLoadingSedes, getSedes, getSede } = useContext(SedesContext);
   const { Promotions, isLoadingPromotions, getPromotions } =
     useContext(PromotionsContext);
@@ -385,7 +384,6 @@ export default function InitialScreen(props) {
 
   function selectCementery(cementery, routeName) {
     setrutaCart(true)
-    clearShoppingCart()
     setCementery(cementery);
     getSedes(cementery, setSede, goToScreen, routeName, country);
     setRouteBackComp('Home');
@@ -422,7 +420,6 @@ export default function InitialScreen(props) {
           if (category._id == Product.idCategory) {
             setCategory(category);
             setProduct(Product);
-            clearShoppingCart()
             getSede(Product.idHeadquarter, setSede);
             getMultimediabyProduct(Product);
             setRouteBack('Initial');
@@ -434,16 +431,6 @@ export default function InitialScreen(props) {
     if (routeName == '') {
     } else {
       goToScreen(routeName);
-    }
-  }
-
-  function clearShoppingCart() {
-    if (ShoppingCart.length >= 1) {
-      if (sede.idAffiliate != afiliateCart._id) {
-        setafiliateCart({})
-        removeAllItemstoCart()
-      } else {
-      }
     }
   }
 }
