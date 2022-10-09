@@ -59,7 +59,9 @@ export default function ProfileScreen(props) {
 
   // useBackButton(desconectarse);
   return (
-    <SafeAreaView style={mainStyles.containers} > 
+    <SafeAreaView 
+    style={mainStyles.containersp} 
+    > 
     <ScrollView>
       <View style={styles.container}>
         <StatusBar
@@ -164,19 +166,26 @@ export default function ProfileScreen(props) {
     </SafeAreaView>
   );
   function desconectarse() {
-    Alert.alert('Salir', '¿Esta seguro que \ndesea cerrar sesion?', [
+    Alert.alert(
+      tags.closeSessionScreen.titulo != '' ? tags.closeSessionScreen.titulo : 'Salir'
+    , tags.closeSessionScreen.mensaje != '' ? tags.closeSessionScreen.mensaje : '¿Esta seguro que \ndesea cerrar sesion?', [
       {
-        text: 'Si',
+        text: tags.closeSessionScreen.btnsi != '' ? tags.closeSessionScreen.btnsi : 'Si',
         onPress: () => {
           loginAction({
             type: 'sign-out',
             data: {},
+            tags:{
+              mensaje: tags.dialogAlertsScreen.o != ''
+              ? tags.dialogAlertsScreen.o
+              : 'Sesion Cerrada Exitosamente.'
+            }
           });
           goToScreen('Login');
         },
       },
       {
-        text: 'No',
+        text: tags.closeSessionScreen.btnno != '' ? tags.closeSessionScreen.btnno :  'No',
         onPress: () => {},
         style: 'cancel',
       },

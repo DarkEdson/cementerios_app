@@ -73,7 +73,7 @@ export default function PersonalDataScreen(props) {
   }, [nuevoLenguaje]);
 
   return (
-    <SafeAreaView style={mainStyles.containers} > 
+    <SafeAreaView style={mainStyles.containersp} > 
     <ScrollView>
       <View style={styles.container}>
         {isLoading ? (

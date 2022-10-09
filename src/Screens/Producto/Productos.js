@@ -33,11 +33,13 @@ import { CategoryContext } from '@context/CategoryContext';
 import { SedesContext } from '@context/SedesContext';
 import { SedeContext } from '@context/SedeContext';
 import { GlobalLanguageContext } from '@context/LanguageContext';
+import { ShoppingCartContext } from '@context/ShoppingCartContext';
 
 //tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
   const { tags } = useContext(ScreentagContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
+  const { ShoppingCart, removeAllItemstoCart, afiliateCart, setafiliateCart, setrutaCart } = useContext(ShoppingCartContext);
   const [Product, setProduct] = useContext(ProductContext);
   const [sede, setSede] = useContext(SedeContext);
   const { getSede } = useContext(SedesContext);
@@ -174,27 +176,39 @@ export default function VistaProductos(props) {
   );
 
   function selectedProduct(producto, routeName) {
+    setrutaCart(false)
     if (isCategory) {
-      setProduct(producto);
-      getMultimediabyProduct(producto);
-      getSede(producto.idHeadquarter, setSede)
-      goToScreen(routeName);
-      setRouteBack('Productos');
+      prodSel(producto, routeName, 'Productos')
 
     } else {
       categories.forEach(category => {
         if (category._id == producto.idCategory) {
           setCategory(category);
-          setProduct(producto);
-          getMultimediabyProduct(producto);
-          getSede(producto.idHeadquarter, setSede)
-          goToScreen(routeName);
-          setRouteBack('Productos');
+          prodSel(producto, routeName, 'Productos')
         }
       });
 
     }
 
+  }
+
+  function prodSel(producto, routeName, routeB) {
+    setProduct(producto);
+    clearShoppingCart();
+    getMultimediabyProduct(producto);
+    getSede(producto.idHeadquarter, setSede)
+    goToScreen(routeName);
+    setRouteBack(routeB);
+  }
+
+  function clearShoppingCart() {
+    if (ShoppingCart.length >= 1) {
+      if (sede.idAffiliate != afiliateCart._id) {
+          setafiliateCart({})
+          removeAllItemstoCart()
+      } else {
+      }
+    }
   }
 
   function goToScreen(routeName) {

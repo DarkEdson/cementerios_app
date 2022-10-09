@@ -22,10 +22,10 @@ import {mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Contextos
 import {CementeryContext} from '@context/CementeryContext';
-import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 import {CementeriesContext} from '@context/CementeriesContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {CountryContext} from '@context/CountryContext';
 import {SedesContext} from '@context/SedesContext';
 import {SedeContext} from '@context/SedeContext';
@@ -35,8 +35,8 @@ import CardColaborador from '@Components/CardColaborador/';
 
 //tags.CementeriesScreen.placeholder != '' ? tags.CementeriesScreen.placeholder :
 export default function CompanyScreen(props) {
-  const [login, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
+  const {ShoppingCart, removeAllItemstoCart,afiliateCart, setafiliateCart, setrutaCart} = useContext(ShoppingCartContext);
   const [sede, setSede] = useContext(SedeContext);
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
@@ -151,9 +151,15 @@ export default function CompanyScreen(props) {
     </SafeAreaView>
   );
   function selectCementery(cementery, routeName) {
+    setrutaCart(true)
     setCementery(cementery);
     getSedes(cementery, setSede, goToScreen, routeName, country);
-
+    if (ShoppingCart.length >=1){
+        if(sede.idAffiliate!=afiliateCart._id){
+          setafiliateCart({})
+          removeAllItemstoCart()
+        }
+    }
     setRouteBackComp('Cementeries');
   }
 

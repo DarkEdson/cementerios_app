@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Text,
   View,
@@ -11,7 +11,7 @@ import {
   //Image,
   TouchableOpacity,
 } from 'react-native';
-import {Image, FAB} from '@rneui/themed';
+import { Image, FAB } from '@rneui/themed';
 import Carousel from 'react-native-reanimated-carousel';
 
 import Animated, {
@@ -22,9 +22,9 @@ import Animated, {
 } from 'react-native-reanimated';
 
 //URL de server
-import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+import { BASE_URL_IMG, PRODUCTS_URL } from '@utils/config';
 //Recarga la screen
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 //Componentes
 import MyFloatButton from '@Components/common/MyFloatButton';
 import InformationIcon from '@Components/common/InformationIcon';
@@ -37,32 +37,37 @@ import {
   informationIconStyles,
 } from '@styles/stylesGeneral';
 //Contextos
-import {ScreentagContext} from '@context/ScreentagsContext';
+import { ScreentagContext } from '@context/ScreentagsContext';
 import CardMultimedia from '@Components/CardMultimedia';
-import {ProductContext} from '@context/ProductContext';
-import {ShoppingCartContext} from '@context/ShoppingCartContext';
-import {RouteBackContext} from '@context/RouteBackContext';
-import {ProductsContext} from '@context/ProductsContext';
+import { ProductContext } from '@context/ProductContext';
+import { ShoppingCartContext } from '@context/ShoppingCartContext';
+import { CementeriesContext } from '@context/CementeriesContext';
+import { CementeryContext } from '@context/CementeryContext';
+import { RouteBackContext } from '@context/RouteBackContext';
+import { ProductsContext } from '@context/ProductsContext';
 import { CategoryContext } from '@context/CategoryContext';
-import {SedeContext} from '@context/SedeContext';
+import { SedeContext } from '@context/SedeContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
 //tags.ProductDetailScreen.btnagregar != '' ? tags.ProductDetailScreen.btnagregar :
 export default function VistaProducto(props) {
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const { tags } = useContext(ScreentagContext);
   const [Product, setProduct] = useContext(ProductContext);
-  const {addItemtoCart} = useContext(ShoppingCartContext);
+  const { addItemtoCart, setafiliateCart, rutaCart } = useContext(ShoppingCartContext);
+  const [cementery] = useContext(CementeryContext);
+  const { Cementeries } =
+    useContext(CementeriesContext);
   const [sede, setSede] = useContext(SedeContext);
-  const {RouteBack, setRouteBack} = useContext(RouteBackContext);
+  const { RouteBack, setRouteBack } = useContext(RouteBackContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
   const [itemModal, setitemModal] = useState(null)
   const { Category } = useContext(CategoryContext);
-  const {ProductMultimedia,isLoadingProducts} = useContext(ProductsContext);
+  const { ProductMultimedia, isLoadingProducts } = useContext(ProductsContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => {};
+  const getInitialData = async () => { };
 
   const progressValue = useSharedValue(0);
   const baseOptions = {
@@ -133,7 +138,7 @@ export default function VistaProducto(props) {
   }
 
   return (
- 
+
     <View style={styles.vista}>
       <Image
         containerStyle={styles.imgProducto}
@@ -151,15 +156,19 @@ export default function VistaProducto(props) {
               tipo="font-awesome-5"
               image="dollar-sign"
               titulo={Product.price}
-              subtitulo={propsVista.precio.label}
-              onPress={() => {}}
+              subtitulo={tags.ProductDetailScreen.precio != ''
+                ? tags.ProductDetailScreen.precio
+                : 'Precio'}
+              onPress={() => { }}
             />
             <View style={informationIconStyles.verticleLine} />
             <InformationIcon
               tipo="ionicons"
               image="location-pin"
               titulo={sede.name}
-              subtitulo={propsVista.ubicaciones.label}
+              subtitulo={tags.ProductDetailScreen.sede != ''
+                ? tags.ProductDetailScreen.sede
+                : 'Sede'}
             />
             <View style={informationIconStyles.verticleLine} />
             <InformationIcon
@@ -184,21 +193,21 @@ export default function VistaProducto(props) {
           </Text>
           <View style={styles.multimedia}>
             {isLoadingProducts ? (
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '10%',
-          }}>
-          <FAB
-            loading
-            color={color.PRINCIPALCOLOR}
-            visible={isLoadingProducts}
-            icon={{name: 'add', color: 'white'}}
-            size="small"
-          />
-        </View>
-      ) : ProductMultimedia.length >= 1 ? (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '10%',
+                }}>
+                <FAB
+                  loading
+                  color={color.PRINCIPALCOLOR}
+                  visible={isLoadingProducts}
+                  icon={{ name: 'add', color: 'white' }}
+                  size="small"
+                />
+              </View>
+            ) : ProductMultimedia.length >= 1 ? (
               <Carousel
                 {...baseOptions}
                 style={{
@@ -219,7 +228,7 @@ export default function VistaProducto(props) {
                   parallaxScrollingOffset: 260,
                 }}
                 data={ProductMultimedia}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                   return (
                     <CardMultimedia
                       style={styles.imgDetalle}
@@ -240,26 +249,26 @@ export default function VistaProducto(props) {
             )}
             {ProductMultimedia.length >= 1
               ? !!progressValue && (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      width: 100,
-                      marginTop: 10,
-                      alignSelf: 'center',
-                    }}>
-                    {ProductMultimedia.map((item, index) => {
-                      return (
-                        <PaginationItem
-                          animValue={progressValue}
-                          index={index}
-                          key={index}
-                          length={ProductMultimedia.length}
-                        />
-                      );
-                    })}
-                  </View>
-                )
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: 100,
+                    marginTop: 10,
+                    alignSelf: 'center',
+                  }}>
+                  {ProductMultimedia.map((item, index) => {
+                    return (
+                      <PaginationItem
+                        animValue={progressValue}
+                        index={index}
+                        key={index}
+                        length={ProductMultimedia.length}
+                      />
+                    );
+                  })}
+                </View>
+              )
               : null}
             <View style={styles.numCant}>
               <TouchableOpacity
@@ -356,8 +365,17 @@ export default function VistaProducto(props) {
   }
 
   function itemToCart(producto, routeName) {
-    let item = {...producto, cantidad: cantProductos};
+    let item = { ...producto, cantidad: cantProductos };
     console.log(item);
+    if (rutaCart) {
+      setafiliateCart(cementery)
+    } else {
+      Cementeries.forEach(Afiliado=>{
+        if(sede.idAffiliate==Afiliado._id){
+          setafiliateCart(Afiliado)
+        }
+      })     
+    }
     addItemtoCart(item);
     goToScreen(routeName);
   }

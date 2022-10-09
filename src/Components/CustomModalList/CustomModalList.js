@@ -11,6 +11,11 @@ const CustomModalList = props => {
   const [visible, setVisible] = useState(false);
   const [sede, setsede] = useState({});
   const [checked, setChecked] = useState(1);
+  const [tags, settags] = useState({
+    btncancelar: 'CANCEL',
+    btnconfirmar: 'CONFIRM',
+    titulo: 'Selecciona Sede',
+  })
 
   const toggleDialog = () => {
     setVisible(false);
@@ -18,6 +23,7 @@ const CustomModalList = props => {
   };
 
   useEffect(() => {
+    settags(props.tags)
     setsede(props.sede);
     props.sedes.forEach((s, k) => {
       if (s._id == props.sede._id) {
@@ -30,7 +36,9 @@ const CustomModalList = props => {
 
   return (
     <Dialog isVisible={visible} onBackdropPress={toggleDialog}>
-      <Dialog.Title title="Selecciona Sede" />
+      <Dialog.Title title={tags.titulo != ''
+                  ? tags.titulo
+                  : 'Seleccionar Sede'} />
       {props.sedes.map((sede, i) => {
         return (
           <CheckBox
@@ -50,7 +58,9 @@ const CustomModalList = props => {
 
       <Dialog.Actions>
         <Dialog.Button
-          title="CONFIRM"
+          title={tags.btnconfirmar != ''
+          ? tags.btnconfirmar
+          : 'CONFIRMAR'}
           onPress={() => {
             if (props.activeCat.hasOwnProperty('name')) {
               console.log(props.activeCat);
@@ -69,7 +79,9 @@ const CustomModalList = props => {
             toggleDialog();
           }}
         />
-        <Dialog.Button title="CANCEL" onPress={toggleDialog} />
+        <Dialog.Button title={tags.btncancelar != ''
+                  ? tags.btncancelar
+                  : 'CANCEL'} onPress={toggleDialog} />
       </Dialog.Actions>
     </Dialog>
   );

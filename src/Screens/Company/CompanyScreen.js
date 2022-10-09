@@ -179,7 +179,9 @@ export default function CompanyScreen(props) {
                 tipo="material-community"
                 image="brightness-percent"
                 titulo="Promos"
-                subtitulo="Discount"
+                subtitulo={tags.CompanyDetailScreen.precio != ''
+                ? tags.CompanyDetailScreen.precio
+                : 'Descuento'}
                 onPress={() => goToScreen('Promociones')}
               />
               <View style={informationIconStyles.verticleLine} />
@@ -187,7 +189,9 @@ export default function CompanyScreen(props) {
                 tipo="ionicons"
                 image="location-pin"
                 titulo={sede.name}
-                subtitulo="Sedes"
+                subtitulo={tags.CompanyDetailScreen.sede != ''
+                ? tags.CompanyDetailScreen.sede
+                : 'Sede'}
                 onPress={() => {
                   toggleDialog();
                 }}
@@ -340,6 +344,7 @@ export default function CompanyScreen(props) {
         {visible == false ? null : (
           <CustomModalList
             customModal={visible}
+            tags={tags.sedeSelectScreen}
             setCustomModal={setVisible}
             sedes={Sedes}
             sede={sede}

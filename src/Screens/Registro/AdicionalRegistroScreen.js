@@ -151,55 +151,27 @@ export default function RegistroScreen(props) {
   function registrar() {
     console.log(data);
     if (data.name == '' || data.name == ' ') {
-      Alert.alert(
-        'Datos en blanco',
-        '¿Debe Ingresar un Nombre',
-        [
-          {
-            text: 'Ok',
-            onPress: () => {},
-            style: 'cancel',
-          },
-        ],
-      );
+      Snackbar.show({
+        text: 'Datos en blanco Debe Ingresar un Nombre',
+        duration: Snackbar.LENGTH_LONG,
+      });
     } else if (data.lastname == '' || data.lastname == ' ') {
-      Alert.alert(
-        'Datos en blanco',
-        '¿Debe Ingresar un Apellido',
-        [
-          {
-            text: 'Ok',
-            onPress: () => {},
-            style: 'cancel',
-          },
-        ],
-      );
+      Snackbar.show({
+        text: 'Datos en blanco Debe Ingresar un Apellido',
+        duration: Snackbar.LENGTH_LONG,
+      });
     } else if (data.paypal_id == '' || data.paypal_id == ' ') {
-      Alert.alert(
-        'Datos en blanco',
-        '¿Debe Ingresar un ID de PayPal',
-        [
-          {
-            text: 'Ok',
-            onPress: () => {},
-            style: 'cancel',
-          },
-        ],
-      );
+      Snackbar.show({
+        text: 'Datos en blanco Debe Ingresar un ID de Paypal',
+        duration: Snackbar.LENGTH_LONG,
+      });
     } else if (data.phone == '' || data.phone == ' ') {
-      Alert.alert(
-        'Datos en blanco',
-        '¿Debe Ingresar un numero de telefono',
-        [
-          {
-            text: 'Ok',
-            onPress: () => {},
-            style: 'cancel',
-          },
-        ],
-      );
+      Snackbar.show({
+        text: 'Datos en blanco Debe Ingresar un Telefono',
+        duration: Snackbar.LENGTH_LONG,
+      });
     } else  {
-      register(data, goToScreen, loginAction);
+      register(data, goToScreen, loginAction, tags.dialogAlertsScreen);
     }
   }
   function goToScreen(routeName) {

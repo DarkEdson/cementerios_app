@@ -121,12 +121,14 @@ export default function LoginScreen(props) {
     console.log('boton login');
     if (email == '' || password == '') {
       Snackbar.show({
-        text: 'Usuario o Contraseña en Blanco',
+        text: tags.dialogAlertsScreen.a != ''
+        ? tags.dialogAlertsScreen.a
+        : 'Usuario o Contraseña en Blanco',
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
       console.log(email, password);
-      login(email, password, goToScreen, loginAction);
+      login(email, password, goToScreen, loginAction, tags.dialogAlertsScreen);
     }
   }
   function goToScreen(routeName) {

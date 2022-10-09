@@ -98,7 +98,9 @@ export default function RecuperarPasswordScreen(props) {
 
   function recuperarClave() {
     Snackbar.show({
-      text: 'Su contraseña fue reiniciada y enviada a su correo electronico',
+      text: tags.dialogAlertsScreen.d != ''
+      ? tags.dialogAlertsScreen.d
+      : 'Su contraseña fue reiniciada y enviada a su correo electronico',
       duration: Snackbar.LENGTH_LONG,
     });
   }

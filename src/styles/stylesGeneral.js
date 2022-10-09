@@ -13,7 +13,11 @@ const mainStyles = StyleSheet.create({
   containers: {
     flex: 1,
     backgroundColor: color.WHITE,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight-Dimensions.get('screen').height * 0.020 : 0,
+  },
+  containersp: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight-Dimensions.get('screen').height * 0.020: 0,
   },
   logoImage: {
     width: 230,
