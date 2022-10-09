@@ -24,6 +24,13 @@ const mainStyles = StyleSheet.create({
     height: 185,
     marginBottom: 20,
   },
+  leftView:{
+    position: 'absolute',
+    right: 4,
+    top: Dimensions.get('screen').height * 0.050,
+    flexDirection: 'row',
+    width: 120
+  },
   headerBackground: {
     marginTop: Dimensions.get('screen').height * 0.03,
     width: Dimensions.get('screen').width * 1,

@@ -58,7 +58,7 @@ export default function InitialScreen(props) {
     useContext(CategoriesContext);
   const { Cementeries, isLoadingCementeries, getCementeries } =
     useContext(CementeriesContext);
-  const {  setrutaCart } = useContext(ShoppingCartContext);
+  const {  setrutaCart, ShoppingCart, carrito,  } = useContext(ShoppingCartContext);
   const { Sedes, isLoadingSedes, getSedes, getSedeDirect } = useContext(SedesContext);
   const { Promotions, isLoadingPromotions, getPromotions } =
     useContext(PromotionsContext);
@@ -165,6 +165,9 @@ export default function InitialScreen(props) {
             onPressLeft={() => goToScreen('Profile')}
             iconLeft={true}
             image={loginUser.usuario.avatar}
+            cart={carrito}
+            cantCart={ShoppingCart.length}
+            onPressCart={() => goToScreen('Payments')}
           />
           <ScrollView>
             <View style={styles.container}>

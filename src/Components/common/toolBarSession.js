@@ -4,15 +4,20 @@ import {BASE_URL_IMG} from '@utils/config';
 import {mainStyles} from '@styles/stylesGeneral';
 import SelectDropdown from 'react-native-select-dropdown';
 
-import {Icon, Avatar} from '@rneui/themed';
+import {Icon, Avatar, withBadge} from '@rneui/themed';
 
 import color from '@styles/colors';
 
 export default function ToolBarSession(props) {
   const [paisDefault, setpaisDefault] = useState(props.defaultCountry);
+  const [cantProd, setcantProd] = useState(0)
+  const [carrito, setcarrito] = useState(false)
   useEffect(() => {
+    setcarrito(props.cart)
+    setcantProd(props.cantCart)
     setpaisDefault(props.defaultCountry);
   }, []);
+  const BadgedIcon = withBadge(cantProd)(Icon);
   return (
     <View style={[props.style, mainStyles.toolBarSessionStyle]}>
       {props.titulo && (
@@ -48,6 +53,11 @@ export default function ToolBarSession(props) {
         }}
       />
       {props.iconLeft && (
+        <View style={mainStyles.leftView}>
+          <TouchableOpacity onPress={props.onPressCart}>
+          {carrito ? <BadgedIcon type="ionicons" name="shopping-basket" size={30} /> : null}
+          </TouchableOpacity>
+          
         <TouchableOpacity style={styles.btnProfile} onPress={props.onPressLeft}>
           {props.image != '' ? (
             <Avatar
@@ -66,6 +76,7 @@ export default function ToolBarSession(props) {
             />
           )}
         </TouchableOpacity>
+        </View>
       )}
     </View>
   );
@@ -82,7 +93,7 @@ const styles = StyleSheet.create({
   btnProfile: {
     position: 'absolute',
     right: 8,
-    top: 15,
+    top: -10,
     borderRadius: 100,
     backgroundColor: color.PRINCIPALCOLOR,
   },

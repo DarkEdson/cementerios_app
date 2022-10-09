@@ -346,7 +346,7 @@ export default function CompanyScreen(props) {
           <ShoppingCarCard
             tipo="ionicons"
             image="shopping-basket"
-            onPress={() => {}}
+            onPress={() => goToScreen('Payments')}
             cantidad={cant}
             titulo={
               cant > 1
