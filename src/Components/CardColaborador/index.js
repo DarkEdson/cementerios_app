@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginBottom: '3%',
     width: '65%',
     height: 240,
-    borderRadius: 25,
+    borderRadius: 50,
   },
   view: {
     flexDirection: 'column',
@@ -36,8 +36,10 @@ const styles = StyleSheet.create({
   top: {
     width: '98%',
     height: '70%',
-    margin: '1%',
-    flexDirection: 'row',
+    // borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 40,
+    overflow: 'hidden',
   },
   bottom: {
     width: '100%',
@@ -54,9 +56,10 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   imgCategoria: {
-    height: '100%',
+    marginTop: 15,
+    height: '90%',
     width: '100%',
-    borderRadius: 25,
+    borderRadius: 35,
     overflow: 'hidden',
   },
 });

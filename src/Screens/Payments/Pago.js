@@ -2,12 +2,14 @@ import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
+  Alert,
   StyleSheet,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import { Icon, FAB } from '@rneui/themed';
+import {Icon, FAB, ListItem, Button} from '@rneui/themed';
+import Snackbar from 'react-native-snackbar';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //URL de server
@@ -20,11 +22,11 @@ import MyButton from '@Components/common/MyButton';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
-import { UsuarioContext } from '@context/UsuarioContext';
-import { GlobalLanguageContext } from '@context/LanguageContext';
-import { CurrenciesContext } from '@context/CurrencyContext';
+import {UsuarioContext} from '@context/UsuarioContext';
+import {GlobalLanguageContext} from '@context/LanguageContext';
+import {CurrenciesContext} from '@context/CurrencyContext';
 import {RouteBackContext} from '@context/RouteBackContext';
-import { SedeContext } from '@context/SedeContext';
+import {SedeContext} from '@context/SedeContext';
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -39,9 +41,14 @@ export default function VistaPago(props) {
   const {tags} = useContext(ScreentagContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const [sede, setSede] = useContext(SedeContext);
-  const {    Currency ,getCurrency} = useContext(CurrenciesContext);
-  const {ShoppingCart, removeItemtoCart,recipe, sendShoppingCartSell
-    ,isLoadingCart} = useContext(ShoppingCartContext);
+  const {Currency, getCurrency} = useContext(CurrenciesContext);
+  const {
+    ShoppingCart,
+    removeItemtoCart,
+    recipe,
+    sendShoppingCartSell,
+    isLoadingCart,
+  } = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -50,35 +57,35 @@ export default function VistaPago(props) {
   useEffect(() => {
     let subtotal = 0;
     let descuento = 0;
-    let sendProds=[]
+    let sendProds = [];
     // Productos del carrito
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
     ShoppingCart.forEach(item => {
-      let precioItem
-      if (item.price.includes(',')){
-        precioItem = item.price.replace(/,/g, "");
-      }else{
-        precioItem = item.price
-      }   
-      console.log('valor item',precioItem, parseFloat(precioItem))
+      let precioItem;
+      if (item.price.includes(',')) {
+        precioItem = item.price.replace(/,/g, '');
+      } else {
+        precioItem = item.price;
+      }
+      console.log('valor item', precioItem, parseFloat(precioItem));
       subtotal = subtotal + item.cantidad * parseFloat(precioItem);
       sendProds.push({
         idProduct: item._id,
         quantity: item.cantidad,
-        paid_value: item.cantidad * parseFloat(precioItem)
-      })
+        paid_value: item.cantidad * parseFloat(precioItem),
+      });
     });
     //Consultar Moneda
-    getCurrency({_id: sede.idAffiliate})
-    console.log(Currency, )
+    getCurrency({_id: sede.idAffiliate});
+    console.log(Currency);
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: subtotal,
       entrega: descuento,
       total: subtotal - descuento,
     });
-    console.log('PRODS A ENVIAR',sendProds)
-    setProductosCarrito(sendProds)
+    console.log('PRODS A ENVIAR', sendProds);
+    setProductosCarrito(sendProds);
     if (isFocused) {
       getInitialData();
       console.log('isFocused Payment');
@@ -107,112 +114,152 @@ export default function VistaPago(props) {
             loading
             color={color.PRINCIPALCOLOR}
             visible={isLoadingCart}
-            icon={{ name: 'add', color: 'white' }}
+            icon={{name: 'add', color: 'white'}}
             size="small"
           />
         </View>
       ) : (
-      <View style={styles.vista}>
-        <ToolBar
-          titulo={
-            tags.PaymentScreen.compra != ''
-              ? tags.PaymentScreen.compra
-              : 'Compra'
-          }
-          onPressLeft={() => goToScreen('Productos')}
-          iconLeft={true}
-        />
-        <ScrollView>
-          <View>
-            <View style={styles.productos}>
-              {ShoppingCart.map((prod, key) => {
-                return (
-                  <CardProductoVenta
-                    key={key}
-                    urlImagen={prod.principalImage}
-                    titulo={prod.name}
-                    descripcion={prod.description}
-                    moneda={prod.moneda ? prod.moneda : Currency.symbol}
-                    precio={prod.price}
-                    cantidad={prod.cantidad}
-                  />
-                );
-              })}
+        <View style={styles.vista}>
+          <ToolBar
+            titulo={
+              tags.PaymentScreen.compra != ''
+                ? tags.PaymentScreen.compra
+                : 'Compra'
+            }
+            onPressLeft={() => goToScreen('Productos')}
+            iconLeft={true}
+          />
+          <ScrollView>
+            <View>
+              <View style={styles.productos}>
+                {ShoppingCart.map((prod, key) => {
+                  return (
+                    <ListItem.Swipeable
+                      key={key}
+                      bottomDivider
+                      leftContent={() => (
+                        <Button
+                          title="Info"
+                          onPress={() => {
+                            console.log(prod);
+                          }}
+                          icon={{name: 'info', color: 'white'}}
+                          buttonStyle={{minHeight: '100%'}}
+                        />
+                      )}
+                      rightContent={() => (
+                        <Button
+                          title="Delete"
+                          onPress={() => borrarItem(prod)}
+                          icon={{name: 'delete', color: 'white'}}
+                          buttonStyle={{
+                            minHeight: '100%',
+                            backgroundColor: 'red',
+                          }}
+                        />
+                      )}>
+                      <ListItem.Content>
+                        <CardProductoVenta
+                          key={key}
+                          urlImagen={prod.principalImage}
+                          titulo={prod.name}
+                          descripcion={prod.description}
+                          moneda={prod.moneda ? prod.moneda : Currency.symbol}
+                          precio={prod.price}
+                          cantidad={prod.cantidad}
+                        />
+                      </ListItem.Content>
+                      <ListItem.Chevron />
+                    </ListItem.Swipeable>
+                  );
+                })}
+              </View>
+              <View style={styles.espacio}>
+                <Text style={styles.txtTitulo}>
+                  {tags.PaymentScreen.subtotal != ''
+                    ? tags.PaymentScreen.subtotal
+                    : 'Subtotal'}
+                </Text>
+                <Text style={styles.valorCuenta}>
+                  {' '}
+                  {Currency.symbol + '.' + valoresVenta.subTotal}
+                </Text>
+              </View>
+              <View style={styles.espacio}>
+                <Text style={styles.txtTitulo}>
+                  {tags.PaymentScreen.entrega != ''
+                    ? tags.PaymentScreen.entrega
+                    : 'Entrega'}
+                </Text>
+                <Text style={styles.valorCuenta}>
+                  {Currency.symbol + '.' + valoresVenta.entrega}
+                </Text>
+              </View>
+              <View style={styles.espacio2}>
+                <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
+                  {tags.PaymentScreen.total != ''
+                    ? tags.PaymentScreen.total
+                    : 'Total (incl. IVA)'}
+                </Text>
+                <Text style={styles.valorCuenta}>
+                  {Currency.symbol + '.' + valoresVenta.total}
+                </Text>
+              </View>
+              <View style={styles.espacio}>
+                <LargeButton
+                  titulo={
+                    tags.PaymentScreen.agregar != ''
+                      ? tags.PaymentScreen.agregar
+                      : 'Agregar mas productos'
+                  }
+                  onPressRight={() => goToScreen('Initial')}
+                  iconRight={true}
+                />
+              </View>
+              <View style={styles.espacio}>
+                <LargeButton
+                  colorStyle={{color: color.PRINCIPALCOLOR, fontWeight: '600'}}
+                  titulo={
+                    tags.PaymentScreen.codigo != ''
+                      ? tags.PaymentScreen.codigo
+                      : 'Codigo de Promocion'
+                  }
+                  onPressRight={() => goToScreen('PromoCode')}
+                  iconRight={true}
+                />
+              </View>
+              <View style={{alignItems: 'center'}}>
+                <MyButton
+                  titulo={
+                    tags.PaymentScreen.pagar != ''
+                      ? tags.PaymentScreen.pagar +
+                        ' (' +
+                        valoresVenta.total +
+                        ')'
+                      : 'Pagar'
+                  }
+                  onPress={() => realizarPago()}
+                />
+              </View>
+              <View style={mainStyles.boxTransparent} />
             </View>
-            <View style={styles.espacio}>
-              <Text style={styles.txtTitulo}>
-                {tags.PaymentScreen.subtotal != ''
-                  ? tags.PaymentScreen.subtotal
-                  : 'Subtotal'}
-              </Text>
-              <Text style={styles.valorCuenta}> {Currency.symbol+'.'+valoresVenta.subTotal}</Text>
-            </View>
-            <View style={styles.espacio}>
-              <Text style={styles.txtTitulo}>
-                {tags.PaymentScreen.entrega != ''
-                  ? tags.PaymentScreen.entrega
-                  : 'Entrega'}
-              </Text>
-              <Text style={styles.valorCuenta}>{Currency.symbol+'.'+valoresVenta.entrega}</Text>
-            </View>
-            <View style={styles.espacio2}>
-              <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-                {tags.PaymentScreen.total != ''
-                  ? tags.PaymentScreen.total
-                  : 'Total (incl. IVA)'}
-              </Text>
-              <Text style={styles.valorCuenta}>{Currency.symbol+'.'+valoresVenta.total}</Text>
-            </View>
-            <View style={styles.espacio}>
-              <LargeButton
-                titulo={
-                  tags.PaymentScreen.agregar != ''
-                    ? tags.PaymentScreen.agregar
-                    : 'Agregar mas productos'
-                }
-                onPressRight={() => goToScreen('Initial')}
-                iconRight={true}
-              />
-            </View>
-            <View style={styles.espacio}>
-              <LargeButton
-                colorStyle={{color: color.PRINCIPALCOLOR, fontWeight: '600'}}
-                titulo={
-                  tags.PaymentScreen.codigo != ''
-                    ? tags.PaymentScreen.codigo
-                    : 'Codigo de Promocion'
-                }
-                onPressRight={() => goToScreen('PromoCode')}
-                iconRight={true}
-              />
-            </View>
-            <View style={{alignItems:'center'}}> 
-            <MyButton
-          titulo={
-            tags.PaymentScreen.pagar != ''
-                  ? tags.PaymentScreen.pagar + ' ('+ valoresVenta.total+')'
-                  : 'Pagar'
-          }
-          onPress={() => realizarPago()}
-        />
+          </ScrollView>
         </View>
-            <View style={mainStyles.boxTransparent} />
-          </View>
-        </ScrollView>
-      </View>)}
+      )}
     </SafeAreaView>
   );
 
-  function realizarPago(){
-    console.log(loginUser.usuario)
-    let sendData={
-      idCurrency: Currency._id,
-      idLanguage: GlobalLanguage._id,
-      idUser: loginUser.usuario._id,
-      value: valoresVenta.total,
-      products: productosCarrito,
-      promotions: [
-     /*     {
+  function realizarPago() {
+    console.log(loginUser.usuario);
+    if (productosCarrito.length >= 1) {
+      let sendData = {
+        idCurrency: Currency._id,
+        idLanguage: GlobalLanguage._id,
+        idUser: loginUser.usuario._id,
+        value: valoresVenta.total,
+        products: productosCarrito,
+        promotions: [
+          /*     {
               "idPromotion": "633b2bd9880e100adaf47a89",
               "type": "V"
           },
@@ -220,15 +267,77 @@ export default function VistaPago(props) {
               "idPromotion": "633b2bd9880e100adaf47a89",
               "type": "P"
           }*/
-      ]
-  }
-  console.log(sendData)
-  sendShoppingCartSell(sendData, goToScreen, 'Initial')
-//P
+        ],
+      };
+      console.log(sendData);
+      sendShoppingCartSell(sendData, goToScreen, 'Initial');
+    } else {
+      Snackbar.show({
+        text: 'Carrito Vacio, Agregue un producto',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
+
+    //P
   }
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
+  }
+
+  function borrarItem(item) {
+    console.log(item);
+    Alert.alert(
+      'Borrar Item',
+      '¿Deguro que desea borrar \nel producto seleccionado?',
+      [
+        {
+          text:
+            tags.closeSessionScreen.btnsi != ''
+              ? tags.closeSessionScreen.btnsi
+              : 'Si',
+          onPress: () => {
+            removeItemtoCart(item);
+            let subtotal = 0;
+            let descuento = 0;
+            let sendProds = [];
+            // Productos del carrito
+            if (ShoppingCart.length >= 1) {
+              ShoppingCart.forEach(item => {
+                let precioItem;
+                if (item.price.includes(',')) {
+                  precioItem = item.price.replace(/,/g, '');
+                } else {
+                  precioItem = item.price;
+                }
+                subtotal = subtotal + item.cantidad * parseFloat(precioItem);
+                sendProds.push({
+                  idProduct: item._id,
+                  quantity: item.cantidad,
+                  paid_value: item.cantidad * parseFloat(precioItem),
+                });
+              });
+            }
+            // Calcular valores de la vista
+            setValoresVenta({
+              subTotal: subtotal,
+              entrega: descuento,
+              total: subtotal - descuento,
+            });
+            console.log('PRODS A ENVIAR', sendProds);
+            setProductosCarrito(sendProds);
+          },
+        },
+        {
+          text:
+            tags.closeSessionScreen.btnno != ''
+              ? tags.closeSessionScreen.btnno
+              : 'No',
+          onPress: () => {},
+          style: 'cancel',
+        },
+      ],
+    );
   }
 }
 
@@ -296,8 +405,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   valorCuenta: {
-    borderColor:'black',
-  //  borderWidth:1,
+    borderColor: 'black',
+    //  borderWidth:1,
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'right',

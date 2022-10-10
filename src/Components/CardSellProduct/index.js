@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 export default function CardProductoVenta(props) {
-
   return (
     <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressProduct}>
       <View style={{...styles.view, backgroundColor: props.bgColor}}>
@@ -24,29 +23,20 @@ export default function CardProductoVenta(props) {
           </Text>
         </View>
         <View style={styles.left}>
-          <Text style={styles.precio}>{props.moneda+'.'+props.precio} </Text>
+          <Text style={styles.precio}>
+            {props.moneda + '.' + props.precio}{' '}
+          </Text>
           <Text style={styles.cantidad}>x{props.cantidad}</Text>
         </View>
       </View>
-      <View
-        style={{
-          marginHorizontal: '7%',
-          marginVertical: 2.5,
-          width: '85%',
-          borderBottomColor: color.GRAY2,
-          borderBottomWidth: 2,
-        }}
-      />
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   cuerpoCard: {
-    marginLeft: '5%',
-    marginVertical: '2%',
-    width: '90%',
-    height: 85,
+    width: '100%',
+    height: 80,
     backgroundColor: '#fff',
   },
   view: {
@@ -59,11 +49,11 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   left: {
-    width: '25%',
-    height: '100%',
-    paddingTop: 10,
+    width: '30%',
+    height: '80%',
+    paddingTop: 15,
     flexDirection: 'column',
-    paddingLeft: 10,
+    paddingLeft: 15,
   },
   right: {
     marginTop: 10,
@@ -87,7 +77,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'grey',
     fontSize: 13,
-    marginLeft: 50,
+    marginLeft: 37,
     marginTop: 25,
     marginBottom: 10,
   },
