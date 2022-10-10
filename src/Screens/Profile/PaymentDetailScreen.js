@@ -26,7 +26,7 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 
 //tags.PaymentCardDetailScreen.guardar != '' ? tags.PaymentCardDetailScreen.guardar :
 export default function PaymentDetailScreen(props) {
-  const [creditCard, setCreditCard] = useContext(CreditCardContext);
+  const {creditCardSel, setcreditCardSel} = useContext(CreditCardContext);
   const {tags, updateTags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
@@ -44,13 +44,13 @@ export default function PaymentDetailScreen(props) {
   useEffect(() => {
     setDataCard({
       ...dataCard,
-      cardNumber: creditCard.cardNumber,
-      cardHolderName: creditCard.cardHolderName,
-      nameSurname: creditCard.nameSurname,
-      mmYY: creditCard.mmYY,
-      expiration: creditCard.expiration,
-      securityCode: creditCard.securityCode,
-      brand: creditCard.brand,
+      cardNumber: creditCardSel.cardNumber,
+      cardHolderName: creditCardSel.cardHolderName,
+      nameSurname: creditCardSel.nameSurname,
+      mmYY: creditCardSel.mmYY,
+      expiration: creditCardSel.expiration,
+      securityCode: creditCardSel.securityCode,
+      brand: creditCardSel.brand,
     });
   }, []);
   const creditCardRef = React.useRef();
@@ -118,11 +118,11 @@ export default function PaymentDetailScreen(props) {
               cvv: '000',
             }}
             initialValues={{
-              number: creditCard.cardNumber,
-              holder: creditCard.cardHolderName + ' ' + creditCard.nameSurname,
-              expiration: creditCard.mmYY,
-              cvv: '',
-              brand: creditCard.brand,
+              number: creditCardSel.cardNumber,
+              holder: creditCardSel.cardHolderName + ' ' + creditCardSel.nameSurname,
+              expiration: creditCardSel.mmYY,
+              cvv: creditCardSel.securityCode,
+              brand: creditCardSel.brand,
             }}
           />
           <View style={styles.boxTransparent} />

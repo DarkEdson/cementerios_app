@@ -42,11 +42,13 @@ import { ProductContext } from '@context/ProductContext';
 import { SedesContext } from '@context/SedesContext';
 import { SedeContext } from '@context/SedeContext';
 import { CurrenciesContext } from '@context/CurrencyContext';
+import { CreditCardContext } from '@context/CreditCardContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 //tags.HomeScreen.ubica
 export default function InitialScreen(props) {
   const [loginUser] = useContext(UsuarioContext);
+  const {getCreditCards} = useContext(CreditCardContext)
   const [cementery, setCementery] = useContext(CementeryContext);
   const [sede, setSede] = useContext(SedeContext);
   const [countries] = useContext(CountriesContext);
@@ -106,6 +108,7 @@ export default function InitialScreen(props) {
       getPromotions(country, GlobalLanguage);
       getProductsbyCountry(country, GlobalLanguage);
       getCementeries(country);
+      getCreditCards(loginUser.usuario)
       setubicaciones(getUbicaciones);
     }
     if (isFocused) {

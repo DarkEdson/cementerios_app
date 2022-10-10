@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,28 +9,29 @@ import {
   Alert,
 } from 'react-native';
 //Recarga la screen
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 //URL de server
-import {BASE_URL_IMG} from '@utils/config';
+import { BASE_URL_IMG } from '@utils/config';
 //Estilos Generales
-import {mainStyles} from '@styles/stylesGeneral';
+import { mainStyles } from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import PaymentButton from '@Components/common/paymentButton';
 import MyButton from '@Components/common/MyButton';
 //Contextos
-import {CreditCardContext} from '@context/CreditCardContext';
-import {ScreentagContext} from '@context/ScreentagsContext';
+import { UsuarioContext } from '@context/UsuarioContext';
+import { CreditCardContext } from '@context/CreditCardContext';
+import { ScreentagContext } from '@context/ScreentagsContext';
 
 //tags.paymentMethodsScreen.btn != '' ? tags.paymentMethodsScreen.btn :
 export default function PaymentMethodScreen(props) {
-  const [creditCard, setCreditCard] = useContext(CreditCardContext);
-
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const { creditCard, creditCards, setcreditCardSel } = useContext(CreditCardContext);
+  const [loginUser] = useContext(UsuarioContext);
+  const { tags, updateTags } = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => {};
+  const getInitialData = async () => { };
 
   const [data, setData] = useState({
     cardNumber: '',
@@ -54,7 +55,7 @@ export default function PaymentMethodScreen(props) {
     });
     if (isFocused) {
       getInitialData();
-      console.log('isFocused Promo Code');
+      console.log('isFocused CREDIT CARDS');
     }
     //props, isFocused
   }, []);
@@ -86,43 +87,30 @@ export default function PaymentMethodScreen(props) {
             </Text>
             <PaymentButton
               iconLeft={true}
-              titulo={'XXXX-XXXX-XXXX-5678'}
+              titulo={'XXXX-XXXX-XXXX-' + creditCard.last4}
               iconRight={true}
+              onPress={() => selectCard(creditCard)}
             />
             <Text style={styles.titleLabel}>
               {tags.paymentMethodsScreen.tarjetas != ''
                 ? tags.paymentMethodsScreen.tarjetas
                 : 'Tarjetas:'}
             </Text>
-            <PaymentButton
-              iconLeft={true}
-              titulo={'XXXX-XXXX-XXXX-0123'}
-              iconRight={true}
-            />
-            <PaymentButton
-              iconLeft={true}
-              titulo={'XXXX-XXXX-XXXX-9595'}
-              iconRight={true}
-              onPress={() => selectCard(data)}
-            />
-            <PaymentButton
-              iconLeft={true}
-              titulo={'XXXX-XXXX-XXXX-2345'}
-              iconRight={true}
-              //  onPress={() => goToScreen("PaymentMethodDetail")}
-            />
-            <PaymentButton
-              iconLeft={true}
-              titulo={'XXXX-XXXX-XXXX-4567'}
-              iconRight={true}
-            />
+            {creditCards.length >= 1 ? creditCards.map((card, key) =>
+              <PaymentButton
+                key={key}
+                iconLeft={true}
+                titulo={'XXXX-XXXX-XXXX-' + card.last4}
+                iconRight={true}
+                onPress={() => selectCard(card)}
+              />) : null}
             <MyButton
               titulo={
                 tags.paymentMethodsScreen.btn != ''
                   ? tags.paymentMethodsScreen.btn
                   : 'Guardar Cambios'
               }
-              onPress={() => {}}
+              onPress={() => { }}
             />
           </View>
         </ScrollView>
@@ -131,14 +119,20 @@ export default function PaymentMethodScreen(props) {
   );
 
   function selectCard(card) {
-    setCreditCard({
+    let month ='00'
+    if (1>=parseInt(card.exp_month)<=9){
+      month=`0${card.exp_month}`
+    }else{
+      month=card.exp_month
+    }
+    setcreditCardSel({
       ...creditCard,
-      cardNumber: card.cardNumber,
-      cardHolderName: card.cardHolderName,
-      nameSurname: card.nameSurname,
-      mmYY: card.mmYY,
-      expiration: card.expiration,
-      securityCode: '',
+      cardNumber: `0000-0000-0000-${card.last4}`,
+      cardHolderName: loginUser.usuario.name,
+      nameSurname: loginUser.usuario.lastname,
+      mmYY: `${month}/${card.exp_year}`,
+      expiration: `${month}/${card.exp_year}`,
+      securityCode: '123',
       brand: card.brand,
     });
     goToScreen('PaymentDetails');
