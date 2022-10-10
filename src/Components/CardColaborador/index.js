@@ -7,13 +7,11 @@ export default function CardColaborador(props) {
     <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressColab}>
       <View style={styles.view}>
         <View style={styles.top}>
-          <Card>
-            <Image
-              style={styles.imgCategoria}
-              resizeMode='stretch'
-              source={{uri: props.urlImagen}}
-            />
-          </Card>
+          <Image
+            style={styles.imgCategoria}
+            resizeMode="stretch"
+            source={{uri: props.urlImagen}}
+          />
         </View>
         <View style={styles.bottom}>
           <Text style={styles.titulo}> {props.nombre} </Text>
@@ -30,7 +28,7 @@ const styles = StyleSheet.create({
     marginBottom: '3%',
     width: '65%',
     height: 240,
-    borderRadius: 12,
+    borderRadius: 25,
   },
   view: {
     flexDirection: 'column',
@@ -45,7 +43,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '30%',
     flexDirection: 'row',
-    marginBottom: '5%',  
+    marginBottom: '5%',
   },
   titulo: {
     fontWeight: '700',
@@ -58,6 +56,7 @@ const styles = StyleSheet.create({
   imgCategoria: {
     height: '100%',
     width: '100%',
-    borderRadius: 12,
+    borderRadius: 25,
+    overflow: 'hidden',
   },
 });
