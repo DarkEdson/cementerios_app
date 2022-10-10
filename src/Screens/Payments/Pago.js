@@ -15,9 +15,12 @@ import {BASE_URL_IMG} from '@utils/config';
 import CardProductoVenta from '@Components/CardSellProduct/';
 import ToolBar from '@Components/common/toolBar';
 import LargeButton from '@Components/common/largeButton';
+import MyButton from '@Components/common/MyButton';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
+import { UsuarioContext } from '@context/UsuarioContext';
+import { GlobalLanguageContext } from '@context/LanguageContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 //Estilos Generales
 import color from '@styles/colors';
@@ -29,7 +32,9 @@ import {
 
 //tags.PaymentScreen.agregar != '' ? tags.PaymentScreen.agregar :
 export default function VistaPago(props) {
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const [loginUser] = useContext(UsuarioContext);
+  const {tags} = useContext(ScreentagContext);
+  const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const {ShoppingCart, removeItemtoCart} = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   const isFocused = useIsFocused();
@@ -39,6 +44,7 @@ export default function VistaPago(props) {
   useEffect(() => {
     let subtotal = 0;
     let descuento = 0;
+    let sendProds=[]
     // Productos del carrito
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
     ShoppingCart.forEach(item => {
@@ -50,6 +56,11 @@ export default function VistaPago(props) {
       }   
       console.log('valor item',precioItem, parseFloat(precioItem))
       subtotal = subtotal + item.cantidad * parseFloat(precioItem);
+      sendProds.push({
+        idProduct: item._id,
+        quantity: item.cantidad,
+        paid_value: item.cantidad * parseFloat(precioItem)
+      })
     });
     // Calcular valores de la vista
     setValoresVenta({
@@ -57,6 +68,8 @@ export default function VistaPago(props) {
       entrega: descuento,
       total: subtotal - descuento,
     });
+    console.log('PRODS A ENVIAR',sendProds)
+    setProductosCarrito(sendProds)
     if (isFocused) {
       getInitialData();
       console.log('isFocused Payment');
@@ -146,20 +159,46 @@ export default function VistaPago(props) {
                 iconRight={true}
               />
             </View>
-            <TouchableOpacity style={styles.btnAgregar}>
-              <Text style={styles.txtAgregar}>
-                {' '}
-                {tags.PaymentScreen.pagar != ''
+            <View style={{alignItems:'center'}}> 
+            <MyButton
+          titulo={
+            tags.PaymentScreen.pagar != ''
                   ? tags.PaymentScreen.pagar
-                  : 'Pagar'}{' '}
-              </Text>
-            </TouchableOpacity>
+                  : 'Pagar'
+          }
+          onPress={() => realizarPago()}
+        />
+        </View>
             <View style={mainStyles.boxTransparent} />
           </View>
         </ScrollView>
       </View>
     </SafeAreaView>
   );
+
+  function realizarPago(){
+    console.log(loginUser.usuario)
+    let sendData={
+      idCurrency: "633cfd03f16c3c907167cb0c",
+      idLanguage: GlobalLanguage._id,
+      idUser: loginUser.usuario._id,
+      value: valoresVenta.total,
+      products: productosCarrito,
+      promotions: [
+          {
+              "idPromotion": "633b2bd9880e100adaf47a89",
+              "type": "V"
+          },
+          {
+              "idPromotion": "633b2bd9880e100adaf47a89",
+              "type": "P"
+          }
+      ]
+  }
+  console.log(sendData)
+//P
+  }
+
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
   }
@@ -230,7 +269,7 @@ const styles = StyleSheet.create({
   },
   valorCuenta: {
     borderColor:'black',
-    borderWidth:1,
+  //  borderWidth:1,
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'right',

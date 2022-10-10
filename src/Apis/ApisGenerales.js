@@ -76,4 +76,31 @@ async function apiIdScreens() {
   }
 }
 
-export {apiLanguage, apiScreen, apiIdScreens};
+async function apiPago(dataPay) {
+  let url = `${BASE_URL}/payment.create`;
+  console.log(dataPay);
+  let resp = {}
+  try {
+    let data = dataPay;
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error en RESPUESTA API PAGO', error))
+      .then(response => {
+        console.log('dentro del API PAYMENT');
+        console.log(response);
+        resp = response;
+      });
+    return resp;
+  } catch (error) {
+    console.error('ERROR EN API PAGO',error);
+    return resp;
+  }
+}
+
+export {apiLanguage, apiScreen, apiIdScreens, apiPago};
