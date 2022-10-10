@@ -14,16 +14,27 @@ import {useIsFocused} from '@react-navigation/native';
 import {BASE_URL_IMG} from '@utils/config';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
+import MyButton from '@Components/common/MyButton';
+import MyTextInput from '@Components/common/MyTextInput';
 //Estilos
 import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
+import { PromotionContext } from '@context/PromotionContext';
+import { PromotionsContext } from '@context/PromotionsContext';
+import { GlobalLanguageContext } from '@context/LanguageContext';
+
 
 //tags.PromotionsScreen.labelpromociones
 //tags.PromoScreen.labelbtn != '' ? tags.PromoScreen.labelbtn :
 export default function VistaCodigoPromocion(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
-
+  const [GlobalLanguage] = useContext(GlobalLanguageContext);
+  const {validarPromo} = useContext(PromotionContext);
+  const {
+    setsendPromotions,sendPromotions
+  } = useContext(PromotionsContext)
+  const [code, setCode] = useState({code:'XXXX'});
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
@@ -49,26 +60,34 @@ export default function VistaCodigoPromocion(props) {
         iconLeft={true}
       />
       <View style={styles.searchSection}>
-        <TextInput
-          style={styles.input}
+        <MyTextInput
+          keyboardType={null}
           placeholder={
             tags.PromoScreen.placeholder != ''
-              ? tags.PromoScreen.placeholder
-              : 'Ingresa el código de promo...'
+            ? tags.PromoScreen.placeholder
+            : 'Ingresa el código de promo...'
           }
+          image="ticket-percent"
+          value={code}
+          onChangeText={codigo => setCode({code:codigo})}
         />
       </View>
-      <TouchableOpacity style={styles.btnAgregar}>
-        <Text style={styles.txtAgregar}>
-          {' '}
-          {tags.PromoScreen.labelbtn != ''
-            ? tags.PromoScreen.labelbtn
-            : 'Agregar una promo'}{' '}
-        </Text>
-      </TouchableOpacity>
+      <View style={{alignItems:'center'}}> 
+            <MyButton
+          titulo={tags.PromoScreen.labelbtn != ''
+          ? tags.PromoScreen.labelbtn
+          : 'Agregar una promo'}
+          onPress={() => comprobarPromo()}
+        />
+        </View>
     </View>
     </SafeAreaView>
   );
+
+  function comprobarPromo(){
+    //P
+    validarPromo(code, GlobalLanguage)
+  }
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
   }

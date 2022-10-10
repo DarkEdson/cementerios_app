@@ -22,6 +22,7 @@ import {CategoryProvider} from '@context/CategoryContext';
 import {SedesProvider} from '@context/SedesContext';
 import {SedeProvider} from '@context/SedeContext';
 import { CurrenciesProvider } from '@context/CurrencyContext';
+import { PromotionProvider } from '@context/PromotionContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -45,6 +46,7 @@ const MainPage = () => {
                               <CategoriesProvider>
                                 <CategoryProvider>
                                   <PromotionsProvider>
+                                    <PromotionProvider>
                                     <CementeryProvider>
                                       <ProductsProvider>
                                         <ProductProvider>
@@ -62,6 +64,7 @@ const MainPage = () => {
                                         </ProductProvider>
                                       </ProductsProvider>
                                     </CementeryProvider>
+                                    </PromotionProvider>
                                   </PromotionsProvider>
                                 </CategoryProvider>
                               </CategoriesProvider>

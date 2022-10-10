@@ -153,6 +153,7 @@ export default function VistaPago(props) {
             </View>
             <View style={styles.espacio}>
               <LargeButton
+                colorStyle={{color: color.PRINCIPALCOLOR, fontWeight: '600'}}
                 titulo={
                   tags.PaymentScreen.codigo != ''
                     ? tags.PaymentScreen.codigo

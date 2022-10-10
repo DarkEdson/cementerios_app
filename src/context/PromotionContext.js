@@ -1,5 +1,5 @@
 import React, {createContext, useState} from 'react';
-import {savepromotion, getpromotion} from '@storage/PromotionAsyncStorage';
+import {promotionsbyCodeApi} from '@Apis/PromotionsApi';
 
 const initialState = [{
     idPromotion: '',
@@ -10,6 +10,7 @@ const PromotionContext = createContext();
 
 function PromotionProvider({children}) {
   const [promotion, setPromotion] = useState(initialState);
+  const [validPromo, setvalidPromo] = useState({})
   const [isLoadingPromotion, setLoadingPromotion] = useState(false);
 
   function saveDefaultPromotion(promotion) {
@@ -18,24 +19,12 @@ function PromotionProvider({children}) {
       label: `${promotion.name}, ${promotion.code.toUpperCase()}`,
       value: promotion._id,
     });
-    savepromotion({
-      label: `${promotion.name}, ${promotion.code.toUpperCase()}`,
-      value: promotion._id,
-    }).then(res => {
-      setLoadingPromotion(false);
-    });
   }
   function updateDefaultPromotion(promotion) {
     setLoadingPromotion(true);
     setPromotion({
       label: `${promotion.label}`,
       value: promotion.value,
-    });
-    savepromotion({
-      label: `${promotion.label}`,
-      value: promotion.value,
-    }).then(res => {
-      setLoadingPromotion(false);
     });
   }
 
@@ -50,6 +39,18 @@ function PromotionProvider({children}) {
     return loading;
   }
 
+  async function validarPromo(promo, Language){
+    try {
+    promotionsbyCodeApi(promo, Language).then(res =>{
+      console.log(res);
+      setvalidPromo(res)
+
+    }).catch(error => console.error('Error PROMOCION CONTEXT APLICA', error))
+  } catch (error) {
+    console.error(error, 'ERROR EN PROMOCION CONTEXT APLICA');
+}
+  }
+
   return (
     <PromotionContext.Provider
       value={{
@@ -58,6 +59,7 @@ function PromotionProvider({children}) {
         saveDefaultPromotion,
         getDefaultPromotion,
         updateDefaultPromotion,
+        validarPromo
       }}>
       {children}
     </PromotionContext.Provider>

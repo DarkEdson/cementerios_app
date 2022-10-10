@@ -1,11 +1,12 @@
 import React, {createContext, useEffect, useState} from 'react';
 //Apis
-import promotionsApi from '@Apis/PromotionsApi';
+import {promotionsApi} from '@Apis/PromotionsApi';
 
 export const PromotionsContext = createContext();
 
 export const PromotionsProvider = ({children}) => {
   const [Promotions, setPromotions] = useState([]);
+  const [sendPromotions, setsendPromotions] = useState([])
   const [isLoadingPromotions, setisLoadingPromotions] = useState(true)
 
 
@@ -27,8 +28,10 @@ export const PromotionsProvider = ({children}) => {
     <PromotionsContext.Provider
       value={{
         Promotions,
+        sendPromotions,
         isLoadingPromotions,
         getPromotions,
+        setsendPromotions
       }}>
       {children}
     </PromotionsContext.Provider>

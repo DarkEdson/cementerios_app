@@ -18,7 +18,7 @@ export default function LargeButton(props) {
               alignItems: 'flex-start',
               alignContent: 'flex-start',
             }}>
-            <Text style={mainStyles.txtUnico2}>{props.titulo}</Text>
+            <Text style={[mainStyles.txtUnico2,props.colorStyle]}>{props.titulo}</Text>
           </View>
         )}
         {props.iconRight && (
