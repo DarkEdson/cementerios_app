@@ -25,6 +25,7 @@ import color from '@styles/colors';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
 //URL de server
 import {BASE_URL_IMG} from '@utils/config';
 
@@ -43,7 +44,8 @@ import {BASE_URL_IMG} from '@utils/config';
 
 export default function ProfileScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const {removeAllItemstoCart} = useContext(ShoppingCartContext);
+  const {tags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -181,6 +183,7 @@ export default function ProfileScreen(props) {
               : 'Sesion Cerrada Exitosamente.'
             }
           });
+          removeAllItemstoCart()
           goToScreen('Login');
         },
       },

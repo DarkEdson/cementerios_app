@@ -194,14 +194,14 @@ export default function VistaPago(props) {
       value: valoresVenta.total,
       products: productosCarrito,
       promotions: [
-          {
+     /*     {
               "idPromotion": "633b2bd9880e100adaf47a89",
               "type": "V"
           },
           {
               "idPromotion": "633b2bd9880e100adaf47a89",
               "type": "P"
-          }
+          }*/
       ]
   }
   console.log(sendData)

@@ -58,7 +58,7 @@ function usuarioReducer(state = initialState, payload) {
       console.log('EN EL CASE');
       console.log(payload.data);
       Snackbar.show({
-        text: payload.tags.registro != ''? payload.tags.registro:'Registro exitoso',
+        text: payload.tags.registro != ''? payload.tags.registro+' Please Logged in':'Registro exitoso',
         duration: Snackbar.LENGTH_LONG,
       });
 

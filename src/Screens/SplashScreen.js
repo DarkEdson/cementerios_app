@@ -13,6 +13,7 @@ import {splashStyles,mainStyles} from '@styles/stylesGeneral';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {LanguaguesContext} from '@context/LanguaguesContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {CountriesContext} from '@context/CountriesContext';
@@ -33,6 +34,7 @@ export default function SplashScreen(props) {
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
   const [countries, setCountries] = useContext(CountriesContext);
+  const {removeAllItemstoCart} = useContext(ShoppingCartContext);
   const {saveDefaultCountry, updateDefaultCountry} = useContext(CountryContext);
   const {tags, updateTags} = useContext(ScreentagContext);
   const [GlobalLanguage, setGlobalLanguage] = useContext(GlobalLanguageContext)
@@ -151,6 +153,7 @@ export default function SplashScreen(props) {
     fetchCountries();
     getCurrenciesAf();
     getCurrencies();
+    removeAllItemstoCart();
     setTimeout(() => {
       goToScreen('Home');
     }, 3000);

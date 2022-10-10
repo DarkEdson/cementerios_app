@@ -88,6 +88,7 @@ function ShoppingCartProvider({ children }) {
     existe=false
     console.log('carrito vacio')
     setShoppingCart([])
+    setShoppingCart([])
     setcarrito(false)
   }
 
