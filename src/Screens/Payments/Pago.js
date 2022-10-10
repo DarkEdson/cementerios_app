@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import { Icon, FAB } from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //URL de server
@@ -39,7 +40,8 @@ export default function VistaPago(props) {
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const [sede, setSede] = useContext(SedeContext);
   const {    Currency ,getCurrency} = useContext(CurrenciesContext);
-  const {ShoppingCart, removeItemtoCart} = useContext(ShoppingCartContext);
+  const {ShoppingCart, removeItemtoCart,recipe, sendShoppingCartSell
+    ,isLoadingCart} = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -94,6 +96,22 @@ export default function VistaPago(props) {
 
   return (
     <SafeAreaView style={mainStyles.containers}>
+      {isLoadingCart ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingCart}
+            icon={{ name: 'add', color: 'white' }}
+            size="small"
+          />
+        </View>
+      ) : (
       <View style={styles.vista}>
         <ToolBar
           titulo={
@@ -127,7 +145,7 @@ export default function VistaPago(props) {
                   ? tags.PaymentScreen.subtotal
                   : 'Subtotal'}
               </Text>
-              <Text style={styles.valorCuenta}>$ {valoresVenta.subTotal}</Text>
+              <Text style={styles.valorCuenta}> {Currency.symbol+'.'+valoresVenta.subTotal}</Text>
             </View>
             <View style={styles.espacio}>
               <Text style={styles.txtTitulo}>
@@ -135,7 +153,7 @@ export default function VistaPago(props) {
                   ? tags.PaymentScreen.entrega
                   : 'Entrega'}
               </Text>
-              <Text style={styles.valorCuenta}>$ {valoresVenta.entrega}</Text>
+              <Text style={styles.valorCuenta}>{Currency.symbol+'.'+valoresVenta.entrega}</Text>
             </View>
             <View style={styles.espacio2}>
               <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
@@ -143,7 +161,7 @@ export default function VistaPago(props) {
                   ? tags.PaymentScreen.total
                   : 'Total (incl. IVA)'}
               </Text>
-              <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
+              <Text style={styles.valorCuenta}>{Currency.symbol+'.'+valoresVenta.total}</Text>
             </View>
             <View style={styles.espacio}>
               <LargeButton
@@ -172,7 +190,7 @@ export default function VistaPago(props) {
             <MyButton
           titulo={
             tags.PaymentScreen.pagar != ''
-                  ? tags.PaymentScreen.pagar
+                  ? tags.PaymentScreen.pagar + ' ('+ valoresVenta.total+')'
                   : 'Pagar'
           }
           onPress={() => realizarPago()}
@@ -181,7 +199,7 @@ export default function VistaPago(props) {
             <View style={mainStyles.boxTransparent} />
           </View>
         </ScrollView>
-      </View>
+      </View>)}
     </SafeAreaView>
   );
 
@@ -205,6 +223,9 @@ export default function VistaPago(props) {
       ]
   }
   console.log(sendData)
+  sendShoppingCartSell(sendData).then(res => {
+    console.log('COMPRA EXITOSA?', recipe);
+  });
 //P
   }
 

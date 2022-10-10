@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import {apiPago} from '@Apis/ApisGenerales';
 
 const initialState = [];
 
@@ -7,6 +8,8 @@ const ShoppingCartContext = createContext();
 function ShoppingCartProvider({ children }) {
   const [ShoppingCart, setShoppingCart] = useState(initialState);
   const [afiliateCart, setafiliateCart] = useState({})
+  const [isLoadingCart, setisLoadingCart] = useState(false)
+  const [recipe, setrecipe] = useState({})
   const [carrito, setcarrito] = useState(false)
   const [rutaCart, setrutaCart] = useState(false)
   let actualCart
@@ -92,11 +95,23 @@ function ShoppingCartProvider({ children }) {
     setcarrito(false)
   }
 
+
+  async function sendShoppingCartSell(dataCart){
+    setisLoadingCart(true);
+    apiPago(dataCart).then(res => {
+      console.log('RESPUESTA DE COMPRA', res);
+      setrecipe(res);
+      setisLoadingCart(false);
+    });
+  }
+
+
   return (
     <ShoppingCartContext.Provider value={{
       ShoppingCart, addItemtoCart, removeItemtoCart,
       removeAllItemstoCart, afiliateCart, setafiliateCart,
-       carrito, rutaCart, setrutaCart
+       carrito, rutaCart, setrutaCart, recipe, sendShoppingCartSell
+       ,isLoadingCart
     }}>
       {children}
     </ShoppingCartContext.Provider>
