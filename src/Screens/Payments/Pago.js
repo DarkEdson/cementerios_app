@@ -223,9 +223,7 @@ export default function VistaPago(props) {
       ]
   }
   console.log(sendData)
-  sendShoppingCartSell(sendData).then(res => {
-    console.log('COMPRA EXITOSA?', recipe);
-  });
+  sendShoppingCartSell(sendData, goToScreen, 'Initial')
 //P
   }
 
