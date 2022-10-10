@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,30 +8,32 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import {Icon, FAB, ListItem, Button} from '@rneui/themed';
 //Recarga la screen
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 //URL de server
-import { BASE_URL_IMG } from '@utils/config';
+import {BASE_URL_IMG} from '@utils/config';
 //Estilos Generales
-import { mainStyles } from '@styles/stylesGeneral';
+import {mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import PaymentButton from '@Components/common/paymentButton';
 import MyButton from '@Components/common/MyButton';
 //Contextos
-import { UsuarioContext } from '@context/UsuarioContext';
-import { CreditCardContext } from '@context/CreditCardContext';
-import { ScreentagContext } from '@context/ScreentagsContext';
+import {UsuarioContext} from '@context/UsuarioContext';
+import {CreditCardContext} from '@context/CreditCardContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
 
 //tags.paymentMethodsScreen.btn != '' ? tags.paymentMethodsScreen.btn :
 export default function PaymentMethodScreen(props) {
-  const { creditCard, creditCards, setcreditCardSel } = useContext(CreditCardContext);
+  const {creditCard, creditCards, setcreditCardSel} =
+    useContext(CreditCardContext);
   const [loginUser] = useContext(UsuarioContext);
-  const { tags, updateTags } = useContext(ScreentagContext);
+  const {tags, updateTags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => { };
+  const getInitialData = async () => {};
 
   const [data, setData] = useState({
     cardNumber: '',
@@ -96,21 +98,50 @@ export default function PaymentMethodScreen(props) {
                 ? tags.paymentMethodsScreen.tarjetas
                 : 'Tarjetas:'}
             </Text>
-            {creditCards.length >= 1 ? creditCards.map((card, key) =>
-              <PaymentButton
-                key={key}
-                iconLeft={true}
-                titulo={'XXXX-XXXX-XXXX-' + card.last4}
-                iconRight={true}
-                onPress={() => selectCard(card)}
-              />) : null}
+            {creditCards.length >= 1
+              ? creditCards.map((card, key) => (
+                  <ListItem.Swipeable
+                    key={key}
+                    bottomDivider
+                    leftContent={() => (
+                      <Button
+                        title="Info"
+                        onPress={() => selectCard(card)}
+                        icon={{name: 'info', color: 'white'}}
+                        buttonStyle={{minHeight: '100%'}}
+                      />
+                    )}
+                    rightContent={() => (
+                      <Button
+                        title="Delete"
+                        onPress={() => {}}
+                        icon={{name: 'delete', color: 'white'}}
+                        buttonStyle={{
+                          minHeight: '100%',
+                          backgroundColor: 'red',
+                        }}
+                      />
+                    )}>
+                    <ListItem.Content>
+                      <PaymentButton
+                        key={key}
+                        iconLeft={true}
+                        titulo={'XXXX-XXXX-XXXX-' + card.last4}
+                        iconRight={false}
+                        onPress={() => {}}
+                      />
+                    </ListItem.Content>
+                    <ListItem.Chevron />
+                  </ListItem.Swipeable>
+                ))
+              : null}
             <MyButton
               titulo={
                 tags.paymentMethodsScreen.btn != ''
                   ? tags.paymentMethodsScreen.btn
                   : 'Guardar Cambios'
               }
-              onPress={() => { }}
+              onPress={() => {}}
             />
           </View>
         </ScrollView>
@@ -119,11 +150,11 @@ export default function PaymentMethodScreen(props) {
   );
 
   function selectCard(card) {
-    let month ='00'
-    if (1>=parseInt(card.exp_month)<=9){
-      month=`0${card.exp_month}`
-    }else{
-      month=card.exp_month
+    let month = '00';
+    if (parseInt(card.exp_month) <= 1 <= 9) {
+      month = `0${card.exp_month}`;
+    } else {
+      month = card.exp_month;
     }
     setcreditCardSel({
       ...creditCard,

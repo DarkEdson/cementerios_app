@@ -318,7 +318,7 @@ export default function VistaPago(props) {
     console.log(item);
     Alert.alert(
       'Borrar Item',
-      '¿Deguro que desea borrar \nel producto seleccionado?',
+      '¿Seguro que desea borrar \nel producto seleccionado?',
       [
         {
           text:
