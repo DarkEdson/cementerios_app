@@ -21,6 +21,7 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import { UsuarioContext } from '@context/UsuarioContext';
 import { GlobalLanguageContext } from '@context/LanguageContext';
+import { CurrenciesContext } from '@context/CurrencyContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 //Estilos Generales
 import color from '@styles/colors';
@@ -35,6 +36,7 @@ export default function VistaPago(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
+  const {    Currency } = useContext(CurrenciesContext);
   const {ShoppingCart, removeItemtoCart} = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   const isFocused = useIsFocused();
@@ -100,15 +102,16 @@ export default function VistaPago(props) {
         <ScrollView>
           <View>
             <View style={styles.productos}>
-              {ShoppingCart.map((promo, key) => {
+              {ShoppingCart.map((prod, key) => {
                 return (
                   <CardProductoVenta
                     key={key}
-                    urlImagen={promo.principalImage}
-                    titulo={promo.name}
-                    descripcion={promo.description}
-                    precio={promo.price}
-                    cantidad={promo.cantidad}
+                    urlImagen={prod.principalImage}
+                    titulo={prod.name}
+                    descripcion={prod.description}
+                    moneda={prod.moneda}
+                    precio={prod.price}
+                    cantidad={prod.cantidad}
                   />
                 );
               })}
@@ -179,7 +182,7 @@ export default function VistaPago(props) {
   function realizarPago(){
     console.log(loginUser.usuario)
     let sendData={
-      idCurrency: "633cfd03f16c3c907167cb0c",
+      idCurrency: Currency._id,
       idLanguage: GlobalLanguage._id,
       idUser: loginUser.usuario._id,
       value: valoresVenta.total,

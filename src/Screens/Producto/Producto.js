@@ -46,6 +46,7 @@ import { CementeryContext } from '@context/CementeryContext';
 import { RouteBackContext } from '@context/RouteBackContext';
 import { ProductsContext } from '@context/ProductsContext';
 import { CategoryContext } from '@context/CategoryContext';
+import { CurrenciesContext } from '@context/CurrencyContext';
 import { SedeContext } from '@context/SedeContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
@@ -60,11 +61,13 @@ export default function VistaProducto(props) {
     useContext(CementeriesContext);
   const [sede, setSede] = useContext(SedeContext);
   const { RouteBack, setRouteBack } = useContext(RouteBackContext);
+  const { ProductMultimedia, isLoadingProducts } = useContext(ProductsContext);
+  const {  Currency,  getCurrency } = useContext(CurrenciesContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
   const [itemModal, setitemModal] = useState(null)
   const { Category } = useContext(CategoryContext);
-  const { ProductMultimedia, isLoadingProducts } = useContext(ProductsContext);
+
 
   const isFocused = useIsFocused();
   const getInitialData = async () => { };
@@ -79,6 +82,7 @@ export default function VistaProducto(props) {
   useEffect(() => {
     console.log('Producto escogido', Product);
     console.log(rutaCart)
+    //Vacia Carrito si no viene de Afiliado
     if(rutaCart==false){
       if (ShoppingCart.length >=1){
         if(sede.idAffiliate!=afiliateCart._id){
@@ -88,7 +92,8 @@ export default function VistaProducto(props) {
         }
     }
     }
-    
+    //Consultar Moneda
+    getCurrency({_id: sede.idAffiliate})
     // Actualizar valores de la vista
     setPropsVista({
       rating: {
@@ -150,7 +155,7 @@ export default function VistaProducto(props) {
             <InformationIcon
               tipo="font-awesome-5"
               image="dollar-sign"
-              titulo={Product.price}
+              titulo={Currency.symbol+'.'+Product.price}
               subtitulo={tags.ProductDetailScreen.precio != ''
                 ? tags.ProductDetailScreen.precio
                 : 'Precio'}
@@ -360,7 +365,7 @@ export default function VistaProducto(props) {
   }
 
   function itemToCart(producto, routeName) {
-    let item = { ...producto, cantidad: cantProductos };
+    let item = { ...producto, cantidad: cantProductos, moneda: Currency.symbol };
     console.log(item);
     if (rutaCart) {
       setafiliateCart(cementery)

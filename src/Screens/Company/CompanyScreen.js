@@ -43,6 +43,7 @@ import {SedesContext} from '@context/SedesContext';
 import {SedeContext} from '@context/SedeContext';
 import {ProductsContext} from '@context/ProductsContext';
 import {GlobalLanguageContext} from '@context/LanguageContext';
+import { CurrenciesContext } from '@context/CurrencyContext';
 
 //tags.CompanyDetailScreen.mas != '' ? tags.CompanyDetailScreen.mas : 'Mas Populares'
 export default function CompanyScreen(props) {
@@ -61,6 +62,7 @@ export default function CompanyScreen(props) {
   const [infoCart, setinfoCart] = useState('');
   const [totalCart, settotalCart] = useState(0);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
+  const {  Currency , getCurrency} = useContext(CurrenciesContext);
   const [cant, setcant] = useState(2);
   const {
     ProductsSedes,
@@ -301,6 +303,7 @@ export default function CompanyScreen(props) {
                       urlImagen={product.principalImage}
                       titulo={product.name}
                       descripcion={product.description}
+                      moneda={Currency.symbol}
                       precio={product.price}
                     />
                   );
@@ -319,6 +322,7 @@ export default function CompanyScreen(props) {
                     urlImagen={product.principalImage}
                     titulo={product.name}
                     descripcion={product.description}
+                    moneda={Currency.symbol}
                     precio={product.price}
                   />
                 );

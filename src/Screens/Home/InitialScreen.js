@@ -41,6 +41,7 @@ import { CategoryContext } from '@context/CategoryContext';
 import { ProductContext } from '@context/ProductContext';
 import { SedesContext } from '@context/SedesContext';
 import { SedeContext } from '@context/SedeContext';
+import { CurrenciesContext } from '@context/CurrencyContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 //tags.HomeScreen.ubica
@@ -62,6 +63,7 @@ export default function InitialScreen(props) {
   const { Sedes, isLoadingSedes, getSedes, getSedeDirect } = useContext(SedesContext);
   const { Promotions, isLoadingPromotions, getPromotions } =
     useContext(PromotionsContext);
+    const {    getCurrency } = useContext(CurrenciesContext);
   const {
     ProductsCountry,
     isLoadingProducts,
@@ -395,6 +397,7 @@ export default function InitialScreen(props) {
   function selectCementery(cementery, routeName) {
     setrutaCart(true)
     setCementery(cementery);
+    getCurrency(cementery)
     getSedes(cementery, setSede, goToScreen, routeName, country);
     setRouteBackComp('Home');
   }

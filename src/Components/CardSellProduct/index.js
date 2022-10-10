@@ -24,7 +24,7 @@ export default function CardProductoVenta(props) {
           </Text>
         </View>
         <View style={styles.left}>
-          <Text style={styles.precio}>US{props.precio} </Text>
+          <Text style={styles.precio}>{props.moneda+'.'+props.precio} </Text>
           <Text style={styles.cantidad}>x{props.cantidad}</Text>
         </View>
       </View>
