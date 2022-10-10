@@ -73,165 +73,171 @@ export default function PersonalDataScreen(props) {
   }, [nuevoLenguaje]);
 
   return (
-    <SafeAreaView style={mainStyles.containersp} > 
-    <ScrollView>
-      <View style={styles.container}>
-        {isLoading ? (
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '50%',
-            }}>
-            <Text style={{paddingVertical: 10}}>
-              {nuevoLenguaje.code == 'en'
-                ? 'Updating Configuration'
-                : 'Actualizando Configuracion'}
-            </Text>
+    <SafeAreaView style={mainStyles.containersp}>
+      <ScrollView>
+        <View style={styles.container}>
+          {isLoading ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: '50%',
+              }}>
+              <Text style={{paddingVertical: 10}}>
+                {nuevoLenguaje.code == 'en'
+                  ? 'Updating Configuration'
+                  : 'Actualizando Configuracion'}
+              </Text>
 
-            <FAB
-              loading
-              color={color.PRINCIPALCOLOR}
-              visible={isLoading}
-              icon={{name: 'add', color: 'white'}}
-              size="small"
-            />
-          </View>
-        ) : (
-          <View>
-            <StatusBar
-              backgroundColor={color.PRINCIPALCOLOR}
-              barStyle="dark-content"
-              translucent={true}
-            />
-            <ToolBar
-              titulo={
-                tags.personalDataScreen.titulo != ''
-                  ? tags.personalDataScreen.titulo
-                  : 'Datos Personales'
-              }
-              onPressLeft={() => goToScreen('Profile')}
-              iconLeft={true}
-            />
-            <Text style={styles.txtComponente}>
-              {tags.personalDataScreen.nombre != ''
-                ? tags.personalDataScreen.nombre
-                : 'Nombre'}
-            </Text>
-            <View style={{backgroundColor: color.WHITE}}>
-              <Text style={styles.txtComponente}>
-                {' '}
-                {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
-              </Text>
+              <FAB
+                loading
+                color={color.PRINCIPALCOLOR}
+                visible={isLoading}
+                icon={{name: 'add', color: 'white'}}
+                size="small"
+              />
             </View>
-            <Text style={styles.txtComponente}>
-              {tags.personalDataScreen.email != ''
-                ? tags.personalDataScreen.email
-                : 'e-mail'}
-            </Text>
-            <View style={{backgroundColor: color.WHITE}}>
+          ) : (
+            <View>
+              <StatusBar
+                backgroundColor={color.PRINCIPALCOLOR}
+                barStyle="dark-content"
+                translucent={true}
+              />
+              <ToolBar
+                titulo={
+                  tags.personalDataScreen.titulo != ''
+                    ? tags.personalDataScreen.titulo
+                    : 'Datos Personales'
+                }
+                onPressLeft={() => goToScreen('Profile')}
+                iconLeft={true}
+              />
               <Text style={styles.txtComponente}>
-                {loginUser.usuario.email}
+                {tags.personalDataScreen.nombre != ''
+                  ? tags.personalDataScreen.nombre
+                  : 'Nombre'}
               </Text>
-            </View>
-            <Text style={styles.txtComponente}>
-              {tags.personalDataScreen.codigo != ''
-                ? tags.personalDataScreen.codigo
-                : 'Codigo de vendedor'}
-            </Text>
-            <View style={{backgroundColor: color.WHITE}}>
-              <Text style={styles.txtComponente}>
-                {loginUser.usuario.id_number}
-              </Text>
-            </View>
-            <Text style={styles.txtComponente}>
-              {tags.personalDataScreen.editar != ''
-                ? tags.personalDataScreen.editar
-                : 'Editar'}
-            </Text>
-            <View style={{backgroundColor: color.WHITE}}>
-              <View style={styles.espacio}>
-                <LargeButton
-                  titulo={
-                    tags.personalDataScreen.info != ''
-                      ? tags.personalDataScreen.info
-                      : 'Informacion personal'
-                  }
-                  onPressRight={() => goToScreen('EditProfile')}
-                  iconRight={true}
-                />
-              </View>
-              <View style={styles.espacio}>
-                <LargeButton
-                  titulo={
-                    tags.personalDataScreen.contrasena != ''
-                      ? tags.personalDataScreen.contrasena
-                      : 'Contraseña         '
-                  }
-                  onPressRight={() => goToScreen('PasswordChange')}
-                  iconRight={true}
-                />
-              </View>
-              <View style={styles.espacio}>
-                <LargeButton
-                  titulo={
-                    tags.personalDataScreen.metodos != ''
-                      ? tags.personalDataScreen.metodos
-                      : 'Metodos de Pago'
-                  }
-                  onPressRight={() => goToScreen('PaymentMethod')}
-                  iconRight={true}
-                />
-              </View>
-              <View style={styles.espacio}>
-                <Text style={styles.sectionDescription}>
-                  {tags.personalDataScreen.idioma != ''
-                    ? tags.personalDataScreen.idioma
-                    : 'Cambiar Idioma'}
+              <View style={{backgroundColor: color.WHITE}}>
+                <Text style={styles.txtComponente}>
+                  {' '}
+                  {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
                 </Text>
-                <SelectDropdown
-                  data={lenguajes}
-                  defaultValue={defaultLanguage}
-                  //   defaultValueByIndex={0}
-                  defaultButtonText="Cambia Idioma"
-                  buttonTextStyle={{textAlign: 'left'}}
-                  buttonStyle={styles.btnDropStyle}
-                  dropdownStyle={{marginLeft: 15}}
-                  renderDropdownIcon={isOpened => {
-                    return (
-                      <Icon
-                        type={'font-awesome'}
-                        name={isOpened ? 'chevron-up' : 'chevron-down'}
-                        color={'#444'}
-                        size={12}
-                      />
-                    );
-                  }}
-                  dropdownIconPosition="right"
-                  onSelect={(selectedItem, index) => {
-                    setLoading(true);
-                    console.log(selectedItem.label, index, selectedItem.value);
-                    Languagues.forEach(item => {
-                      if (item.code == selectedItem.value) {
-                        setnuevoLenguaje(item);
-                        updateLanguage(item, actualizaTags);
-                        setGlobalLanguage(item);
-                      }
-                    });
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem.label;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    return item.label;
-                  }}
-                />
+              </View>
+              <Text style={styles.txtComponente}>
+                {tags.personalDataScreen.email != ''
+                  ? tags.personalDataScreen.email
+                  : 'e-mail'}
+              </Text>
+              <View style={{backgroundColor: color.WHITE}}>
+                <Text style={styles.txtComponente}>
+                  {loginUser.usuario.email}
+                </Text>
+              </View>
+              <Text style={styles.txtComponente}>
+                {tags.personalDataScreen.codigo != ''
+                  ? tags.personalDataScreen.codigo
+                  : 'Codigo de vendedor'}
+              </Text>
+              <View style={{backgroundColor: color.WHITE}}>
+                <Text style={styles.txtComponente}>
+                  {loginUser.usuario.id_number
+                    ? loginUser.usuario.id_number
+                    : loginUser.usuario.vendorcode}
+                </Text>
+              </View>
+              <Text style={styles.txtComponente}>
+                {tags.personalDataScreen.editar != ''
+                  ? tags.personalDataScreen.editar
+                  : 'Editar'}
+              </Text>
+              <View style={{backgroundColor: color.WHITE}}>
+                <View style={styles.espacio}>
+                  <LargeButton
+                    titulo={
+                      tags.personalDataScreen.info != ''
+                        ? tags.personalDataScreen.info
+                        : 'Informacion personal'
+                    }
+                    onPressRight={() => goToScreen('EditProfile')}
+                    iconRight={true}
+                  />
+                </View>
+                <View style={styles.espacio}>
+                  <LargeButton
+                    titulo={
+                      tags.personalDataScreen.contrasena != ''
+                        ? tags.personalDataScreen.contrasena
+                        : 'Contraseña         '
+                    }
+                    onPressRight={() => goToScreen('PasswordChange')}
+                    iconRight={true}
+                  />
+                </View>
+                <View style={styles.espacio}>
+                  <LargeButton
+                    titulo={
+                      tags.personalDataScreen.metodos != ''
+                        ? tags.personalDataScreen.metodos
+                        : 'Metodos de Pago'
+                    }
+                    onPressRight={() => goToScreen('PaymentMethod')}
+                    iconRight={true}
+                  />
+                </View>
+                <View style={styles.espacio}>
+                  <Text style={styles.sectionDescription}>
+                    {tags.personalDataScreen.idioma != ''
+                      ? tags.personalDataScreen.idioma
+                      : 'Cambiar Idioma'}
+                  </Text>
+                  <SelectDropdown
+                    data={lenguajes}
+                    defaultValue={defaultLanguage}
+                    //   defaultValueByIndex={0}
+                    defaultButtonText="Cambia Idioma"
+                    buttonTextStyle={{textAlign: 'left'}}
+                    buttonStyle={styles.btnDropStyle}
+                    dropdownStyle={{marginLeft: 15}}
+                    renderDropdownIcon={isOpened => {
+                      return (
+                        <Icon
+                          type={'font-awesome'}
+                          name={isOpened ? 'chevron-up' : 'chevron-down'}
+                          color={'#444'}
+                          size={12}
+                        />
+                      );
+                    }}
+                    dropdownIconPosition="right"
+                    onSelect={(selectedItem, index) => {
+                      setLoading(true);
+                      console.log(
+                        selectedItem.label,
+                        index,
+                        selectedItem.value,
+                      );
+                      Languagues.forEach(item => {
+                        if (item.code == selectedItem.value) {
+                          setnuevoLenguaje(item);
+                          updateLanguage(item, actualizaTags);
+                          setGlobalLanguage(item);
+                        }
+                      });
+                    }}
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                      return selectedItem.label;
+                    }}
+                    rowTextForSelection={(item, index) => {
+                      return item.label;
+                    }}
+                  />
+                </View>
               </View>
             </View>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 
