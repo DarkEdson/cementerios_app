@@ -23,6 +23,7 @@ import { UsuarioContext } from '@context/UsuarioContext';
 import { GlobalLanguageContext } from '@context/LanguageContext';
 import { CurrenciesContext } from '@context/CurrencyContext';
 import {RouteBackContext} from '@context/RouteBackContext';
+import { SedeContext } from '@context/SedeContext';
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -36,7 +37,8 @@ export default function VistaPago(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const {    Currency } = useContext(CurrenciesContext);
+  const [sede, setSede] = useContext(SedeContext);
+  const {    Currency ,getCurrency} = useContext(CurrenciesContext);
   const {ShoppingCart, removeItemtoCart} = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   const isFocused = useIsFocused();
@@ -64,6 +66,9 @@ export default function VistaPago(props) {
         paid_value: item.cantidad * parseFloat(precioItem)
       })
     });
+    //Consultar Moneda
+    getCurrency({_id: sede.idAffiliate})
+    console.log(Currency, )
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: subtotal,
@@ -109,7 +114,7 @@ export default function VistaPago(props) {
                     urlImagen={prod.principalImage}
                     titulo={prod.name}
                     descripcion={prod.description}
-                    moneda={prod.moneda}
+                    moneda={prod.moneda ? prod.moneda : Currency.symbol}
                     precio={prod.price}
                     cantidad={prod.cantidad}
                   />
