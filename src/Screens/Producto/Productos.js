@@ -1,254 +1,221 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Text,
   View,
   StyleSheet,
   ScrollView,
+  SafeAreaView,
   Dimensions,
   StatusBar,
   Platform,
   TextInput,
 } from 'react-native';
+import { Icon, FAB } from '@rneui/themed';
 //URL de server
-import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+import { BASE_URL_IMG, PRODUCTS_URL } from '@utils/config';
 //Recarga la screen
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 //Estilos Generales
 import color from '@styles/colors';
+import {
+  mainStyles,
+} from '@styles/stylesGeneral';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardProducto from '@Components/CardProducto/index';
 //Contextos
-import {ScreentagContext} from '@context/ScreentagsContext';
+import { ScreentagContext } from '@context/ScreentagsContext';
+import { ProductContext } from '@context/ProductContext';
+import { RouteBackContext } from '@context/RouteBackContext';
+import { ProductsContext } from '@context/ProductsContext';
+import { CategoriesContext } from '@context/CategoriesContext';
+import { CategoryContext } from '@context/CategoryContext';
+import { SedesContext } from '@context/SedesContext';
+import { SedeContext } from '@context/SedeContext';
+import { GlobalLanguageContext } from '@context/LanguageContext';
+import { ShoppingCartContext } from '@context/ShoppingCartContext';
 
 //tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const { tags } = useContext(ScreentagContext);
+  const [GlobalLanguage] = useContext(GlobalLanguageContext);
+  const {  setrutaCart } = useContext(ShoppingCartContext);
+  const [Product, setProduct] = useContext(ProductContext);
+  const [sede, setSede] = useContext(SedeContext);
+  const { isLoadingSedes,  getSedeDirect } = useContext(SedesContext);
+  const { setRouteBack } = useContext(RouteBackContext);
+  const {
+    ProductsCountry,
+    ProductsCategory,
+    ProductsFullCategory,
+    isLoadingProducts,
+    getProductsFullbyCategory,
+    getMultimediabyProduct,
+  } = useContext(ProductsContext);
+  const { categories } =
+    useContext(CategoriesContext);
+  const { isCategory, setisCategory, setCategory } = useContext(CategoryContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => {};
+  const getInitialData = async () => { };
 
   // Cargar informacion de la vista
   useEffect(() => {
-    // Actualizar valores de la vista
-    setPropsVista({
-      label1: 'Productos',
-      labelSearch: 'Cementerio, Producto, Categoría...',
-      productos: [
-        {
-          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`,
-          titulo: 'Perla Magistral 2',
-          descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
-          categoria: 'CMar',
-          cementerio: 'capillas',
-          idCementerio: 1,
-        },
-        {
-          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-        {
-          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`,
-          titulo: 'Perla Magistral 2',
-          descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
-          categoria: 'CMar',
-          cementerio: 'capillas',
-          idCementerio: 1,
-        },
-        {
-          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_4.jpg`,
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-        {
-          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_5.jpg`,
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-        {
-          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_6.jpg`,
-          titulo: 'Perla Magistral 2',
-          descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
-          categoria: 'CMar',
-          cementerio: 'capillas',
-          idCementerio: 1,
-        },
-        {
-          urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_7.jpg`,
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-      ],
-    });
+    if (isCategory) {
+      let arrayP = [];
+      ProductsCountry.forEach(producto => {
+        ProductsCategory.forEach(p => {
+          if (p._id == producto._id) {
+            arrayP.push(producto);
+          }
+        });
+      });
+      getProductsFullbyCategory(arrayP, GlobalLanguage);
+      setArrProductosDisp(arrayP);
+    } else {
+      setArrProductosDisp(ProductsCountry);
+    }
 
-    setArrProductosDisp([
-      {
-        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`,
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        idCementerio: 1,
-      },
-      {
-        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        idCementerio: 2,
-      },
-      {
-        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`,
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        idCementerio: 1,
-      },
-      {
-        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_4.jpg`,
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        idCementerio: 2,
-      },
-      {
-        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_5.jpg`,
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        idCementerio: 2,
-      },
-      {
-        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_6.jpg`,
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        idCementerio: 1,
-      },
-      {
-        urlImagen: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_7.jpg`,
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        idCementerio: 2,
-      },
-    ]);
     if (isFocused) {
       getInitialData();
       console.log('isFocused in Products');
     }
+    //props, isFocused
   }, [props, isFocused]);
-
-  // Variables de la vista
-  const [propsVista, setPropsVista] = useState({
-    label1: '',
-    labelSearch: '',
-    productos: [],
-  });
 
   // Variable de trabajo
   const [arrProductosDisp, setArrProductosDisp] = useState([]);
 
   return (
-    <View>
-      <StatusBar
-        backgroundColor={color.PRINCIPALCOLOR}
-        barStyle="dark-content"
-        translucent={true}
-      />
-      <ToolBar
-        titulo={
-          tags.ProductsScreen.labelproductos != ''
-            ? tags.ProductsScreen.labelproductos
-            : 'Productos'
-        }
-        onPressLeft={() => goToScreen('Initial')}
-        iconLeft={true}
-      />
-      <View style={styles.containerHeader}>
-        <View style={styles.searchSection}>
-          <TextInput
-            style={styles.input}
-            placeholder={
-              tags.ProductsScreen.labelsearch1 != ''
-                ? tags.ProductsScreen.labelsearch1
-                : 'Cementerio, Producto, Categoría...'
-            }
-            onChangeText={val => {
-              setArrProductosDisp(
-                propsVista.productos.filter(
-                  p =>
-                    p.cementerio
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) ||
-                    p.titulo
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) ||
-                    p.categoria
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) ||
-                    p.descripcion
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()),
-                ),
-              );
-            }}
-          />
-        </View>
-      </View>
+    <SafeAreaView style={mainStyles.containers} >
+      <View>
+        {isCategory && isLoadingProducts ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '50%',
+            }}>
+            <FAB
+              loading
+              color={color.PRINCIPALCOLOR}
+              visible={isLoadingProducts}
+              icon={{ name: 'add', color: 'white' }}
+              size="small"
+            />
+          </View>
+        ) : isLoadingSedes ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '50%',
+            }}>
+            <FAB
+              loading
+              color={color.PRINCIPALCOLOR}
+              visible={isLoadingSedes}
+              icon={{ name: 'add', color: 'white' }}
+              size="small"
+            />
+          </View>
+        ) : (
+          <View>
+            <StatusBar
+              backgroundColor={color.PRINCIPALCOLOR}
+              barStyle="dark-content"
+              translucent={true}
+            />
+            <ToolBar
+              titulo={
+                tags.ProductsScreen.labelproductos != ''
+                  ? tags.ProductsScreen.labelproductos
+                  : 'Productos'
+              }
+              onPressLeft={() => {
+                setisCategory(false);
+                goToScreen('Initial');
+              }}
+              iconLeft={true}
+            />
+            <View style={styles.containerHeader}>
+              <View style={styles.searchSection}>
+                <TextInput
+                  style={styles.input}
+                  placeholder={
+                    tags.ProductsScreen.labelsearch1 != ''
+                      ? tags.ProductsScreen.labelsearch1
+                      : 'Cementerio, Producto, Categoría...'
+                  }
+                  onChangeText={val => {
+                    setArrProductosDisp(
+                      isCategory
+                        ? ProductsFullCategory.filter(p =>
+                          p.name
+                            .toLocaleLowerCase()
+                            .includes(val.toLocaleLowerCase()),
+                        )
+                        : ProductsCountry.filter(p =>
+                          p.name
+                            .toLocaleLowerCase()
+                            .includes(val.toLocaleLowerCase()),
+                        ),
+                    );
+                  }}
+                />
+              </View>
+            </View>
 
-      <ScrollView style={styles.scroll}>
-        <View style={styles.containerHeader}>
-          {arrProductosDisp.map((promo, key) => {
-            return (
-              <CardProducto
-                key={key}
-                onPressProduct={() => goToScreen('Product')}
-                urlImagen={promo.urlImagen}
-                titulo={promo.titulo}
-                descripcion={promo.descripcion}
-                precio={promo.precio}
-              />
-            );
-          })}
-        </View>
-        <View style={styles.boxTransparent} />
-      </ScrollView>
-    </View>
+            <ScrollView style={styles.scroll}>
+              <View style={styles.containerHeader}>
+                {arrProductosDisp.map((product, key) => {
+                  return (
+                    <CardProducto
+                      key={key}
+                      onPressProduct={() => selectedProduct(product, 'Product')}
+                      urlImagen={product.principalImage}
+                      titulo={product.name}
+                      descripcion={product.description}
+                      precio={tags.ProductsScreen.detallePrecio != ''
+                      ? tags.ProductsScreen.detallePrecio
+                      : 'Ver Precio Dentro'}
+                    />
+                  );
+                })}
+                <View style={styles.boxTransparent} />
+              </View>
+              <View style={styles.boxTransparent} />
+            </ScrollView>
+          </View>
+        )}
+      </View>
+    </SafeAreaView>
   );
+
+  function selectedProduct(producto, routeName) {
+    if (isCategory) {
+      prodSel(producto, routeName, 'Productos')
+
+    } else {
+      categories.forEach(category => {
+        if (category._id == producto.idCategory) {
+          setCategory(category);
+          prodSel(producto, routeName, 'Productos')
+        }
+      });
+
+    }
+
+  }
+
+  function prodSel(producto, routeName, routeB) {
+    setrutaCart(false)
+    setProduct(producto);
+    getMultimediabyProduct(producto);
+    setRouteBack(routeB);
+    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName)
+  }
+
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
   }

@@ -4,6 +4,7 @@ import {
   StatusBar,
   Image,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
@@ -40,9 +41,11 @@ export default function LoginScreen(props) {
       console.log('isFocused in Login');
     }
     return () => {};
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   return (
+    <SafeAreaView style={mainStyles.containers} >
     <ScrollView>
       <View style={mainStyles.container}>
         <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
@@ -111,18 +114,21 @@ export default function LoginScreen(props) {
         <View style={loginStyles.boxTransparent} />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 
   function iniciarSesion() {
     console.log('boton login');
     if (email == '' || password == '') {
       Snackbar.show({
-        text: 'Usuario o Contraseña en Blanco',
+        text: tags.dialogAlertsScreen.a != ''
+        ? tags.dialogAlertsScreen.a
+        : 'Usuario o Contraseña en Blanco',
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
       console.log(email, password);
-      login(email, password, goToScreen, loginAction);
+      login(email, password, goToScreen, loginAction, tags.dialogAlertsScreen);
     }
   }
   function goToScreen(routeName) {

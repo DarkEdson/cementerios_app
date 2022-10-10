@@ -13,7 +13,7 @@ export const AuthProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
 
-  const register = (userNew, goToScreen, loginAction) => {
+  const register = (userNew, goToScreen, loginAction, tags) => {
     setIsLoading(true);
 
     axios
@@ -22,10 +22,11 @@ export const AuthProvider = ({children}) => {
         name: userNew.name,
         email: userNew.email,
         password: userNew.password,
+        role: userNew.role,
         lastname: userNew.lastname,
         paypal_id: userNew.paypal_id,
-        id_number: userNew.id_number,
-        phone: '',
+        phone: userNew.phone,
+        status: '0'
       })
       .then(res => {
         let userInfo = res.data;
@@ -35,18 +36,24 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.setItem('tokenUserInfo', JSON.stringify(tokenUserInfo));
         //   AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
         loginAction({
-          type: 'sign',
+          type: 'register',
           data: userInfo,
+          tags:{
+            registro:  tags.q != ''
+            ? tags.q
+            : 'Registro con Exito'
+
+          }
         });
         console.log(userInfo, 'dentro del registro');
         AsyncStorage.removeItem('errorInfo');
         setIsLoading(false);
         setErrorInfo(null);
-        goToScreen('Splash');
+        goToScreen('Login');
       })
       .catch(e => {
         console.log(`register error ${e}`);
-        let errorInfo = e.response.data;
+        let errorInfo = e.response.message;
         console.log(errorInfo);
         AsyncStorage.setItem('errorInfo', JSON.stringify(errorInfo));
         Snackbar.show({
@@ -60,7 +67,7 @@ export const AuthProvider = ({children}) => {
       });
   };
 
-  function login(email, password, goToScreen, loginAction) {
+  function login(email, password, goToScreen, loginAction, tags) {
     setIsLoading(true);
     console.log(email, password, 'dentro de loginauth');
     axios
@@ -81,6 +88,11 @@ export const AuthProvider = ({children}) => {
         loginAction({
           type: 'sign',
           data: userInfo,
+          tags:{
+            inicio:  tags.p != ''
+            ? tags.p
+            : 'Inicio de sesion con Exito',
+          }
         });
         goToScreen('Splash');
       })
@@ -92,10 +104,27 @@ export const AuthProvider = ({children}) => {
         setErrorInfo(errorInfo);
         setIsLoading(false);
         setUserInfo({});
-        Snackbar.show({
-          text: errorInfo,
-          duration: Snackbar.LENGTH_LONG,
-        });
+        if (errorInfo == 'Invalid password!'){
+          Snackbar.show({
+            text: tags.b != ''
+            ? tags.b
+            : errorInfo,
+            duration: Snackbar.LENGTH_LONG,
+          });
+        }else if (errorInfo =='Email or Password is wrong!'){
+          Snackbar.show({
+            text: tags.c != ''
+            ? tags.c
+            : errorInfo,
+            duration: Snackbar.LENGTH_LONG,
+          });
+        }else{
+          Snackbar.show({
+            text: errorInfo,
+            duration: Snackbar.LENGTH_LONG,
+          });
+        }
+        
         goToScreen('Login');
       });
   }

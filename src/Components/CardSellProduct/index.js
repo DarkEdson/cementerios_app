@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 export default function CardProductoVenta(props) {
+
   return (
     <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressProduct}>
       <View style={{...styles.view, backgroundColor: props.bgColor}}>
@@ -23,7 +24,7 @@ export default function CardProductoVenta(props) {
           </Text>
         </View>
         <View style={styles.left}>
-          <Text style={styles.precio}>US{props.precio} </Text>
+          <Text style={styles.precio}>{props.moneda+'.'+props.precio} </Text>
           <Text style={styles.cantidad}>x{props.cantidad}</Text>
         </View>
       </View>
@@ -32,7 +33,7 @@ export default function CardProductoVenta(props) {
           marginHorizontal: '7%',
           marginVertical: 2.5,
           width: '85%',
-          borderBottomColor: color.GRAY,
+          borderBottomColor: color.GRAY2,
           borderBottomWidth: 2,
         }}
       />

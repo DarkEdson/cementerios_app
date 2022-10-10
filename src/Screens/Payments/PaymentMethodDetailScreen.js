@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, SafeAreaView, View} from 'react-native';
 import {CreditCardInput} from 'react-native-credit-card-input';
 import {saveTarjetas, getTarjetas} from '@storage/CreditCardAsyncStorage';
 import Snackbar from 'react-native-snackbar';
@@ -58,7 +58,8 @@ export default function PaymentMethodDetailScreen(props) {
       getInitialData();
       console.log('isFocused Promo');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   return (
     <View style={{flex: 1, alignItems: 'center'}}>

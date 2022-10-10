@@ -10,6 +10,7 @@ export default function CardColaborador(props) {
           <Card>
             <Image
               style={styles.imgCategoria}
+              resizeMode='stretch'
               source={{uri: props.urlImagen}}
             />
           </Card>
@@ -24,7 +25,7 @@ export default function CardColaborador(props) {
 
 const styles = StyleSheet.create({
   cuerpoCard: {
-    marginLeft: '5%',
+    marginLeft: '2%',
     marginTop: '3%',
     marginBottom: '3%',
     width: '65%',
@@ -44,11 +45,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '30%',
     flexDirection: 'row',
-    marginBottom: '5%',
+    marginBottom: '5%',  
   },
   titulo: {
     fontWeight: '700',
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: 18,
     marginTop: 10,
     width: '100%',

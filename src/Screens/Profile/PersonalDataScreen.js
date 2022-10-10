@@ -7,13 +7,14 @@ import {
   Image,
   ImageBackground,
   StyleSheet,
+  SafeAreaView,
   TouchableOpacity,
   StatusBar,
   Alert,
   BackHandler,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-import {Icon} from '@rneui/themed';
+import {Icon, FAB} from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
@@ -27,6 +28,7 @@ import {LanguaguesContext} from '@context/LanguaguesContext';
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {GlobalLanguageContext} from '@context/LanguageContext';
 //Async Storage
 import {
   getLanguague,
@@ -41,6 +43,7 @@ export default function PersonalDataScreen(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
   const [lenguajes, setLenguajes] = useState([]);
   const [defaultLanguage, setdefaultLanguage] = useState({});
+  const [GlobalLanguage, setGlobalLanguage] = useContext(GlobalLanguageContext);
   const [nuevoLenguaje, setnuevoLenguaje] = useState({});
   let arrayLenguajes = [];
   const [isLoading, setLoading] = useState(false);
@@ -52,8 +55,13 @@ export default function PersonalDataScreen(props) {
   useEffect(() => {
     async function lenguajeDefault() {
       const lenguaje = await getLanguague();
-      console.log(lenguaje, 'lenguaje que esta guardado en Personal Data');
+      console.log(
+        lenguaje,
+        'lenguaje que esta guardado en Personal Data',
+        GlobalLanguage,
+      );
       setdefaultLanguage({label: lenguaje.name, value: lenguaje.code});
+      setGlobalLanguage(lenguaje);
     }
     Languagues.forEach(item => {
       arrayLenguajes.push({label: item.name, value: item.code});
@@ -65,6 +73,7 @@ export default function PersonalDataScreen(props) {
   }, [nuevoLenguaje]);
 
   return (
+    <SafeAreaView style={mainStyles.containersp} > 
     <ScrollView>
       <View style={styles.container}>
         {isLoading ? (
@@ -74,12 +83,19 @@ export default function PersonalDataScreen(props) {
               alignItems: 'center',
               marginTop: '50%',
             }}>
-            <Text>
+            <Text style={{paddingVertical: 10}}>
               {nuevoLenguaje.code == 'en'
                 ? 'Updating Configuration'
                 : 'Actualizando Configuracion'}
             </Text>
-            <ActivityIndicator size="large" />
+
+            <FAB
+              loading
+              color={color.PRINCIPALCOLOR}
+              visible={isLoading}
+              icon={{name: 'add', color: 'white'}}
+              size="small"
+            />
           </View>
         ) : (
           <View>
@@ -198,8 +214,8 @@ export default function PersonalDataScreen(props) {
                     Languagues.forEach(item => {
                       if (item.code == selectedItem.value) {
                         setnuevoLenguaje(item);
-
                         updateLanguage(item, actualizaTags);
+                        setGlobalLanguage(item);
                       }
                     });
                   }}
@@ -216,6 +232,7 @@ export default function PersonalDataScreen(props) {
         )}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 
   function actualizaTags() {
@@ -256,7 +273,6 @@ const styles = StyleSheet.create({
     marginRight: '5%',
     height: 50,
     marginBottom: 3,
-    borderBottomWidth: 1,
     borderColor: 'grey',
     flexDirection: 'row',
   },

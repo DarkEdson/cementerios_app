@@ -1,7 +1,7 @@
 import React, {createContext, useReducer, useState} from 'react';
 import {saveUsuario, deleteUsuario} from '@storage/UsuarioAsyncStorage';
 import Snackbar from 'react-native-snackbar';
-import apiRegister from '../Apis/RegisterApi';
+import apiRegister from '@Apis/RegisterApi';
 
 const initialState = {
   usuario: {
@@ -34,7 +34,7 @@ function usuarioReducer(state = initialState, payload) {
       console.log('EN EL CASE');
       console.log(payload.data);
       Snackbar.show({
-        text: 'Iniciando Sesion',
+        text: payload.tags.inicio != ''? payload.tags.inicio:'Iniciando Sesion',
         duration: Snackbar.LENGTH_LONG,
       });
 
@@ -45,29 +45,24 @@ function usuarioReducer(state = initialState, payload) {
         console.log(msg);
       });
       Snackbar.show({
-        text: 'Sesión expirada',
+        text: payload.tags.mensaje != ''? payload.tags.mensaje: 'Sesión expirada',
         duration: Snackbar.LENGTH_LONG,
       });
 
       return {...state, usuario: payload.data, activo: false};
     case 'register':
-      loginUser = apiRegister(payload.data).then(res => {
-        console.log('dentro de la funcion consultora REGISTER');
-        console.log(res);
-
-        saveUsuario(res).then(msg => {
-          console.log('usuario guardado');
-        });
+      saveUsuario(payload.data).then(msg => {
+        console.log('usuario registrado');
       });
 
-      console.log('EN EL CASE REGISTER');
-      console.log(loginUser);
+      console.log('EN EL CASE');
+      console.log(payload.data);
       Snackbar.show({
-        text: 'Registro exitoso, Bienvenido',
+        text: payload.tags.registro != ''? payload.tags.registro+' Please Logged in':'Registro exitoso',
         duration: Snackbar.LENGTH_LONG,
       });
 
-      return {...state, usuario: loginUser, activo: true};
+      return {...state, usuario: payload.data, activo: true};
 
     default:
       return state;

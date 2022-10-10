@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, StatusBar} from 'react-native';
 import color from './colors';
 
 //Estilos para MainScreen
@@ -10,10 +10,26 @@ const mainStyles = StyleSheet.create({
     backgroundColor: color.WHITE,
     paddingHorizontal: 20,
   },
+  containers: {
+    flex: 1,
+    backgroundColor: color.WHITE,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight-Dimensions.get('screen').height * 0.020 : 0,
+  },
+  containersp: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight-Dimensions.get('screen').height * 0.020: 0,
+  },
   logoImage: {
     width: 230,
     height: 185,
     marginBottom: 20,
+  },
+  leftView:{
+    position: 'absolute',
+    right: 4,
+    top: Dimensions.get('screen').height * 0.050,
+    flexDirection: 'row',
+    width: 120
   },
   headerBackground: {
     marginTop: Dimensions.get('screen').height * 0.03,
@@ -151,8 +167,18 @@ const mainStyles = StyleSheet.create({
     height: 50,
     marginBottom: 3,
     borderBottomWidth: 1,
-    borderColor: 'grey',
+    borderColor: color.GRAY2,
     flexDirection: 'row',
+  },
+  noPromoView: {
+    textAlign: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  promoText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: color.PRINCIPALCOLOR,
   },
 });
 
@@ -181,7 +207,7 @@ const splashStyles = StyleSheet.create({
   logo: {
     width: 190,
     height: 151,
-    marginTop: 20,
+    marginTop: 60,
     marginBottom: Dimensions.get('screen').height * 0.2,
     marginHorizontal: Dimensions.get('screen').width * 0.25,
   },
@@ -321,7 +347,7 @@ const CementeryScreen = StyleSheet.create({
     color: color.GRAY3,
   },
   subtitleFooterText: {
-    marginLeft: -20,
+    alignSelf: 'center',
     fontSize: 19,
     fontWeight: '600',
     color: color.GRAY3,

@@ -4,16 +4,22 @@ import {
   Text,
   ImageBackground,
   Platform,
+  SafeAreaView,
   NativeModules,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {splashStyles} from '@styles/stylesGeneral';
+//Estilos Generales
+import {splashStyles,mainStyles} from '@styles/stylesGeneral';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {LanguaguesContext} from '@context/LanguaguesContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {CountriesContext} from '@context/CountriesContext';
+import {CountryContext} from '@context/CountryContext';
+import { GlobalLanguageContext } from '@context/LanguageContext';
+import { CurrenciesContext } from '@context/CurrencyContext';
 //Apis
 import {apiLanguage, apiIdScreens} from '@Apis/ApisGenerales';
 import locationsApi from '@Apis/LocationsApi';
@@ -21,13 +27,22 @@ import locationsApi from '@Apis/LocationsApi';
 import {getUsuario} from '@storage/UsuarioAsyncStorage';
 import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getcountry} from '@storage/CountryAsyncStorage';
 
 export default function SplashScreen(props) {
   const [login, loginAction] = useContext(UsuarioContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
   const [countries, setCountries] = useContext(CountriesContext);
+  const {removeAllItemstoCart} = useContext(ShoppingCartContext);
+  const {saveDefaultCountry, updateDefaultCountry} = useContext(CountryContext);
   const {tags, updateTags} = useContext(ScreentagContext);
+  const [GlobalLanguage, setGlobalLanguage] = useContext(GlobalLanguageContext)
+  const {
+    isLoadingCurrencies,
+    getCurrenciesAf,
+    getCurrencies,
+  } = useContext(CurrenciesContext);
 
   const [bienvenida, setbienvenida] = useState('es');
   let deviceLanguage =
@@ -49,6 +64,7 @@ export default function SplashScreen(props) {
       };
       clearAsyncStorage();
     }
+
     console.log('LENGUAJE DE SISTEMA', deviceLanguage.substr(0, 2));
     obtenerLenguaje(defaultLanguage);
     fetchSesion(loginAction);
@@ -77,35 +93,30 @@ export default function SplashScreen(props) {
   async function obtenerLenguaje(defecto) {
     const response = await apiLanguage();
     setLanguagues(response);
-    console.log('ARRAY de lenguajes', response);
     const lenguaje = await getLanguague();
     console.log(lenguaje, 'lenguaje que esta guardado');
     if (lenguaje == null) {
       response.forEach(element => {
         if (element.code == defecto) {
           setbienvenida(element.code);
-          saveLanguague(element).then(msg => {
-            console.log('lenguaje defecto guardado');
-          });
+          saveLanguague(element).then(msg => {});
+          setGlobalLanguage(element)
         } else {
           setbienvenida(response[0].code);
-          saveLanguague(response[0]).then(msg => {
-            console.log('lenguaje posicion 1 guardado');
-          });
+          saveLanguague(response[0]).then(msg => {});
+          setGlobalLanguage(response[0])
         }
       });
     } else {
       response.forEach(element => {
         if (element._id == lenguaje._id) {
           setbienvenida(lenguaje.code);
-          saveLanguague(lenguaje).then(msg => {
-            console.log('lenguaje confirmado guardado ');
-          });
+          saveLanguague(lenguaje).then(msg => {});
+          setGlobalLanguage(lenguaje)
         } else if (element.code == lenguaje.code) {
           setbienvenida(element.code);
-          saveLanguague(element).then(msg => {
-            console.log('lenguaje actualizado');
-          });
+          saveLanguague(element).then(msg => {});
+          setGlobalLanguage(element)
         }
       });
 
@@ -114,8 +125,15 @@ export default function SplashScreen(props) {
   }
   async function fetchCountries() {
     const response = await locationsApi();
-    console.log('LOCATIONS', response);
+    const pais = await getcountry();
     setCountries(response);
+    if (response != null) {
+      if (pais == null) {
+        saveDefaultCountry(response[0]);
+      } else {
+        updateDefaultCountry(pais);
+      }
+    }
   }
 
   async function fetchSesion(loginAction) {
@@ -133,9 +151,12 @@ export default function SplashScreen(props) {
     }
     loginAction({type: 'sign-in', data: response});
     fetchCountries();
+    getCurrenciesAf();
+    getCurrencies();
+    removeAllItemstoCart();
     setTimeout(() => {
       goToScreen('Home');
-    }, 1000);
+    }, 3000);
   }
 
   function goToScreen(routeName) {

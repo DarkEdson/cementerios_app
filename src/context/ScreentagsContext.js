@@ -6,8 +6,10 @@ export const ScreentagContext = createContext();
 
 export const ScreentagProvider = ({children}) => {
   const [tags, setTags] = useState({});
+  const [isLoadingTags, setisLoadingTags] = useState(true)
 
   const updateTags = async pantalla => {
+    setisLoadingTags(true)
     let etiquetas = await apiScreen(pantalla._id);
     etiquetas.sort((a, b) => a.code.localeCompare(b.code));
 
@@ -56,6 +58,7 @@ export const ScreentagProvider = ({children}) => {
             inputnombres: etiquetas[3].description,
             inputnumid: etiquetas[4].description,
             inputpaypalid: etiquetas[5].description,
+            phone: etiquetas[6].description,
           },
         }));
       }
@@ -88,8 +91,9 @@ export const ScreentagProvider = ({children}) => {
         setTags(prevState => ({
           ...prevState,
           ProductsScreen: {
-            labelproductos: etiquetas[0].description,
-            labelsearch1: etiquetas[1].description,
+            detallePrecio: etiquetas[0].description,
+            labelproductos: etiquetas[1].description,
+            labelsearch1: etiquetas[2].description,
           },
         }));
       }
@@ -102,7 +106,9 @@ export const ScreentagProvider = ({children}) => {
             label1p: etiquetas[0].description,
             label1s: etiquetas[1].description,
             mas: etiquetas[2].description,
-            todos: etiquetas[3].description,
+            precio: etiquetas[3].description,
+            sede: etiquetas[4].description,
+            todos: etiquetas[5].description,
           },
         }));
       }
@@ -114,6 +120,8 @@ export const ScreentagProvider = ({children}) => {
           ProductDetailScreen: {
             btnagregar: etiquetas[0].description,
             detalle: etiquetas[1].description,
+            precio: etiquetas[2].description,
+            sede: etiquetas[3].description,
           },
         }));
       }
@@ -284,6 +292,58 @@ export const ScreentagProvider = ({children}) => {
             products: etiquetas[1].description,
             promo: etiquetas[2].description,
             sells: etiquetas[3].description,
+          },
+        }));
+      }
+    }
+    if (pantalla.code == 'v21') {
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          sedeSelectScreen: {
+            btncancelar: etiquetas[0].description,
+            btnconfirmar: etiquetas[1].description,
+            titulo: etiquetas[2].description,
+          },
+        }));
+      }
+    }
+    if (pantalla.code == 'v22') {
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          closeSessionScreen: {
+              btnno: etiquetas[0].description,
+              btnsi: etiquetas[1].description,
+              mensaje: etiquetas[2].description,
+              titulo: etiquetas[3].description,
+          },
+        }));
+      }
+    }
+    if (pantalla.code == 'v23') {
+      console.log('V23 TAGS',etiquetas)
+      if (etiquetas.length != 0) {
+        setTags(prevState => ({
+          ...prevState,
+          dialogAlertsScreen: {
+            a: etiquetas[0].description,
+            b: etiquetas[1].description,
+            c: etiquetas[2].description,
+            d: etiquetas[3].description,
+            e: etiquetas[4].description,
+            f: etiquetas[5].description,
+            g: etiquetas[6].description,
+            h: etiquetas[7].description,
+            i: etiquetas[8].description,
+            j: etiquetas[9].description,
+            k: etiquetas[10].description,
+            l: etiquetas[11].description,
+            m: etiquetas[12].description,
+            n: etiquetas[13].description,
+            o: etiquetas[14].description,
+            p: etiquetas[15].description,
+            q: etiquetas[16].description,
           },
         }));
       }

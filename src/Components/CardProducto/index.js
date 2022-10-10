@@ -7,14 +7,18 @@ export default function CardProducto(props) {
     <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressProduct}>
       <View style={{...styles.view, backgroundColor: props.bgColor}}>
         <View style={styles.right}>
-          <Image style={styles.imgPromocion} source={{uri: props.urlImagen}} />
+          <Image
+            style={styles.imgPromocion}
+            source={{uri: props.urlImagen}}
+            resizeMode="cover"
+          />
         </View>
         <View style={styles.left}>
           <Text style={styles.titulo}> {props.titulo} </Text>
           <Text numberOfLines={1} style={styles.descripcion}>
             {props.descripcion}
           </Text>
-          <Text style={styles.precio}> {props.precio} </Text>
+          <Text style={styles.precio}> {props.moneda ? props.moneda+'.'+props.precio: props.precio} </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -42,7 +46,7 @@ const styles = StyleSheet.create({
     width: '65%',
     height: '100%',
     flexDirection: 'column',
-    paddingLeft: 10,
+    paddingLeft: '7%',
   },
   right: {
     width: '25%',
@@ -67,7 +71,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   imgPromocion: {
-    height: '100%',
+    marginTop: '8.5%',
+    marginLeft: '10%',
+    height: '89%',
     width: '100%',
     borderRadius: 15,
   },

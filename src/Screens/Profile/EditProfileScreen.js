@@ -3,6 +3,7 @@ import {
   View,
   Text,
   ScrollView,
+  SafeAreaView,
   StyleSheet,
   StatusBar,
   Alert,
@@ -50,9 +51,11 @@ export default function EditProfileScreen(props) {
       getInitialData();
       console.log('isFocused Promo');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View style={styles.container}>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -149,12 +152,21 @@ export default function EditProfileScreen(props) {
                 ? tags.EditUserScreen.btn
                 : 'Guardar Cambios'
             }
-            onPress={() => {}}
+            onPress={() => actualizaUsuario()}
           />
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
+  function actualizaUsuario() {
+    Snackbar.show({
+      text: tags.dialogAlertsScreen.l != ''
+      ? tags.dialogAlertsScreen.l
+      : 'Actualizacion de datos Exitosamente',
+      duration: Snackbar.LENGTH_LONG,
+    });
+  }
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);

@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {View, Text, StatusBar, ScrollView, StyleSheet} from 'react-native';
+import {View, Text, StatusBar, ScrollView, SafeAreaView,StyleSheet} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {SocialIcon, Icon} from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -36,7 +36,7 @@ export default function RegistroScreen(props) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
-  const [usertype, setUsertype] = useState('');
+  const [role, setUsertype] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
 
@@ -46,7 +46,8 @@ export default function RegistroScreen(props) {
       console.log('isFocused Register');
     }
     return () => {};
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   const handlePasswordChange = val => {
     if (confirmPassword != '') {
@@ -55,19 +56,25 @@ export default function RegistroScreen(props) {
           setPassword(val);
         } else {
           Snackbar.show({
-            text: 'La contraseña debe ser de al menos 8 caracteres',
+            text: tags.dialogAlertsScreen.g != ''
+            ? tags.dialogAlertsScreen.g
+            :  'La contraseña debe ser de al menos 8 caracteres',
             duration: Snackbar.LENGTH_LONG,
           });
         }
       } else {
         if (val.trim().length >= 8) {
           Snackbar.show({
-            text: 'Las contraseñas no coinciden',
+            text: tags.dialogAlertsScreen.h != ''
+            ? tags.dialogAlertsScreen.h
+            :  'Las contraseñas no coinciden',
             duration: Snackbar.LENGTH_LONG,
           });
         } else {
           Snackbar.show({
-            text: 'La contraseña debe ser de al menos 8 caracteres y no coinciden',
+            text: tags.dialogAlertsScreen.i != ''
+            ? tags.dialogAlertsScreen.i
+            :  'La contraseña debe ser de al menos 8 caracteres y no coinciden',
             duration: Snackbar.LENGTH_LONG,
           });
         }
@@ -77,7 +84,9 @@ export default function RegistroScreen(props) {
         setPassword(val);
       } else {
         Snackbar.show({
-          text: 'La contraseña debe ser de al menos 8 caracteres',
+          text: tags.dialogAlertsScreen.g != ''
+          ? tags.dialogAlertsScreen.g
+          : 'La contraseña debe ser de al menos 8 caracteres',
           duration: Snackbar.LENGTH_LONG,
         });
       }
@@ -88,7 +97,9 @@ export default function RegistroScreen(props) {
       setConfirmPassword(val);
     } else {
       Snackbar.show({
-        text: 'Las contraseñas no coinciden',
+        text: tags.dialogAlertsScreen.h != ''
+        ? tags.dialogAlertsScreen.h
+        :  'Las contraseñas no coinciden',
         duration: Snackbar.LENGTH_LONG,
       });
     }
@@ -98,13 +109,16 @@ export default function RegistroScreen(props) {
       setUsername(val);
     } else {
       Snackbar.show({
-        text: 'usuario debe ser de minimo 4 caracteres',
+        text: tags.dialogAlertsScreen.f != ''
+        ? tags.dialogAlertsScreen.f
+        :  'usuario debe ser de minimo 4 caracteres',
         duration: Snackbar.LENGTH_LONG,
       });
     }
   };
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <ScrollView
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="always"
@@ -282,6 +296,7 @@ export default function RegistroScreen(props) {
         <View style={loginStyles.boxTransparent} />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 
   function registroParcial() {
@@ -292,17 +307,21 @@ export default function RegistroScreen(props) {
       confirmPassword == ' '
     ) {
       Snackbar.show({
-        text: 'Revise las contraseñas, una esta vacia',
+        text: tags.dialogAlertsScreen.e != ''
+        ? tags.dialogAlertsScreen.e
+        : 'Revise las contraseñas, una esta vacia',
         duration: Snackbar.LENGTH_LONG,
       });
     } else if (
       username == ' ' ||
       username == '' ||
-      usertype == '' ||
-      usertype == ' '
+      role == '' ||
+      role == ' '
     ) {
       Snackbar.show({
-        text: 'No se admiten campos vacios, revise usuario o tipo de usuario',
+        text: tags.dialogAlertsScreen.j != ''
+        ? tags.dialogAlertsScreen.j
+        :  'No se admiten campos vacios, revise usuario o tipo de usuario',
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
@@ -310,7 +329,7 @@ export default function RegistroScreen(props) {
         username,
         email,
         password,
-        usertype,
+        role,
       });
       goToScreen('RegistroAdd');
     }

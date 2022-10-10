@@ -7,6 +7,7 @@ import {
   Dimensions,
   ImageBackground,
   StyleSheet,
+  SafeAreaView,
   TouchableOpacity,
   StatusBar,
   Alert,
@@ -24,6 +25,7 @@ import color from '@styles/colors';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
 //URL de server
 import {BASE_URL_IMG} from '@utils/config';
 
@@ -42,7 +44,8 @@ import {BASE_URL_IMG} from '@utils/config';
 
 export default function ProfileScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const {removeAllItemstoCart} = useContext(ShoppingCartContext);
+  const {tags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -53,10 +56,14 @@ export default function ProfileScreen(props) {
       console.log('isFocused Profile');
     }
     return () => {};
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   // useBackButton(desconectarse);
   return (
+    <SafeAreaView 
+    style={mainStyles.containersp} 
+    > 
     <ScrollView>
       <View style={styles.container}>
         <StatusBar
@@ -78,7 +85,7 @@ export default function ProfileScreen(props) {
             onPress={() => {
               console.log('editar imagen');
             }}>
-            {loginUser.usuario.avatar != '' ? (
+            {loginUser.usuario.avatar ? (
               <Avatar
                 rounded
                 source={{
@@ -94,7 +101,8 @@ export default function ProfileScreen(props) {
                 name="account"
               />
             )}
-            <View
+            <Avatar.Accessory size={23} />
+            {/*<View
               style={{
                 zIndex: 2,
                 bottom: 21,
@@ -108,7 +116,7 @@ export default function ProfileScreen(props) {
                 type={'material-community'}
                 name="pencil"
               />
-            </View>
+            </View>*/}
           </TouchableOpacity>
           <Text style={styles.txtNuevoComponente}>
             {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
@@ -130,7 +138,7 @@ export default function ProfileScreen(props) {
         </Text>
         <View style={{backgroundColor: color.WHITE}}>
           <Text style={styles.txtComponente}>
-            {loginUser.usuario.id_number}
+            {loginUser.usuario.id_number ? loginUser.usuario.id_number : loginUser.usuario.vendorcode}
           </Text>
         </View>
         <View style={styles.boxTransparent2} />
@@ -157,21 +165,30 @@ export default function ProfileScreen(props) {
         <View style={styles.boxTransparent} />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
   function desconectarse() {
-    Alert.alert('Salir', '¿Esta seguro que \ndesea cerrar sesion?', [
+    Alert.alert(
+      tags.closeSessionScreen.titulo != '' ? tags.closeSessionScreen.titulo : 'Salir'
+    , tags.closeSessionScreen.mensaje != '' ? tags.closeSessionScreen.mensaje : '¿Esta seguro que \ndesea cerrar sesion?', [
       {
-        text: 'Si',
+        text: tags.closeSessionScreen.btnsi != '' ? tags.closeSessionScreen.btnsi : 'Si',
         onPress: () => {
           loginAction({
             type: 'sign-out',
             data: {},
+            tags:{
+              mensaje: tags.dialogAlertsScreen.o != ''
+              ? tags.dialogAlertsScreen.o
+              : 'Sesion Cerrada Exitosamente.'
+            }
           });
+          removeAllItemstoCart()
           goToScreen('Login');
         },
       },
       {
-        text: 'No',
+        text: tags.closeSessionScreen.btnno != '' ? tags.closeSessionScreen.btnno :  'No',
         onPress: () => {},
         style: 'cancel',
       },

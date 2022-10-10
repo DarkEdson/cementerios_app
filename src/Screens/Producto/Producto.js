@@ -1,14 +1,17 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Text,
   View,
   Platform,
   Dimensions,
+  ActivityIndicator,
+  SafeAreaView,
   StyleSheet,
   ScrollView,
-  Image,
+  //Image,
   TouchableOpacity,
 } from 'react-native';
+import { Image, FAB } from '@rneui/themed';
 import Carousel from 'react-native-reanimated-carousel';
 
 import Animated, {
@@ -19,9 +22,9 @@ import Animated, {
 } from 'react-native-reanimated';
 
 //URL de server
-import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+import { BASE_URL_IMG, PRODUCTS_URL } from '@utils/config';
 //Recarga la screen
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 //Componentes
 import MyFloatButton from '@Components/common/MyFloatButton';
 import InformationIcon from '@Components/common/InformationIcon';
@@ -34,19 +37,40 @@ import {
   informationIconStyles,
 } from '@styles/stylesGeneral';
 //Contextos
-import {ScreentagContext} from '@context/ScreentagsContext';
-import CardMultimedia from '../../Components/CardMultimedia';
+import { ScreentagContext } from '@context/ScreentagsContext';
+import CardMultimedia from '@Components/CardMultimedia';
+import { ProductContext } from '@context/ProductContext';
+import { ShoppingCartContext } from '@context/ShoppingCartContext';
+import { CementeriesContext } from '@context/CementeriesContext';
+import { CementeryContext } from '@context/CementeryContext';
+import { RouteBackContext } from '@context/RouteBackContext';
+import { ProductsContext } from '@context/ProductsContext';
+import { CategoryContext } from '@context/CategoryContext';
+import { CurrenciesContext } from '@context/CurrencyContext';
+import { SedeContext } from '@context/SedeContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
 
 //tags.ProductDetailScreen.btnagregar != '' ? tags.ProductDetailScreen.btnagregar :
 export default function VistaProducto(props) {
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const { tags } = useContext(ScreentagContext);
+  const [Product, setProduct] = useContext(ProductContext);
+  const { addItemtoCart,ShoppingCart, setafiliateCart, removeAllItemstoCart,afiliateCart,rutaCart } = useContext(ShoppingCartContext);
+  const [cementery] = useContext(CementeryContext);
+  const { Cementeries } =
+    useContext(CementeriesContext);
+  const [sede, setSede] = useContext(SedeContext);
+  const { RouteBack, setRouteBack } = useContext(RouteBackContext);
+  const { ProductMultimedia, isLoadingProducts } = useContext(ProductsContext);
+  const {  Currency,  getCurrency } = useContext(CurrenciesContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
+  const [itemModal, setitemModal] = useState(null)
+  const { Category } = useContext(CategoryContext);
+
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => {};
+  const getInitialData = async () => { };
 
   const progressValue = useSharedValue(0);
   const baseOptions = {
@@ -54,71 +78,43 @@ export default function VistaProducto(props) {
     width: PAGE_WIDTH,
     height: PAGE_WIDTH * 0.41,
   };
-
   // Cargar informacion de la vista
   useEffect(() => {
+    console.log('Producto escogido', Product);
+    console.log(rutaCart)
+    //Vacia Carrito si no viene de Afiliado
+    if(rutaCart==false){
+      if (ShoppingCart.length >=1){
+        if(sede.idAffiliate!=afiliateCart._id){
+          console.log('LIMPIE CARRITO EN PRODUCTOS')
+          setafiliateCart({})
+          removeAllItemstoCart()
+        }
+    }
+    }
+    //Consultar Moneda
+    getCurrency({_id: sede.idAffiliate})
     // Actualizar valores de la vista
     setPropsVista({
-      nombre: 'Perla Oceano',
-      urlImagenPrincipal: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
-      tags: '$ Arrecife - Perla - Diamante',
-      precio: {
-        label: 'Precio',
-        valor: 'USD 12.50',
-      },
-      ubicaciones: {
-        label: 'Sede',
-        ubicaciones: [],
-      },
       rating: {
         valor: 4.9,
         label: 'Ratink',
       },
-      detalleProd: 'Perla, cemento, cremacion, traslado, hundimiento.',
-      urlMultimedia: [
-        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_3.jpg`,
-        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_4.jpg`,
-        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_5.jpg`,
-        `${BASE_URL_IMG}${PRODUCTS_URL}Producto_6.jpg`,
-        `${BASE_URL_IMG}${PRODUCTS_URL}perla/perla_vid1.mp4`,
-      ],
     });
 
-    // Actualizar valores de la sede seleccionada
-    setSede({
-      nombre: 'Campeche',
-      id: 10,
-    });
     if (isFocused) {
       getInitialData();
       console.log('isFocused in Product Detail');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
-    nombre: '',
-    urlImagenPrincipal: `${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`,
-    tags: '',
-    precio: {
-      label: '',
-      valor: 0,
-    },
-    ubicaciones: {
-      label: '',
-      ubicaciones: [],
-    },
     rating: {
       valor: 0,
       label: '',
     },
-    detalleProd: '',
-    urlMultimedia: [],
-  });
-  // Variables de trabajo
-  const [sede, setSede] = useState({
-    nombre: '',
-    id: 0,
   });
 
   const [cantProductos, setCantProductos] = useState(1);
@@ -137,46 +133,54 @@ export default function VistaProducto(props) {
 
   function abrirModal(multimedia) {
     setCustomModal(true);
-    setimagenModal(multimedia);
+    setimagenModal(multimedia.name);
+    setitemModal(multimedia);
   }
 
   return (
+<SafeAreaView style={mainStyles.containers} >
     <View style={styles.vista}>
       <Image
-        style={styles.imgProducto}
+        containerStyle={styles.imgProducto}
+        PlaceholderContent={<ActivityIndicator />}
         source={{
-          uri: propsVista.urlImagenPrincipal,
+          uri: Product.principalImage,
         }}
       />
-      <View style={styles.descripcion}>
-        <Text style={styles.titulo}> {propsVista.nombre} </Text>
-        <Text style={styles.categorias}> {propsVista.tags} </Text>
-        <View style={CementeryScreen.HeaderView}>
-          <InformationIcon
-            tipo="font-awesome-5"
-            image="dollar-sign"
-            titulo={propsVista.precio.valor}
-            subtitulo={propsVista.precio.label}
-            onPress={() => {}}
-          />
-          <View style={informationIconStyles.verticleLine} />
-          <InformationIcon
-            tipo="ionicons"
-            image="location-pin"
-            titulo={sede.nombre}
-            subtitulo={propsVista.ubicaciones.label}
-          />
-          <View style={informationIconStyles.verticleLine} />
-          <InformationIcon
-            transparent={true}
-            tipo="ant-design"
-            image="star"
-            titulo={propsVista.rating.valor}
-            subtitulo={propsVista.rating.label}
-          />
-        </View>
-      </View>
       <ScrollView>
+        <View style={styles.descripcion}>
+          <Text style={styles.titulo}> {Product.name} </Text>
+          <Text style={styles.categorias}> {Category.name} </Text>
+          <View style={CementeryScreen.HeaderView}>
+            <InformationIcon
+              tipo="font-awesome-5"
+              image="dollar-sign"
+              titulo={Currency.symbol+'.'+Product.price}
+              subtitulo={tags.ProductDetailScreen.precio != ''
+                ? tags.ProductDetailScreen.precio
+                : 'Precio'}
+              onPress={() => { }}
+            />
+            <View style={informationIconStyles.verticleLine} />
+            <InformationIcon
+              tipo="ionicons"
+              image="location-pin"
+              titulo={sede.name}
+              subtitulo={tags.ProductDetailScreen.sede != ''
+                ? tags.ProductDetailScreen.sede
+                : 'Sede'}
+            />
+            <View style={informationIconStyles.verticleLine} />
+            <InformationIcon
+              transparent={true}
+              tipo="ant-design"
+              image="star"
+              titulo={propsVista.rating.valor}
+              subtitulo={propsVista.rating.label}
+            />
+          </View>
+        </View>
+
         <View style={styles.detalleProd}>
           <Text style={styles.titulo2}>
             {' '}
@@ -185,64 +189,87 @@ export default function VistaProducto(props) {
               : 'Detalle'}{' '}
           </Text>
           <Text style={styles.descDato} numberOfLines={2}>
-            {propsVista.detalleProd}
+            {Product.description}
           </Text>
           <View style={styles.multimedia}>
-            <Carousel
-              {...baseOptions}
-              style={{
-                justifyContent: 'center',
-                alignSelf: 'center',
-              }}
-              loop={true}
-              pagingEnabled={true}
-              snapEnabled={true}
-              autoPlay={true}
-              autoPlayInterval={1500}
-              onProgressChange={(_, absoluteProgress) =>
-                (progressValue.value = absoluteProgress)
-              }
-              mode="parallax"
-              modeConfig={{
-                parallaxScrollingScale: 0.85,
-                parallaxScrollingOffset: 260,
-              }}
-              data={propsVista.urlMultimedia}
-              renderItem={({item}) => {
-                return (
-                  <CardMultimedia
-                    style={styles.imgDetalle}
-                    urlImagen={item}
-                    onPressMultimedia={() => {
-                      abrirModal(item);
-                    }}
-                    textStyle={styles.imgTitulo}
-                  />
-                );
-              }}
-            />
-            {!!progressValue && (
+            {isLoadingProducts ? (
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: 100,
-                  marginTop: 10,
-                  alignSelf: 'center',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '10%',
                 }}>
-                {propsVista.urlMultimedia.map((item, index) => {
-                  console.log('EN BOTONCITOS', index, item);
+                <FAB
+                  loading
+                  color={color.PRINCIPALCOLOR}
+                  visible={isLoadingProducts}
+                  icon={{ name: 'add', color: 'white' }}
+                  size="small"
+                />
+              </View>
+            ) : ProductMultimedia.length >= 1 ? (
+              <Carousel
+                {...baseOptions}
+                style={{
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                }}
+                loop={true}
+                pagingEnabled={true}
+                snapEnabled={true}
+                autoPlay={true}
+                autoPlayInterval={1500}
+                onProgressChange={(_, absoluteProgress) =>
+                  (progressValue.value = absoluteProgress)
+                }
+                mode="parallax"
+                modeConfig={{
+                  parallaxScrollingScale: 0.85,
+                  parallaxScrollingOffset: 260,
+                }}
+                data={ProductMultimedia}
+                renderItem={({ item }) => {
                   return (
-                    <PaginationItem
-                      animValue={progressValue}
-                      index={index}
-                      key={index}
-                      length={propsVista.urlMultimedia.length}
+                    <CardMultimedia
+                      style={styles.imgDetalle}
+                      urlImagen={item}
+                      onPressMultimedia={() => {
+                        console.log(item);
+                        abrirModal(item);
+                      }}
+                      textStyle={styles.imgTitulo}
                     />
                   );
-                })}
+                }}
+              />
+            ) : (
+              <View style={styles.noPromoView}>
+                <Text style={styles.promoText}>No Multimedia</Text>
               </View>
             )}
+            {ProductMultimedia.length >= 1
+              ? !!progressValue && (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: 100,
+                    marginTop: 10,
+                    alignSelf: 'center',
+                  }}>
+                  {ProductMultimedia.map((item, index) => {
+                    return (
+                      <PaginationItem
+                        animValue={progressValue}
+                        index={index}
+                        key={index}
+                        length={ProductMultimedia.length}
+                      />
+                    );
+                  })}
+                </View>
+              )
+              : null}
             <View style={styles.numCant}>
               <TouchableOpacity
                 style={styles.btnCant}
@@ -266,7 +293,7 @@ export default function VistaProducto(props) {
             </View>
             <TouchableOpacity
               style={styles.btnAgregar}
-              onPress={() => goToScreen('Payments')}>
+              onPress={() => itemToCart(Product, 'Payments')}>
               <Text style={styles.txtAgregar}>
                 {tags.ProductDetailScreen.btnagregar != ''
                   ? tags.ProductDetailScreen.btnagregar
@@ -282,16 +309,19 @@ export default function VistaProducto(props) {
         tipo="material-icon-community"
         image="chevron-left"
         left={true}
-        onPress={() => goToScreen('Initial')}
+        onPress={() => goToScreen(RouteBack)}
       />
       {customModal == false ? null : (
         <CustomModal
           customModal={customModal}
           setCustomModal={setCustomModal}
           urlImagen={imagenModal}
+          textStyle={styles.imgTitulo}
+          item={itemModal}
         />
       )}
     </View>
+    </SafeAreaView>
   );
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
@@ -333,12 +363,38 @@ export default function VistaProducto(props) {
       </View>
     );
   }
+
+  function itemToCart(producto, routeName) {
+    let item = { ...producto, cantidad: cantProductos, moneda: Currency.symbol };
+    console.log(item);
+    if (rutaCart) {
+      setafiliateCart(cementery)
+    } else {
+      Cementeries.forEach(Afiliado=>{
+        if(sede.idAffiliate==Afiliado._id){
+          setafiliateCart(Afiliado)
+        }
+      })     
+    }
+    addItemtoCart(item);
+    goToScreen(routeName);
+  }
 }
 
 const styles = StyleSheet.create({
   vista: {
     height: '100%',
     backgroundColor: color.WHITE,
+  },
+  noPromoView: {
+    textAlign: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  promoText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: color.PRINCIPALCOLOR,
   },
   descripcion: {
     paddingLeft: 20,
@@ -426,6 +482,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginTop: 5,
     marginBottom: 5,
+    color: color.PRINCIPALCOLOR
   },
   scroll: {
     height: '80%',

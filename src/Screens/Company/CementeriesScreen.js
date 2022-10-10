@@ -6,11 +6,13 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  SafeAreaView,
   StatusBar,
   Alert,
   Platform,
   TextInput,
 } from 'react-native';
+import {Icon, FAB} from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //URL de server
@@ -20,257 +22,142 @@ import {mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Contextos
 import {CementeryContext} from '@context/CementeryContext';
-import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {RouteBackContext} from '@context/RouteBackContext';
+import {CementeriesContext} from '@context/CementeriesContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
+import {CountryContext} from '@context/CountryContext';
+import {SedesContext} from '@context/SedesContext';
+import {SedeContext} from '@context/SedeContext';
+import { CurrenciesContext } from '@context/CurrencyContext';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardColaborador from '@Components/CardColaborador/';
 
 //tags.CementeriesScreen.placeholder != '' ? tags.CementeriesScreen.placeholder :
 export default function CompanyScreen(props) {
-  const [login, loginAction] = useContext(UsuarioContext);
   const [cementery, setCementery] = useContext(CementeryContext);
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const {setrutaCart} = useContext(ShoppingCartContext);
+  const [sede, setSede] = useContext(SedeContext);
+  const {    getCurrency } = useContext(CurrenciesContext);
+  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
+    useContext(RouteBackContext);
+  const {Cementeries} = useContext(CementeriesContext);
+  const {isLoadingSedes, getSedes} = useContext(SedesContext);
+  const {country} = useContext(CountryContext);
+
+  const {tags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
+    setcementeriosTotal(Cementeries);
     // Actualizar valores de la vista
-    setPropsVista({
-      label1: 'Productos',
-      labelSearch: 'Cementerio, Producto, Categoría...',
-      productos: [
-        {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-          titulo: 'Perla Magistral 2',
-          descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
-          categoria: 'CMar',
-          cementerio: 'capillas',
-          idCementerio: 1,
-        },
-        {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-        {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-          titulo: 'Perla Magistral 2',
-          descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
-          categoria: 'CMar',
-          cementerio: 'capillas',
-          idCementerio: 1,
-        },
-        {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-        {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-        {
-          urlImagen:
-            'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-          titulo: 'Perla Magistral 2',
-          descripcion: 'Diamante, Oro..',
-          precio: '$ 16.90',
-          categoria: 'CMar',
-          cementerio: 'capillas',
-          idCementerio: 1,
-        },
-        {
-          urlImagen:
-            'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-          titulo: 'Perla oceano 2',
-          descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-          precio: '$ 16.90',
-          categoria: 'Buseo',
-          cementerio: 'cementerio del mar',
-          idCementerio: 2,
-        },
-      ],
-    });
-
-    setArrProductosDisp([
-      {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        id: 1,
-      },
-      {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        id: 2,
-      },
-      {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        id: 3,
-      },
-      {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        id: 4,
-      },
-      {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        id: 5,
-      },
-      {
-        urlImagen:
-          'https://arandano.lajornadamaya.mx/img/images/WhatsApp%20Image%202021-11-01%20at%2019_09_32.jpeg',
-        titulo: 'Perla Magistral 2',
-        descripcion: 'Diamante, Oro..',
-        precio: '$ 16.90',
-        categoria: 'CMar',
-        cementerio: 'capillas',
-        id: 6,
-      },
-      {
-        urlImagen:
-          'https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg',
-        titulo: 'Perla oceano 2',
-        descripcion: 'Perla, cemento, cremacion, traslado, hundimiento..',
-        precio: '$ 16.90',
-        categoria: 'Buseo',
-        cementerio: 'cementerio del mar',
-        id: 7,
-      },
-    ]);
+    //setArrProductosDisp(Cementeries);
     if (isFocused) {
       getInitialData();
       console.log('isFocused Cementeries All');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
 
   // Variables de la vista
-  const [propsVista, setPropsVista] = useState({
-    label1: '',
-    labelSearch: '',
-    productos: [],
-  });
+  const [cementeriosTotal, setcementeriosTotal] = useState([]);
 
   // Variable de trabajo
-  const [arrProductosDisp, setArrProductosDisp] = useState([]);
+  const [arrCementeriosDisp, setArrCementeriosDisp] = useState([]);
 
   return (
-    <View style={styles.container}>
-      <StatusBar
-        backgroundColor={color.PRINCIPALCOLOR}
-        barStyle="dark-content"
-        translucent={true}
-      />
-      <ToolBar
-        titulo={
-          tags.CementeriesScreen.titulo != ''
-            ? tags.CementeriesScreen.titulo
-            : 'Cementerios'
-        }
-        onPressLeft={() => goToScreen('Initial')}
-        iconLeft={true}
-      />
-      <View style={styles.containerHeader}>
-        <View style={styles.searchSection}>
-          <TextInput
-            style={styles.input}
-            placeholder={
-              tags.CementeriesScreen.placeholder != ''
-                ? tags.CementeriesScreen.placeholder
-                : 'Cementerio, Producto, Categoría...'
-            }
-            onChangeText={val => {
-              setArrProductosDisp(
-                propsVista.productos.filter(
-                  p =>
-                    p.cementerio
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) ||
-                    p.titulo
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) ||
-                    p.categoria
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()) ||
-                    p.descripcion
+    <SafeAreaView style={mainStyles.containers}>
+      <View style={styles.container}>
+        <StatusBar
+          backgroundColor={color.PRINCIPALCOLOR}
+          barStyle="dark-content"
+          translucent={true}
+        />
+        <ToolBar
+          titulo={
+            tags.CementeriesScreen.titulo != ''
+              ? tags.CementeriesScreen.titulo
+              : 'Cementerios'
+          }
+          onPressLeft={() => goToScreen('Initial')}
+          iconLeft={true}
+        />
+        <View style={styles.containerHeader}>
+          <View style={styles.searchSection}>
+            <TextInput
+              style={styles.input}
+              placeholder={
+                tags.CementeriesScreen.placeholder != ''
+                  ? tags.CementeriesScreen.placeholder
+                  : 'Cementerio, Producto, Categoría...'
+              }
+              onChangeText={val => {
+                setArrCementeriosDisp(
+                  Cementeries.filter(c =>
+                    c.name
                       .toLocaleLowerCase()
                       .includes(val.toLocaleLowerCase()),
-                ),
-              );
-            }}
-          />
+                  ),
+                );
+              }}
+            />
+          </View>
         </View>
+        {isLoadingSedes ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '50%',
+            }}>
+            <FAB
+              loading
+              color={color.PRINCIPALCOLOR}
+              visible={isLoadingSedes}
+              icon={{name: 'add', color: 'white'}}
+              size="small"
+            />
+          </View>
+        ) : (
+          <ScrollView>
+            <View style={styles.containerHeader}>
+              {arrCementeriosDisp.length >= 1
+                ? arrCementeriosDisp.map((company, key) => {
+                    return (
+                      <CardColaborador
+                        key={key}
+                        onPressColab={() => selectCementery(company, 'Company')}
+                        urlImagen={company.image}
+                        nombre={company.name}
+                      />
+                    );
+                  })
+                : Cementeries.map((company, key) => {
+                    return (
+                      <CardColaborador
+                        key={key}
+                        onPressColab={() => selectCementery(company, 'Company')}
+                        urlImagen={company.image}
+                        nombre={company.name}
+                      />
+                    );
+                  })}
+            </View>
+          </ScrollView>
+        )}
       </View>
-
-      <ScrollView>
-        <View style={styles.containerHeader}>
-          {arrProductosDisp.map(promo => {
-            return (
-              <CardColaborador
-                onPressColab={() => selectCementery(promo, 'Company')}
-                urlImagen={promo.urlImagen}
-                nombre={promo.titulo}
-                descripcion={promo.descripcion}
-                precio={promo.precio}
-              />
-            );
-          })}
-        </View>
-      </ScrollView>
-    </View>
+    </SafeAreaView>
   );
   function selectCementery(cementery, routeName) {
+    setrutaCart(true)
     setCementery(cementery);
-    goToScreen(routeName);
+    getCurrency(cementery)
+    getSedes(cementery, setSede, goToScreen, routeName, country);
+    setRouteBackComp('Cementeries');
   }
 
   function goToScreen(routeName) {

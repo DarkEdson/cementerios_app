@@ -4,6 +4,7 @@ import {
   Text,
   Image,
   Dimensions,
+  SafeAreaView,
   StyleSheet,
   KeyboardAvoidingView,
   StatusBar,
@@ -18,13 +19,14 @@ import color from '@styles/colors';
 import ToolBar from '@Components/common/toolBar';
 import MyButton from '@Components/common/MyButton';
 import CreditCard from 'react-native-credit-card-form-ui';
+
 //Contextos
 import {CreditCardContext} from '@context/CreditCardContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 
 //tags.PaymentCardDetailScreen.guardar != '' ? tags.PaymentCardDetailScreen.guardar :
 export default function PaymentDetailScreen(props) {
-  const [creditCard, setCreditCard] = useContext(CreditCardContext);
+  const {creditCardSel, setcreditCardSel} = useContext(CreditCardContext);
   const {tags, updateTags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
@@ -42,13 +44,13 @@ export default function PaymentDetailScreen(props) {
   useEffect(() => {
     setDataCard({
       ...dataCard,
-      cardNumber: creditCard.cardNumber,
-      cardHolderName: creditCard.cardHolderName,
-      nameSurname: creditCard.nameSurname,
-      mmYY: creditCard.mmYY,
-      expiration: creditCard.expiration,
-      securityCode: creditCard.securityCode,
-      brand: creditCard.brand,
+      cardNumber: creditCardSel.cardNumber,
+      cardHolderName: creditCardSel.cardHolderName,
+      nameSurname: creditCardSel.nameSurname,
+      mmYY: creditCardSel.mmYY,
+      expiration: creditCardSel.expiration,
+      securityCode: creditCardSel.securityCode,
+      brand: creditCardSel.brand,
     });
   }, []);
   const creditCardRef = React.useRef();
@@ -68,6 +70,7 @@ export default function PaymentDetailScreen(props) {
     }
   }, [props, isFocused]);
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View style={styles.container}>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -115,11 +118,11 @@ export default function PaymentDetailScreen(props) {
               cvv: '000',
             }}
             initialValues={{
-              number: creditCard.cardNumber,
-              holder: creditCard.cardHolderName + ' ' + creditCard.nameSurname,
-              expiration: creditCard.mmYY,
-              cvv: '',
-              brand: creditCard.brand,
+              number: creditCardSel.cardNumber,
+              holder: creditCardSel.cardHolderName + ' ' + creditCardSel.nameSurname,
+              expiration: creditCardSel.mmYY,
+              cvv: creditCardSel.securityCode,
+              brand: creditCardSel.brand,
             }}
           />
           <View style={styles.boxTransparent} />
@@ -134,6 +137,7 @@ export default function PaymentDetailScreen(props) {
         </KeyboardAvoidingView>
       </View>
     </View>
+    </SafeAreaView>
   );
 
   function goToScreen(routeName) {
@@ -151,7 +155,8 @@ const styles = StyleSheet.create({
     marginBottom: Dimensions.get('screen').height * 0.05,
   },
   containerCard: {
-    height: '70%',
+    flex: 1,
+    paddingTop: -50,
     alignItems: 'center',
     justifyContent: 'center',
   },

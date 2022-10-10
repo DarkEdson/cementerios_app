@@ -8,7 +8,6 @@ const initialState = {
   password: '',
   phone: '',
   role: '',
-  id_number: '',
   paypal_id: '',
   avatar: '',
 };

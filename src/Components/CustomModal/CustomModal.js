@@ -39,52 +39,58 @@ const CustomModal = props => {
         <View
           style={{
             position: 'absolute',
-            backgroundColor: '#646363F3',
+            backgroundColor: '#9C9A9AB0',
             width: '100%',
             height: '100%',
           }}>
-          <View style={{padding: '6%'}}>
-            <Card>
-              <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                <Pressable style={styles.btnIconBack2} onPress={ocultarModal}>
-                  <Icon
-                    style={styles.searchIcon}
-                    type="material"
-                    name="close"
-                    size={15}
-                    color="white"
-                  />
-                </Pressable>
+          <View style={{padding: '1%'}}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Pressable style={styles.btnIconBack2} onPress={ocultarModal}>
+                <Icon
+                  style={styles.searchIcon}
+                  type="material"
+                  name="close"
+                  size={15}
+                  color="white"
+                />
+              </Pressable>
+            </View>
+            <View style={styles.textContainer} />
+            {extensionsImg.includes(extensionFile) ? (
+              <View style={styles.imgContainer}>
+                <Image
+                  style={styles.imagen}
+                  defaultSource={require('@images/loading.gif')}
+                  source={{uri: props.urlImagen}}
+                />
               </View>
-              <View style={styles.textContainer}>
-                <Text style={styles.titulo}>{imgName}</Text>
-              </View>
-              {extensionsImg.includes(extensionFile) ? (
+            ) : (
+              <View>
                 <View style={styles.imgContainer}>
-                  <Image
-                    style={styles.imagen}
+                  <Video
+                    style={styles.video}
                     source={{uri: props.urlImagen}}
+                    paused={false}
+                    controls={true}
+                    resizeMode="contain"
                   />
                 </View>
-              ) : (
-                <View>
-                  <View style={styles.imgContainer}>
-                    <Video
-                      style={styles.video}
-                      source={{uri: props.urlImagen}}
-                      paused={false}
-                      controls={true}
-                      resizeMode="contain"
-                    />
-                  </View>
-                  {/*
+                {/*
              <View style={styles.viewButton}>
                     <MyButton titulo={'FullScreen.'} onPress={() => {}} />
                   </View>
                   */}
-                </View>
-              )}
-            </Card>
+              </View>
+            )}
+            <View
+              style={{
+                alignItems: 'center',
+                position: 'absolute',
+                bottom: 70,
+                left: '45%',
+              }}>
+              <Text style={props.textStyle}>{props.item.description}</Text>
+            </View>
           </View>
         </View>
       </Modal>
@@ -128,7 +134,7 @@ const styles = StyleSheet.create({
   video: {
     alignSelf: 'center',
     width: '95%',
-    height: '85%',
+    height: '80%',
   },
   container: {
     flex: 1,
@@ -140,7 +146,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '10%',
     justifyContent: 'center',
-    marginVertical: 5,
+    marginVertical: '10%',
     borderRadius: 15,
     elevation: 3,
     backgroundColor: color.PRINCIPALCOLOR,

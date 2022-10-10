@@ -4,6 +4,7 @@ import {
   Text,
   Alert,
   TouchableOpacity,
+  SafeAreaView,
   StatusBar,
   Image,
   ImageBackground,
@@ -33,8 +34,10 @@ export default function RecuperarPasswordScreen(props) {
       getInitialData();
       console.log('isFocused Promo');
     }
-  }, [props, isFocused]);
+    //props, isFocused
+  }, []);
   return (
+    <SafeAreaView style={mainStyles.containers} >
     <ScrollView
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="always"
@@ -90,11 +93,14 @@ export default function RecuperarPasswordScreen(props) {
         <View style={loginStyles.boxTransparent} />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 
   function recuperarClave() {
     Snackbar.show({
-      text: 'Su contraseña fue reiniciada y enviada a su correo electronico',
+      text: tags.dialogAlertsScreen.d != ''
+      ? tags.dialogAlertsScreen.d
+      : 'Su contraseña fue reiniciada y enviada a su correo electronico',
       duration: Snackbar.LENGTH_LONG,
     });
   }

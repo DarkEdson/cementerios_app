@@ -5,11 +5,15 @@ import {
   ScrollView,
   Image,
   Dimensions,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   StatusBar,
   Alert,
 } from 'react-native';
+//import DatePicker from 'react-native-date-ranges';
+import DatePicker from 'react-native-date-picker';
+import { Button } from "@rneui/themed";
 //URL de server
 import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 //Recarga la screen
@@ -27,12 +31,17 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 //tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :
 export default function SalesScreen(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
-
+  const [dateInicio, setDateInicio] = useState(new Date());
+  const [openInicio, setOpenInicio] = useState(false);
+  const [dateFinal, setDateFinal] = useState(new Date());
+  const [openFinal, setOpenFinal] = useState(false);
+  const dateRef= React.useRef();
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
+    console.log(dateRef)
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 120,
@@ -43,6 +52,7 @@ export default function SalesScreen(props) {
       getInitialData();
       console.log('isFocused Ventas Detail');
     }
+    //props, isFocused
   }, [props, isFocused]);
 
   const [valoresVenta, setValoresVenta] = useState({
@@ -52,6 +62,7 @@ export default function SalesScreen(props) {
   });
 
   return (
+    <SafeAreaView style={mainStyles.containers} > 
     <View>
       <StatusBar
         backgroundColor={color.PRINCIPALCOLOR}
@@ -67,7 +78,60 @@ export default function SalesScreen(props) {
       />
       <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.txtNuevoComponente}> Card de productos </Text>
+        <View style={styles.fechas}>
+      <TouchableOpacity onPress={() => setOpenInicio(true)}>
+        <View style={styles.viewPadre}>
+          <View style={styles.viewHijo}>
+            <Text style={styles.texto}> {tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :'Fecha Inicio:'} </Text>
+          </View>
+          <View style={styles.viewHijo2}>
+            <Text style={styles.textoFecha}>
+              {dateInicio.getFullYear()}-{dateInicio.getMonth()}-{' '}
+              {dateInicio.getDate()}
+            </Text>
+            <DatePicker
+              modal
+              mode="date"
+              open={openInicio}
+              date={new Date()}
+              onConfirm={dateInicio => {
+                setOpenInicio(false);
+                setDateInicio(dateInicio);
+              }}
+              onCancel={() => {
+                setOpenInicio(false);
+              }}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setOpenFinal(true)}>
+        <View style={styles.viewPadre}>
+          <View style={styles.viewHijo}>
+            <Text style={styles.texto}> {tags.SellsScreen.labelfechafin != '' ? tags.SellsScreen.labelfechafin :'Fecha Inicio:'} </Text>
+          </View>
+          <View style={styles.viewHijo2}>
+            <Text style={styles.textoFecha}>
+              {dateFinal.getFullYear()}-{dateFinal.getMonth()}-
+              {dateFinal.getDate()}
+            </Text>
+            <DatePicker
+              modal
+              mode="date"
+              open={openFinal}
+              date={new Date()}
+              onConfirm={dateFinal => {
+                setOpenFinal(false);
+                setDateFinal(dateFinal);
+              }}
+              onCancel={() => {
+                setOpenFinal(false);
+              }}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
           <CardProductoVenta
             urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`}
             titulo="Perla Magistral"
@@ -118,6 +182,7 @@ export default function SalesScreen(props) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 
   function goToScreen(routeName) {
@@ -196,5 +261,42 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  //fechas style
+  fechas: {
+    alignItems: 'center',
+    width: '90%',
+    marginLeft: '5%',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  viewPadre: {
+    width: '100%',
+    height: 50,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 10,
+    marginTop: 10,
+    flexDirection: 'row',
+    backgroundColor: 'white',
+  },
+  viewHijo: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    paddingLeft: 20,
+    width: '65%',
+  },
+  viewHijo2: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: '35%',
+  },
+  texto: {
+    fontWeight: 'bold',
+    fontSize: 17,
+  },
+  textoFecha: {
+    fontWeight: '300',
+    fontSize: 17,
   },
 });
