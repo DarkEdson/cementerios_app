@@ -18,7 +18,7 @@ export default function CardProducto(props) {
           <Text numberOfLines={1} style={styles.descripcion}>
             {props.descripcion}
           </Text>
-          <Text style={styles.precio}> {props.moneda ? props.moneda+'.'+props.precio: 'View Price Inside'} </Text>
+          <Text style={styles.precio}> {props.moneda ? props.moneda+'.'+props.precio: props.precio} </Text>
         </View>
       </View>
     </TouchableOpacity>

@@ -91,8 +91,9 @@ export const ScreentagProvider = ({children}) => {
         setTags(prevState => ({
           ...prevState,
           ProductsScreen: {
-            labelproductos: etiquetas[0].description,
-            labelsearch1: etiquetas[1].description,
+            detallePrecio: etiquetas[0].description,
+            labelproductos: etiquetas[1].description,
+            labelsearch1: etiquetas[2].description,
           },
         }));
       }

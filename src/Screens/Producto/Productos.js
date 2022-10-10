@@ -176,7 +176,9 @@ export default function VistaProductos(props) {
                       urlImagen={product.principalImage}
                       titulo={product.name}
                       descripcion={product.description}
-                      precio={product.price}
+                      precio={tags.ProductsScreen.detallePrecio != ''
+                      ? tags.ProductsScreen.detallePrecio
+                      : 'Ver Precio Dentro'}
                     />
                   );
                 })}
