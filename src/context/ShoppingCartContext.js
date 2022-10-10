@@ -13,6 +13,7 @@ function ShoppingCartProvider({children}) {
   const [recipe, setrecipe] = useState({});
   const [carrito, setcarrito] = useState(false);
   const [rutaCart, setrutaCart] = useState(false);
+  const [editable, seteditable] = useState(false);
   let actualCart;
   let existe = false;
 
@@ -68,6 +69,48 @@ function ShoppingCartProvider({children}) {
     setShoppingCart(actualCart);
   }
 
+  function updateItemtoCart(item) {
+    existe = false;
+    let itemRepetido;
+    actualCart = ShoppingCart;
+    if (actualCart.length >= 1) {
+      actualCart.map(prod => {
+        if (prod._id === item._id) {
+          itemRepetido = prod;
+          actualCart = actualCart.filter(item => item !== prod);
+          console.log('CARRO TRAS FILTRO', actualCart);
+          existe = true;
+        } else {
+          if (!existe) {
+            existe = false;
+          }
+        }
+      });
+      if (!existe) {
+        actualCart.push(item);
+      } else {
+        actualCart.push({
+          _id: itemRepetido._id,
+          cantidad: item.cantidad,
+          code: itemRepetido.code,
+          description: itemRepetido.description,
+          idCategory: itemRepetido.idCategory,
+          idHeadquarter: itemRepetido.idHeadquarter,
+          name: itemRepetido.name,
+          price: itemRepetido.price,
+          principalImage: itemRepetido.principalImage,
+        });
+        console.log('CARRITO TRAS PUSH', actualCart);
+      }
+    } else {
+      actualCart.push(item);
+    }
+    console.log('Carrito Actual', actualCart);
+    console.log('item a agregar', item);
+    setcarrito(true);
+    setShoppingCart(actualCart);
+  }
+
   function removeItemtoCart(value) {
     existe = false;
     actualCart = ShoppingCart;
@@ -117,6 +160,7 @@ function ShoppingCartProvider({children}) {
       value={{
         ShoppingCart,
         addItemtoCart,
+        updateItemtoCart,
         removeItemtoCart,
         removeAllItemstoCart,
         afiliateCart,
@@ -127,6 +171,8 @@ function ShoppingCartProvider({children}) {
         recipe,
         sendShoppingCartSell,
         isLoadingCart,
+        editable,
+        seteditable,
       }}>
       {children}
     </ShoppingCartContext.Provider>
