@@ -21,12 +21,18 @@ import LargeButton from '@Components/common/largeButton';
 import MyButton from '@Components/common/MyButton';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {ProductContext} from '@context/ProductContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {UsuarioContext} from '@context/UsuarioContext';
 import {GlobalLanguageContext} from '@context/LanguageContext';
 import {CurrenciesContext} from '@context/CurrencyContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 import {SedeContext} from '@context/SedeContext';
+import {CategoriesContext} from '@context/CategoriesContext';
+import {CategoryContext} from '@context/CategoryContext';
+import {SedesContext} from '@context/SedesContext';
+import {ProductsContext} from '@context/ProductsContext';
+
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -39,15 +45,22 @@ import {
 export default function VistaPago(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
+  const [Product, setProduct] = useContext(ProductContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const [sede, setSede] = useContext(SedeContext);
   const {Currency, getCurrency} = useContext(CurrenciesContext);
+  const {categories} = useContext(CategoriesContext);
+  const {setCategory} = useContext(CategoryContext);
+  const {getSedeDirect} = useContext(SedesContext);
+  const {getMultimediabyProduct} = useContext(ProductsContext);
+
   const {
     ShoppingCart,
     removeItemtoCart,
     recipe,
     sendShoppingCartSell,
     isLoadingCart,
+    seteditable,
   } = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   const isFocused = useIsFocused();
@@ -126,7 +139,10 @@ export default function VistaPago(props) {
                 ? tags.PaymentScreen.compra
                 : 'Compra'
             }
-            onPressLeft={() => goToScreen('Productos')}
+            onPressLeft={() => {
+              goToScreen('Productos');
+              seteditable(false);
+            }}
             iconLeft={true}
           />
           <ScrollView>
@@ -140,9 +156,7 @@ export default function VistaPago(props) {
                       leftContent={() => (
                         <Button
                           title="Info"
-                          onPress={() => {
-                            console.log(prod);
-                          }}
+                          onPress={() => editarItem(prod)}
                           icon={{name: 'info', color: 'white'}}
                           buttonStyle={{minHeight: '100%'}}
                         />
@@ -212,7 +226,10 @@ export default function VistaPago(props) {
                       ? tags.PaymentScreen.agregar
                       : 'Agregar mas productos'
                   }
-                  onPressRight={() => goToScreen('Initial')}
+                  onPressRight={() => {
+                    goToScreen('Initial');
+                    seteditable(false);
+                  }}
                   iconRight={true}
                 />
               </View>
@@ -283,6 +300,18 @@ export default function VistaPago(props) {
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
+  }
+
+  function editarItem(item) {
+    categories.forEach(category => {
+      if (category._id == item.idCategory) {
+        setCategory(category);
+        seteditable(true);
+        setProduct(item);
+        getMultimediabyProduct(item);
+        getSedeDirect(item.idHeadquarter, setSede, goToScreen, 'Product');
+      }
+    });
   }
 
   function borrarItem(item) {

@@ -12,7 +12,10 @@ function ShoppingCartProvider({children}) {
   const [isLoadingCart, setisLoadingCart] = useState(false);
   const [recipe, setrecipe] = useState({});
   const [carrito, setcarrito] = useState(false);
+  //rutaCart sirve para saber si se limpia el carrito al entrar al producto o al entrar al afiliado
   const [rutaCart, setrutaCart] = useState(false);
+  //editable sirve para saber si el producto viene del carrito, por lo que incluira cantidad
+  //por lo tanto solo se editara la cantidad de dicho producto
   const [editable, seteditable] = useState(false);
   let actualCart;
   let existe = false;
