@@ -8,6 +8,7 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
+import {Icon, FAB} from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //URL de server
@@ -30,7 +31,7 @@ import { GlobalLanguageContext } from '@context/LanguageContext';
 export default function VistaCodigoPromocion(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const {validarPromo} = useContext(PromotionContext);
+  const {validarPromo,isLoadingPromotion} = useContext(PromotionContext);
   const {
     setsendPromotions,sendPromotions
   } = useContext(PromotionsContext)
@@ -49,6 +50,22 @@ export default function VistaCodigoPromocion(props) {
 
   return (
     <SafeAreaView style={mainStyles.containers} > 
+    {isLoadingPromotion ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingPromotion}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
+          />
+        </View>
+      ) : (
     <View style={styles.vista}>
       <ToolBar
         titulo={
@@ -80,13 +97,13 @@ export default function VistaCodigoPromocion(props) {
           onPress={() => comprobarPromo()}
         />
         </View>
-    </View>
+    </View>)}
     </SafeAreaView>
   );
 
   function comprobarPromo(){
     //P
-    validarPromo(code, GlobalLanguage)
+    validarPromo(code, GlobalLanguage, goToScreen, 'Payments')
   }
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);

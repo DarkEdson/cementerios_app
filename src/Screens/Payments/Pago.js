@@ -32,6 +32,7 @@ import {CategoriesContext} from '@context/CategoriesContext';
 import {CategoryContext} from '@context/CategoryContext';
 import {SedesContext} from '@context/SedesContext';
 import {ProductsContext} from '@context/ProductsContext';
+import { PromotionContext } from '../../context/PromotionContext';
 
 //Estilos Generales
 import color from '@styles/colors';
@@ -41,10 +42,12 @@ import {
   informationIconStyles,
 } from '@styles/stylesGeneral';
 
+
 //tags.PaymentScreen.agregar != '' ? tags.PaymentScreen.agregar :
 export default function VistaPago(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
+  const {promotionList,validPromo, setpromotionList} = useContext(PromotionContext);
   const [Product, setProduct] = useContext(ProductContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const [sede, setSede] = useContext(SedeContext);
@@ -69,8 +72,10 @@ export default function VistaPago(props) {
   // Cargar informacion de la vista
   useEffect(() => {
     let subtotal = 0;
+    let descPercent =0.0;
     let descuento = 0;
     let sendProds = [];
+    console.log(promotionList,validPromo)
     // Productos del carrito
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
     ShoppingCart.forEach(item => {
@@ -88,6 +93,14 @@ export default function VistaPago(props) {
         paid_value: item.cantidad * parseFloat(precioItem),
       });
     });
+    if (promotionList.length>=1){
+    
+      if (validPromo.type == "V" || validPromo.type == "v"){
+        
+        descuento = (subtotal * (parseFloat(validPromo.discount)/100))
+        console.log('descuento?',subtotal, descuento)
+      }
+    }
     //Consultar Moneda
     getCurrency({_id: sede.idAffiliate});
     console.log(Currency);
@@ -104,7 +117,7 @@ export default function VistaPago(props) {
       console.log('isFocused Payment');
     }
     //props, isFocused
-  }, []);
+  }, [props, isFocused]);
 
   // Variables del carrito de compras
   const [productosCarrito, setProductosCarrito] = useState([]);
@@ -268,6 +281,16 @@ export default function VistaPago(props) {
 
   function realizarPago() {
     console.log(loginUser.usuario);
+    let sendPromos=[]
+    if(promotionList.length>=1){
+      promotionList.map(promo=>{
+        sendPromos.push( {
+          idPromotion: promo.idPromotion,
+          type: promo.type
+      },)
+      })
+      
+    }
     if (productosCarrito.length >= 1) {
       let sendData = {
         idCurrency: Currency._id,
@@ -275,7 +298,7 @@ export default function VistaPago(props) {
         idUser: loginUser.usuario._id,
         value: valoresVenta.total,
         products: productosCarrito,
-        promotions: [
+        promotions: sendPromos,
           /*     {
               "idPromotion": "633b2bd9880e100adaf47a89",
               "type": "V"
@@ -284,10 +307,10 @@ export default function VistaPago(props) {
               "idPromotion": "633b2bd9880e100adaf47a89",
               "type": "P"
           }*/
-        ],
+        
       };
       console.log(sendData);
-      sendShoppingCartSell(sendData, goToScreen, 'Initial');
+      sendShoppingCartSell(sendData, goToScreen, 'Initial', setpromotionList);
     } else {
       Snackbar.show({
         text: 'Carrito Vacio, Agregue un producto',

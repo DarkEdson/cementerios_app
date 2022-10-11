@@ -141,7 +141,7 @@ function ShoppingCartProvider({children}) {
     setcarrito(false);
   }
 
-  async function sendShoppingCartSell(dataCart, goToScreen, routeName) {
+  async function sendShoppingCartSell(dataCart, goToScreen, routeName, setPromotionList) {
     setisLoadingCart(true);
     apiPago(dataCart).then(res => {
       console.log('RESPUESTA DE COMPRA', res);
@@ -153,6 +153,7 @@ function ShoppingCartProvider({children}) {
       });
       console.log('carrito vacio');
       setShoppingCart([]);
+      setPromotionList([]);
       setcarrito(false);
       goToScreen(routeName);
     });
