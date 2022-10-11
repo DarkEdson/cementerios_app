@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 //import DatePicker from 'react-native-date-ranges';
 import DatePicker from 'react-native-date-picker';
-import { Button } from "@rneui/themed";
+import {Button} from '@rneui/themed';
 //URL de server
 import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 //Recarga la screen
@@ -35,13 +35,13 @@ export default function SalesScreen(props) {
   const [openInicio, setOpenInicio] = useState(false);
   const [dateFinal, setDateFinal] = useState(new Date());
   const [openFinal, setOpenFinal] = useState(false);
-  const dateRef= React.useRef();
+  const dateRef = React.useRef();
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
-    console.log(dateRef)
+    console.log(dateRef);
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 120,
@@ -62,126 +62,142 @@ export default function SalesScreen(props) {
   });
 
   return (
-    <SafeAreaView style={mainStyles.containers} > 
-    <View>
-      <StatusBar
-        backgroundColor={color.PRINCIPALCOLOR}
-        barStyle="dark-content"
-        translucent={true}
-      />
-      <ToolBar
-        titulo={
-          tags.SellsScreen.ventas != '' ? tags.SellsScreen.ventas : 'Ventas'
-        }
-        onPressLeft={() => goToScreen('Initial')}
-        iconLeft={true}
-      />
-      <ScrollView>
-        <View style={styles.container}>
-        <View style={styles.fechas}>
-      <TouchableOpacity onPress={() => setOpenInicio(true)}>
-        <View style={styles.viewPadre}>
-          <View style={styles.viewHijo}>
-            <Text style={styles.texto}> {tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :'Fecha Inicio:'} </Text>
-          </View>
-          <View style={styles.viewHijo2}>
-            <Text style={styles.textoFecha}>
-              {dateInicio.getFullYear()}-{dateInicio.getMonth()}-{' '}
-              {dateInicio.getDate()}
-            </Text>
-            <DatePicker
-              modal
-              mode="date"
-              open={openInicio}
-              date={new Date()}
-              onConfirm={dateInicio => {
-                setOpenInicio(false);
-                setDateInicio(dateInicio);
-              }}
-              onCancel={() => {
-                setOpenInicio(false);
-              }}
+    <SafeAreaView style={mainStyles.containers}>
+      <View>
+        <StatusBar
+          backgroundColor={color.PRINCIPALCOLOR}
+          barStyle="dark-content"
+          translucent={true}
+        />
+        <ToolBar
+          titulo={
+            tags.SellsScreen.ventas != '' ? tags.SellsScreen.ventas : 'Ventas'
+          }
+          onPressLeft={() => goToScreen('Initial')}
+          iconLeft={true}
+        />
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.fechas}>
+              <TouchableOpacity onPress={() => setOpenInicio(true)}>
+                <View style={styles.viewPadre}>
+                  <View style={styles.viewHijo}>
+                    <Text style={styles.texto}>
+                      {' '}
+                      {tags.SellsScreen.labelfechainicio != ''
+                        ? tags.SellsScreen.labelfechainicio
+                        : 'Fecha Inicio:'}{' '}
+                    </Text>
+                  </View>
+                  <View style={styles.viewHijo2}>
+                    <Text style={styles.textoFecha}>
+                      {dateInicio.getFullYear()}-{dateInicio.getMonth()}-{' '}
+                      {dateInicio.getDate()}
+                    </Text>
+                    <DatePicker
+                      modal
+                      mode="date"
+                      open={openInicio}
+                      date={new Date()}
+                      onConfirm={dateInicio => {
+                        setOpenInicio(false);
+                        setDateInicio(dateInicio);
+                      }}
+                      onCancel={() => {
+                        setOpenInicio(false);
+                      }}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setOpenFinal(true)}>
+                <View style={styles.viewPadre}>
+                  <View style={styles.viewHijo}>
+                    <Text style={styles.texto}>
+                      {' '}
+                      {tags.SellsScreen.labelfechafin != ''
+                        ? tags.SellsScreen.labelfechafin
+                        : 'Fecha Inicio:'}{' '}
+                    </Text>
+                  </View>
+                  <View style={styles.viewHijo2}>
+                    <Text style={styles.textoFecha}>
+                      {dateFinal.getFullYear()}-{dateFinal.getMonth()}-
+                      {dateFinal.getDate()}
+                    </Text>
+                    <DatePicker
+                      modal
+                      mode="date"
+                      open={openFinal}
+                      date={new Date()}
+                      onConfirm={dateFinal => {
+                        setOpenFinal(false);
+                        setDateFinal(dateFinal);
+                      }}
+                      onCancel={() => {
+                        setOpenFinal(false);
+                      }}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <CardProductoVenta
+              urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`}
+              titulo="Perla Magistral"
+              styles={{marginLeft: 10}}
+              moneda=""
+              descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
+              precio="12.50"
+              cantidad="3"
             />
-          </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setOpenFinal(true)}>
-        <View style={styles.viewPadre}>
-          <View style={styles.viewHijo}>
-            <Text style={styles.texto}> {tags.SellsScreen.labelfechafin != '' ? tags.SellsScreen.labelfechafin :'Fecha Inicio:'} </Text>
-          </View>
-          <View style={styles.viewHijo2}>
-            <Text style={styles.textoFecha}>
-              {dateFinal.getFullYear()}-{dateFinal.getMonth()}-
-              {dateFinal.getDate()}
-            </Text>
-            <DatePicker
-              modal
-              mode="date"
-              open={openFinal}
-              date={new Date()}
-              onConfirm={dateFinal => {
-                setOpenFinal(false);
-                setDateFinal(dateFinal);
-              }}
-              onCancel={() => {
-                setOpenFinal(false);
-              }}
-            />
-          </View>
-        </View>
-      </TouchableOpacity>
-    </View>
-          <CardProductoVenta
-            urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`}
-            titulo="Perla Magistral"
-            descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-            precio="$ 12.50"
-            cantidad="3"
-          />
 
-          <CardProductoVenta
-            urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`}
-            titulo="Perla oceano 2"
-            descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-            precio="$ 16.90"
-            cantidad="5"
-          />
-          <CardProductoVenta
-            urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`}
-            titulo="Perla oceano 3"
-            descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-            precio="$ 11.93"
-            cantidad="9"
-          />
-          <View style={styles.espacio2}>
-            <Text style={styles.txtTitulo}>
-              {tags.SellsScreen.subtotal1 != ''
-                ? tags.SellsScreen.subtotal1
-                : ' Subtotal'}
-            </Text>
-            <Text style={styles.valorCuenta}>$ {valoresVenta.subTotal}</Text>
+            <CardProductoVenta
+              urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`}
+              titulo="Perla oceano 2"
+              styles={{marginLeft: 10}}
+              moneda=""
+              descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
+              precio="16.90"
+              cantidad="5"
+            />
+            <CardProductoVenta
+              urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`}
+              titulo="Perla oceano 3"
+              styles={{marginLeft: 10}}
+              moneda=""
+              descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
+              precio="11.93"
+              cantidad="9"
+            />
+            <View style={styles.espacio2}>
+              <Text style={styles.txtTitulo}>
+                {tags.SellsScreen.subtotal1 != ''
+                  ? tags.SellsScreen.subtotal1
+                  : ' Subtotal'}
+              </Text>
+              <Text style={styles.valorCuenta}>$ {valoresVenta.subTotal}</Text>
+            </View>
+            <View style={styles.espacio}>
+              <Text style={styles.txtTitulo}>
+                {tags.SellsScreen.comisionpct != ''
+                  ? tags.SellsScreen.comisionpct
+                  : '% de Comisión'}
+              </Text>
+              <Text style={styles.valorCuenta}>$ {valoresVenta.comision}</Text>
+            </View>
+            <View style={styles.espacio}>
+              <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
+                {tags.SellsScreen.comision != ''
+                  ? tags.SellsScreen.comision
+                  : ' Comisión'}
+              </Text>
+              <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
+            </View>
+            <View style={styles.boxTransparent} />
           </View>
-          <View style={styles.espacio}>
-            <Text style={styles.txtTitulo}>
-              {tags.SellsScreen.comisionpct != ''
-                ? tags.SellsScreen.comisionpct
-                : '% de Comisión'}
-            </Text>
-            <Text style={styles.valorCuenta}>$ {valoresVenta.comision}</Text>
-          </View>
-          <View style={styles.espacio}>
-            <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-              {tags.SellsScreen.comision != ''
-                ? tags.SellsScreen.comision
-                : ' Comisión'}
-            </Text>
-            <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
-          </View>
-          <View style={styles.boxTransparent} />
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 
