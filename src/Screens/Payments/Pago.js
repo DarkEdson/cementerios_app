@@ -171,7 +171,7 @@ export default function VistaPago(props) {
                           title="Info"
                           onPress={() => editarItem(prod)}
                           icon={{name: 'info', color: 'white'}}
-                          buttonStyle={{minHeight: '100%'}}
+                          buttonStyle={{minHeight: '100%',backgroundColor: color.PRINCIPALCOLOR,}}
                         />
                       )}
                       rightContent={() => (
