@@ -18,6 +18,7 @@ import ToolBar from '@Components/common/toolBar';
 import MyButton from '@Components/common/MyButton';
 import MyTextInput from '@Components/common/MyTextInput';
 //Estilos
+import color from '@styles/colors';
 import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
