@@ -30,22 +30,21 @@ import {ReportsContext} from '@context/ReportsContext';
 
 //tags.SellsScreen.labelfechafin != '' ? tags.SellsScreen.labelfechafin :
 //tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :
-export default function SalesScreen(props) {
+export default function BuyScreen(props) {
   const {tags} = useContext(ScreentagContext);
-  const {getReportSeller, ReportsSellers, isLoadingReports} =
+  const {getReportClient, ReportsClients, isLoadingReports} =
     useContext(ReportsContext);
   const [dateInicio, setDateInicio] = useState(new Date());
   const [openInicio, setOpenInicio] = useState(false);
   const [dateFinal, setDateFinal] = useState(new Date());
   const [openFinal, setOpenFinal] = useState(false);
-
   const dateRef = React.useRef();
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
-    //  console.log(dateRef);
+    //   console.log(dateRef);
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 0,
@@ -54,7 +53,7 @@ export default function SalesScreen(props) {
     });
     if (isFocused) {
       getInitialData();
-      console.log('isFocused Ventas Detail');
+      console.log('isFocused Compras Detail');
     }
     //props, isFocused
   }, [props, isFocused]);
@@ -90,9 +89,7 @@ export default function SalesScreen(props) {
             translucent={true}
           />
           <ToolBar
-            titulo={
-              tags.SellsScreen.ventas != '' ? tags.SellsScreen.ventas : 'Ventas'
-            }
+            titulo={'Compras'}
             onPressLeft={() => goToScreen('Initial')}
             iconLeft={true}
           />
@@ -191,32 +188,10 @@ export default function SalesScreen(props) {
                 cantidad="9"
               />
               <View style={styles.espacio2}>
-                <Text style={styles.txtTitulo}>
-                  {tags.SellsScreen.subtotal1 != ''
-                    ? tags.SellsScreen.subtotal1
-                    : ' Subtotal'}
-                </Text>
+                <Text style={styles.txtTitulo}>{' Total'}</Text>
                 <Text style={styles.valorCuenta}>
                   $ {valoresVenta.subTotal}
                 </Text>
-              </View>
-              <View style={styles.espacio}>
-                <Text style={styles.txtTitulo}>
-                  {tags.SellsScreen.comisionpct != ''
-                    ? tags.SellsScreen.comisionpct
-                    : '% de Comisión'}
-                </Text>
-                <Text style={styles.valorCuenta}>
-                  $ {valoresVenta.comision}
-                </Text>
-              </View>
-              <View style={styles.espacio}>
-                <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-                  {tags.SellsScreen.comision != ''
-                    ? tags.SellsScreen.comision
-                    : ' Comisión'}
-                </Text>
-                <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
               </View>
               <View style={styles.boxTransparent} />
             </View>

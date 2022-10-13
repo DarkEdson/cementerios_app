@@ -27,10 +27,16 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 
 //tags.paymentMethodsScreen.btn != '' ? tags.paymentMethodsScreen.btn :
 export default function PaymentMethodScreen(props) {
-  const {creditCard, creditCards, setcreditCardSel} =
-    useContext(CreditCardContext);
+  const {
+    creditCard,
+    creditCards,
+    setcreditCardSel,
+    setisUpdatedCard,
+    isLoadingCreditCards,
+    deleteCard,
+  } = useContext(CreditCardContext);
   const [loginUser] = useContext(UsuarioContext);
-  const {tags, updateTags} = useContext(ScreentagContext);
+  const {tags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -64,94 +70,115 @@ export default function PaymentMethodScreen(props) {
 
   return (
     <SafeAreaView style={mainStyles.containers}>
-      <View style={styles.container}>
-        <StatusBar
-          backgroundColor={color.PRINCIPALCOLOR}
-          barStyle="dark-content"
-          translucent={true}
-        />
-        <ToolBar
-          titulo={
-            tags.paymentMethodsScreen.titulo != ''
-              ? tags.paymentMethodsScreen.titulo
-              : 'Metodos de Pago'
-          }
-          onPressLeft={() => goToScreen('PersonalData')}
-          iconLeft={true}
-        />
+      {isLoadingCreditCards ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingCreditCards}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
+          />
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <StatusBar
+            backgroundColor={color.PRINCIPALCOLOR}
+            barStyle="dark-content"
+            translucent={true}
+          />
+          <ToolBar
+            titulo={
+              tags.paymentMethodsScreen.titulo != ''
+                ? tags.paymentMethodsScreen.titulo
+                : 'Metodos de Pago'
+            }
+            onPressLeft={() => goToScreen('PersonalData')}
+            iconLeft={true}
+          />
 
-        <ScrollView>
-          <View style={styles.editField}>
-            <Text style={styles.titleLabel}>
-              {tags.paymentMethodsScreen.preferido != ''
-                ? tags.paymentMethodsScreen.preferido
-                : 'Preferido:'}
-            </Text>
-            <PaymentButton
-              iconLeft={true}
-              titulo={'XXXX-XXXX-XXXX-' + creditCard.last4}
-              iconRight={true}
-              onPress={() => selectCard(creditCard)}
-            />
-            <Text style={styles.titleLabel}>
-              {tags.paymentMethodsScreen.tarjetas != ''
-                ? tags.paymentMethodsScreen.tarjetas
-                : 'Tarjetas:'}
-            </Text>
-            {creditCards.length >= 1
-              ? creditCards.map((card, key) => (
-                  <ListItem.Swipeable
-                    key={key}
-                    bottomDivider
-                    leftContent={() => (
-                      <Button
-                        title="Info"
-                        onPress={() => selectCard(card)}
-                        icon={{name: 'info', color: 'white'}}
-                        buttonStyle={{minHeight: '100%'}}
-                      />
-                    )}
-                    rightContent={() => (
-                      <Button
-                        title="Delete"
-                        onPress={() => {}}
-                        icon={{name: 'delete', color: 'white'}}
-                        buttonStyle={{
-                          minHeight: '100%',
-                          backgroundColor: 'red',
-                        }}
-                      />
-                    )}>
-                    <ListItem.Content>
-                      <PaymentButton
-                        key={key}
-                        iconLeft={true}
-                        titulo={'XXXX-XXXX-XXXX-' + card.last4}
-                        iconRight={false}
-                        onPress={() => {}}
-                      />
-                    </ListItem.Content>
-                    <ListItem.Chevron />
-                  </ListItem.Swipeable>
-                ))
-              : null}
-            <MyButton
-              titulo={
-                tags.paymentMethodsScreen.btn != ''
-                  ? tags.paymentMethodsScreen.btn
-                  : 'Guardar Cambios'
-              }
-              onPress={() => {}}
-            />
-          </View>
-        </ScrollView>
-      </View>
+          <ScrollView>
+            <View style={styles.editField}>
+              <Text style={styles.titleLabel}>
+                {tags.paymentMethodsScreen.preferido != ''
+                  ? tags.paymentMethodsScreen.preferido
+                  : 'Preferido:'}
+              </Text>
+              <PaymentButton
+                iconLeft={true}
+                titulo={'XXXX-XXXX-XXXX-' + creditCard.last4}
+                iconRight={true}
+                onPress={() => selectCard(creditCard)}
+              />
+              <Text style={styles.titleLabel}>
+                {tags.paymentMethodsScreen.tarjetas != ''
+                  ? tags.paymentMethodsScreen.tarjetas
+                  : 'Tarjetas:'}
+              </Text>
+              {creditCards.length >= 1
+                ? creditCards.map((card, key) => (
+                    <ListItem.Swipeable
+                      key={key}
+                      bottomDivider
+                      leftContent={() => (
+                        <Button
+                          title="Favorite"
+                          onPress={() => {}}
+                          icon={{name: 'favorite', color: 'white'}}
+                          buttonStyle={{
+                            minHeight: '100%',
+                            backgroundColor: color.PRINCIPALCOLOR,
+                          }}
+                        />
+                      )}
+                      rightContent={() => (
+                        <Button
+                          title="Delete"
+                          onPress={() => {}}
+                          icon={{name: 'delete', color: 'white'}}
+                          buttonStyle={{
+                            minHeight: '100%',
+                            backgroundColor: 'red',
+                          }}
+                        />
+                      )}>
+                      <ListItem.Content>
+                        <PaymentButton
+                          key={key}
+                          iconLeft={true}
+                          titulo={'XXXX-XXXX-XXXX-' + card.last4}
+                          iconRight={false}
+                          onPress={() => selectCard(card)}
+                        />
+                      </ListItem.Content>
+                      <ListItem.Chevron />
+                    </ListItem.Swipeable>
+                  ))
+                : null}
+              <MyButton
+                titulo={
+                  tags.paymentMethodsScreen.btn != ''
+                    ? tags.paymentMethodsScreen.btn
+                    : 'Crear Tarjeta'
+                }
+                onPress={() => newCard()}
+              />
+            </View>
+          </ScrollView>
+        </View>
+      )}
     </SafeAreaView>
   );
 
   function selectCard(card) {
+    setisUpdatedCard(true);
     let month = '00';
-    if (parseInt(card.exp_month) <= 1 <= 9) {
+    if (parseInt(card.exp_month) <= 9) {
       month = `0${card.exp_month}`;
     } else {
       month = card.exp_month;
@@ -167,6 +194,26 @@ export default function PaymentMethodScreen(props) {
       brand: card.brand,
     });
     goToScreen('PaymentDetails');
+  }
+
+  function newCard() {
+    setisUpdatedCard(false);
+    setcreditCardSel({
+      ...creditCard,
+      cardNumber: '',
+      cardHolderName: '',
+      nameSurname: '',
+      mmYY: '',
+      expiration: '',
+      securityCode: '',
+      brand: '',
+    });
+    goToScreen('PaymentDetails');
+  }
+
+  function borrarCard(card) {
+    //F
+    //  deleteCard(card, loginUser.usuario);
   }
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);

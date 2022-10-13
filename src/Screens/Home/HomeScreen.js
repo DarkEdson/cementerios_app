@@ -9,20 +9,19 @@ import PrincipalScreen from '@Screens/PrincipalScreen';
 import SalesScreen from '@Screens/Sales/SalesScreen';
 import PromoScreen from '@Screens/Promo/PromoScreen';
 import VistaProductos from '@Screens/Producto/Productos';
+import buyScreen from '@Screens/Sales/BuyScreen';
 //Estilos Generales
 import color from '@styles/colors';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
-
-
+import {UsuarioContext} from '@context/UsuarioContext';
 const Tab = createMaterialBottomTabNavigator();
 
 //tags.HomeTagsScreen.home != '' ? tags.HomeTagsScreen.home :
 export default function HomeScreen(props) {
+  const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
-  useEffect(() => {
-   
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Tab.Navigator
@@ -45,7 +44,10 @@ export default function HomeScreen(props) {
         name="Initial"
         component={InitialScreen}
         options={{
-          tabBarLabel: tags.HomeTagsScreen.home != '' ? tags.HomeTagsScreen.home : 'Inicio',
+          tabBarLabel:
+            tags.HomeTagsScreen.home != ''
+              ? tags.HomeTagsScreen.home
+              : 'Inicio',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}
@@ -61,7 +63,10 @@ export default function HomeScreen(props) {
         name="Promociones"
         component={PromoScreen}
         options={{
-          tabBarLabel: tags.HomeTagsScreen.promo != '' ? tags.HomeTagsScreen.promo : 'Promociones',
+          tabBarLabel:
+            tags.HomeTagsScreen.promo != ''
+              ? tags.HomeTagsScreen.promo
+              : 'Promociones',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}
@@ -78,7 +83,9 @@ export default function HomeScreen(props) {
         component={VistaProductos}
         options={{
           tabBarLabel:
-          tags.HomeTagsScreen.products != '' ? tags.HomeTagsScreen.products : 'Productos',
+            tags.HomeTagsScreen.products != ''
+              ? tags.HomeTagsScreen.products
+              : 'Productos',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}
@@ -90,16 +97,39 @@ export default function HomeScreen(props) {
           ),
         }}
       />
+      {loginUser.usuario.role == 'seller' ||
+      loginUser.usuario.role == 'SELLER' ||
+      loginUser.usuario.role == 'Seller' ? (
+        <Tab.Screen
+          name="Ventas"
+          component={SalesScreen}
+          options={{
+            tabBarLabel:
+              tags.HomeTagsScreen.sells != ''
+                ? tags.HomeTagsScreen.sells
+                : 'Ventas',
+            tabBarIcon: ({color}) => (
+              <Icon
+                style={{marginTop: -2}}
+                type={'entypo'}
+                name="text-document"
+                color={color}
+                size={27}
+              />
+            ),
+          }}
+        />
+      ) : null}
       <Tab.Screen
-        name="Ventas"
-        component={SalesScreen}
+        name="Compras"
+        component={buyScreen}
         options={{
-          tabBarLabel: tags.HomeTagsScreen.sells != '' ? tags.HomeTagsScreen.sells : 'Ventas',
+          tabBarLabel: 'Compras',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}
               type={'entypo'}
-              name="text-document"
+              name="shopping-bag"
               color={color}
               size={27}
             />
