@@ -212,8 +212,14 @@ export default function PaymentMethodScreen(props) {
   }
 
   function borrarCard(card) {
+    if (creditCards.length  <=1){
+      //mensaje
+    }else{
+      deleteCard(card, loginUser.usuario);
+    }
+
     //F
-    //  deleteCard(card, loginUser.usuario);
+    //  
   }
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
