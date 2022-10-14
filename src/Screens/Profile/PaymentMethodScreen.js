@@ -8,6 +8,7 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import {Icon, FAB, ListItem, Button} from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
@@ -139,7 +140,7 @@ export default function PaymentMethodScreen(props) {
                       rightContent={() => (
                         <Button
                           title="Delete"
-                          onPress={() => {}}
+                          onPress={() => borrarCard(card)}
                           icon={{name: 'delete', color: 'white'}}
                           buttonStyle={{
                             minHeight: '100%',
@@ -212,14 +213,18 @@ export default function PaymentMethodScreen(props) {
   }
 
   function borrarCard(card) {
-    if (creditCards.length  <=1){
-      //mensaje
-    }else{
+    console.log('card a borrar', card);
+    if (creditCards.length <= 1) {
+      Snackbar.show({
+        text: 'Debe tener minimo una tarjeta registrada',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
       deleteCard(card, loginUser.usuario);
     }
 
     //F
-    //  
+    //
   }
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
