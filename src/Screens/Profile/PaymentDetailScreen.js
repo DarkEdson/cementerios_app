@@ -10,6 +10,7 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import {Icon, FAB, ListItem, Button} from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
@@ -78,7 +79,11 @@ export default function PaymentDetailScreen(props) {
 
       console.log('CARD DATA: ', data);
       if (isUpdatedCard) {
-        updateCard(data, loginUser.usuario, goToScreen, 'PaymentMethod');
+        Snackbar.show({
+          text:
+            'No se puede actualizar',
+          duration: Snackbar.LENGTH_LONG,
+        });
       } else {
         createCard(data, loginUser.usuario, goToScreen, 'PaymentMethod');
       }
@@ -165,14 +170,15 @@ export default function PaymentDetailScreen(props) {
                 }}
               />
               <View style={styles.boxTransparent} />
-              <MyButton
+              {isUpdatedCard ? null :<MyButton
                 titulo={
                   tags.PaymentCardDetailScreen.guardar != ''
                     ? tags.PaymentCardDetailScreen.guardar
                     : 'Guardar'
                 }
                 onPress={handleSubmit}
-              />
+              /> }
+              
             </KeyboardAvoidingView>
           </View>
         </View>
