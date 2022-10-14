@@ -20,6 +20,7 @@ import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import LargeButton from '@Components/common/largeButton';
+import MyTextButton from '@Components/common/MyTextButton';
 //Estilos
 import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
@@ -134,17 +135,29 @@ export default function PersonalDataScreen(props) {
                   {loginUser.usuario.email}
                 </Text>
               </View>
-              <Text style={styles.txtComponente}>
-                {tags.personalDataScreen.codigo != ''
-                  ? tags.personalDataScreen.codigo
-                  : 'Codigo de vendedor'}
-              </Text>
-              <View style={{backgroundColor: color.WHITE}}>
+              {loginUser.usuario.role == 'seller' ||
+              loginUser.usuario.role == 'SELLER' ||
+              loginUser.usuario.role == 'Seller' ? (
                 <Text style={styles.txtComponente}>
-                  {loginUser.usuario.id_number
-                    ? loginUser.usuario.id_number
-                    : loginUser.usuario.vendorcode}
+                  {tags.personalDataScreen.codigo != ''
+                    ? tags.personalDataScreen.codigo
+                    : 'Codigo de vendedor'}
                 </Text>
+              ) : null}
+              <View style={{backgroundColor: color.WHITE}}>
+                {loginUser.usuario.role == 'seller' ||
+                loginUser.usuario.role == 'SELLER' ||
+                loginUser.usuario.role == 'Seller' ? (
+                  <Text style={styles.txtComponente}>
+                    {loginUser.usuario.id_number
+                      ? loginUser.usuario.id_number
+                      : loginUser.usuario.vendorcode}
+                  </Text>
+                ) : (
+                  <TouchableOpacity onPress={() => {}}>
+                    <Text style={styles.txtComponente}>{'Ayuda'}</Text>
+                  </TouchableOpacity>
+                )}
               </View>
               <Text style={styles.txtComponente}>
                 {tags.personalDataScreen.editar != ''
