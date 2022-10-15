@@ -33,6 +33,7 @@ import {CategoryContext} from '@context/CategoryContext';
 import {SedesContext} from '@context/SedesContext';
 import {ProductsContext} from '@context/ProductsContext';
 import { PromotionContext } from '../../context/PromotionContext';
+import {CreditCardContext} from '@context/CreditCardContext';
 
 //Estilos Generales
 import color from '@styles/colors';
@@ -47,6 +48,7 @@ import {
 export default function VistaPago(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
+  const {creditCards } = useContext(CreditCardContext);
   const {promotionList,validPromo, setpromotionList} = useContext(PromotionContext);
   const [Product, setProduct] = useContext(ProductContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
@@ -292,25 +294,35 @@ export default function VistaPago(props) {
       
     }
     if (productosCarrito.length >= 1) {
-      let sendData = {
-        idCurrency: Currency._id,
-        idLanguage: GlobalLanguage._id,
-        idUser: loginUser.usuario._id,
-        value: valoresVenta.total,
-        products: productosCarrito,
-        promotions: sendPromos,
-          /*     {
-              "idPromotion": "633b2bd9880e100adaf47a89",
-              "type": "V"
-          },
-          {
-              "idPromotion": "633b2bd9880e100adaf47a89",
-              "type": "P"
-          }*/
-        
-      };
-      console.log(sendData);
-      sendShoppingCartSell(sendData, goToScreen, 'Initial', setpromotionList);
+      if (creditCards.length >= 1){
+        let sendData = {
+          idCurrency: Currency._id,
+          idLanguage: GlobalLanguage._id,
+          idUser: loginUser.usuario._id,
+          value: valoresVenta.total,
+          products: productosCarrito,
+          promotions: sendPromos,
+            /*     {
+                "idPromotion": "633b2bd9880e100adaf47a89",
+                "type": "V"
+            },
+            {
+                "idPromotion": "633b2bd9880e100adaf47a89",
+                "type": "P"
+            }*/
+          
+        };
+        console.log(sendData);
+        sendShoppingCartSell(sendData, goToScreen, 'Initial', setpromotionList);
+      }
+      else {
+        Snackbar.show({
+          text: 'Ingrese un metodo de pago',
+          duration: Snackbar.LENGTH_LONG,
+        });
+        goToScreen('PaymentMethod')
+      }
+      
     } else {
       Snackbar.show({
         text: 'Carrito Vacio, Agregue un producto',
