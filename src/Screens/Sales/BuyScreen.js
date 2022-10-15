@@ -21,18 +21,23 @@ import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardProductoVenta from '@Components/CardSellProduct/';
+import MyButton from '@Components/common/MyButton';
 //Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ReportsContext} from '@context/ReportsContext';
+import {UsuarioContext} from '@context/UsuarioContext';
+import {GlobalLanguageContext} from '@context/LanguageContext';
 
 //tags.SellsScreen.labelfechafin != '' ? tags.SellsScreen.labelfechafin :
 //tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :
 export default function BuyScreen(props) {
   const {tags} = useContext(ScreentagContext);
-  const {getReportClient, ReportsClients, isLoadingReports} =
+  const [loginUser] = useContext(UsuarioContext);
+  const [GlobalLanguage] = useContext(GlobalLanguageContext);
+  const {getReportClient, ReportsClients,setprodsClients, prodsClients,isLoadingReports} =
     useContext(ReportsContext);
   const [dateInicio, setDateInicio] = useState(new Date());
   const [openInicio, setOpenInicio] = useState(false);
@@ -44,6 +49,7 @@ export default function BuyScreen(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
+    setprodsClients([])
     //   console.log(dateRef);
     // Calcular valores de la vista
     setValoresVenta({
@@ -63,6 +69,36 @@ export default function BuyScreen(props) {
     comision: 0,
     total: 0,
   });
+
+  function buscaCompras(){
+    let monthInicial = '01';
+    let monthFinal ='01'
+    let dayInicial= '01'
+    let dayFinal='01'
+    if ((dateInicio.getMonth()+1) <= 9) {
+      monthInicial = `0${dateInicio.getMonth()}`;
+    } else {
+      monthInicial = dateInicio.getMonth()+1;
+    }
+    if ((dateFinal.getMonth()+1) <= 9) {
+      monthFinal = `0${dateFinal.getMonth()}`;
+    } else {
+      monthFinal = dateFinal.getMonth()+1;
+    }
+    if (dateInicio.getDate() <= 9) {
+      dayInicial = `0${dateInicio.getDate()}`;
+    } else {
+      dayInicial = dateInicio.getDate();
+    }
+    if (dateFinal.getDate() <= 9) {
+      dayFinal = `0${dateFinal.getDate()}`;
+    } else {
+      dayFinal = dateFinal.getDate();
+    }
+    let fechaInicial= `${dateInicio.getFullYear()}-${monthInicial}-${dayInicial}`
+    let fechaFinal= `${dateFinal.getFullYear()}-${monthFinal}-${dayFinal}`
+    getReportClient(loginUser.usuario._id, GlobalLanguage._id, fechaInicial, fechaFinal,setValoresVenta)  
+  }
 
   return (
     <SafeAreaView style={mainStyles.containers}>
@@ -108,7 +144,7 @@ export default function BuyScreen(props) {
                     </View>
                     <View style={styles.viewHijo2}>
                       <Text style={styles.textoFecha}>
-                        {dateInicio.getFullYear()}-{dateInicio.getMonth()}-{' '}
+                        {dateInicio.getFullYear()}-{dateInicio.getMonth()+1}-
                         {dateInicio.getDate()}
                       </Text>
                       <DatePicker
@@ -139,7 +175,7 @@ export default function BuyScreen(props) {
                     </View>
                     <View style={styles.viewHijo2}>
                       <Text style={styles.textoFecha}>
-                        {dateFinal.getFullYear()}-{dateFinal.getMonth()}-
+                        {dateFinal.getFullYear()}-{dateFinal.getMonth()+1}-
                         {dateFinal.getDate()}
                       </Text>
                       <DatePicker
@@ -158,35 +194,25 @@ export default function BuyScreen(props) {
                     </View>
                   </View>
                 </TouchableOpacity>
+                <MyButton
+          titulo={
+           'Search.'
+          }
+          onPress={() => buscaCompras()}
+        />
               </View>
-              <CardProductoVenta
-                urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_1.jpg`}
-                titulo="Perla Magistral"
+              {prodsClients.length >=1? prodsClients.map((producto,key)=>
+                <CardProductoVenta
+                key={key}
+                urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
+                titulo={producto.image}
                 styles={{marginLeft: 10}}
                 moneda=""
-                descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-                precio="12.50"
-                cantidad="3"
+                descripcion={producto.descripcion}
+                precio={producto.value}
+                cantidad={producto.quantity}
               />
-
-              <CardProductoVenta
-                urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_2.jpg`}
-                titulo="Perla oceano 2"
-                styles={{marginLeft: 10}}
-                moneda=""
-                descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-                precio="16.90"
-                cantidad="5"
-              />
-              <CardProductoVenta
-                urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}/Producto_3.jpg`}
-                titulo="Perla oceano 3"
-                styles={{marginLeft: 10}}
-                moneda=""
-                descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
-                precio="11.93"
-                cantidad="9"
-              />
+              ):null}
               <View style={styles.espacio2}>
                 <Text style={styles.txtTitulo}>{' Total'}</Text>
                 <Text style={styles.valorCuenta}>
