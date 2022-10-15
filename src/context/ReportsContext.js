@@ -28,9 +28,18 @@ export const ReportsProvider = ({children}) => {
     setisLoadingReports(true);
     apiReporteVendedor(usuarioID, lenguajeID, fechaIni, fechaFin).then(res => {
       console.log('REPORTE DE VENDEDORES VENTAS', res);
+      let totalxcant = 0
+      let totalsincant = 0
+      if (res.products.length >=1)  {res.products.map(p=>{
+        totalxcant = totalxcant + (p.value * p.quantity)
+        totalsincant = totalsincant+p.value
+      })}
+      console.log('totalxCant',totalxcant)
+      console.log('totalsinCant', totalsincant)
+      let subtotalV = res.total_sale -res.total_comission
       setReportsSellers(res);
       setprodsSellers(res.products)
-      setValoresVenta({  subTotal: 0,
+      setValoresVenta({  subTotal: subtotalV.toFixed(2),
         comision: res.total_comission.toFixed(2),
         total: res.total_sale.toFixed(2),})
       setisLoadingReports(false);

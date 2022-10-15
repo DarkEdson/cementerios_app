@@ -207,7 +207,7 @@ export default function BuyScreen(props) {
                 urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
                 titulo={producto.image}
                 styles={{marginLeft: 10}}
-                moneda=""
+                moneda="$"
                 descripcion={producto.descripcion}
                 precio={producto.value}
                 cantidad={producto.quantity}

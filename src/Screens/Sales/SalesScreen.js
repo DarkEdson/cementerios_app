@@ -215,7 +215,7 @@ export default function SalesScreen(props) {
                 urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
                 titulo={producto.image}
                 styles={{marginLeft: 10}}
-                moneda=""
+                moneda="$"
                 descripcion={producto.descripcion}
                 precio={producto.value}
                 cantidad={producto.quantity}
@@ -233,9 +233,9 @@ export default function SalesScreen(props) {
               </View>
               <View style={styles.espacio}>
                 <Text style={styles.txtTitulo}>
-                  {tags.SellsScreen.comisionpct != ''
-                    ? tags.SellsScreen.comisionpct
-                    : '% de Comisión'}
+                {tags.SellsScreen.comision != ''
+                    ? tags.SellsScreen.comision
+                    : ' Comisión'}
                 </Text>
                 <Text style={styles.valorCuenta}>
                   $ {valoresVenta.comision}
@@ -243,9 +243,7 @@ export default function SalesScreen(props) {
               </View>
               <View style={styles.espacio}>
                 <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-                  {tags.SellsScreen.comision != ''
-                    ? tags.SellsScreen.comision
-                    : ' Comisión'}
+                Total
                 </Text>
                 <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
               </View>
