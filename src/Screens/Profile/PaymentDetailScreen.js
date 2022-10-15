@@ -85,7 +85,7 @@ export default function PaymentDetailScreen(props) {
           duration: Snackbar.LENGTH_LONG,
         });
       } else {
-        createCard(data, loginUser.usuario, goToScreen, 'PaymentMethod');
+        createCard(data, loginUser.usuario, goToScreen, 'PaymentMethod', tags.dialogAlertsScreen.m);
       }
       console.log('CONTEXT DATA', dataCard);
     }

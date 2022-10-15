@@ -52,12 +52,12 @@ function CreditCardProvider({children}) {
     });
   };
 
-  const createCard = async (tarjeta, usuario, goToScreen, routeName) => {
+  const createCard = async (tarjeta, usuario, goToScreen, routeName, tagSuccess) => {
     setisLoadingCreditCards(true);
     apiCrearTarjeta(tarjeta, usuario).then(res => {
       if (res.value) {
         Snackbar.show({
-          text: 'Credit Card Creada',
+          text: tagSuccess? tagSuccess:'Credit Card Creada',
           duration: Snackbar.LENGTH_LONG,
         });
         console.log('CREDIT CARD CREATED', res);

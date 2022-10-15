@@ -220,7 +220,31 @@ export default function PaymentMethodScreen(props) {
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
-      deleteCard(card, loginUser.usuario);
+      Alert.alert(
+        'Borrar Tarjeta',
+          tags.dialogAlertsScreen.n != ''
+          ? tags.dialogAlertsScreen.n
+          : '¿Esta seguro que \ndesea eliminar la tarjeta?',
+        [
+          {
+            text:
+              tags.closeSessionScreen.btnsi != ''
+                ? tags.closeSessionScreen.btnsi
+                : 'Si',
+            onPress: () => {
+              deleteCard(card, loginUser.usuario);
+            },
+          },
+          {
+            text:
+              tags.closeSessionScreen.btnno != ''
+                ? tags.closeSessionScreen.btnno
+                : 'No',
+            onPress: () => {},
+            style: 'cancel',
+          },
+        ],
+      );
     }
 
     //F
