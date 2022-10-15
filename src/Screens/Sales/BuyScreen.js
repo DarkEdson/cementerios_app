@@ -213,10 +213,11 @@ export default function BuyScreen(props) {
                 cantidad={producto.quantity}
               />
               ):null}
-              <View style={styles.espacio2}>
+              <View style={styles.espacio}/>
+              <View style={styles.espacio}>
                 <Text style={styles.txtTitulo}>{' Total'}</Text>
                 <Text style={styles.valorCuenta}>
-                  $ {valoresVenta.subTotal}
+                  $ {valoresVenta.total}
                 </Text>
               </View>
               <View style={styles.boxTransparent} />
