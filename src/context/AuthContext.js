@@ -169,7 +169,7 @@ export const AuthProvider = ({children}) => {
     }
   };
 
-  function cambiaClave(userID, newPassword, loginAction) {
+  function cambiaClave(userID, newPassword, loginAction, tagmsj) {
     setIsLoading(true);
     apiChangePassword(userID, newPassword).then(res => {
       console.log('CONTRASEÑA', res);
@@ -179,27 +179,29 @@ export const AuthProvider = ({children}) => {
         console.log('usuario data actualizado', userInfo);
         setUserInfo(userInfo);
         Snackbar.show({
-          text: 'Su contraseña fue cambiada correctamente',
+          text: tagmsj.success
+            ? tagmsj.success
+            : 'Su contraseña fue cambiada correctamente',
           duration: Snackbar.LENGTH_LONG,
         });
         loginAction({
           type: 'update',
           data: userInfo,
           tags: {
-            inicio: 'Contraseña Actualizada',
+            inicio: tagmsj.success ? tagmsj.success : 'Contraseña Actualizada',
           },
         });
         setIsLoading(false);
       } else {
         Snackbar.show({
-          text: 'Error Cambiando Contraseña',
+          text: tagmsj.failed ? tagmsj.failed : 'Error Cambiando Contraseña',
           duration: Snackbar.LENGTH_LONG,
         });
       }
     });
   }
 
-  function actualizaUsuario(user, idUser, loginAction) {
+  function actualizaUsuario(user, idUser, loginAction, tagsMsg) {
     setIsLoading(true);
     apiUpdateUser(user, idUser).then(res => {
       console.log('USUARIO ACTUALIZADO', res);
@@ -209,7 +211,9 @@ export const AuthProvider = ({children}) => {
         console.log('usuario data actualizado', userInfo);
         setUserInfo(userInfo);
         Snackbar.show({
-          text: 'Actualizacion de datos Exitosamente',
+          text: tagsMsg.success
+            ? tagsMsg.success
+            : 'Actualizacion de datos Exitosamente',
           duration: Snackbar.LENGTH_LONG,
         });
         loginAction({
@@ -222,7 +226,7 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
       } else {
         Snackbar.show({
-          text: 'Error Actualizando Datos',
+          text: tagsMsg.failed ? tagsMsg.failed : 'Error Actualizando Datos',
           duration: Snackbar.LENGTH_LONG,
         });
       }

@@ -146,6 +146,7 @@ function ShoppingCartProvider({children}) {
     goToScreen,
     routeName,
     setPromotionList,
+    tagsMsg,
   ) {
     setisLoadingCart(true);
     apiPago(dataCart).then(res => {
@@ -154,7 +155,7 @@ function ShoppingCartProvider({children}) {
       setisLoadingCart(false);
       if (res.status) {
         Snackbar.show({
-          text: res.status,
+          text: tagsMsg.success ? tagsMsg.success + res.status : res.status,
           duration: Snackbar.LENGTH_LONG,
         });
         console.log('carrito vacio');
@@ -165,7 +166,14 @@ function ShoppingCartProvider({children}) {
       } else {
         console.log(res.raw.code + ' ' + res.raw.message + ' ' + res.raw.param);
         Snackbar.show({
-          text: res.raw.code + ' ' + res.raw.message + ' ' + res.raw.param,
+          text: tagsMsg.failed
+            ? tagsMsg.failed +
+              res.raw.code +
+              ' ' +
+              res.raw.message +
+              ' ' +
+              res.raw.param
+            : res.raw.code + ' ' + res.raw.message + ' ' + res.raw.param,
           duration: Snackbar.LENGTH_LONG,
         });
         console.log('carrito vacio');

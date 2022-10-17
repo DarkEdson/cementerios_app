@@ -185,15 +185,36 @@ export default function EditProfileScreen(props) {
   );
   function actualizandoUsuario() {
     if (data.username == '') {
-      mensajeSnack('Usuario en Blanco');
+      mensajeSnack(
+        tags.EditUserScreen.whiteusername != ''
+          ? tags.EditUserScreen.whiteusername
+          : 'Usuario en Blanco',
+      );
     } else if (data.name == '') {
-      mensajeSnack('Nombre en Blanco');
+      mensajeSnack(
+        tags.EditUserScreen.whitename != ''
+          ? tags.EditUserScreen.whitename
+          : 'Nombre en Blanco',
+      );
     } else if (data.lastname == '') {
-      mensajeSnack('Apellido en Blanco');
+      mensajeSnack(
+        tags.EditUserScreen.whitelastname != ''
+          ? tags.EditUserScreen.whitelastname
+          : 'Apellido en Blanco',
+      );
     } else if (data.email == '') {
-      mensajeSnack('Correo en Blanco');
+      mensajeSnack(
+        tags.EditUserScreen.whiteemail != ''
+          ? tags.EditUserScreen.whiteemail
+          : 'Correo en Blanco',
+      );
     } else {
-      actualizaUsuario(data, loginUser.usuario._id, loginAction);
+      actualizaUsuario(
+        data,
+        loginUser.usuario._id,
+        loginAction,
+        tags.EditUserScreen,
+      );
     }
     //F
   }

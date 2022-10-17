@@ -32,7 +32,7 @@ import {CategoriesContext} from '@context/CategoriesContext';
 import {CategoryContext} from '@context/CategoryContext';
 import {SedesContext} from '@context/SedesContext';
 import {ProductsContext} from '@context/ProductsContext';
-import { PromotionContext } from '../../context/PromotionContext';
+import {PromotionContext} from '../../context/PromotionContext';
 import {CreditCardContext} from '@context/CreditCardContext';
 
 //Estilos Generales
@@ -43,13 +43,13 @@ import {
   informationIconStyles,
 } from '@styles/stylesGeneral';
 
-
 //tags.PaymentScreen.agregar != '' ? tags.PaymentScreen.agregar :
 export default function VistaPago(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
-  const {creditCards } = useContext(CreditCardContext);
-  const {promotionList,validPromo, setpromotionList} = useContext(PromotionContext);
+  const {creditCards} = useContext(CreditCardContext);
+  const {promotionList, validPromo, setpromotionList} =
+    useContext(PromotionContext);
   const [Product, setProduct] = useContext(ProductContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const [sede, setSede] = useContext(SedeContext);
@@ -74,10 +74,10 @@ export default function VistaPago(props) {
   // Cargar informacion de la vista
   useEffect(() => {
     let subtotal = 0;
-    let descPercent =0.0;
+    let descPercent = 0.0;
     let descuento = 0;
     let sendProds = [];
-    console.log(promotionList,validPromo)
+    console.log(promotionList, validPromo);
     // Productos del carrito
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
     ShoppingCart.forEach(item => {
@@ -95,12 +95,10 @@ export default function VistaPago(props) {
         paid_value: item.cantidad * parseFloat(precioItem),
       });
     });
-    if (promotionList.length>=1){
-    
-      if (validPromo.type == "V" || validPromo.type == "v"){
-        
-        descuento = (subtotal * (parseFloat(validPromo.discount)/100))
-        console.log('descuento?',subtotal, descuento)
+    if (promotionList.length >= 1) {
+      if (validPromo.type == 'V' || validPromo.type == 'v') {
+        descuento = subtotal * (parseFloat(validPromo.discount) / 100);
+        console.log('descuento?', subtotal, descuento);
       }
     }
     //Consultar Moneda
@@ -173,12 +171,19 @@ export default function VistaPago(props) {
                           title="Info"
                           onPress={() => editarItem(prod)}
                           icon={{name: 'info', color: 'white'}}
-                          buttonStyle={{minHeight: '100%',backgroundColor: color.PRINCIPALCOLOR,}}
+                          buttonStyle={{
+                            minHeight: '100%',
+                            backgroundColor: color.PRINCIPALCOLOR,
+                          }}
                         />
                       )}
                       rightContent={() => (
                         <Button
-                          title="Delete"
+                          title={
+                            tags.PaymentScreen.deleteBtn != ''
+                              ? tags.PaymentScreen.deleteBtn
+                              : 'Delete'
+                          }
                           onPress={() => borrarItem(prod)}
                           icon={{name: 'delete', color: 'white'}}
                           buttonStyle={{
@@ -268,7 +273,7 @@ export default function VistaPago(props) {
                         ' (' +
                         valoresVenta.total +
                         ')'
-                      : 'Pagar'
+                      : 'Pagar' + ' (' + valoresVenta.total + ')'
                   }
                   onPress={() => realizarPago()}
                 />
@@ -283,18 +288,17 @@ export default function VistaPago(props) {
 
   function realizarPago() {
     console.log(loginUser.usuario);
-    let sendPromos=[]
-    if(promotionList.length>=1){
-      promotionList.map(promo=>{
-        sendPromos.push( {
+    let sendPromos = [];
+    if (promotionList.length >= 1) {
+      promotionList.map(promo => {
+        sendPromos.push({
           idPromotion: promo.idPromotion,
-          type: promo.type
-      },)
-      })
-      
+          type: promo.type,
+        });
+      });
     }
     if (productosCarrito.length >= 1) {
-      if (creditCards.length >= 1){
+      if (creditCards.length >= 1) {
         let sendData = {
           idCurrency: Currency._id,
           idLanguage: GlobalLanguage._id,
@@ -302,7 +306,7 @@ export default function VistaPago(props) {
           value: valoresVenta.total,
           products: productosCarrito,
           promotions: sendPromos,
-            /*     {
+          /*     {
                 "idPromotion": "633b2bd9880e100adaf47a89",
                 "type": "V"
             },
@@ -310,22 +314,31 @@ export default function VistaPago(props) {
                 "idPromotion": "633b2bd9880e100adaf47a89",
                 "type": "P"
             }*/
-          
         };
         console.log(sendData);
-        sendShoppingCartSell(sendData, goToScreen, 'Initial', setpromotionList);
-      }
-      else {
+        sendShoppingCartSell(
+          sendData,
+          goToScreen,
+          'Initial',
+          setpromotionList,
+          tags.PaymentScreen,
+        );
+      } else {
         Snackbar.show({
-          text: 'Ingrese un metodo de pago',
+          text:
+            tags.PaymentScreen.methodPay != ''
+              ? tags.PaymentScreen.methodPay
+              : 'Ingrese un metodo de pago',
           duration: Snackbar.LENGTH_LONG,
         });
-        goToScreen('PaymentMethod')
+        goToScreen('PaymentMethod');
       }
-      
     } else {
       Snackbar.show({
-        text: 'Carrito Vacio, Agregue un producto',
+        text:
+          tags.PaymentScreen.emptyCart != ''
+            ? tags.PaymentScreen.emptyCart
+            : 'Carrito Vacio, Agregue un producto',
         duration: Snackbar.LENGTH_LONG,
       });
     }
@@ -352,8 +365,12 @@ export default function VistaPago(props) {
   function borrarItem(item) {
     console.log(item);
     Alert.alert(
-      'Borrar Item',
-      '¿Seguro que desea borrar \nel producto seleccionado?',
+      tags.PaymentScreen.deleteTitle != ''
+        ? tags.PaymentScreen.deleteTitle
+        : 'Borrar Item',
+      tags.PaymentScreen.deleteMsg != ''
+        ? tags.PaymentScreen.deleteMsg
+        : '¿Seguro que desea borrar \nel producto seleccionado?',
       [
         {
           text:

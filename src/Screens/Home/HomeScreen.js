@@ -124,7 +124,10 @@ export default function HomeScreen(props) {
         name="Compras"
         component={buyScreen}
         options={{
-          tabBarLabel: 'Compras',
+          tabBarLabel:
+            tags.HomeTagsScreen.shopping != ''
+              ? tags.HomeTagsScreen.shopping
+              : 'Compras',
           tabBarIcon: ({color}) => (
             <Icon
               style={{marginTop: -2}}

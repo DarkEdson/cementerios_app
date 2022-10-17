@@ -296,7 +296,12 @@ export default function PasswordChangeScreen(props) {
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
-      cambiaClave(loginUser.usuario._id, data.newPassword, loginAction);
+      cambiaClave(
+        loginUser.usuario._id,
+        data.newPassword,
+        loginAction,
+        tags.changePasswordScreen,
+      );
     }
   }
 

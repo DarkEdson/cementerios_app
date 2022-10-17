@@ -155,7 +155,11 @@ export default function PersonalDataScreen(props) {
                   </Text>
                 ) : (
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.txtComponente}>{'Ayuda'}</Text>
+                    <Text style={styles.txtComponente}>
+                      {tags.perfilScreen.help != ''
+                        ? tags.perfilScreen.help
+                        : 'Ayuda'}
+                    </Text>
                   </TouchableOpacity>
                 )}
               </View>

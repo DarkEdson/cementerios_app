@@ -134,10 +134,17 @@ export const ScreentagProvider = ({children}) => {
             agregar: etiquetas[0].description,
             codigo: etiquetas[1].description,
             compra: etiquetas[2].description,
-            entrega: etiquetas[3].description,
-            pagar: etiquetas[4].description,
-            subtotal: etiquetas[5].description,
-            total: etiquetas[6].description,
+            deleteBtn: etiquetas[3].description,
+            deleteMsg: etiquetas[4].description,
+            deleteTitle: etiquetas[5].description,
+            emptyCart: etiquetas[6].description,
+            entrega: etiquetas[7].description,
+            failed: etiquetas[8].description,
+            methodPay: etiquetas[9].description,
+            pagar: etiquetas[10].description,
+            subtotal: etiquetas[11].description,
+            success: etiquetas[12].description,
+            total: etiquetas[13].description,
           },
         }));
       }
@@ -147,9 +154,12 @@ export const ScreentagProvider = ({children}) => {
         setTags(prevState => ({
           ...prevState,
           PromoScreen: {
-            labelbtn: etiquetas[0].description,
-            placeholder: etiquetas[1].description,
-            titulo: etiquetas[2].description,
+            failed: etiquetas[0].description,
+            repited: etiquetas[1].description,
+            success: etiquetas[2].description,
+            labelbtn: etiquetas[3].description,
+            placeholder: etiquetas[4].description,
+            titulo: etiquetas[5].description,
           },
         }));
       }
@@ -161,10 +171,12 @@ export const ScreentagProvider = ({children}) => {
           SellsScreen: {
             comision: etiquetas[0].description,
             comisionpct: etiquetas[1].description,
-            labelfechafin: etiquetas[2].description,
-            labelfechainicio: etiquetas[3].description,
-            subtotal1: etiquetas[4].description,
-            ventas: etiquetas[5].description,
+            compras: etiquetas[2].description,
+            labelfechafin: etiquetas[3].description,
+            labelfechainicio: etiquetas[4].description,
+            search: etiquetas[5].description,
+            subtotal1: etiquetas[6].description,
+            ventas: etiquetas[7].description,
           },
         }));
       }
@@ -177,7 +189,8 @@ export const ScreentagProvider = ({children}) => {
             cerrar: etiquetas[0].description,
             codigov: etiquetas[1].description,
             editar: etiquetas[2].description,
-            perfil: etiquetas[3].description,
+            help: etiquetas[3].description,
+            perfil: etiquetas[4].description,
           },
         }));
       }
@@ -226,7 +239,13 @@ export const ScreentagProvider = ({children}) => {
             paypalid: etiquetas[4].description,
             phone: etiquetas[5].description,
             titulo: etiquetas[6].description,
-            username: etiquetas[7].description,
+            failed: etiquetas[7].description,
+            success: etiquetas[8].description,
+            username: etiquetas[9].description,
+            whiteemail: etiquetas[10].description,
+            whitelastname: etiquetas[11].description,
+            whitename: etiquetas[12].description,
+            whiteusername: etiquetas[13].description,
           },
         }));
       }
@@ -241,6 +260,8 @@ export const ScreentagProvider = ({children}) => {
             newpass: etiquetas[2].description,
             password: etiquetas[3].description,
             titulo: etiquetas[4].description,
+            failed: etiquetas[5].description,
+            success: etiquetas[6].description,
           },
         }));
       }
@@ -251,9 +272,12 @@ export const ScreentagProvider = ({children}) => {
           ...prevState,
           paymentMethodsScreen: {
             btn: etiquetas[0].description,
-            preferido: etiquetas[1].description,
-            tarjetas: etiquetas[2].description,
-            titulo: etiquetas[3].description,
+            cardmsg: etiquetas[1].description,
+            deletemsg: etiquetas[2].description,
+            deletetitle: etiquetas[3].description,
+            preferido: etiquetas[4].description,
+            tarjetas: etiquetas[5].description,
+            titulo: etiquetas[6].description,
           },
         }));
       }
@@ -292,6 +316,7 @@ export const ScreentagProvider = ({children}) => {
             products: etiquetas[1].description,
             promo: etiquetas[2].description,
             sells: etiquetas[3].description,
+            shopping: etiquetas[4].description,
           },
         }));
       }
