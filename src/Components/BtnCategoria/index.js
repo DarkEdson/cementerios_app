@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     marginTop: '3%',
     marginBottom: '3%',
     width: '20%',
-    height: 130,
+    height: 90,
     borderRadius: 12,
   },
   view: {
