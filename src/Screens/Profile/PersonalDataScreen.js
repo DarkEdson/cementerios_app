@@ -143,7 +143,9 @@ export default function PersonalDataScreen(props) {
                     ? tags.personalDataScreen.codigo
                     : 'Codigo de vendedor'}
                 </Text>
-              ) : null}
+              ) : (
+                <Text style={styles.txtComponente} />
+              )}
               <View style={{backgroundColor: color.WHITE}}>
                 {loginUser.usuario.role == 'seller' ||
                 loginUser.usuario.role == 'SELLER' ||

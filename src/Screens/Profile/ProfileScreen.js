@@ -110,7 +110,9 @@ export default function ProfileScreen(props) {
                 ? tags.perfilScreen.codigov
                 : 'Codigo de vendedor'}
             </Text>
-          ) : null}
+          ) : (
+            <Text style={styles.txtComponente} />
+          )}
           <View style={{backgroundColor: color.WHITE}}>
             {loginUser.usuario.role == 'seller' ||
             loginUser.usuario.role == 'SELLER' ||
