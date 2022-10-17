@@ -200,12 +200,11 @@ export default function VistaProducto(props) {
 
           <View style={styles.detalleProd}>
             <Text style={styles.titulo2}>
-              {' '}
               {tags.ProductDetailScreen.detalle != ''
                 ? tags.ProductDetailScreen.detalle
                 : 'Detalle'}{' '}
             </Text>
-            <Text style={styles.descDato} numberOfLines={2}>
+            <Text style={styles.descDato} numberOfLines={10}>
               {Product.description}
             </Text>
             <View style={styles.multimedia}>
