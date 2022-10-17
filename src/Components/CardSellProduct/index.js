@@ -11,7 +11,9 @@ import {
 
 export default function CardProductoVenta(props) {
   return (
-    <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressProduct}>
+    <TouchableOpacity
+      style={[styles.cuerpoCard, props.styles]}
+      onPress={props.onPressProduct}>
       <View style={{...styles.view, backgroundColor: props.bgColor}}>
         <View style={styles.right}>
           <Image style={styles.imgPromocion} source={{uri: props.urlImagen}} />

@@ -34,7 +34,8 @@ function usuarioReducer(state = initialState, payload) {
       console.log('EN EL CASE');
       console.log(payload.data);
       Snackbar.show({
-        text: payload.tags.inicio != ''? payload.tags.inicio:'Iniciando Sesion',
+        text:
+          payload.tags.inicio != '' ? payload.tags.inicio : 'Iniciando Sesion',
         duration: Snackbar.LENGTH_LONG,
       });
 
@@ -45,7 +46,8 @@ function usuarioReducer(state = initialState, payload) {
         console.log(msg);
       });
       Snackbar.show({
-        text: payload.tags.mensaje != ''? payload.tags.mensaje: 'Sesión expirada',
+        text:
+          payload.tags.mensaje != '' ? payload.tags.mensaje : 'Sesión expirada',
         duration: Snackbar.LENGTH_LONG,
       });
 
@@ -58,7 +60,26 @@ function usuarioReducer(state = initialState, payload) {
       console.log('EN EL CASE');
       console.log(payload.data);
       Snackbar.show({
-        text: payload.tags.registro != ''? payload.tags.registro+' Please Logged in':'Registro exitoso',
+        text:
+          payload.tags.registro != ''
+            ? payload.tags.registro + ' Please Logged in'
+            : 'Registro exitoso',
+        duration: Snackbar.LENGTH_LONG,
+      });
+
+      return {...state, usuario: payload.data, activo: true};
+    case 'update':
+      saveUsuario(payload.data).then(msg => {
+        console.log('usuario Actualizado');
+      });
+
+      console.log('EN EL CASE UPDATE');
+      console.log(payload.data);
+      Snackbar.show({
+        text:
+          payload.tags.inicio != ''
+            ? payload.tags.inicio
+            : 'Usuario Actualizado',
         duration: Snackbar.LENGTH_LONG,
       });
 

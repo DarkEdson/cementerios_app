@@ -29,19 +29,6 @@ import {ShoppingCartContext} from '@context/ShoppingCartContext';
 //URL de server
 import {BASE_URL_IMG} from '@utils/config';
 
-//tags.perfilScreen.perfil
-/*function useBackButton(handler) {
-  console.log('dentro de buttonback')
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handler);
-    console.log('me agrega?')
-    return () => {
-      console.log('hardwareBackPress Close', handler);
-      BackHandler.removeEventListener('hardwareBackPress', handler);
-    };
-  }, [handler]);
-}*/
-
 export default function ProfileScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const {removeAllItemstoCart} = useContext(ShoppingCartContext);
@@ -59,140 +46,151 @@ export default function ProfileScreen(props) {
     //props, isFocused
   }, []);
 
-  // useBackButton(desconectarse);
   return (
-    <SafeAreaView 
-    style={mainStyles.containersp} 
-    > 
-    <ScrollView>
-      <View style={styles.container}>
-        <StatusBar
-          backgroundColor={color.PRINCIPALCOLOR}
-          barStyle="dark-content"
-          translucent={true}
-        />
-
-        <ToolBar
-          titulo={
-            tags.perfilScreen.perfil != '' ? tags.perfilScreen.perfil : 'Perfil'
-          }
-          onPressLeft={() => goToScreen('Home')}
-          iconLeft={true}
-        />
-        <View style={styles.headerContainer}>
-          <TouchableOpacity
-            style={styles.btnProfile}
-            onPress={() => {
-              console.log('editar imagen');
-            }}>
-            {loginUser.usuario.avatar ? (
-              <Avatar
-                rounded
-                source={{
-                  uri: `${BASE_URL_IMG}${loginUser.usuario.avatar}`,
-                }}
-                size="large"
-              />
-            ) : (
-              <Icon
-                size={65}
-                color={color.BLACK}
-                type={'material-community'}
-                name="account"
-              />
-            )}
-            <Avatar.Accessory size={23} />
-            {/*<View
-              style={{
-                zIndex: 2,
-                bottom: 21,
-                left: 50,
-                width: 29,
-                backgroundColor: 'transparent',
-              }}>
-              <Icon
-                size={25}
-                color={color.BLACK}
-                type={'material-community'}
-                name="pencil"
-              />
-            </View>*/}
-          </TouchableOpacity>
-          <Text style={styles.txtNuevoComponente}>
-            {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
-          </Text>
-          <MyTextButton
-            titulo={
-              tags.perfilScreen.editar != ''
-                ? tags.perfilScreen.editar
-                : 'Editar datos personales'
-            }
-            style={{marginBottom: 20}}
-            onPress={() => goToScreen('PersonalData')}
+    <SafeAreaView style={mainStyles.containersp}>
+      <ScrollView>
+        <View style={styles.container}>
+          <StatusBar
+            backgroundColor={color.PRINCIPALCOLOR}
+            barStyle="dark-content"
+            translucent={true}
           />
-        </View>
-        <Text style={styles.txtComponente}>
-          {tags.perfilScreen.codigov != ''
-            ? tags.perfilScreen.codigov
-            : 'Codigo de vendedor'}
-        </Text>
-        <View style={{backgroundColor: color.WHITE}}>
-          <Text style={styles.txtComponente}>
-            {loginUser.usuario.id_number ? loginUser.usuario.id_number : loginUser.usuario.vendorcode}
-          </Text>
-        </View>
-        <View style={styles.boxTransparent2} />
-        <View style={{backgroundColor: color.WHITE}}>
-          <TouchableOpacity onPress={() => desconectarse()}>
-            <Text style={styles.txtComponente}>
-              {tags.perfilScreen.cerrar != ''
-                ? tags.perfilScreen.cerrar
-                : 'Cerrar Sesión'}
+
+          <ToolBar
+            titulo={
+              tags.perfilScreen.perfil != ''
+                ? tags.perfilScreen.perfil
+                : 'Perfil'
+            }
+            onPressLeft={() => goToScreen('Home')}
+            iconLeft={true}
+          />
+          <View style={styles.headerContainer}>
+            <TouchableOpacity
+              style={styles.btnProfile}
+              onPress={() => {
+                console.log('editar imagen');
+              }}>
+              {loginUser.usuario.avatar ? (
+                <Avatar
+                  rounded
+                  source={{
+                    uri: `${BASE_URL_IMG}${loginUser.usuario.avatar}`,
+                  }}
+                  size="large"
+                />
+              ) : (
+                <Icon
+                  size={65}
+                  color={color.BLACK}
+                  type={'material-community'}
+                  name="account"
+                />
+              )}
+              <Avatar.Accessory size={23} />
+            </TouchableOpacity>
+            <Text style={styles.txtNuevoComponente}>
+              {loginUser.usuario.name + ' ' + loginUser.usuario.lastname}
             </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={mainStyles.logo}>
-          <ImageBackground
-            source={require('@images/profilepic.png')}
-            resizeMode="stretch"
-            style={loginStyles.logoBackground}>
-            <Image
-              source={require('@images/logo.png')}
-              style={loginStyles.logoImage}
+            <MyTextButton
+              titulo={
+                tags.perfilScreen.editar != ''
+                  ? tags.perfilScreen.editar
+                  : 'Editar datos personales'
+              }
+              style={{marginBottom: 20}}
+              onPress={() => goToScreen('PersonalData')}
             />
-          </ImageBackground>
+          </View>
+          {loginUser.usuario.role == 'seller' ||
+          loginUser.usuario.role == 'SELLER' ||
+          loginUser.usuario.role == 'Seller' ? (
+            <Text style={styles.txtComponente}>
+              {tags.perfilScreen.codigov != ''
+                ? tags.perfilScreen.codigov
+                : 'Codigo de vendedor'}
+            </Text>
+          ) : null}
+          <View style={{backgroundColor: color.WHITE}}>
+            {loginUser.usuario.role == 'seller' ||
+            loginUser.usuario.role == 'SELLER' ||
+            loginUser.usuario.role == 'Seller' ? (
+              <Text style={styles.txtComponente}>
+                {loginUser.usuario.id_number
+                  ? loginUser.usuario.id_number
+                  : loginUser.usuario.vendorcode}
+              </Text>
+            ) : (
+              <TouchableOpacity onPress={() => {}}>
+                <Text style={styles.txtComponente}>{'Ayuda'}</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+          <View style={styles.boxTransparent2} />
+          <View style={{backgroundColor: color.WHITE}}>
+            <TouchableOpacity onPress={() => desconectarse()}>
+              <Text style={styles.txtComponente}>
+                {tags.perfilScreen.cerrar != ''
+                  ? tags.perfilScreen.cerrar
+                  : 'Cerrar Sesión'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={mainStyles.logo}>
+            <ImageBackground
+              source={require('@images/profilepic.png')}
+              resizeMode="stretch"
+              style={loginStyles.logoBackground}>
+              <Image
+                source={require('@images/logo.png')}
+                style={loginStyles.logoImage}
+              />
+            </ImageBackground>
+          </View>
+          <View style={styles.boxTransparent} />
         </View>
-        <View style={styles.boxTransparent} />
-      </View>
-    </ScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
   function desconectarse() {
     Alert.alert(
-      tags.closeSessionScreen.titulo != '' ? tags.closeSessionScreen.titulo : 'Salir'
-    , tags.closeSessionScreen.mensaje != '' ? tags.closeSessionScreen.mensaje : '¿Esta seguro que \ndesea cerrar sesion?', [
-      {
-        text: tags.closeSessionScreen.btnsi != '' ? tags.closeSessionScreen.btnsi : 'Si',
-        onPress: () => {
-          loginAction({
-            type: 'sign-out',
-            data: {},
-            tags:{
-              mensaje: tags.dialogAlertsScreen.o != ''
-              ? tags.dialogAlertsScreen.o
-              : 'Sesion Cerrada Exitosamente.'
-            }
-          });
-          removeAllItemstoCart()
-          goToScreen('Login');
+      tags.closeSessionScreen.titulo != ''
+        ? tags.closeSessionScreen.titulo
+        : 'Salir',
+      tags.closeSessionScreen.mensaje != ''
+        ? tags.closeSessionScreen.mensaje
+        : '¿Esta seguro que \ndesea cerrar sesion?',
+      [
+        {
+          text:
+            tags.closeSessionScreen.btnsi != ''
+              ? tags.closeSessionScreen.btnsi
+              : 'Si',
+          onPress: () => {
+            loginAction({
+              type: 'sign-out',
+              data: {},
+              tags: {
+                mensaje:
+                  tags.dialogAlertsScreen.o != ''
+                    ? tags.dialogAlertsScreen.o
+                    : 'Sesion Cerrada Exitosamente.',
+              },
+            });
+            removeAllItemstoCart();
+            goToScreen('Login');
+          },
         },
-      },
-      {
-        text: tags.closeSessionScreen.btnno != '' ? tags.closeSessionScreen.btnno :  'No',
-        onPress: () => {},
-        style: 'cancel',
-      },
-    ]);
+        {
+          text:
+            tags.closeSessionScreen.btnno != ''
+              ? tags.closeSessionScreen.btnno
+              : 'No',
+          onPress: () => {},
+          style: 'cancel',
+        },
+      ],
+    );
   }
 
   function goToScreen(routeName) {

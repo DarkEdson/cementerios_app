@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, {createContext, useEffect, useState} from 'react';
 import Snackbar from 'react-native-snackbar';
 import {BASE_URL} from '@utils/config';
+import {apiChangePassword, apiUpdateUser} from '@Apis/ApisGenerales';
 
 export const AuthContext = createContext();
 
@@ -26,7 +27,7 @@ export const AuthProvider = ({children}) => {
         lastname: userNew.lastname,
         paypal_id: userNew.paypal_id,
         phone: userNew.phone,
-        status: '0'
+        status: '0',
       })
       .then(res => {
         let userInfo = res.data;
@@ -38,12 +39,9 @@ export const AuthProvider = ({children}) => {
         loginAction({
           type: 'register',
           data: userInfo,
-          tags:{
-            registro:  tags.q != ''
-            ? tags.q
-            : 'Registro con Exito'
-
-          }
+          tags: {
+            registro: tags.q != '' ? tags.q : 'Registro con Exito',
+          },
         });
         console.log(userInfo, 'dentro del registro');
         AsyncStorage.removeItem('errorInfo');
@@ -88,11 +86,9 @@ export const AuthProvider = ({children}) => {
         loginAction({
           type: 'sign',
           data: userInfo,
-          tags:{
-            inicio:  tags.p != ''
-            ? tags.p
-            : 'Inicio de sesion con Exito',
-          }
+          tags: {
+            inicio: tags.p != '' ? tags.p : 'Inicio de sesion con Exito',
+          },
         });
         goToScreen('Splash');
       })
@@ -104,27 +100,23 @@ export const AuthProvider = ({children}) => {
         setErrorInfo(errorInfo);
         setIsLoading(false);
         setUserInfo({});
-        if (errorInfo == 'Invalid password!'){
+        if (errorInfo == 'Invalid password!') {
           Snackbar.show({
-            text: tags.b != ''
-            ? tags.b
-            : errorInfo,
+            text: tags.b != '' ? tags.b : errorInfo,
             duration: Snackbar.LENGTH_LONG,
           });
-        }else if (errorInfo =='Email or Password is wrong!'){
+        } else if (errorInfo == 'Email or Password is wrong!') {
           Snackbar.show({
-            text: tags.c != ''
-            ? tags.c
-            : errorInfo,
+            text: tags.c != '' ? tags.c : errorInfo,
             duration: Snackbar.LENGTH_LONG,
           });
-        }else{
+        } else {
           Snackbar.show({
             text: errorInfo,
             duration: Snackbar.LENGTH_LONG,
           });
         }
-        
+
         goToScreen('Login');
       });
   }
@@ -177,6 +169,66 @@ export const AuthProvider = ({children}) => {
     }
   };
 
+  function cambiaClave(userID, newPassword, loginAction) {
+    setIsLoading(true);
+    apiChangePassword(userID, newPassword).then(res => {
+      console.log('CONTRASEÑA', res);
+
+      if (res.hasOwnProperty('value')) {
+        let userInfo = res.value;
+        console.log('usuario data actualizado', userInfo);
+        setUserInfo(userInfo);
+        Snackbar.show({
+          text: 'Su contraseña fue cambiada correctamente',
+          duration: Snackbar.LENGTH_LONG,
+        });
+        loginAction({
+          type: 'update',
+          data: userInfo,
+          tags: {
+            inicio: 'Contraseña Actualizada',
+          },
+        });
+        setIsLoading(false);
+      } else {
+        Snackbar.show({
+          text: 'Error Cambiando Contraseña',
+          duration: Snackbar.LENGTH_LONG,
+        });
+      }
+    });
+  }
+
+  function actualizaUsuario(user, idUser, loginAction) {
+    setIsLoading(true);
+    apiUpdateUser(user, idUser).then(res => {
+      console.log('USUARIO ACTUALIZADO', res);
+
+      if (res.hasOwnProperty('value')) {
+        let userInfo = res.value;
+        console.log('usuario data actualizado', userInfo);
+        setUserInfo(userInfo);
+        Snackbar.show({
+          text: 'Actualizacion de datos Exitosamente',
+          duration: Snackbar.LENGTH_LONG,
+        });
+        loginAction({
+          type: 'update',
+          data: userInfo,
+          tags: {
+            inicio: 'Usuario Actualizado',
+          },
+        });
+        setIsLoading(false);
+      } else {
+        Snackbar.show({
+          text: 'Error Actualizando Datos',
+          duration: Snackbar.LENGTH_LONG,
+        });
+      }
+    });
+  }
+
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -192,6 +244,8 @@ export const AuthProvider = ({children}) => {
         register,
         login,
         logout,
+        cambiaClave,
+        actualizaUsuario,
       }}>
       {children}
     </AuthContext.Provider>

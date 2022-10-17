@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { BASE_URL } from '@utils/config';
-import { getLanguague, saveLanguague } from '@storage/LanguagueAsyncStorage';
+import React, {useState, useEffect, useCallback} from 'react';
+import {BASE_URL} from '@utils/config';
+import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 async function apiLanguage() {
@@ -31,7 +31,7 @@ async function apiLanguage() {
 async function apiScreen(idScreen) {
   const lenguajer = await getLanguague();
 
-  const lenguaje = { _id: '633225cf5531aa122f71a7e4' };
+  const lenguaje = {_id: '633225cf5531aa122f71a7e4'};
 
   let url = `${BASE_URL}/view.labels.getbyidandlan/${idScreen}/${lenguajer._id}`;
   let etiquetas = [];
@@ -79,7 +79,7 @@ async function apiIdScreens() {
 async function apiPago(dataPay) {
   let url = `${BASE_URL}/payment.create`;
   console.log(dataPay);
-  let resp = {}
+  let resp = {};
   try {
     let data = dataPay;
     await fetch(url, {
@@ -99,6 +99,64 @@ async function apiPago(dataPay) {
     return resp;
   } catch (error) {
     console.error('ERROR EN API PAGO', error);
+    return resp;
+  }
+}
+
+async function apiChangePassword(userID, newPassword) {
+  let url = `${BASE_URL}/user.changepass/${userID}`;
+  console.log(userID, newPassword);
+  let resp = {};
+  try {
+    let data = {password: newPassword};
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .then(res => res.json())
+      .catch(error =>
+        console.error('Error en RESPUESTA API CAMBIO PASSWORD', error),
+      )
+      .then(response => {
+        console.log('dentro del API CAMBIO PASSWORD');
+        console.log(response);
+        resp = response;
+      });
+    return resp;
+  } catch (error) {
+    console.error('ERROR EN API CAMBIO PASSWORD', error);
+    return resp;
+  }
+}
+
+async function apiUpdateUser(user, idUser) {
+  let url = `${BASE_URL}/user.update/${idUser}`;
+  console.log(user, idUser);
+  let resp = {};
+  try {
+    let data = user;
+    await fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .then(res => res.json())
+      .catch(error =>
+        console.error('Error en RESPUESTA API UPDATE USER', error),
+      )
+      .then(response => {
+        console.log('dentro del API UPDATE USER');
+        console.log(response);
+        resp = response;
+      });
+    return resp;
+  } catch (error) {
+    console.error('ERROR EN API UPDATE USER', error);
     return resp;
   }
 }
@@ -124,15 +182,21 @@ async function apiCreditsCards(usuario) {
             exp_month: card.exp_month,
             exp_year: card.exp_year,
             last4: card.last4,
-          })
-
-        })
+          });
+        });
       });
     return creditsCards;
   } catch (error) {
-    creditsCards.error('error en RESPUESTA CREDIT CARD API',error);
+    creditsCards.error('error en RESPUESTA CREDIT CARD API', error);
   }
 }
 
-
-export { apiLanguage, apiScreen, apiIdScreens, apiPago, apiCreditsCards };
+export {
+  apiLanguage,
+  apiScreen,
+  apiIdScreens,
+  apiPago,
+  apiCreditsCards,
+  apiChangePassword,
+  apiUpdateUser,
+};

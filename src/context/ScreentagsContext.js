@@ -6,10 +6,10 @@ export const ScreentagContext = createContext();
 
 export const ScreentagProvider = ({children}) => {
   const [tags, setTags] = useState({});
-  const [isLoadingTags, setisLoadingTags] = useState(true)
+  const [isLoadingTags, setisLoadingTags] = useState(true);
 
   const updateTags = async pantalla => {
-    setisLoadingTags(true)
+    setisLoadingTags(true);
     let etiquetas = await apiScreen(pantalla._id);
     etiquetas.sort((a, b) => a.code.localeCompare(b.code));
 
@@ -313,16 +313,16 @@ export const ScreentagProvider = ({children}) => {
         setTags(prevState => ({
           ...prevState,
           closeSessionScreen: {
-              btnno: etiquetas[0].description,
-              btnsi: etiquetas[1].description,
-              mensaje: etiquetas[2].description,
-              titulo: etiquetas[3].description,
+            btnno: etiquetas[0].description,
+            btnsi: etiquetas[1].description,
+            mensaje: etiquetas[2].description,
+            titulo: etiquetas[3].description,
           },
         }));
       }
     }
     if (pantalla.code == 'v23') {
-      console.log('V23 TAGS',etiquetas)
+      console.log('V23 TAGS', etiquetas);
       if (etiquetas.length != 0) {
         setTags(prevState => ({
           ...prevState,
@@ -344,6 +344,8 @@ export const ScreentagProvider = ({children}) => {
             o: etiquetas[14].description,
             p: etiquetas[15].description,
             q: etiquetas[16].description,
+            r: etiquetas[17].description,
+            s: etiquetas[18].description,
           },
         }));
       }

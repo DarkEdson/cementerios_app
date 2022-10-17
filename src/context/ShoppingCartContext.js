@@ -141,20 +141,35 @@ function ShoppingCartProvider({children}) {
     setcarrito(false);
   }
 
-  async function sendShoppingCartSell(dataCart, goToScreen, routeName) {
+  async function sendShoppingCartSell(
+    dataCart,
+    goToScreen,
+    routeName,
+    setPromotionList,
+  ) {
     setisLoadingCart(true);
     apiPago(dataCart).then(res => {
       console.log('RESPUESTA DE COMPRA', res);
       setrecipe(res);
       setisLoadingCart(false);
-      Snackbar.show({
-        text: res.status,
-        duration: Snackbar.LENGTH_LONG,
-      });
-      console.log('carrito vacio');
-      setShoppingCart([]);
-      setcarrito(false);
-      goToScreen(routeName);
+      if (res.status) {
+        Snackbar.show({
+          text: res.status,
+          duration: Snackbar.LENGTH_LONG,
+        });
+        console.log('carrito vacio');
+        setShoppingCart([]);
+        setPromotionList([]);
+        setcarrito(false);
+        goToScreen(routeName);
+      } else {
+        console.log(res.raw.code + ' ' + res.raw.message + ' ' + res.raw.param);
+        Snackbar.show({
+          text: res.raw.code + ' ' + res.raw.message + ' ' + res.raw.param,
+          duration: Snackbar.LENGTH_LONG,
+        });
+        console.log('carrito vacio');
+      }
     });
   }
 

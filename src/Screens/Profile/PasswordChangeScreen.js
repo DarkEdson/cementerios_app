@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
+import {Icon, FAB} from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //URL de server
@@ -23,6 +24,7 @@ import MyButton from '@Components/common/MyButton';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {AuthContext} from '@context/AuthContext';
 
 //tags.changePasswordScreen.btn != '' ? tags.changePasswordScreen.btn :
 export default function PasswordChangeScreen(props) {
@@ -31,16 +33,18 @@ export default function PasswordChangeScreen(props) {
   const [hidePasswordNew, setHidePasswordNew] = useState(true);
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
   const {tags, updateTags} = useContext(ScreentagContext);
+  const {cambiaClave, isLoading} = useContext(AuthContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
-
+  var bcrypt = require('bcryptjs');
   const [data, setData] = useState({
     password: '',
     newpasswordConfirm: '',
     newPassword: '',
   });
   useEffect(() => {
+    console.log(tags.dialogAlertsScreen);
     if (isFocused) {
       getInitialData();
       console.log('isFocused PASSWORD CHANGE');
@@ -52,9 +56,10 @@ export default function PasswordChangeScreen(props) {
     if (data.newpasswordConfirm != '') {
       if (val == data.password) {
         Snackbar.show({
-          text: tags.dialogAlertsScreen.r != ''
-          ? tags.dialogAlertsScreen.r
-          : 'La contraseña es igual a la actual',
+          text:
+            tags.dialogAlertsScreen.r != ''
+              ? tags.dialogAlertsScreen.r
+              : 'La contraseña es igual a la actual',
           duration: Snackbar.LENGTH_LONG,
         });
       } else {
@@ -63,25 +68,28 @@ export default function PasswordChangeScreen(props) {
             setData({...data, newPassword: val});
           } else {
             Snackbar.show({
-              text: tags.dialogAlertsScreen.g != ''
-              ? tags.dialogAlertsScreen.g
-              : 'La contraseña debe ser de al menos 8 caracteres',
+              text:
+                tags.dialogAlertsScreen.g != ''
+                  ? tags.dialogAlertsScreen.g
+                  : 'La contraseña debe ser de al menos 8 caracteres',
               duration: Snackbar.LENGTH_LONG,
             });
           }
         } else {
           if (val.trim().length >= 8) {
             Snackbar.show({
-              text:  tags.dialogAlertsScreen.h != ''
-              ? tags.dialogAlertsScreen.h
-              : 'Las contraseñas no coinciden',
+              text:
+                tags.dialogAlertsScreen.h != ''
+                  ? tags.dialogAlertsScreen.h
+                  : 'Las contraseñas no coinciden',
               duration: Snackbar.LENGTH_LONG,
             });
           } else {
             Snackbar.show({
-              text:  tags.dialogAlertsScreen.i != ''
-              ? tags.dialogAlertsScreen.i
-              :  'La contraseña debe ser de al menos 8 caracteres y no coinciden',
+              text:
+                tags.dialogAlertsScreen.i != ''
+                  ? tags.dialogAlertsScreen.i
+                  : 'La contraseña debe ser de al menos 8 caracteres y no coinciden',
               duration: Snackbar.LENGTH_LONG,
             });
           }
@@ -92,9 +100,10 @@ export default function PasswordChangeScreen(props) {
         setData({...data, newPassword: val});
       } else {
         Snackbar.show({
-          text: tags.dialogAlertsScreen.g != ''
-          ? tags.dialogAlertsScreen.g
-          : 'La contraseña debe ser de al menos 8 caracteres',
+          text:
+            tags.dialogAlertsScreen.g != ''
+              ? tags.dialogAlertsScreen.g
+              : 'La contraseña debe ser de al menos 8 caracteres',
           duration: Snackbar.LENGTH_LONG,
         });
       }
@@ -105,131 +114,190 @@ export default function PasswordChangeScreen(props) {
       setData({...data, newpasswordConfirm: val});
     } else {
       Snackbar.show({
-        text: tags.dialogAlertsScreen.h != ''
-        ? tags.dialogAlertsScreen.h
-        : 'Las contraseñas no coinciden',
+        text:
+          tags.dialogAlertsScreen.h != ''
+            ? tags.dialogAlertsScreen.h
+            : 'Las contraseñas no coinciden',
         duration: Snackbar.LENGTH_LONG,
       });
     }
   };
 
   const handlePassword = val => {
-    if (val == loginUser.usuario.password) {
-      setConfirmPassword(val);
+    let actualPass = bcrypt.compareSync(val, loginUser.usuario.password);
+    if (actualPass) {
+      setData({...data, password: val});
     } else {
       Snackbar.show({
-        text: tags.dialogAlertsScreen.s != ''
-        ? tags.dialogAlertsScreen.s
-        : 'No es la contraseña actual',
+        text:
+          tags.dialogAlertsScreen.s != ''
+            ? tags.dialogAlertsScreen.s
+            : 'No es la contraseña actual',
         duration: Snackbar.LENGTH_LONG,
       });
     }
   };
 
   return (
-    <SafeAreaView style={mainStyles.containers} > 
-    <View style={styles.container}>
-      <StatusBar
-        backgroundColor={color.PRINCIPALCOLOR}
-        barStyle="dark-content"
-        translucent={true}
-      />
-      <ToolBar
-        titulo={
-          tags.changePasswordScreen.titulo != ''
-            ? tags.changePasswordScreen.titulo
-            : 'Cambiar Clave'
-        }
-        onPressLeft={() => goToScreen('PersonalData')}
-        iconLeft={true}
-      />
-
-      <ScrollView>
-        <View style={styles.editField}>
-          <Text style={styles.titleLabel}>
-            {tags.changePasswordScreen.password != ''
-              ? tags.changePasswordScreen.password
-              : 'Password'}
-            :
-          </Text>
-          <MyTextInput
-            keyboardType={null}
-            placeholder={
-              tags.changePasswordScreen.password != ''
-                ? tags.changePasswordScreen.password
-                : 'Actual Password'
-            }
-            image="lock"
-            bolGone={true}
-            value={data.password}
-            onChangeText={pass => setData({...data, password: pass})}
-            secureTextEntry={hidePassword}
-            onPressIcon={() => setHidePassword(!hidePassword)}
-            onEndEditing={e => handlePassword(e.nativeEvent.text)}
-          />
-          <Text style={styles.titleLabel}>
-            {tags.changePasswordScreen.newpass != ''
-              ? tags.changePasswordScreen.newpass
-              : 'New Password:'}
-          </Text>
-          <MyTextInput
-            keyboardType={null}
-            placeholder={
-              tags.changePasswordScreen.newpass != ''
-                ? tags.changePasswordScreen.newpass
-                : 'New Password'
-            }
-            image="lock"
-            bolGone={true}
-            value={data.newPassword}
-            onChangeText={newpass => setData({...data, newpassword: newpass})}
-            secureTextEntry={hidePasswordNew}
-            onPressIcon={() => setHidePasswordNew(!hidePasswordNew)}
-            onEndEditing={e => handlePasswordChange(e.nativeEvent.text)}
-          />
-          <Text style={styles.titleLabel}>
-            {tags.changePasswordScreen.confpass != ''
-              ? tags.changePasswordScreen.confpass
-              : 'New Confirm Password:'}
-          </Text>
-          <MyTextInput
-            keyboardType={null}
-            placeholder={
-              tags.changePasswordScreen.confpass != ''
-                ? tags.changePasswordScreen.confpass
-                : 'Confirmar New Password'
-            }
-            image="lock"
-            bolGone={true}
-            value={data.newpasswordConfirm}
-            onChangeText={newconfirm =>
-              setData({...data, newpasswordConfirm: newconfirm})
-            }
-            secureTextEntry={hidePasswordConfirm}
-            onPressIcon={() => setHidePasswordConfirm(!hidePasswordConfirm)}
-            onEndEditing={e => handlePasswordConfirm(e.nativeEvent.text)}
-          />
-          <MyButton
-            titulo={
-              tags.changePasswordScreen.btn != ''
-                ? tags.changePasswordScreen.btn
-                : 'Guardar Cambios'
-            }
-            onPress={() => cambiarClave()}
+    <SafeAreaView style={mainStyles.containers}>
+      {isLoading ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoading}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
           />
         </View>
-      </ScrollView>
-    </View>
+      ) : (
+        <View style={styles.container}>
+          <StatusBar
+            backgroundColor={color.PRINCIPALCOLOR}
+            barStyle="dark-content"
+            translucent={true}
+          />
+          <ToolBar
+            titulo={
+              tags.changePasswordScreen.titulo != ''
+                ? tags.changePasswordScreen.titulo
+                : 'Cambiar Clave'
+            }
+            onPressLeft={() => goToScreen('PersonalData')}
+            iconLeft={true}
+          />
+
+          <ScrollView>
+            <View style={styles.editField}>
+              <Text style={styles.titleLabel}>
+                {tags.changePasswordScreen.password != ''
+                  ? tags.changePasswordScreen.password
+                  : 'Password'}
+                :
+              </Text>
+              <MyTextInput
+                keyboardType={null}
+                placeholder={
+                  tags.changePasswordScreen.password != ''
+                    ? tags.changePasswordScreen.password
+                    : 'Actual Password'
+                }
+                image="lock"
+                bolGone={true}
+                value={data.password}
+                onChangeText={pass => setData({...data, password: pass})}
+                secureTextEntry={hidePassword}
+                onPressIcon={() => setHidePassword(!hidePassword)}
+                onEndEditing={e => handlePassword(e.nativeEvent.text)}
+              />
+              <Text style={styles.titleLabel}>
+                {tags.changePasswordScreen.newpass != ''
+                  ? tags.changePasswordScreen.newpass
+                  : 'New Password:'}
+              </Text>
+              <MyTextInput
+                keyboardType={null}
+                placeholder={
+                  tags.changePasswordScreen.newpass != ''
+                    ? tags.changePasswordScreen.newpass
+                    : 'New Password'
+                }
+                image="lock"
+                bolGone={true}
+                value={data.newPassword}
+                onChangeText={newpass =>
+                  setData({...data, newPassword: newpass})
+                }
+                secureTextEntry={hidePasswordNew}
+                onPressIcon={() => setHidePasswordNew(!hidePasswordNew)}
+                onEndEditing={e => handlePasswordChange(e.nativeEvent.text)}
+              />
+              <Text style={styles.titleLabel}>
+                {tags.changePasswordScreen.confpass != ''
+                  ? tags.changePasswordScreen.confpass
+                  : 'New Confirm Password:'}
+              </Text>
+              <MyTextInput
+                keyboardType={null}
+                placeholder={
+                  tags.changePasswordScreen.confpass != ''
+                    ? tags.changePasswordScreen.confpass
+                    : 'Confirmar New Password'
+                }
+                image="lock"
+                bolGone={true}
+                value={data.newpasswordConfirm}
+                onChangeText={newconfirm =>
+                  setData({...data, newpasswordConfirm: newconfirm})
+                }
+                secureTextEntry={hidePasswordConfirm}
+                onPressIcon={() => setHidePasswordConfirm(!hidePasswordConfirm)}
+                onEndEditing={e => handlePasswordConfirm(e.nativeEvent.text)}
+              />
+              <MyButton
+                titulo={
+                  tags.changePasswordScreen.btn != ''
+                    ? tags.changePasswordScreen.btn
+                    : 'Guardar Cambios'
+                }
+                onPress={() => cambiarClave()}
+              />
+            </View>
+          </ScrollView>
+        </View>
+      )}
     </SafeAreaView>
   );
 
   function cambiarClave() {
-    Snackbar.show({
-      text: tags.dialogAlertsScreen.k != ''
-      ? tags.dialogAlertsScreen.k
-      : 'Su contraseña fue cambiada correctamente',
-      duration: Snackbar.LENGTH_LONG,
-    });
+    if (data.password == '') {
+      Snackbar.show({
+        text:
+          tags.dialogAlertsScreen.s != ''
+            ? tags.dialogAlertsScreen.s
+            : 'No es la contraseña actual',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else if (data.newPassword == '') {
+      Snackbar.show({
+        text:
+          tags.dialogAlertsScreen.g != ''
+            ? tags.dialogAlertsScreen.g
+            : 'La contraseña debe ser de al menos 8 caracteres',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else if (data.newpasswordConfirm == '') {
+      Snackbar.show({
+        text:
+          tags.dialogAlertsScreen.h != ''
+            ? tags.dialogAlertsScreen.h
+            : 'Las contraseñas no coinciden',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else if (data.password == data.newPassword) {
+      Snackbar.show({
+        text:
+          tags.dialogAlertsScreen.g != ''
+            ? tags.dialogAlertsScreen.g
+            : 'La contraseña debe ser de al menos 8 caracteres',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else if (data.newpasswordConfirm != data.newPassword) {
+      Snackbar.show({
+        text:
+          tags.dialogAlertsScreen.h != ''
+            ? tags.dialogAlertsScreen.h
+            : 'Las contraseñas no coinciden',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      cambiaClave(loginUser.usuario._id, data.newPassword, loginAction);
+    }
   }
 
   function goToScreen(routeName) {

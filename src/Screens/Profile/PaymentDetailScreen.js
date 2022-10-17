@@ -10,6 +10,8 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
+import {Icon, FAB, ListItem, Button} from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Estilos Generales
@@ -23,10 +25,19 @@ import CreditCard from 'react-native-credit-card-form-ui';
 //Contextos
 import {CreditCardContext} from '@context/CreditCardContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {UsuarioContext} from '@context/UsuarioContext';
 
 //tags.PaymentCardDetailScreen.guardar != '' ? tags.PaymentCardDetailScreen.guardar :
 export default function PaymentDetailScreen(props) {
-  const {creditCardSel, setcreditCardSel} = useContext(CreditCardContext);
+  const {
+    creditCardSel,
+    setcreditCardSel,
+    isLoadingCreditCards,
+    createCard,
+    updateCard,
+    isUpdatedCard,
+  } = useContext(CreditCardContext);
+  const [loginUser] = useContext(UsuarioContext);
   const {tags, updateTags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
@@ -52,7 +63,11 @@ export default function PaymentDetailScreen(props) {
       securityCode: creditCardSel.securityCode,
       brand: creditCardSel.brand,
     });
-  }, []);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Promo');
+    }
+  }, [props, isFocused]);
   const creditCardRef = React.useRef();
 
   const handleSubmit = React.useCallback(() => {
@@ -61,7 +76,17 @@ export default function PaymentDetailScreen(props) {
       if (error != null) {
         console.log('ERROR: ', error);
       }
+
       console.log('CARD DATA: ', data);
+      if (isUpdatedCard) {
+        Snackbar.show({
+          text:
+            'No se puede actualizar',
+          duration: Snackbar.LENGTH_LONG,
+        });
+      } else {
+        createCard(data, loginUser.usuario, goToScreen, 'PaymentMethod', tags.dialogAlertsScreen.m);
+      }
       console.log('CONTEXT DATA', dataCard);
     }
     if (isFocused) {
@@ -70,73 +95,94 @@ export default function PaymentDetailScreen(props) {
     }
   }, [props, isFocused]);
   return (
-    <SafeAreaView style={mainStyles.containers} > 
-    <View style={styles.container}>
-      <StatusBar
-        backgroundColor={color.PRINCIPALCOLOR}
-        barStyle="dark-content"
-        translucent={true}
-      />
-      <ToolBar
-        titulo={
-          tags.PaymentCardDetailScreen.titulo != ''
-            ? tags.PaymentCardDetailScreen.titulo
-            : 'Detalles de Tarjeta'
-        }
-        onPressLeft={() => goToScreen('PaymentMethod')}
-        iconLeft={true}
-      />
-
-      <View style={styles.editField}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={20}
-          style={styles.containerCard}>
-          <CreditCard
-            ref={creditCardRef}
-            background="gray"
-            placeholderTextColor={color.WHITE}
-            textColor={color.BLACK}
-            labels={{
-              holder:
-                tags.PaymentCardDetailScreen.titular != ''
-                  ? tags.PaymentCardDetailScreen.titular
-                  : 'Titular de tarjeta',
-              expiration:
-                tags.PaymentCardDetailScreen.vence != ''
-                  ? tags.PaymentCardDetailScreen.vence
-                  : 'Vencimiento',
-              cvv:
-                tags.PaymentCardDetailScreen.securecode != ''
-                  ? tags.PaymentCardDetailScreen.securecode
-                  : 'codigo de seguridad',
-            }}
-            placeholders={{
-              number: '0000 0000 0000 0000',
-              holder: 'titular de tarjeta',
-              expiration: 'MM/YYYY',
-              cvv: '000',
-            }}
-            initialValues={{
-              number: creditCardSel.cardNumber,
-              holder: creditCardSel.cardHolderName + ' ' + creditCardSel.nameSurname,
-              expiration: creditCardSel.mmYY,
-              cvv: creditCardSel.securityCode,
-              brand: creditCardSel.brand,
-            }}
+    <SafeAreaView style={mainStyles.containers}>
+      {isLoadingCreditCards ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingCreditCards}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
           />
-          <View style={styles.boxTransparent} />
-          <MyButton
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <StatusBar
+            backgroundColor={color.PRINCIPALCOLOR}
+            barStyle="dark-content"
+            translucent={true}
+          />
+          <ToolBar
             titulo={
-              tags.PaymentCardDetailScreen.guardar != ''
-                ? tags.PaymentCardDetailScreen.guardar
-                : 'Guardar'
+              tags.PaymentCardDetailScreen.titulo != ''
+                ? tags.PaymentCardDetailScreen.titulo
+                : 'Detalles de Tarjeta'
             }
-            onPress={handleSubmit}
+            onPressLeft={() => goToScreen('PaymentMethod')}
+            iconLeft={true}
           />
-        </KeyboardAvoidingView>
-      </View>
-    </View>
+
+          <View style={styles.editField}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              keyboardVerticalOffset={20}
+              style={styles.containerCard}>
+              <CreditCard
+                ref={creditCardRef}
+                background="gray"
+                placeholderTextColor={color.PRINCIPALCOLOR}
+                textColor={color.BLACK}
+                labels={{
+                  holder:
+                    tags.PaymentCardDetailScreen.titular != ''
+                      ? tags.PaymentCardDetailScreen.titular
+                      : 'Titular de tarjeta',
+                  expiration:
+                    tags.PaymentCardDetailScreen.vence != ''
+                      ? tags.PaymentCardDetailScreen.vence
+                      : 'Vencimiento',
+                  cvv:
+                    tags.PaymentCardDetailScreen.securecode != ''
+                      ? tags.PaymentCardDetailScreen.securecode
+                      : 'codigo de seguridad',
+                }}
+                placeholders={{
+                  number: '0000 0000 0000 0000',
+                  holder: 'titular de tarjeta',
+                  expiration: 'MM/YYYY',
+                  cvv: '000',
+                }}
+                initialValues={{
+                  number: creditCardSel.cardNumber,
+                  holder:
+                    creditCardSel.cardHolderName +
+                    ' ' +
+                    creditCardSel.nameSurname,
+                  expiration: creditCardSel.mmYY,
+                  cvv: creditCardSel.securityCode,
+                  brand: creditCardSel.brand,
+                }}
+              />
+              <View style={styles.boxTransparent} />
+              {isUpdatedCard ? null :<MyButton
+                titulo={
+                  tags.PaymentCardDetailScreen.guardar != ''
+                    ? tags.PaymentCardDetailScreen.guardar
+                    : 'Guardar'
+                }
+                onPress={handleSubmit}
+              /> }
+              
+            </KeyboardAvoidingView>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 

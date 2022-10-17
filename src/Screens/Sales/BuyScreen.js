@@ -33,29 +33,25 @@ import {GlobalLanguageContext} from '@context/LanguageContext';
 
 //tags.SellsScreen.labelfechafin != '' ? tags.SellsScreen.labelfechafin :
 //tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :
-export default function SalesScreen(props) {
+export default function BuyScreen(props) {
   const {tags} = useContext(ScreentagContext);
   const [loginUser] = useContext(UsuarioContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const {getReportSeller, ReportsSellers,prodsSellers, isLoadingReports,setprodsSellers} =
+  const {getReportClient, ReportsClients,setprodsClients, prodsClients,isLoadingReports} =
     useContext(ReportsContext);
   const [dateInicio, setDateInicio] = useState(new Date());
   const [openInicio, setOpenInicio] = useState(false);
   const [dateFinal, setDateFinal] = useState(new Date());
   const [openFinal, setOpenFinal] = useState(false);
-
   const dateRef = React.useRef();
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
-    //  console.log(dateRef);
+    setprodsClients([])
+    //   console.log(dateRef);
     // Calcular valores de la vista
-    setprodsSellers([])
-    let fechaInicial= `${dateInicio.getFullYear()}-${dateInicio.getMonth()}-${dateInicio.getDate()}`
-    let fechaFinal= `${dateFinal.getFullYear()}-${dateFinal.getMonth()}-${dateFinal.getDate()}`
-    console.log(fechaInicial,fechaFinal)
     setValoresVenta({
       subTotal: 0,
       comision: 0,
@@ -63,7 +59,7 @@ export default function SalesScreen(props) {
     });
     if (isFocused) {
       getInitialData();
-      console.log('isFocused Ventas Detail');
+      console.log('isFocused Compras Detail');
     }
     //props, isFocused
   }, [props, isFocused]);
@@ -74,8 +70,7 @@ export default function SalesScreen(props) {
     total: 0,
   });
 
-  function buscaVentas(){
-    console.log(dateInicio,dateFinal)
+  function buscaCompras(){
     let monthInicial = '01';
     let monthFinal ='01'
     let dayInicial= '01'
@@ -102,8 +97,7 @@ export default function SalesScreen(props) {
     }
     let fechaInicial= `${dateInicio.getFullYear()}-${monthInicial}-${dayInicial}`
     let fechaFinal= `${dateFinal.getFullYear()}-${monthFinal}-${dayFinal}`
-    console.log('DATA A ENVIAR',loginUser.usuario._id, GlobalLanguage._id, fechaInicial, fechaFinal)
-   getReportSeller(loginUser.usuario._id, GlobalLanguage._id, fechaInicial, fechaFinal,setValoresVenta) 
+    getReportClient(loginUser.usuario._id, GlobalLanguage._id, fechaInicial, fechaFinal,setValoresVenta)  
   }
 
   return (
@@ -131,9 +125,7 @@ export default function SalesScreen(props) {
             translucent={true}
           />
           <ToolBar
-            titulo={
-              tags.SellsScreen.ventas != '' ? tags.SellsScreen.ventas : 'Ventas'
-            }
+            titulo={'Compras'}
             onPressLeft={() => goToScreen('Initial')}
             iconLeft={true}
           />
@@ -206,10 +198,10 @@ export default function SalesScreen(props) {
           titulo={
            'Search.'
           }
-          onPress={() => buscaVentas()}
+          onPress={() => buscaCompras()}
         />
               </View>
-              {prodsSellers.length >=1? prodsSellers.map((producto,key)=>
+              {prodsClients.length >=1? prodsClients.map((producto,key)=>
                 <CardProductoVenta
                 key={key}
                 urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
@@ -221,31 +213,12 @@ export default function SalesScreen(props) {
                 cantidad={producto.quantity}
               />
               ):null}
-              <View style={styles.espacio2}>
-                <Text style={styles.txtTitulo}>
-                  {tags.SellsScreen.subtotal1 != ''
-                    ? tags.SellsScreen.subtotal1
-                    : ' Subtotal'}
-                </Text>
-                <Text style={styles.valorCuenta}>
-                  $ {valoresVenta.subTotal}
-                </Text>
-              </View>
+              <View style={styles.espacio}/>
               <View style={styles.espacio}>
-                <Text style={styles.txtTitulo}>
-                {tags.SellsScreen.comision != ''
-                    ? tags.SellsScreen.comision
-                    : ' Comisión'}
-                </Text>
+                <Text style={styles.txtTitulo}>{' Total'}</Text>
                 <Text style={styles.valorCuenta}>
-                  $ {valoresVenta.comision}
+                  $ {valoresVenta.total}
                 </Text>
-              </View>
-              <View style={styles.espacio}>
-                <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-                Total
-                </Text>
-                <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
               </View>
               <View style={styles.boxTransparent} />
             </View>
