@@ -264,29 +264,6 @@ export default function VistaProducto(props) {
                   <Text style={styles.promoText}>No Multimedia</Text>
                 </View>
               )}
-              {ProductMultimedia.length >= 1
-                ? !!progressValue && (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: 100,
-                        marginTop: 10,
-                        alignSelf: 'center',
-                      }}>
-                      {ProductMultimedia.map((item, index) => {
-                        return (
-                          <PaginationItem
-                            animValue={progressValue}
-                            index={index}
-                            key={index}
-                            length={ProductMultimedia.length}
-                          />
-                        );
-                      })}
-                    </View>
-                  )
-                : null}
               <View style={styles.numCant}>
                 <TouchableOpacity
                   style={styles.btnCant}

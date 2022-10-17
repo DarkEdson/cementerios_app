@@ -52,6 +52,7 @@ export default function PaymentMethodScreen(props) {
     brand: '',
   });
   useEffect(() => {
+    console.log('CREDIT CARD?', creditCard);
     setData({
       ...data,
       cardNumber: '5425 2334 3010 9903',
@@ -110,12 +111,16 @@ export default function PaymentMethodScreen(props) {
                   ? tags.paymentMethodsScreen.preferido
                   : 'Preferido:'}
               </Text>
-              <PaymentButton
-                iconLeft={true}
-                titulo={'XXXX-XXXX-XXXX-' + creditCard.last4}
-                iconRight={true}
-                onPress={() => selectCard(creditCard)}
-              />
+              {creditCards.length >= 1 ? (
+                <PaymentButton
+                  iconLeft={true}
+                  titulo={'XXXX-XXXX-XXXX-' + creditCard.last4}
+                  iconRight={true}
+                  onPress={() => selectCard(creditCard)}
+                />
+              ) : (
+                <Text style={styles.titleLabel} />
+              )}
               <Text style={styles.titleLabel}>
                 {tags.paymentMethodsScreen.tarjetas != ''
                   ? tags.paymentMethodsScreen.tarjetas
