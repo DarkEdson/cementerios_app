@@ -52,6 +52,7 @@ export default function PaymentMethodScreen(props) {
     brand: '',
   });
   useEffect(() => {
+    console.log('CREDIT CARD?', creditCard);
     setData({
       ...data,
       cardNumber: '5425 2334 3010 9903',
@@ -110,12 +111,16 @@ export default function PaymentMethodScreen(props) {
                   ? tags.paymentMethodsScreen.preferido
                   : 'Preferido:'}
               </Text>
-              <PaymentButton
-                iconLeft={true}
-                titulo={'XXXX-XXXX-XXXX-' + creditCard.last4}
-                iconRight={true}
-                onPress={() => selectCard(creditCard)}
-              />
+              {creditCards.length >= 1 ? (
+                <PaymentButton
+                  iconLeft={true}
+                  titulo={'XXXX-XXXX-XXXX-' + creditCard.last4}
+                  iconRight={true}
+                  onPress={() => selectCard(creditCard)}
+                />
+              ) : (
+                <Text style={styles.titleLabel} />
+              )}
               <Text style={styles.titleLabel}>
                 {tags.paymentMethodsScreen.tarjetas != ''
                   ? tags.paymentMethodsScreen.tarjetas
@@ -128,7 +133,11 @@ export default function PaymentMethodScreen(props) {
                       bottomDivider
                       leftContent={() => (
                         <Button
-                          title="Favorite"
+                          title={
+                            tags.paymentMethodsScreen.preferido != ''
+                              ? tags.paymentMethodsScreen.preferido
+                              : 'Favorite'
+                          }
                           onPress={() => {}}
                           icon={{name: 'favorite', color: 'white'}}
                           buttonStyle={{
@@ -139,7 +148,11 @@ export default function PaymentMethodScreen(props) {
                       )}
                       rightContent={() => (
                         <Button
-                          title="Delete"
+                          title={
+                            tags.PaymentScreen.deleteBtn != ''
+                              ? tags.PaymentScreen.deleteBtn
+                              : 'Delete'
+                          }
                           onPress={() => borrarCard(card)}
                           icon={{name: 'delete', color: 'white'}}
                           buttonStyle={{
@@ -191,7 +204,7 @@ export default function PaymentMethodScreen(props) {
       nameSurname: loginUser.usuario.lastname,
       mmYY: `${month}/${card.exp_year}`,
       expiration: `${month}/${card.exp_year}`,
-      securityCode: '123',
+      securityCode: '000',
       brand: card.brand,
     });
     goToScreen('PaymentDetails');
@@ -216,13 +229,18 @@ export default function PaymentMethodScreen(props) {
     console.log('card a borrar', card);
     if (creditCards.length <= 1) {
       Snackbar.show({
-        text: 'Debe tener minimo una tarjeta registrada',
+        text:
+          tags.paymentMethodsScreen.cardmsg != ''
+            ? tags.paymentMethodsScreen.cardmsg
+            : 'Debe tener minimo una tarjeta registrada',
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
       Alert.alert(
-        'Borrar Tarjeta',
-          tags.dialogAlertsScreen.n != ''
+        tags.paymentMethodsScreen.deletetitle != ''
+          ? tags.paymentMethodsScreen.deletetitle
+          : 'Borrar Tarjeta',
+        tags.dialogAlertsScreen.n != ''
           ? tags.dialogAlertsScreen.n
           : '¿Esta seguro que \ndesea eliminar la tarjeta?',
         [

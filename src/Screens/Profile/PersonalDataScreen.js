@@ -143,7 +143,9 @@ export default function PersonalDataScreen(props) {
                     ? tags.personalDataScreen.codigo
                     : 'Codigo de vendedor'}
                 </Text>
-              ) : null}
+              ) : (
+                <Text style={styles.txtComponente} />
+              )}
               <View style={{backgroundColor: color.WHITE}}>
                 {loginUser.usuario.role == 'seller' ||
                 loginUser.usuario.role == 'SELLER' ||
@@ -155,7 +157,11 @@ export default function PersonalDataScreen(props) {
                   </Text>
                 ) : (
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.txtComponente}>{'Ayuda'}</Text>
+                    <Text style={styles.txtComponente}>
+                      {tags.perfilScreen.help != ''
+                        ? tags.perfilScreen.help
+                        : 'Ayuda'}
+                    </Text>
                   </TouchableOpacity>
                 )}
               </View>

@@ -200,12 +200,11 @@ export default function VistaProducto(props) {
 
           <View style={styles.detalleProd}>
             <Text style={styles.titulo2}>
-              {' '}
               {tags.ProductDetailScreen.detalle != ''
                 ? tags.ProductDetailScreen.detalle
                 : 'Detalle'}{' '}
             </Text>
-            <Text style={styles.descDato} numberOfLines={2}>
+            <Text style={styles.descDato} numberOfLines={10}>
               {Product.description}
             </Text>
             <View style={styles.multimedia}>
@@ -264,29 +263,6 @@ export default function VistaProducto(props) {
                   <Text style={styles.promoText}>No Multimedia</Text>
                 </View>
               )}
-              {ProductMultimedia.length >= 1
-                ? !!progressValue && (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: 100,
-                        marginTop: 10,
-                        alignSelf: 'center',
-                      }}>
-                      {ProductMultimedia.map((item, index) => {
-                        return (
-                          <PaginationItem
-                            animValue={progressValue}
-                            index={index}
-                            key={index}
-                            length={ProductMultimedia.length}
-                          />
-                        );
-                      })}
-                    </View>
-                  )
-                : null}
               <View style={styles.numCant}>
                 <TouchableOpacity
                   style={styles.btnCant}

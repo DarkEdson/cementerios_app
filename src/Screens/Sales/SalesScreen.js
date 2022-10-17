@@ -37,8 +37,13 @@ export default function SalesScreen(props) {
   const {tags} = useContext(ScreentagContext);
   const [loginUser] = useContext(UsuarioContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const {getReportSeller, ReportsSellers,prodsSellers, isLoadingReports,setprodsSellers} =
-    useContext(ReportsContext);
+  const {
+    getReportSeller,
+    ReportsSellers,
+    prodsSellers,
+    isLoadingReports,
+    setprodsSellers,
+  } = useContext(ReportsContext);
   const [dateInicio, setDateInicio] = useState(new Date());
   const [openInicio, setOpenInicio] = useState(false);
   const [dateFinal, setDateFinal] = useState(new Date());
@@ -52,10 +57,10 @@ export default function SalesScreen(props) {
   useEffect(() => {
     //  console.log(dateRef);
     // Calcular valores de la vista
-    setprodsSellers([])
-    let fechaInicial= `${dateInicio.getFullYear()}-${dateInicio.getMonth()}-${dateInicio.getDate()}`
-    let fechaFinal= `${dateFinal.getFullYear()}-${dateFinal.getMonth()}-${dateFinal.getDate()}`
-    console.log(fechaInicial,fechaFinal)
+    setprodsSellers([]);
+    let fechaInicial = `${dateInicio.getFullYear()}-${dateInicio.getMonth()}-${dateInicio.getDate()}`;
+    let fechaFinal = `${dateFinal.getFullYear()}-${dateFinal.getMonth()}-${dateFinal.getDate()}`;
+    console.log(fechaInicial, fechaFinal);
     setValoresVenta({
       subTotal: 0,
       comision: 0,
@@ -74,21 +79,21 @@ export default function SalesScreen(props) {
     total: 0,
   });
 
-  function buscaVentas(){
-    console.log(dateInicio,dateFinal)
+  function buscaVentas() {
+    console.log(dateInicio, dateFinal);
     let monthInicial = '01';
-    let monthFinal ='01'
-    let dayInicial= '01'
-    let dayFinal='01'
-    if ((dateInicio.getMonth()+1) <= 9) {
+    let monthFinal = '01';
+    let dayInicial = '01';
+    let dayFinal = '01';
+    if (dateInicio.getMonth() + 1 <= 9) {
       monthInicial = `0${dateInicio.getMonth()}`;
     } else {
-      monthInicial = dateInicio.getMonth()+1;
+      monthInicial = dateInicio.getMonth() + 1;
     }
-    if ((dateFinal.getMonth()+1) <= 9) {
+    if (dateFinal.getMonth() + 1 <= 9) {
       monthFinal = `0${dateFinal.getMonth()}`;
     } else {
-      monthFinal = dateFinal.getMonth()+1;
+      monthFinal = dateFinal.getMonth() + 1;
     }
     if (dateInicio.getDate() <= 9) {
       dayInicial = `0${dateInicio.getDate()}`;
@@ -100,10 +105,22 @@ export default function SalesScreen(props) {
     } else {
       dayFinal = dateFinal.getDate();
     }
-    let fechaInicial= `${dateInicio.getFullYear()}-${monthInicial}-${dayInicial}`
-    let fechaFinal= `${dateFinal.getFullYear()}-${monthFinal}-${dayFinal}`
-    console.log('DATA A ENVIAR',loginUser.usuario._id, GlobalLanguage._id, fechaInicial, fechaFinal)
-   getReportSeller(loginUser.usuario._id, GlobalLanguage._id, fechaInicial, fechaFinal,setValoresVenta) 
+    let fechaInicial = `${dateInicio.getFullYear()}-${monthInicial}-${dayInicial}`;
+    let fechaFinal = `${dateFinal.getFullYear()}-${monthFinal}-${dayFinal}`;
+    console.log(
+      'DATA A ENVIAR',
+      loginUser.usuario._id,
+      GlobalLanguage._id,
+      fechaInicial,
+      fechaFinal,
+    );
+    getReportSeller(
+      loginUser.usuario._id,
+      GlobalLanguage._id,
+      fechaInicial,
+      fechaFinal,
+      setValoresVenta,
+    );
   }
 
   return (
@@ -152,7 +169,7 @@ export default function SalesScreen(props) {
                     </View>
                     <View style={styles.viewHijo2}>
                       <Text style={styles.textoFecha}>
-                        {dateInicio.getFullYear()}-{dateInicio.getMonth()+1}-
+                        {dateInicio.getFullYear()}-{dateInicio.getMonth() + 1}-
                         {dateInicio.getDate()}
                       </Text>
                       <DatePicker
@@ -183,7 +200,7 @@ export default function SalesScreen(props) {
                     </View>
                     <View style={styles.viewHijo2}>
                       <Text style={styles.textoFecha}>
-                        {dateFinal.getFullYear()}-{dateFinal.getMonth()+1}-
+                        {dateFinal.getFullYear()}-{dateFinal.getMonth() + 1}-
                         {dateFinal.getDate()}
                       </Text>
                       <DatePicker
@@ -203,24 +220,28 @@ export default function SalesScreen(props) {
                   </View>
                 </TouchableOpacity>
                 <MyButton
-          titulo={
-           'Search.'
-          }
-          onPress={() => buscaVentas()}
-        />
+                  titulo={
+                    tags.SellsScreen.search != ''
+                      ? tags.SellsScreen.search
+                      : 'Search.'
+                  }
+                  onPress={() => buscaVentas()}
+                />
               </View>
-              {prodsSellers.length >=1? prodsSellers.map((producto,key)=>
-                <CardProductoVenta
-                key={key}
-                urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
-                titulo={producto.image}
-                styles={{marginLeft: 10}}
-                moneda="$"
-                descripcion={producto.descripcion}
-                precio={producto.value}
-                cantidad={producto.quantity}
-              />
-              ):null}
+              {prodsSellers.length >= 1
+                ? prodsSellers.map((producto, key) => (
+                    <CardProductoVenta
+                      key={key}
+                      urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
+                      titulo={producto.image}
+                      styles={{marginLeft: 10}}
+                      moneda="$"
+                      descripcion={producto.descripcion}
+                      precio={producto.value}
+                      cantidad={producto.quantity}
+                    />
+                  ))
+                : null}
               <View style={styles.espacio2}>
                 <Text style={styles.txtTitulo}>
                   {tags.SellsScreen.subtotal1 != ''
@@ -233,7 +254,7 @@ export default function SalesScreen(props) {
               </View>
               <View style={styles.espacio}>
                 <Text style={styles.txtTitulo}>
-                {tags.SellsScreen.comision != ''
+                  {tags.SellsScreen.comision != ''
                     ? tags.SellsScreen.comision
                     : ' Comisión'}
                 </Text>
@@ -243,7 +264,7 @@ export default function SalesScreen(props) {
               </View>
               <View style={styles.espacio}>
                 <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-                Total
+                  Total
                 </Text>
                 <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
               </View>

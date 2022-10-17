@@ -32,7 +32,21 @@ function CreditCardProvider({children}) {
     apiCreditsCards(usuario).then(res => {
       console.log('CREDIT CARDS', res);
       setcreditCards(res);
-      setCreditCard(res[0]);
+      if (res.length >= 1) {
+        setCreditCard(res[0]);
+      } else {
+        setCreditCard({
+          _id: '',
+          card_id: '',
+          token: '',
+          idUser: '',
+          brand: '',
+          exp_month: '',
+          exp_year: '',
+          last4: '',
+        });
+      }
+
       setisLoadingCreditCards(false);
     });
   };
@@ -52,12 +66,18 @@ function CreditCardProvider({children}) {
     });
   };
 
-  const createCard = async (tarjeta, usuario, goToScreen, routeName, tagSuccess) => {
+  const createCard = async (
+    tarjeta,
+    usuario,
+    goToScreen,
+    routeName,
+    tagSuccess,
+  ) => {
     setisLoadingCreditCards(true);
     apiCrearTarjeta(tarjeta, usuario).then(res => {
       if (res.value) {
         Snackbar.show({
-          text: tagSuccess? tagSuccess:'Credit Card Creada',
+          text: tagSuccess ? tagSuccess : 'Credit Card Creada',
           duration: Snackbar.LENGTH_LONG,
         });
         console.log('CREDIT CARD CREATED', res);

@@ -37,8 +37,13 @@ export default function BuyScreen(props) {
   const {tags} = useContext(ScreentagContext);
   const [loginUser] = useContext(UsuarioContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const {getReportClient, ReportsClients,setprodsClients, prodsClients,isLoadingReports} =
-    useContext(ReportsContext);
+  const {
+    getReportClient,
+    ReportsClients,
+    setprodsClients,
+    prodsClients,
+    isLoadingReports,
+  } = useContext(ReportsContext);
   const [dateInicio, setDateInicio] = useState(new Date());
   const [openInicio, setOpenInicio] = useState(false);
   const [dateFinal, setDateFinal] = useState(new Date());
@@ -49,7 +54,7 @@ export default function BuyScreen(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
-    setprodsClients([])
+    setprodsClients([]);
     //   console.log(dateRef);
     // Calcular valores de la vista
     setValoresVenta({
@@ -70,20 +75,20 @@ export default function BuyScreen(props) {
     total: 0,
   });
 
-  function buscaCompras(){
+  function buscaCompras() {
     let monthInicial = '01';
-    let monthFinal ='01'
-    let dayInicial= '01'
-    let dayFinal='01'
-    if ((dateInicio.getMonth()+1) <= 9) {
+    let monthFinal = '01';
+    let dayInicial = '01';
+    let dayFinal = '01';
+    if (dateInicio.getMonth() + 1 <= 9) {
       monthInicial = `0${dateInicio.getMonth()}`;
     } else {
-      monthInicial = dateInicio.getMonth()+1;
+      monthInicial = dateInicio.getMonth() + 1;
     }
-    if ((dateFinal.getMonth()+1) <= 9) {
+    if (dateFinal.getMonth() + 1 <= 9) {
       monthFinal = `0${dateFinal.getMonth()}`;
     } else {
-      monthFinal = dateFinal.getMonth()+1;
+      monthFinal = dateFinal.getMonth() + 1;
     }
     if (dateInicio.getDate() <= 9) {
       dayInicial = `0${dateInicio.getDate()}`;
@@ -95,9 +100,15 @@ export default function BuyScreen(props) {
     } else {
       dayFinal = dateFinal.getDate();
     }
-    let fechaInicial= `${dateInicio.getFullYear()}-${monthInicial}-${dayInicial}`
-    let fechaFinal= `${dateFinal.getFullYear()}-${monthFinal}-${dayFinal}`
-    getReportClient(loginUser.usuario._id, GlobalLanguage._id, fechaInicial, fechaFinal,setValoresVenta)  
+    let fechaInicial = `${dateInicio.getFullYear()}-${monthInicial}-${dayInicial}`;
+    let fechaFinal = `${dateFinal.getFullYear()}-${monthFinal}-${dayFinal}`;
+    getReportClient(
+      loginUser.usuario._id,
+      GlobalLanguage._id,
+      fechaInicial,
+      fechaFinal,
+      setValoresVenta,
+    );
   }
 
   return (
@@ -125,7 +136,11 @@ export default function BuyScreen(props) {
             translucent={true}
           />
           <ToolBar
-            titulo={'Compras'}
+            titulo={
+              tags.SellsScreen.compras != ''
+                ? tags.SellsScreen.compras
+                : 'Compras'
+            }
             onPressLeft={() => goToScreen('Initial')}
             iconLeft={true}
           />
@@ -144,7 +159,7 @@ export default function BuyScreen(props) {
                     </View>
                     <View style={styles.viewHijo2}>
                       <Text style={styles.textoFecha}>
-                        {dateInicio.getFullYear()}-{dateInicio.getMonth()+1}-
+                        {dateInicio.getFullYear()}-{dateInicio.getMonth() + 1}-
                         {dateInicio.getDate()}
                       </Text>
                       <DatePicker
@@ -175,7 +190,7 @@ export default function BuyScreen(props) {
                     </View>
                     <View style={styles.viewHijo2}>
                       <Text style={styles.textoFecha}>
-                        {dateFinal.getFullYear()}-{dateFinal.getMonth()+1}-
+                        {dateFinal.getFullYear()}-{dateFinal.getMonth() + 1}-
                         {dateFinal.getDate()}
                       </Text>
                       <DatePicker
@@ -195,30 +210,32 @@ export default function BuyScreen(props) {
                   </View>
                 </TouchableOpacity>
                 <MyButton
-          titulo={
-           'Search.'
-          }
-          onPress={() => buscaCompras()}
-        />
+                  titulo={
+                    tags.SellsScreen.search != ''
+                      ? tags.SellsScreen.search
+                      : 'Search.'
+                  }
+                  onPress={() => buscaCompras()}
+                />
               </View>
-              {prodsClients.length >=1? prodsClients.map((producto,key)=>
-                <CardProductoVenta
-                key={key}
-                urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
-                titulo={producto.image}
-                styles={{marginLeft: 10}}
-                moneda="$"
-                descripcion={producto.descripcion}
-                precio={producto.value}
-                cantidad={producto.quantity}
-              />
-              ):null}
-              <View style={styles.espacio}/>
+              {prodsClients.length >= 1
+                ? prodsClients.map((producto, key) => (
+                    <CardProductoVenta
+                      key={key}
+                      urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
+                      titulo={producto.image}
+                      styles={{marginLeft: 10}}
+                      moneda="$"
+                      descripcion={producto.descripcion}
+                      precio={producto.value}
+                      cantidad={producto.quantity}
+                    />
+                  ))
+                : null}
+              <View style={styles.espacio} />
               <View style={styles.espacio}>
                 <Text style={styles.txtTitulo}>{' Total'}</Text>
-                <Text style={styles.valorCuenta}>
-                  $ {valoresVenta.total}
-                </Text>
+                <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
               </View>
               <View style={styles.boxTransparent} />
             </View>

@@ -43,7 +43,7 @@ function PromotionProvider({children}) {
     return loading;
   }
 
-  async function validarPromo(promo, Language, goToScreen, routeName) {
+  async function validarPromo(promo, Language, goToScreen, routeName, tagMsg) {
     setLoadingPromotion(true);
     let listaPromos = promotionList;
     try {
@@ -57,9 +57,19 @@ function PromotionProvider({children}) {
                 if (promo.idPromotion != res.idPromotion) {
                   listaPromos.push(res);
                   setLoadingPromotion(false);
+                  Snackbar.show({
+                    text: tagMsg.success ? tagMsg.success : 'Codigo aplicado',
+                    duration: Snackbar.LENGTH_LONG,
+                  });
                   goToScreen(routeName);
                 } else {
                   //M
+                  Snackbar.show({
+                    text: tagMsg.repited
+                      ? tagMsg.repited
+                      : 'Codigo ya fue aplicado',
+                    duration: Snackbar.LENGTH_LONG,
+                  });
                 }
               });
             } else {
@@ -69,7 +79,9 @@ function PromotionProvider({children}) {
             }
           } else {
             Snackbar.show({
-              text: 'Codigo invalido, ingrese otro',
+              text: tagMsg.failed
+                ? tagMsg.failed
+                : 'Codigo invalido, ingrese otro',
               duration: Snackbar.LENGTH_LONG,
             });
           }
