@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
   descDato: {
     fontWeight: '400',
     fontSize: 15,
-    textAlign: 'left',
+    textAlign: 'justify',
     marginLeft: 10,
     color: 'grey',
   },
