@@ -43,26 +43,32 @@ import {SedesContext} from '@context/SedesContext';
 import {SedeContext} from '@context/SedeContext';
 import {ProductsContext} from '@context/ProductsContext';
 import {GlobalLanguageContext} from '@context/LanguageContext';
-import { CurrenciesContext } from '@context/CurrencyContext';
+import {CurrenciesContext} from '@context/CurrencyContext';
 
 //tags.CompanyDetailScreen.mas != '' ? tags.CompanyDetailScreen.mas : 'Mas Populares'
 export default function CompanyScreen(props) {
   const [cementery] = useContext(CementeryContext);
   const {tags} = useContext(ScreentagContext);
   const [sede, setSede] = useContext(SedeContext);
-  const {ShoppingCart, carrito, removeAllItemstoCart,afiliateCart, setafiliateCart} = useContext(ShoppingCartContext);
+  const {
+    ShoppingCart,
+    carrito,
+    removeAllItemstoCart,
+    afiliateCart,
+    setafiliateCart,
+  } = useContext(ShoppingCartContext);
   const [Product, setProduct] = useContext(ProductContext);
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
   const {categories} = useContext(CategoriesContext);
   const {setCategory} = useContext(CategoryContext);
-  const {Sedes,isLoadingSedes, getSedeDirect} = useContext(SedesContext);
+  const {Sedes, isLoadingSedes, getSedeDirect} = useContext(SedesContext);
   const [customModal, setCustomModal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
   const [infoCart, setinfoCart] = useState('');
   const [totalCart, settotalCart] = useState(0);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const {  Currency , getCurrency} = useContext(CurrenciesContext);
+  const {Currency, getCurrency} = useContext(CurrenciesContext);
   const [cant, setcant] = useState(2);
   const {
     ProductsSedes,
@@ -89,13 +95,13 @@ export default function CompanyScreen(props) {
   ]);
   // Cargar informacion de la vista
   useEffect(() => {
-    if (ShoppingCart.length >=1){
-      if(sede.idAffiliate!=afiliateCart._id){
-        console.log('LIMPIE CARRITO EN CEMENTERIOS')
-        setafiliateCart({})
-        removeAllItemstoCart()
+    if (ShoppingCart.length >= 1) {
+      if (sede.idAffiliate != afiliateCart._id) {
+        console.log('LIMPIE CARRITO EN CEMENTERIOS');
+        setafiliateCart({});
+        removeAllItemstoCart();
       }
-  }
+    }
     let cats = [];
     if (GlobalLanguage.code == 'en') {
       cats.push({
@@ -126,12 +132,12 @@ export default function CompanyScreen(props) {
     let info = '';
     let total = 0;
     ShoppingCart.forEach(titulo => {
-      let precioItem
-      if (titulo.price.includes(',')){
-        precioItem = titulo.price.replace(/,/g, "");
-      }else{
-        precioItem = titulo.price
-      }  
+      let precioItem;
+      if (titulo.price.includes(',')) {
+        precioItem = titulo.price.replace(/,/g, '');
+      } else {
+        precioItem = titulo.price;
+      }
       info = info + titulo.name + ' x' + titulo.cantidad + ', ';
       total = total + titulo.cantidad * parseFloat(precioItem);
     });
@@ -162,12 +168,8 @@ export default function CompanyScreen(props) {
         <ImageBackground
           source={{uri: cementery.image}}
           resizeMode="stretch"
-          style={CementeryScreen.imgProducto}>
-          <Image
-            source={require('@images/logo.png')}
-            style={CementeryScreen.logoImage}
-          />
-        </ImageBackground>
+          style={CementeryScreen.imgProducto}
+        />
         <ScrollView>
           <View style={CementeryScreen.descripcion}>
             <Text style={CementeryScreen.titulo}> {cementery.name} </Text>
@@ -194,9 +196,11 @@ export default function CompanyScreen(props) {
                 tipo="material-community"
                 image="brightness-percent"
                 titulo="Promos"
-                subtitulo={tags.CompanyDetailScreen.precio != ''
-                ? tags.CompanyDetailScreen.precio
-                : 'Descuento'}
+                subtitulo={
+                  tags.CompanyDetailScreen.precio != ''
+                    ? tags.CompanyDetailScreen.precio
+                    : 'Descuento'
+                }
                 onPress={() => goToScreen('Promociones')}
               />
               <View style={informationIconStyles.verticleLine} />
@@ -204,9 +208,11 @@ export default function CompanyScreen(props) {
                 tipo="ionicons"
                 image="location-pin"
                 titulo={sede.name}
-                subtitulo={tags.CompanyDetailScreen.sede != ''
-                ? tags.CompanyDetailScreen.sede
-                : 'Sede'}
+                subtitulo={
+                  tags.CompanyDetailScreen.sede != ''
+                    ? tags.CompanyDetailScreen.sede
+                    : 'Sede'
+                }
                 onPress={() => {
                   toggleDialog();
                 }}

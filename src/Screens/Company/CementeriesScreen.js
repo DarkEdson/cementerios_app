@@ -29,7 +29,7 @@ import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {CountryContext} from '@context/CountryContext';
 import {SedesContext} from '@context/SedesContext';
 import {SedeContext} from '@context/SedeContext';
-import { CurrenciesContext } from '@context/CurrencyContext';
+import {CurrenciesContext} from '@context/CurrencyContext';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardColaborador from '@Components/CardColaborador/';
@@ -39,7 +39,7 @@ export default function CompanyScreen(props) {
   const [cementery, setCementery] = useContext(CementeryContext);
   const {setrutaCart} = useContext(ShoppingCartContext);
   const [sede, setSede] = useContext(SedeContext);
-  const {    getCurrency } = useContext(CurrenciesContext);
+  const {getCurrency} = useContext(CurrenciesContext);
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
     useContext(RouteBackContext);
   const {Cementeries} = useContext(CementeriesContext);
@@ -153,9 +153,9 @@ export default function CompanyScreen(props) {
     </SafeAreaView>
   );
   function selectCementery(cementery, routeName) {
-    setrutaCart(true)
+    setrutaCart(true);
     setCementery(cementery);
-    getCurrency(cementery)
+    getCurrency(cementery);
     getSedes(cementery, setSede, goToScreen, routeName, country);
     setRouteBackComp('Cementeries');
   }
@@ -171,6 +171,8 @@ const styles = StyleSheet.create({
   },
   containerHeader: {
     backgroundColor: color.WHITE,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   promociones: {
     width: '100%',

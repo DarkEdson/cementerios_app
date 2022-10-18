@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import {Image, FAB} from '@rneui/themed';
 import Carousel from 'react-native-reanimated-carousel';
-
+import ReadMore from 'react-native-read-more-text';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -27,6 +27,7 @@ import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import MyFloatButton from '@Components/common/MyFloatButton';
+import MyButton from '@Components/common/MyButton';
 import InformationIcon from '@Components/common/InformationIcon';
 import CustomModal from '@Components/CustomModal/CustomModal';
 //Estilos Generales
@@ -114,7 +115,6 @@ export default function VistaProducto(props) {
         label: 'Ratink',
       },
     });
-
     if (isFocused) {
       getInitialData();
       console.log('isFocused in Product Detail');
@@ -150,6 +150,29 @@ export default function VistaProducto(props) {
     setitemModal(multimedia);
   }
 
+  const renderTruncatedFooter = handlePress => {
+    return (
+      <Text
+        style={{color: color.PRINCIPALCOLOR, marginTop: 5}}
+        onPress={handlePress}>
+        Read more
+      </Text>
+    );
+  };
+
+  const renderRevealedFooter = handlePress => {
+    return (
+      <Text
+        style={{color: color.PRINCIPALCOLOR, marginTop: 5}}
+        onPress={handlePress}>
+        Show less
+      </Text>
+    );
+  };
+
+  const handleTextReady = () => {
+    // ...
+  };
   return (
     <SafeAreaView style={mainStyles.containers}>
       <View style={styles.vista}>
@@ -204,9 +227,18 @@ export default function VistaProducto(props) {
                 ? tags.ProductDetailScreen.detalle
                 : 'Detalle'}{' '}
             </Text>
-            <Text style={styles.descDato} numberOfLines={10}>
-              {Product.description}
-            </Text>
+            <ReadMore
+              numberOfLines={3}
+              renderTruncatedFooter={renderTruncatedFooter}
+              renderRevealedFooter={renderRevealedFooter}
+              onReady={handleTextReady}>
+              <Text
+                style={styles.descDato}
+                //numberOfLines={10}
+              >
+                {Product.description}
+              </Text>
+            </ReadMore>
             <View style={styles.multimedia}>
               {isLoadingProducts ? (
                 <View
@@ -263,6 +295,7 @@ export default function VistaProducto(props) {
                   <Text style={styles.promoText}>No Multimedia</Text>
                 </View>
               )}
+
               <View style={styles.numCant}>
                 <TouchableOpacity
                   style={styles.btnCant}
@@ -319,43 +352,6 @@ export default function VistaProducto(props) {
   function goToScreen(routeName) {
     seteditable(false);
     props.navigation.navigate(routeName);
-  }
-
-  function PaginationItem(index, length, animValue) {
-    const width = 10;
-
-    const animStyle = useAnimatedStyle(() => {
-      return {
-        width: animValue?.value,
-      };
-    }, [width]);
-
-    return (
-      <View
-        style={{
-          backgroundColor: 'white',
-          width,
-          height: width,
-          borderRadius: 50,
-          overflow: 'hidden',
-          transform: [
-            {
-              rotateZ: '0deg',
-            },
-          ],
-        }}>
-        <Animated.View
-          style={[
-            {
-              borderRadius: 50,
-              backgroundColor: color.PRINCIPALCOLOR,
-              flex: 1,
-            },
-            animStyle,
-          ]}
-        />
-      </View>
-    );
   }
 
   function itemToCart(producto, routeName) {
@@ -463,7 +459,7 @@ const styles = StyleSheet.create({
   descDato: {
     fontWeight: '400',
     fontSize: 15,
-    textAlign: 'left',
+    textAlign: 'justify',
     marginLeft: 10,
     color: 'grey',
   },

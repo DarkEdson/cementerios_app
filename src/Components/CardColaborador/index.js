@@ -1,21 +1,20 @@
 import React from 'react';
 import Card from '../Card/index';
+
 import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 export default function CardColaborador(props) {
   return (
     <TouchableOpacity style={styles.cuerpoCard} onPress={props.onPressColab}>
-      <View style={styles.view}>
-        <View style={styles.top}>
-          <Image
-            style={styles.imgCategoria}
-            resizeMode="stretch"
-            source={{uri: props.urlImagen}}
-          />
-        </View>
-        <View style={styles.bottom}>
-          <Text style={styles.titulo}> {props.nombre} </Text>
-        </View>
+      <View style={styles.top}>
+        <Image
+          style={styles.imgCategoria}
+          resizeMode="stretch"
+          source={{uri: props.urlImagen}}
+        />
+      </View>
+      <View style={styles.bottom}>
+        <Text style={styles.titulo}> {props.nombre} </Text>
       </View>
     </TouchableOpacity>
   );
@@ -24,28 +23,27 @@ export default function CardColaborador(props) {
 const styles = StyleSheet.create({
   cuerpoCard: {
     marginLeft: '2%',
-    marginTop: '3%',
-    marginBottom: '3%',
-    width: '65%',
-    height: 240,
-    borderRadius: 50,
+    marginTop: '2%',
+    marginBottom: '2%',
+    width: '50%',
+    height: '100%',
   },
   view: {
     flexDirection: 'column',
   },
   top: {
-    width: '98%',
+    width: '100%',
     height: '70%',
-    // borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 40,
     overflow: 'hidden',
+    //borderColor: 'black',
+    //borderWidth: 1,
+    borderRadius: 40,
   },
   bottom: {
     width: '100%',
     height: '30%',
     flexDirection: 'row',
-    marginBottom: '5%',
+    marginBottom: '3%',
   },
   titulo: {
     fontWeight: '700',
@@ -56,10 +54,13 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   imgCategoria: {
-    marginTop: 15,
-    height: '90%',
+    marginVertical: 3.5,
+    height: '100%',
     width: '100%',
-    borderRadius: 35,
-    overflow: 'hidden',
+    //  borderTopRightRadius: 40,
+    //  borderTopLeftRadius: 40,
+    //  borderBottomLeftRadius: 53,
+    // borderBottomRightRadius: 53,
+    //   borderRadius: 40,
   },
 });
