@@ -65,7 +65,7 @@ export default function PaymentDetailScreen(props) {
     });
     if (isFocused) {
       getInitialData();
-      console.log('isFocused Promo');
+      console.log('isFocused CREDIT CARD');
     }
   }, [props, isFocused]);
   const creditCardRef = React.useRef();
@@ -80,12 +80,17 @@ export default function PaymentDetailScreen(props) {
       console.log('CARD DATA: ', data);
       if (isUpdatedCard) {
         Snackbar.show({
-          text:
-            'No se puede actualizar',
+          text: 'No se puede actualizar',
           duration: Snackbar.LENGTH_LONG,
         });
       } else {
-        createCard(data, loginUser.usuario, goToScreen, 'PaymentMethod', tags.dialogAlertsScreen.m);
+        createCard(
+          data,
+          loginUser.usuario,
+          goToScreen,
+          'PaymentMethod',
+          tags.dialogAlertsScreen.m,
+        );
       }
       console.log('CONTEXT DATA', dataCard);
     }
@@ -128,59 +133,58 @@ export default function PaymentDetailScreen(props) {
             iconLeft={true}
           />
 
-          <View style={styles.editField}>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-              keyboardVerticalOffset={20}
-              style={styles.containerCard}>
-              <CreditCard
-                ref={creditCardRef}
-                background="gray"
-                placeholderTextColor={color.PRINCIPALCOLOR}
-                textColor={color.BLACK}
-                labels={{
-                  holder:
-                    tags.PaymentCardDetailScreen.titular != ''
-                      ? tags.PaymentCardDetailScreen.titular
-                      : 'Titular de tarjeta',
-                  expiration:
-                    tags.PaymentCardDetailScreen.vence != ''
-                      ? tags.PaymentCardDetailScreen.vence
-                      : 'Vencimiento',
-                  cvv:
-                    tags.PaymentCardDetailScreen.securecode != ''
-                      ? tags.PaymentCardDetailScreen.securecode
-                      : 'codigo de seguridad',
-                }}
-                placeholders={{
-                  number: '0000 0000 0000 0000',
-                  holder: 'titular de tarjeta',
-                  expiration: 'MM/YYYY',
-                  cvv: '000',
-                }}
-                initialValues={{
-                  number: creditCardSel.cardNumber,
-                  holder:
-                    creditCardSel.cardHolderName +
-                    ' ' +
-                    creditCardSel.nameSurname,
-                  expiration: creditCardSel.mmYY,
-                  cvv: creditCardSel.securityCode,
-                  brand: creditCardSel.brand,
-                }}
-              />
-              <View style={styles.boxTransparent} />
-              {isUpdatedCard ? null :<MyButton
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={20}
+            style={styles.containerCard}>
+            <CreditCard
+              ref={creditCardRef}
+              background="gray"
+              placeholderTextColor={color.PRINCIPALCOLOR}
+              textColor={color.BLACK}
+              labels={{
+                holder:
+                  tags.PaymentCardDetailScreen.titular != ''
+                    ? tags.PaymentCardDetailScreen.titular
+                    : 'Titular de tarjeta',
+                expiration:
+                  tags.PaymentCardDetailScreen.vence != ''
+                    ? tags.PaymentCardDetailScreen.vence
+                    : 'Vencimiento',
+                cvv:
+                  tags.PaymentCardDetailScreen.securecode != ''
+                    ? tags.PaymentCardDetailScreen.securecode
+                    : 'codigo de seguridad',
+              }}
+              placeholders={{
+                number: '0000 0000 0000 0000',
+                holder: 'titular de tarjeta',
+                expiration: 'MM/YYYY',
+                cvv: '000',
+              }}
+              initialValues={{
+                number: creditCardSel.cardNumber,
+                holder:
+                  creditCardSel.cardHolderName +
+                  ' ' +
+                  creditCardSel.nameSurname,
+                expiration: creditCardSel.mmYY,
+                cvv: creditCardSel.securityCode,
+                brand: creditCardSel.brand,
+              }}
+            />
+            <View style={styles.boxTransparent} />
+            {isUpdatedCard ? null : (
+              <MyButton
                 titulo={
                   tags.PaymentCardDetailScreen.guardar != ''
                     ? tags.PaymentCardDetailScreen.guardar
                     : 'Guardar'
                 }
                 onPress={handleSubmit}
-              /> }
-              
-            </KeyboardAvoidingView>
-          </View>
+              />
+            )}
+          </KeyboardAvoidingView>
         </View>
       )}
     </SafeAreaView>
@@ -202,7 +206,6 @@ const styles = StyleSheet.create({
   },
   containerCard: {
     flex: 1,
-    paddingTop: -50,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -60,6 +60,7 @@ const CustomModal = props => {
               <View style={styles.imgContainer}>
                 <Image
                   style={styles.imagen}
+                  resizeMode="contain"
                   defaultSource={require('@images/loading.gif')}
                   source={{uri: props.urlImagen}}
                 />
