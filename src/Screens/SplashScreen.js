@@ -45,11 +45,11 @@ export default function SplashScreen(props) {
   } = useContext(CurrenciesContext);
 
   const [bienvenida, setbienvenida] = useState('es');
-  let deviceLanguage =
-    Platform.OS === ' ios'
+  let deviceLanguage =(
+    Platform.OS === 'ios'
       ? NativeModules.SettingsManager.settings.AppleLocale ||
         NativeModules.SettingsManager.settings.AppleLanguages[0]
-      : NativeModules.I18nManager.localeIdentifier;
+      : NativeModules.I18nManager.localeIdentifier)
   let defaultLanguage = deviceLanguage.substr(0, 2);
 
   //variable para limpiar el async storage
