@@ -47,7 +47,7 @@ import {
 export default function VistaPago(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
-  const {creditCards} = useContext(CreditCardContext);
+  const {creditCards,creditCard} = useContext(CreditCardContext);
   const {promotionList, validPromo, setpromotionList} =
     useContext(PromotionContext);
   const [Product, setProduct] = useContext(ProductContext);
@@ -265,6 +265,26 @@ export default function VistaPago(props) {
                   iconRight={true}
                 />
               </View>
+              {creditCards.length >= 1?   <View style={styles.espacio}>
+                <LargeButton
+                  colorStyle={{color: color.PRINCIPALCOLOR, fontWeight: '600'}}
+                  titulo={
+                    '****-****-****-'+creditCard.last4
+                  }
+                  onPressRight={() => {}}
+                  iconRight={true}
+                />
+              </View> : <View style={styles.espacio}>
+                <LargeButton
+                  colorStyle={{color: color.PRINCIPALCOLOR, fontWeight: '600'}}
+                  titulo={
+                    'No Cards'
+                  }
+                  onPressRight={() => {}}
+                  iconRight={true}
+                />
+              </View> }
+           
               <View style={{alignItems: 'center'}}>
                 <MyButton
                   titulo={

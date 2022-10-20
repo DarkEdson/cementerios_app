@@ -25,6 +25,7 @@ import MyFloatButton from '@Components/common/MyFloatButton';
 import MyButton from '@Components/common/MyButton';
 import InformationIcon from '@Components/common/InformationIcon';
 import CustomModal from '@Components/CustomModal/CustomModal';
+import RankingModal from '@Components/RankingModal/RankingModal';
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -43,6 +44,8 @@ import {RouteBackContext} from '@context/RouteBackContext';
 import {ProductsContext} from '@context/ProductsContext';
 import {CategoryContext} from '@context/CategoryContext';
 import {CurrenciesContext} from '@context/CurrencyContext';
+import {UsuarioContext} from '@context/UsuarioContext';
+import { RatingsContext } from '@context/RatingContext';
 import {SedeContext} from '@context/SedeContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
@@ -50,6 +53,8 @@ const PAGE_WIDTH = Dimensions.get('screen').width;
 //tags.ProductDetailScreen.btnagregar != '' ? tags.ProductDetailScreen.btnagregar :
 export default function VistaProducto(props) {
   const {tags} = useContext(ScreentagContext);
+  const [loginUser] = useContext(UsuarioContext);
+  const {isLoadingRatings, createRatings} = useContext(RatingsContext)
   const [Product, setProduct] = useContext(ProductContext);
   const {
     addItemtoCart,
@@ -69,6 +74,7 @@ export default function VistaProducto(props) {
   const {ProductMultimedia, isLoadingProducts} = useContext(ProductsContext);
   const {Currency, getCurrency} = useContext(CurrenciesContext);
   const [customModal, setCustomModal] = useState(false);
+  const [ratingModal, setRatingmodal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
   const [itemModal, setitemModal] = useState(null);
   const [visible, setIsVisible] = useState(false);
@@ -122,6 +128,10 @@ export default function VistaProducto(props) {
     }
     //props, isFocused
   }, []);
+
+  const toggleDialog = () => {
+    setRatingmodal(true);
+  };
 
   function divideMultimedia() {
     let extension = [];
@@ -243,6 +253,9 @@ export default function VistaProducto(props) {
                 image="star"
                 titulo={propsVista.rating.valor}
                 subtitulo={propsVista.rating.label}
+                onPress={() => {
+                  toggleDialog();
+                }}
               />
             </View>
           </View>
@@ -362,6 +375,16 @@ export default function VistaProducto(props) {
             urlImagen={imagenModal}
             textStyle={styles.imgTitulo}
             item={itemModal}
+          />
+        )}
+         {ratingModal == false ? null : (
+          <RankingModal
+            customModal={ratingModal}
+            tags={tags.sedeSelectScreen}
+            setCustomModal={setRatingmodal}
+            user={loginUser.usuario}
+            prod={Product}
+            calificar={createRatings}
           />
         )}
       </View>

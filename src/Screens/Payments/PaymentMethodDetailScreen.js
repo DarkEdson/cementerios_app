@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   View,
 } from 'react-native';
-import CreditCard from 'react-native-credit-card-v2';
 import {saveTarjetas, getTarjetas} from '@storage/CreditCardAsyncStorage';
 import Snackbar from 'react-native-snackbar';
 //Recarga la screen

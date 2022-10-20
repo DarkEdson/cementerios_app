@@ -34,6 +34,7 @@ export default function PaymentMethodScreen(props) {
     setcreditCardSel,
     setisUpdatedCard,
     isLoadingCreditCards,
+    updateCard,
     deleteCard,
   } = useContext(CreditCardContext);
   const [loginUser] = useContext(UsuarioContext);
@@ -138,7 +139,9 @@ export default function PaymentMethodScreen(props) {
                               ? tags.paymentMethodsScreen.preferido
                               : 'Favorite'
                           }
-                          onPress={() => {}}
+                          onPress={() => {
+                            updateCard(card, loginUser.usuario)
+                          }}
                           icon={{name: 'favorite', color: 'white'}}
                           buttonStyle={{
                             minHeight: '100%',
