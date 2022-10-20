@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {SafeAreaView} from "react-native";
 import AppNavigations from '@routes/AppNavigationV2';
 import {UsuarioProvider} from '@context/UsuarioContext';
 import {CementeryProvider} from '@context/CementeryContext';
@@ -30,6 +31,7 @@ const MainPage = () => {
     console.log('MainPage');
   }, []);
   return (
+    <SafeAreaView style={{ flex: 1 }}>
     <AuthProvider>
       <ScreentagProvider>
         <ScreenIdProvider>
@@ -85,6 +87,7 @@ const MainPage = () => {
         </ScreenIdProvider>
       </ScreentagProvider>
     </AuthProvider>
+</SafeAreaView>
   );
 };
 
