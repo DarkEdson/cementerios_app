@@ -431,7 +431,13 @@ export default function InitialScreen(props) {
         }
       }); 
   }
-
+  function prodSel(producto, routeName, routeB) {
+    setrutaCart(false)
+    setProduct(producto);
+    getMultimediabyProduct(producto);
+    setRouteBack(routeB);
+    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName)
+  }
   function prodByCategory(category, routeName) {
     {
       console.log(category);
