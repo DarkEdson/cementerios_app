@@ -233,9 +233,9 @@ export default function SalesScreen(props) {
                     <CardProductoVenta
                       key={key}
                       urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
-                      titulo={producto.image}
+                      titulo={producto.name}
                       styles={{marginLeft: 10}}
-                      moneda="$"
+                      moneda={producto.currency}
                       descripcion={producto.descripcion}
                       precio={producto.value}
                       cantidad={producto.quantity}
