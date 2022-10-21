@@ -304,7 +304,7 @@ export default function VistaPago(props) {
                   titulo={
                     'No Cards'
                   }
-                  onPressRight={() => {}}
+                  onPressRight={() =>  goToScreen('PaymentMethod')}
                   iconRight={true}
                 />
               </View> }
