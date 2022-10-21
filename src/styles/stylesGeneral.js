@@ -13,23 +13,29 @@ const mainStyles = StyleSheet.create({
   containers: {
     flex: 1,
     backgroundColor: color.WHITE,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight-Dimensions.get('screen').height * 0.020 : 0,
+    paddingTop:
+      Platform.OS === 'android'
+        ? StatusBar.currentHeight - Dimensions.get('screen').height * 0.02
+        : 0,
   },
   containersp: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight-Dimensions.get('screen').height * 0.020: 0,
+    paddingTop:
+      Platform.OS === 'android'
+        ? StatusBar.currentHeight - Dimensions.get('screen').height * 0.02
+        : 0,
   },
   logoImage: {
     width: 230,
     height: 185,
     marginBottom: 20,
   },
-  leftView:{
+  leftView: {
     position: 'absolute',
     right: 4,
-    top: Dimensions.get('screen').height * 0.050,
+    top: Dimensions.get('screen').height * 0.05,
     flexDirection: 'row',
-    width: 120
+    width: 120,
   },
   headerBackground: {
     marginTop: Dimensions.get('screen').height * 0.03,
@@ -199,8 +205,8 @@ const splashStyles = StyleSheet.create({
   texto: {
     fontWeight: 'bold',
     color: color.WHITE,
-    textAlign:'center',
-    alignSelf:'center',
+    textAlign: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
     marginBottom: Dimensions.get('screen').height * 0.4,
     marginHorizontal: Dimensions.get('screen').width * 0.37,
@@ -391,6 +397,12 @@ const informationIconStyles = StyleSheet.create({
     color: color.BLACK,
     justifyContent: 'center',
     fontSize: 16,
+  },
+  titleTextPrice: {
+    fontWeight: '600',
+    color: color.BLACK,
+    justifyContent: 'center',
+    fontSize: 14,
   },
   subtitleText: {
     fontWeight: '400',

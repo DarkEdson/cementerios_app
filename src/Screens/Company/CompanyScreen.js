@@ -14,7 +14,7 @@ import {Icon, FAB} from '@rneui/themed';
 import Carousel from 'react-native-reanimated-carousel';
 import ImageView from 'react-native-image-viewing';
 //URL de server
-import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+import {BASE_URL_IMG, PRODUCTS_URL, formatAmount} from '@utils/config';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
@@ -331,7 +331,13 @@ export default function CompanyScreen(props) {
                     titulo={product.name}
                     descripcion={product.description}
                     moneda={Currency.symbol}
-                    precio={product.price}
+                    precio={
+                      product.price.includes(',')
+                        ? formatAmount(
+                            parseFloat(product.price.replace(/,/g, '')),
+                          )
+                        : formatAmount(parseFloat(product.price))
+                    }
                   />
                 );
               })
@@ -350,8 +356,8 @@ export default function CompanyScreen(props) {
           tipo="font-awesome-5"
           image="expand"
           onPress={() => {
-            setIsVisibleImg(true)
-         //   abrirModal(cementery.image);
+            setIsVisibleImg(true);
+            //   abrirModal(cementery.image);
           }}
         />
         {/* Seccion de carrito de compra */}
@@ -375,11 +381,11 @@ export default function CompanyScreen(props) {
           />
         ) : null}
         <ImageView
-                  images={[{uri: cementery.image}]}
-                  imageIndex={0}
-                  visible={visibleImg}
-                  onRequestClose={() => setIsVisibleImg(false)}
-                />
+          images={[{uri: cementery.image}]}
+          imageIndex={0}
+          visible={visibleImg}
+          onRequestClose={() => setIsVisibleImg(false)}
+        />
         {customModal == false ? null : (
           <CustomModal
             customModal={customModal}

@@ -14,7 +14,7 @@ import {
 import {Icon, FAB, ListItem, Button} from '@rneui/themed';
 import Snackbar from 'react-native-snackbar';
 //URL de server
-import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+import {BASE_URL_IMG, PRODUCTS_URL, formatAmount} from '@utils/config';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
@@ -28,15 +28,15 @@ import color from '@styles/colors';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ReportsContext} from '@context/ReportsContext';
 import {UsuarioContext} from '@context/UsuarioContext';
-import { RouteBackContext } from '@context/RouteBackContext';
+import {RouteBackContext} from '@context/RouteBackContext';
 import {GlobalLanguageContext} from '@context/LanguageContext';
-import { ProductContext } from '@context/ProductContext';
-import { ProductsContext } from '@context/ProductsContext';
-import { CategoriesContext } from '@context/CategoriesContext';
-import { CategoryContext } from '@context/CategoryContext';
-import { SedesContext } from '@context/SedesContext';
-import { SedeContext } from '@context/SedeContext';
-import { ShoppingCartContext } from '@context/ShoppingCartContext';
+import {ProductContext} from '@context/ProductContext';
+import {ProductsContext} from '@context/ProductsContext';
+import {CategoriesContext} from '@context/CategoriesContext';
+import {CategoryContext} from '@context/CategoryContext';
+import {SedesContext} from '@context/SedesContext';
+import {SedeContext} from '@context/SedeContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
 
 //tags.SellsScreen.labelfechafin != '' ? tags.SellsScreen.labelfechafin :
 //tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :
@@ -44,19 +44,15 @@ export default function BuyScreen(props) {
   const {tags} = useContext(ScreentagContext);
   const [loginUser] = useContext(UsuarioContext);
   const [Product, setProduct] = useContext(ProductContext);
-  const {  setrutaCart } = useContext(ShoppingCartContext);
+  const {setrutaCart} = useContext(ShoppingCartContext);
   const [sede, setSede] = useContext(SedeContext);
-  const { isLoadingSedes,  getSedeDirect } = useContext(SedesContext);
+  const {isLoadingSedes, getSedeDirect} = useContext(SedesContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const { categories } =
-  useContext(CategoriesContext);
-  const { setRouteBack } = useContext(RouteBackContext);
-  const {
-    ProductsCountry,
-    isLoadingProducts,
-    getMultimediabyProduct,
-  } = useContext(ProductsContext);
-const { isCategory, setisCategory, setCategory } = useContext(CategoryContext);
+  const {categories} = useContext(CategoriesContext);
+  const {setRouteBack} = useContext(RouteBackContext);
+  const {ProductsCountry, isLoadingProducts, getMultimediabyProduct} =
+    useContext(ProductsContext);
+  const {isCategory, setisCategory, setCategory} = useContext(CategoryContext);
   const {
     getReportClient,
     ReportsClients,
@@ -91,11 +87,7 @@ const { isCategory, setisCategory, setCategory } = useContext(CategoryContext);
   });
 
   function buscaCompras() {
-    getReportClient(
-      loginUser.usuario._id,
-      GlobalLanguage._id,
-      setValoresVenta,
-    );
+    getReportClient(loginUser.usuario._id, GlobalLanguage._id, setValoresVenta);
   }
 
   return (
@@ -145,7 +137,7 @@ const { isCategory, setisCategory, setCategory } = useContext(CategoryContext);
             size="small"
           />
         </View>
-      ) :(
+      ) : (
         <View>
           <StatusBar
             backgroundColor={color.PRINCIPALCOLOR}
@@ -163,8 +155,7 @@ const { isCategory, setisCategory, setCategory } = useContext(CategoryContext);
           />
           <ScrollView>
             <View style={styles.container}>
-              <View style={styles.fechas}>
-              </View>
+              <View style={styles.fechas} />
               {prodsClients.length >= 1
                 ? prodsClients.map((producto, key) => (
                     <CardProductoVenta
@@ -174,16 +165,20 @@ const { isCategory, setisCategory, setCategory } = useContext(CategoryContext);
                       styles={{marginLeft: 10}}
                       moneda={producto.currency}
                       descripcion={producto.descripcion}
-                      precio={producto.value}
+                      precio={formatAmount(producto.value)}
                       cantidad={producto.quantity}
-                      onPressProduct={() => selectedProduct(producto, 'Product')}
+                      onPressProduct={() =>
+                        selectedProduct(producto, 'Product')
+                      }
                     />
                   ))
                 : null}
               <View style={styles.espacio} />
               <View style={styles.espacio}>
                 <Text style={styles.txtTitulo}>{' Total'}</Text>
-                <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
+                <Text style={styles.valorCuenta}>
+                  $ {formatAmount(valoresVenta.total)}
+                </Text>
               </View>
               <View style={styles.boxTransparent} />
             </View>
@@ -198,31 +193,30 @@ const { isCategory, setisCategory, setCategory } = useContext(CategoryContext);
   }
 
   function selectedProduct(producto, routeName) {
-    ProductsCountry.forEach(prod=>{
-      if(prod._id==producto.idProduct){
+    ProductsCountry.forEach(prod => {
+      if (prod._id == producto.idProduct) {
         categories.forEach(category => {
           if (category._id == prod.idCategory) {
             setCategory(category);
-            prodSel(prod, routeName, 'Productos')
+            prodSel(prod, routeName, 'Productos');
           }
         });
-      }else{
+      } else {
         Snackbar.show({
           text: 'Producto ya no existe',
           duration: Snackbar.LENGTH_LONG,
         });
         //M
       }
-    })
-      
+    });
   }
 
   function prodSel(producto, routeName, routeB) {
-    setrutaCart(false)
+    setrutaCart(false);
     setProduct(producto);
     getMultimediabyProduct(producto);
     setRouteBack(routeB);
-    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName)
+    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName);
   }
 }
 
