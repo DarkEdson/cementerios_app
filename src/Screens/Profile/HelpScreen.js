@@ -55,7 +55,9 @@ const HelpScreen = () => {
             </Text>
           </View>
           <Text style={styles.txtComponente}>
-              { 'Telefono:'}
+              { tags.EditUserScreen.phone != ''
+                    ? tags.EditUserScreen.phone
+                    : 'Telefono:'}
             </Text>
           <View style={{backgroundColor: color.WHITE}}>
           <Text style={styles.txtComponente}>
@@ -63,7 +65,9 @@ const HelpScreen = () => {
               </Text>
           </View>
           <Text style={styles.txtComponente}>
-              { 'Correo:'}
+              { tags.EditUserScreen.email != ''
+                    ? tags.EditUserScreen.email
+                    : 'Correo:'}
             </Text>
           <View style={{backgroundColor: color.WHITE}}>
               <Text style={styles.txtComponente}>
