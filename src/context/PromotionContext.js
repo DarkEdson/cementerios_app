@@ -1,5 +1,5 @@
-import React, {createContext, useState} from 'react';
-import {promotionsbyCodeApi} from '@Apis/PromotionsApi';
+import React, { createContext, useState } from 'react';
+import { promotionsbyCodeApi } from '@Apis/PromotionsApi';
 import Snackbar from 'react-native-snackbar';
 
 const initialState = [
@@ -11,7 +11,7 @@ const initialState = [
 
 const PromotionContext = createContext();
 
-function PromotionProvider({children}) {
+function PromotionProvider({ children }) {
   const [promotion, setPromotion] = useState(initialState);
   const [validPromo, setvalidPromo] = useState({});
   const [promotionList, setpromotionList] = useState([]);
@@ -32,6 +32,7 @@ function PromotionProvider({children}) {
     });
   }
 
+  //esta no esta usandose
   async function getDefaultPromotion() {
     let loading = true;
     setLoadingPromotion(true);
@@ -46,36 +47,65 @@ function PromotionProvider({children}) {
   async function validarPromo(promo, Language, goToScreen, routeName, tagMsg) {
     setLoadingPromotion(true);
     let listaPromos = promotionList;
+    let otroVendedor = false
     try {
       promotionsbyCodeApi(promo, Language)
         .then(res => {
           console.log(res);
           if (Object.entries(res).length != 0) {
-            setvalidPromo(res);
-            if (listaPromos.length >= 1) {
-              listaPromos.map(promo => {
-                if (promo.idPromotion != res.idPromotion) {
+            if (res.hasOwnProperty('discount')) {
+              if (listaPromos.length >= 1) {
+                listaPromos.forEach(promo => {
+                  if (res.type == 'V' && promo.type == res.type) {
+                    otroVendedor = true
+                  }
+                })
+              } else {
+                otroVendedor = false
+              }
+              if (otroVendedor) {
+                Snackbar.show({
+                  text: tagMsg.repited
+                    ? tagMsg.repited
+                    : 'Codigo ya fue aplicado',
+                  duration: Snackbar.LENGTH_LONG,
+                });
+              } else {
+                setvalidPromo(res);
+                if (listaPromos.length >= 1) {
+                  listaPromos.map(promo => {
+                    if (promo.idPromotion != res.idPromotion) {
+                      listaPromos.push(res);
+                      setLoadingPromotion(false);
+                      Snackbar.show({
+                        text: tagMsg.success ? tagMsg.success : 'Codigo aplicado',
+                        duration: Snackbar.LENGTH_LONG,
+                      });
+                      goToScreen(routeName);
+                    } else {
+                      //M
+                      Snackbar.show({
+                        text: tagMsg.repited
+                          ? tagMsg.repited
+                          : 'Codigo ya fue aplicado',
+                        duration: Snackbar.LENGTH_LONG,
+                      });
+                    }
+                  });
+                } else {
                   listaPromos.push(res);
                   setLoadingPromotion(false);
-                  Snackbar.show({
-                    text: tagMsg.success ? tagMsg.success : 'Codigo aplicado',
-                    duration: Snackbar.LENGTH_LONG,
-                  });
                   goToScreen(routeName);
-                } else {
-                  //M
-                  Snackbar.show({
-                    text: tagMsg.repited
-                      ? tagMsg.repited
-                      : 'Codigo ya fue aplicado',
-                    duration: Snackbar.LENGTH_LONG,
-                  });
                 }
-              });
+
+              }
             } else {
-              listaPromos.push(res);
-              setLoadingPromotion(false);
-              goToScreen(routeName);
+              Snackbar.show({
+                text: tagMsg.failed
+                  ? tagMsg.failed
+                  : 'Codigo sin descuento, ingrese otro',
+                duration: Snackbar.LENGTH_LONG,
+              });
             }
           } else {
             Snackbar.show({
@@ -113,4 +143,4 @@ function PromotionProvider({children}) {
   );
 }
 
-export {PromotionContext, PromotionProvider};
+export { PromotionContext, PromotionProvider };
