@@ -39,6 +39,8 @@ import CardMultimedia from '@Components/CardMultimedia';
 import {ProductContext} from '@context/ProductContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {CementeriesContext} from '@context/CementeriesContext';
+import {GlobalLanguageContext} from '@context/LanguageContext';
+import {CountryContext} from '@context/CountryContext';
 import {CementeryContext} from '@context/CementeryContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 import {ProductsContext} from '@context/ProductsContext';
@@ -54,7 +56,10 @@ const PAGE_WIDTH = Dimensions.get('screen').width;
 export default function VistaProducto(props) {
   const {tags} = useContext(ScreentagContext);
   const [loginUser] = useContext(UsuarioContext);
-  const {isLoadingRatings, createRatings, ratings} = useContext(RatingsContext);
+  const {isLoadingRatings, createRatings, ratings, getRatings} =
+    useContext(RatingsContext);
+  const [GlobalLanguage] = useContext(GlobalLanguageContext);
+  const {country} = useContext(CountryContext);
   const [Product, setProduct] = useContext(ProductContext);
   const {
     addItemtoCart,
@@ -390,6 +395,9 @@ export default function VistaProducto(props) {
             user={loginUser.usuario}
             prod={Product}
             calificar={createRatings}
+            getRatings={getRatings}
+            idLang={GlobalLanguage._id}
+            idPais={country.value}
           />
         )}
       </View>

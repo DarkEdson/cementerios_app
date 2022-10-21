@@ -1,15 +1,12 @@
 //import liraries
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, StyleSheet, TextInput } from 'react-native';
+import {View, Text, StyleSheet, TextInput} from 'react-native';
 import color from '@styles/colors';
-import {AirbnbRating ,Dialog, CheckBox} from '@rneui/themed';
+import {AirbnbRating, Dialog, CheckBox} from '@rneui/themed';
 import MyButton from '@Components/common/MyButton';
 import Card from '../Card';
 
-
-
-
-const UselessTextInput = (props) => {
+const UselessTextInput = props => {
   return (
     <TextInput
       {...props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
@@ -17,7 +14,7 @@ const UselessTextInput = (props) => {
       maxLength={40}
     />
   );
-}
+};
 // create a component
 const RankingModal = props => {
   const [visible, setVisible] = useState(false);
@@ -28,7 +25,7 @@ const RankingModal = props => {
     btncancelar: 'CANCEL',
     btnconfirmar: 'CONFIRM',
     titulo: 'Calificar',
-  })
+  });
 
   const toggleDialog = () => {
     setVisible(false);
@@ -36,45 +33,57 @@ const RankingModal = props => {
   };
 
   useEffect(() => {
-    settags(props.tags)
+    settags(props.tags);
     setVisible(props.customModal);
     return () => {};
   }, []);
 
   return (
     <Dialog isVisible={visible} onBackdropPress={toggleDialog}>
-      <Dialog.Title title={ 'Rating'} />
-       <AirbnbRating showRating={false} selectedColor={color.PRINCIPALCOLOR} ratingContainerStyle={{marginBottom:25}} reviewColor={color.PRINCIPALCOLOR} size={25} onFinishRating={(rating)=>{
-        setChecked(rating)
-       }} />
-       <UselessTextInput
+      <Dialog.Title title={'Rating'} />
+      <AirbnbRating
+        showRating={false}
+        selectedColor={color.PRINCIPALCOLOR}
+        ratingContainerStyle={{marginBottom: 25}}
+        reviewColor={color.PRINCIPALCOLOR}
+        size={25}
+        onFinishRating={rating => {
+          setChecked(rating);
+        }}
+      />
+      <UselessTextInput
         multiline
         numberOfLines={25}
         onChangeText={text => setComment(text)}
         value={comment}
-        style={{padding: 10, margin: 2,
-          borderWidth: 1, borderColor: color.PRINCIPALCOLOR, borderRadius:15}}
+        style={{
+          padding: 10,
+          margin: 2,
+          borderWidth: 1,
+          borderColor: color.PRINCIPALCOLOR,
+          borderRadius: 15,
+        }}
       />
       <Dialog.Actions>
         <Dialog.Button
-          title={tags.btnconfirmar != ''
-          ? tags.btnconfirmar
-          : 'CONFIRMAR'}
+          title={tags.btnconfirmar != '' ? tags.btnconfirmar : 'CONFIRMAR'}
           onPress={() => {
-            let califica={
-              "idProduct": props.prod._id,
-              "idUser": props.user._id,
-              "value": checked,
-              "observation": comment
-          }
-            console.log(califica)
-            props.calificar(califica)
+            let califica = {
+              idProduct: props.prod._id,
+              idUser: props.user._id,
+              value: checked,
+              observation: comment,
+            };
+            console.log(califica);
+            props.calificar(califica);
+            props.getRatings(idLang, idPais);
             toggleDialog();
           }}
         />
-        <Dialog.Button title={tags.btncancelar != ''
-                  ? tags.btncancelar
-                  : 'CANCEL'} onPress={toggleDialog} />
+        <Dialog.Button
+          title={tags.btncancelar != '' ? tags.btncancelar : 'CANCEL'}
+          onPress={toggleDialog}
+        />
       </Dialog.Actions>
     </Dialog>
   );
