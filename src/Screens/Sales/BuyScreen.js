@@ -193,8 +193,10 @@ export default function BuyScreen(props) {
   }
 
   function selectedProduct(producto, routeName) {
+    let flag = false;
     ProductsCountry.forEach(prod => {
       if (prod._id == producto.idProduct) {
+        flag = true;
         categories.forEach(category => {
           if (category._id == prod.idCategory) {
             setCategory(category);
@@ -202,13 +204,16 @@ export default function BuyScreen(props) {
           }
         });
       } else {
-        Snackbar.show({
-          text: 'Producto ya no existe',
-          duration: Snackbar.LENGTH_LONG,
-        });
+        flag = false;
         //M
       }
     });
+    if (!flag) {
+      Snackbar.show({
+        text: 'Producto ya no existe',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
   }
 
   function prodSel(producto, routeName, routeB) {
