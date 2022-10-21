@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -10,40 +10,38 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
-import { Icon, FAB } from '@rneui/themed';
+import {Icon, FAB} from '@rneui/themed';
 //URL de server
-import { BASE_URL_IMG, PRODUCTS_URL } from '@utils/config';
+import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 //Recarga la screen
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 //Estilos Generales
 import color from '@styles/colors';
-import {
-  mainStyles,
-} from '@styles/stylesGeneral';
+import {mainStyles} from '@styles/stylesGeneral';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardProducto from '@Components/CardProducto/index';
 //Contextos
-import { ScreentagContext } from '@context/ScreentagsContext';
-import { ProductContext } from '@context/ProductContext';
-import { RouteBackContext } from '@context/RouteBackContext';
-import { ProductsContext } from '@context/ProductsContext';
-import { CategoriesContext } from '@context/CategoriesContext';
-import { CategoryContext } from '@context/CategoryContext';
-import { SedesContext } from '@context/SedesContext';
-import { SedeContext } from '@context/SedeContext';
-import { GlobalLanguageContext } from '@context/LanguageContext';
-import { ShoppingCartContext } from '@context/ShoppingCartContext';
+import {ScreentagContext} from '@context/ScreentagsContext';
+import {ProductContext} from '@context/ProductContext';
+import {RouteBackContext} from '@context/RouteBackContext';
+import {ProductsContext} from '@context/ProductsContext';
+import {CategoriesContext} from '@context/CategoriesContext';
+import {CategoryContext} from '@context/CategoryContext';
+import {SedesContext} from '@context/SedesContext';
+import {SedeContext} from '@context/SedeContext';
+import {GlobalLanguageContext} from '@context/LanguageContext';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
 
 //tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function VistaProductos(props) {
-  const { tags } = useContext(ScreentagContext);
+  const {tags} = useContext(ScreentagContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
-  const {  setrutaCart } = useContext(ShoppingCartContext);
+  const {setrutaCart} = useContext(ShoppingCartContext);
   const [Product, setProduct] = useContext(ProductContext);
   const [sede, setSede] = useContext(SedeContext);
-  const { isLoadingSedes,  getSedeDirect } = useContext(SedesContext);
-  const { setRouteBack } = useContext(RouteBackContext);
+  const {isLoadingSedes, getSedeDirect} = useContext(SedesContext);
+  const {setRouteBack} = useContext(RouteBackContext);
   const {
     ProductsCountry,
     ProductsCategory,
@@ -52,12 +50,11 @@ export default function VistaProductos(props) {
     getProductsFullbyCategory,
     getMultimediabyProduct,
   } = useContext(ProductsContext);
-  const { categories } =
-    useContext(CategoriesContext);
-  const { isCategory, setisCategory, setCategory } = useContext(CategoryContext);
+  const {categories} = useContext(CategoriesContext);
+  const {isCategory, setisCategory, setCategory} = useContext(CategoryContext);
 
   const isFocused = useIsFocused();
-  const getInitialData = async () => { };
+  const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
@@ -87,7 +84,7 @@ export default function VistaProductos(props) {
   const [arrProductosDisp, setArrProductosDisp] = useState([]);
 
   return (
-    <SafeAreaView style={mainStyles.containers} >
+    <SafeAreaView style={mainStyles.containers}>
       <View>
         {isCategory && isLoadingProducts ? (
           <View
@@ -100,7 +97,7 @@ export default function VistaProductos(props) {
               loading
               color={color.PRINCIPALCOLOR}
               visible={isLoadingProducts}
-              icon={{ name: 'add', color: 'white' }}
+              icon={{name: 'add', color: 'white'}}
               size="small"
             />
           </View>
@@ -115,7 +112,7 @@ export default function VistaProductos(props) {
               loading
               color={color.PRINCIPALCOLOR}
               visible={isLoadingSedes}
-              icon={{ name: 'add', color: 'white' }}
+              icon={{name: 'add', color: 'white'}}
               size="small"
             />
           </View>
@@ -141,7 +138,7 @@ export default function VistaProductos(props) {
             <View style={styles.containerHeader}>
               <View style={styles.searchSection}>
                 <TextInput
-                  style={styles.input}
+                  style={styles.btnStyle}
                   placeholder={
                     tags.ProductsScreen.labelsearch1 != ''
                       ? tags.ProductsScreen.labelsearch1
@@ -151,15 +148,15 @@ export default function VistaProductos(props) {
                     setArrProductosDisp(
                       isCategory
                         ? ProductsFullCategory.filter(p =>
-                          p.name
-                            .toLocaleLowerCase()
-                            .includes(val.toLocaleLowerCase()),
-                        )
+                            p.name
+                              .toLocaleLowerCase()
+                              .includes(val.toLocaleLowerCase()),
+                          )
                         : ProductsCountry.filter(p =>
-                          p.name
-                            .toLocaleLowerCase()
-                            .includes(val.toLocaleLowerCase()),
-                        ),
+                            p.name
+                              .toLocaleLowerCase()
+                              .includes(val.toLocaleLowerCase()),
+                          ),
                     );
                   }}
                 />
@@ -176,9 +173,11 @@ export default function VistaProductos(props) {
                       urlImagen={product.principalImage}
                       titulo={product.name}
                       descripcion={product.description}
-                      precio={tags.ProductsScreen.detallePrecio != ''
-                      ? tags.ProductsScreen.detallePrecio
-                      : 'Ver Precio Dentro'}
+                      precio={
+                        tags.ProductsScreen.detallePrecio != ''
+                          ? tags.ProductsScreen.detallePrecio
+                          : 'Ver Precio Dentro'
+                      }
                     />
                   );
                 })}
@@ -194,26 +193,23 @@ export default function VistaProductos(props) {
 
   function selectedProduct(producto, routeName) {
     if (isCategory) {
-      prodSel(producto, routeName, 'Productos')
-
+      prodSel(producto, routeName, 'Productos');
     } else {
       categories.forEach(category => {
         if (category._id == producto.idCategory) {
           setCategory(category);
-          prodSel(producto, routeName, 'Productos')
+          prodSel(producto, routeName, 'Productos');
         }
       });
-
     }
-
   }
 
   function prodSel(producto, routeName, routeB) {
-    setrutaCart(false)
+    setrutaCart(false);
     setProduct(producto);
     getMultimediabyProduct(producto);
     setRouteBack(routeB);
-    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName)
+    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName);
   }
 
   function goToScreen(routeName) {
@@ -232,6 +228,13 @@ const styles = StyleSheet.create({
   containerHeader: {
     backgroundColor: color.WHITE,
   },
+  btnStyle: {
+    width: '100%',
+    marginBottom: 7,
+    paddingLeft: 10,
+    borderRadius: 10,
+    backgroundColor: color.GRAY2,
+  },
   boxTransparent: {
     backgroundColor: color.WHITE,
     marginBottom: Dimensions.get('screen').height * 0.027,
@@ -240,7 +243,6 @@ const styles = StyleSheet.create({
     height: '80%',
   },
   searchSection: {
-    borderBottomWidth: 1,
     borderColor: 'grey',
     borderRadius: 2,
     alignSelf: 'center',

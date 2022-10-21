@@ -104,7 +104,7 @@ export default function CompanyScreen(props) {
             <View style={styles.containerHeader}>
               <View style={styles.searchSection}>
                 <TextInput
-                  style={styles.input}
+                  style={styles.btnStyle}
                   placeholder={
                     tags.CementeriesScreen.placeholder != ''
                       ? tags.CementeriesScreen.placeholder
@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
     height: '80%',
   },
   searchSection: {
-    borderBottomWidth: 1,
     borderColor: 'grey',
     borderRadius: 2,
     alignSelf: 'center',
@@ -190,5 +189,12 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 0,
+  },
+  btnStyle: {
+    width: '100%',
+    marginBottom: 7,
+    paddingLeft: 10,
+    borderRadius: 10,
+    backgroundColor: color.GRAY2,
   },
 });
