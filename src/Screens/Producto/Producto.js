@@ -45,7 +45,7 @@ import {ProductsContext} from '@context/ProductsContext';
 import {CategoryContext} from '@context/CategoryContext';
 import {CurrenciesContext} from '@context/CurrencyContext';
 import {UsuarioContext} from '@context/UsuarioContext';
-import { RatingsContext } from '@context/RatingContext';
+import {RatingsContext} from '@context/RatingContext';
 import {SedeContext} from '@context/SedeContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
@@ -54,7 +54,7 @@ const PAGE_WIDTH = Dimensions.get('screen').width;
 export default function VistaProducto(props) {
   const {tags} = useContext(ScreentagContext);
   const [loginUser] = useContext(UsuarioContext);
-  const {isLoadingRatings, createRatings} = useContext(RatingsContext)
+  const {isLoadingRatings, createRatings, ratings} = useContext(RatingsContext);
   const [Product, setProduct] = useContext(ProductContext);
   const {
     addItemtoCart,
@@ -116,11 +116,16 @@ export default function VistaProducto(props) {
     //Consultar Moneda
     getCurrency({_id: sede.idAffiliate});
     // Actualizar valores de la vista
-    setPropsVista({
-      rating: {
-        valor: 4.9,
-        label: 'Ratink',
-      },
+    ratings.map(prod => {
+      if (prod._id == Product._id) {
+        //F
+        setPropsVista({
+          rating: {
+            valor: prod.ranking,
+            label: 'Ratink',
+          },
+        });
+      }
     });
     if (isFocused) {
       getInitialData();
@@ -157,7 +162,7 @@ export default function VistaProducto(props) {
   const [propsVista, setPropsVista] = useState({
     rating: {
       valor: 0,
-      label: '',
+      label: 'Ratink',
     },
   });
 
@@ -377,7 +382,7 @@ export default function VistaProducto(props) {
             item={itemModal}
           />
         )}
-         {ratingModal == false ? null : (
+        {ratingModal == false ? null : (
           <RankingModal
             customModal={ratingModal}
             tags={tags.sedeSelectScreen}
