@@ -123,7 +123,7 @@ export default function ProfileScreen(props) {
                   : loginUser.usuario.vendorcode}
               </Text>
             ) : (
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity onPress={() => goToScreen('Help')}>
                 <Text style={styles.txtComponente}>
                   {tags.perfilScreen.help != ''
                     ? tags.perfilScreen.help
