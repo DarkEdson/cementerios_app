@@ -354,6 +354,23 @@ export default function InitialScreen(props) {
                   </View>
                 )}
               </View>
+              <View style={[styles.cementeriestitle, styles.titles]}>
+                <Text style={styles.titleText}>
+                {tags.CompanyDetailScreen.mas != ''
+                ? tags.CompanyDetailScreen.mas
+                : 'Mas Populares'}
+                </Text>
+                <MyTextButton
+                  titulo={
+                    tags.HomeScreen.labelvertodos != ''
+                      ? tags.HomeScreen.labelvertodos
+                      : 'Ver todos'
+                  }
+                  underline={true}
+                  color="blue"
+                  onPress={() => goToScreen('Productos')}
+                />
+              </View>
             </View>
             <View style={styles.boxTransparent} />
             <View style={styles.boxTransparent} />
