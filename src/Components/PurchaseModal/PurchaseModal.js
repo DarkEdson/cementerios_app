@@ -1,19 +1,17 @@
-import React, {useContext, useEffect, useState} from 'react';
+//import liraries
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
-  SafeAreaView,
   StatusBar,
   Alert,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
-import {Icon, FAB, ListItem, Button} from '@rneui/themed';
+import {Dialog, Icon, FAB, ListItem, Button} from '@rneui/themed';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
-//URL de server
-import {BASE_URL_IMG} from '@utils/config';
 //Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
@@ -26,8 +24,12 @@ import {UsuarioContext} from '@context/UsuarioContext';
 import {CreditCardContext} from '@context/CreditCardContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 
-//tags.paymentMethodsScreen.btn != '' ? tags.paymentMethodsScreen.btn :
-export default function PaymentMethodScreen(props) {
+
+
+
+// create a component
+const PurchaseModal = props => {
+  const [visible, setVisible] = useState(false);
   const {
     creditCard,
     creditCards,
@@ -35,7 +37,7 @@ export default function PaymentMethodScreen(props) {
     setisUpdatedCard,
     isLoadingCreditCards,
     updateCard,
-    deleteCard,
+    deleteCard
   } = useContext(CreditCardContext);
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
@@ -52,60 +54,39 @@ export default function PaymentMethodScreen(props) {
     securityCode: '',
     brand: '',
   });
+
+  const toggleDialog = () => {
+    setVisible(false);
+    props.setCustomModal(false);
+  };
+
   useEffect(() => {
-    console.log('CREDIT CARD?', creditCard);
-    setData({
-      ...data,
-      cardNumber: '5425 2334 3010 9903',
-      cardHolderName: 'Edson',
-      nameSurname: 'Aju',
-      mmYY: '04/2023',
-      expiration: '',
-      securityCode: '',
-      brand: 'mastercard',
-    });
-    if (isFocused) {
-      getInitialData();
-      console.log('isFocused CREDIT CARDS');
-    }
-    //props, isFocused
+    setVisible(props.customModal);
+    return () => {};
   }, []);
 
-  return (
-    <SafeAreaView style={mainStyles.containers}>
-      {isLoadingCreditCards ? (
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '50%',
-          }}>
-          <FAB
-            loading
-            color={color.PRINCIPALCOLOR}
-            visible={isLoadingCreditCards}
-            icon={{name: 'add', color: 'white'}}
-            size="small"
-          />
-        </View>
-      ) : (
-        <View style={styles.container}>
-          <StatusBar
-            backgroundColor={color.PRINCIPALCOLOR}
-            barStyle="dark-content"
-            translucent={true}
-          />
-          <ToolBar
-            titulo={
-              tags.paymentMethodsScreen.titulo != ''
+  return (<View>
+    {isLoadingCreditCards ? (
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '50%',
+        }}>
+        <FAB
+          loading
+          color={color.PRINCIPALCOLOR}
+          visible={isLoadingCreditCards}
+          icon={{name: 'add', color: 'white'}}
+          size="small"
+        />
+      </View>
+    ) : (
+    <Dialog overlayStyle={{width:'90%'}} isVisible={visible} onBackdropPress={toggleDialog}>
+      <Dialog.Title title={  tags.paymentMethodsScreen.titulo != ''
                 ? tags.paymentMethodsScreen.titulo
-                : 'Metodos de Pago'
-            }
-            onPressLeft={() => goToScreen('PersonalData')}
-            iconLeft={true}
-          />
-
-          <ScrollView>
+                : 'Metodos de Pago'} />
+      <ScrollView>
             <View style={styles.editField}>
               <Text style={styles.titleLabel}>
                 {tags.paymentMethodsScreen.preferido != ''
@@ -116,8 +97,8 @@ export default function PaymentMethodScreen(props) {
                 <PaymentButton
                   iconLeft={true}
                   titulo={'XXXX-XXXX-XXXX-' + creditCard.last4}
-                  iconRight={true}
-                  onPress={() => selectCard(creditCard)}
+                 
+                  onPress={() => {}}
                 />
               ) : (
                 <Text style={styles.titleLabel} />
@@ -141,6 +122,7 @@ export default function PaymentMethodScreen(props) {
                           }
                           onPress={() => {
                             updateCard(card, loginUser.usuario)
+                            toggleDialog();
                           }}
                           icon={{name: 'favorite', color: 'white'}}
                           buttonStyle={{
@@ -169,64 +151,17 @@ export default function PaymentMethodScreen(props) {
                           key={key}
                           iconLeft={true}
                           titulo={'XXXX-XXXX-XXXX-' + card.last4}
-                          iconRight={false}
-                          onPress={() => selectCard(card)}
+                          onPress={() => {}}
                         />
                       </ListItem.Content>
-                      <ListItem.Chevron />
                     </ListItem.Swipeable>
                   ))
                 : null}
-              <MyButton
-                titulo={
-                  tags.paymentMethodsScreen.btn != ''
-                    ? tags.paymentMethodsScreen.btn
-                    : 'Crear Tarjeta'
-                }
-                onPress={() => newCard()}
-              />
             </View>
           </ScrollView>
-        </View>
-      )}
-    </SafeAreaView>
+    </Dialog>)}
+    </View>
   );
-
-  function selectCard(card) {
-    setisUpdatedCard(true);
-    let month = '00';
-    if (parseInt(card.exp_month) <= 9) {
-      month = `0${card.exp_month}`;
-    } else {
-      month = card.exp_month;
-    }
-    setcreditCardSel({
-      ...creditCard,
-      cardNumber: `0000-0000-0000-${card.last4}`,
-      cardHolderName: loginUser.usuario.name,
-      nameSurname: loginUser.usuario.lastname,
-      mmYY: `${month}/${card.exp_year}`,
-      expiration: `${month}/${card.exp_year}`,
-      securityCode: '000',
-      brand: card.brand,
-    });
-    goToScreen('PaymentDetails');
-  }
-
-  function newCard() {
-    setisUpdatedCard(false);
-    setcreditCardSel({
-      ...creditCard,
-      cardNumber: '',
-      cardHolderName: '',
-      nameSurname: '',
-      mmYY: '',
-      expiration: '',
-      securityCode: '',
-      brand: '',
-    });
-    goToScreen('PaymentDetails');
-  }
 
   function borrarCard(card) {
     console.log('card a borrar', card);
@@ -271,11 +206,9 @@ export default function PaymentMethodScreen(props) {
     //F
     //
   }
-  function goToScreen(routeName) {
-    props.navigation.navigate(routeName);
-  }
-}
+};
 
+// define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -316,3 +249,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+
+
+//make this component available to the app
+export default PurchaseModal;

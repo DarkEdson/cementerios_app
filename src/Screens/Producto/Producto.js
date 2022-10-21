@@ -14,15 +14,10 @@ import {
 import {Image, FAB} from '@rneui/themed';
 import Carousel from 'react-native-reanimated-carousel';
 import ReadMore from 'react-native-read-more-text';
-import Animated, {
-  Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
-
+import {useSharedValue} from 'react-native-reanimated';
+import ImageView from 'react-native-image-viewing';
 //URL de server
-import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+import {BASE_URL_IMG, PRODUCTS_URL, IMGEXTENSIONS} from '@utils/config';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
@@ -30,6 +25,7 @@ import MyFloatButton from '@Components/common/MyFloatButton';
 import MyButton from '@Components/common/MyButton';
 import InformationIcon from '@Components/common/InformationIcon';
 import CustomModal from '@Components/CustomModal/CustomModal';
+import RankingModal from '@Components/RankingModal/RankingModal';
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -48,6 +44,8 @@ import {RouteBackContext} from '@context/RouteBackContext';
 import {ProductsContext} from '@context/ProductsContext';
 import {CategoryContext} from '@context/CategoryContext';
 import {CurrenciesContext} from '@context/CurrencyContext';
+import {UsuarioContext} from '@context/UsuarioContext';
+import { RatingsContext } from '@context/RatingContext';
 import {SedeContext} from '@context/SedeContext';
 
 const PAGE_WIDTH = Dimensions.get('screen').width;
@@ -55,6 +53,8 @@ const PAGE_WIDTH = Dimensions.get('screen').width;
 //tags.ProductDetailScreen.btnagregar != '' ? tags.ProductDetailScreen.btnagregar :
 export default function VistaProducto(props) {
   const {tags} = useContext(ScreentagContext);
+  const [loginUser] = useContext(UsuarioContext);
+  const {isLoadingRatings, createRatings} = useContext(RatingsContext)
   const [Product, setProduct] = useContext(ProductContext);
   const {
     addItemtoCart,
@@ -74,8 +74,12 @@ export default function VistaProducto(props) {
   const {ProductMultimedia, isLoadingProducts} = useContext(ProductsContext);
   const {Currency, getCurrency} = useContext(CurrenciesContext);
   const [customModal, setCustomModal] = useState(false);
+  const [ratingModal, setRatingmodal] = useState(false);
   const [imagenModal, setimagenModal] = useState(null);
   const [itemModal, setitemModal] = useState(null);
+  const [visible, setIsVisible] = useState(false);
+  const [ProductImages, setProductImages] = useState([]);
+  const [ProductVideos, setProductVideos] = useState([]);
   const {Category} = useContext(CategoryContext);
 
   const isFocused = useIsFocused();
@@ -84,8 +88,8 @@ export default function VistaProducto(props) {
   const progressValue = useSharedValue(0);
   const baseOptions = {
     vertical: false,
-    width: PAGE_WIDTH,
-    height: PAGE_WIDTH * 0.41,
+    width: PAGE_WIDTH * 0.4,
+    height: PAGE_WIDTH / 2.5,
   };
   // Cargar informacion de la vista
   useEffect(() => {
@@ -106,6 +110,9 @@ export default function VistaProducto(props) {
         }
       }
     }
+    if (ProductMultimedia.length >= 1) {
+      divideMultimedia();
+    }
     //Consultar Moneda
     getCurrency({_id: sede.idAffiliate});
     // Actualizar valores de la vista
@@ -121,6 +128,30 @@ export default function VistaProducto(props) {
     }
     //props, isFocused
   }, []);
+
+  const toggleDialog = () => {
+    setRatingmodal(true);
+  };
+
+  function divideMultimedia() {
+    let extension = [];
+    let imagenes = [];
+    let imagen = {};
+    let videos = [];
+    ProductMultimedia.map(prod => {
+      extension = prod.name.split('.');
+      if (IMGEXTENSIONS.includes(extension[extension.length - 1])) {
+        imagenes.push({uri: prod.name});
+        imagen = prod;
+      } else {
+        videos.push(prod);
+      }
+    });
+    videos.push(imagen);
+    console.log(videos);
+    setProductImages(imagenes);
+    setProductVideos(videos);
+  }
 
   // Variables de la vista
   const [propsVista, setPropsVista] = useState({
@@ -145,9 +176,14 @@ export default function VistaProducto(props) {
   }
 
   function abrirModal(multimedia) {
-    setCustomModal(true);
-    setimagenModal(multimedia.name);
-    setitemModal(multimedia);
+    let extension = multimedia.name.split('.');
+    if (IMGEXTENSIONS.includes(extension[extension.length - 1])) {
+      setIsVisible(true);
+    } else {
+      setCustomModal(true);
+      setimagenModal(multimedia.name);
+      setitemModal(multimedia);
+    }
   }
 
   const renderTruncatedFooter = handlePress => {
@@ -217,6 +253,9 @@ export default function VistaProducto(props) {
                 image="star"
                 titulo={propsVista.rating.valor}
                 subtitulo={propsVista.rating.label}
+                onPress={() => {
+                  toggleDialog();
+                }}
               />
             </View>
           </View>
@@ -258,44 +297,36 @@ export default function VistaProducto(props) {
               ) : ProductMultimedia.length >= 1 ? (
                 <Carousel
                   {...baseOptions}
-                  style={{
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                  }}
-                  loop={true}
-                  pagingEnabled={true}
-                  snapEnabled={true}
+                  style={{width: '100%', marginLeft: '5%'}}
+                  loop
                   autoPlay={true}
-                  autoPlayInterval={1500}
-                  onProgressChange={(_, absoluteProgress) =>
-                    (progressValue.value = absoluteProgress)
-                  }
-                  mode="parallax"
-                  modeConfig={{
-                    parallaxScrollingScale: 0.85,
-                    parallaxScrollingOffset: 260,
-                  }}
-                  data={ProductMultimedia}
-                  renderItem={({item}) => {
-                    return (
-                      <CardMultimedia
-                        style={styles.imgDetalle}
-                        urlImagen={item}
-                        onPressMultimedia={() => {
-                          console.log(item);
-                          abrirModal(item);
-                        }}
-                        textStyle={styles.imgTitulo}
-                      />
-                    );
-                  }}
+                  autoPlayInterval={2000}
+                  data={ProductVideos}
+                  renderItem={({item}) => (
+                    <CardMultimedia
+                      style={styles.imgDetalle}
+                      urlImagen={item}
+                      onPressMultimedia={() => {
+                        console.log(item);
+                        abrirModal(item);
+                      }}
+                      textStyle={styles.imgTitulo}
+                    />
+                  )}
                 />
               ) : (
                 <View style={styles.noPromoView}>
                   <Text style={styles.promoText}>No Multimedia</Text>
                 </View>
               )}
-
+              {ProductImages.length >= 1 ? (
+                <ImageView
+                  images={ProductImages}
+                  imageIndex={0}
+                  visible={visible}
+                  onRequestClose={() => setIsVisible(false)}
+                />
+              ) : null}
               <View style={styles.numCant}>
                 <TouchableOpacity
                   style={styles.btnCant}
@@ -344,6 +375,16 @@ export default function VistaProducto(props) {
             urlImagen={imagenModal}
             textStyle={styles.imgTitulo}
             item={itemModal}
+          />
+        )}
+         {ratingModal == false ? null : (
+          <RankingModal
+            customModal={ratingModal}
+            tags={tags.sedeSelectScreen}
+            setCustomModal={setRatingmodal}
+            user={loginUser.usuario}
+            prod={Product}
+            calificar={createRatings}
           />
         )}
       </View>

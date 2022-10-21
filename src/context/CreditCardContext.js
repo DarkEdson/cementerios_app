@@ -6,6 +6,7 @@ import {
   apiCreditsCards,
 } from '@Apis/CreditCardApi';
 import Snackbar from 'react-native-snackbar';
+import { getTarjetas, saveTarjetas } from '../storage/CreditCardAsyncStorage';
 
 const initialState = {
   _id: '',
@@ -28,13 +29,22 @@ function CreditCardProvider({children}) {
   const [isUpdatedCard, setisUpdatedCard] = useState(false);
 
   const getCreditCards = async usuario => {
+    const tarjetaSalv= await getTarjetas();
     setisLoadingCreditCards(true);
     apiCreditsCards(usuario).then(res => {
       console.log('CREDIT CARDS', res);
       setcreditCards(res);
       if (res.length >= 1) {
-        setCreditCard(res[0]);
+        console.log('GUARDADA EN ASYNC',tarjetaSalv)
+        if (tarjetaSalv==null){
+          setCreditCard(res[0]);
+          saveTarjetas(res[0])
+        }else{
+          setCreditCard(tarjetaSalv);
+        }
+        
       } else {
+        console.log('GUARDADA EN ASYNC SIN TARJETAS ARRAY',tarjetaSalv)
         setCreditCard({
           _id: '',
           card_id: '',
@@ -52,11 +62,18 @@ function CreditCardProvider({children}) {
   };
 
   const refreshCreditCards = async (usuario, goToScreen, routeName) => {
+    const tarjetaSalv= await getTarjetas();
     setisLoadingCreditCards(true);
     apiCreditsCards(usuario).then(res => {
       console.log('CREDIT CARDS', res);
       setcreditCards(res);
-      setCreditCard(res[0]);
+      console.log('GUARDADA EN ASYNC',tarjetaSalv)
+        if (tarjetaSalv==null){
+          setCreditCard(res[0]);
+          saveTarjetas(res[0])
+        }else{
+          setCreditCard(tarjetaSalv);
+        }
       goToScreen(routeName);
       Snackbar.show({
         text: isUpdatedCard ? 'Tarjeta Actualizada' : 'Tarjeta Creada',
@@ -94,23 +111,37 @@ function CreditCardProvider({children}) {
   };
 
   const deleteCard = async (tarjeta, usuario) => {
-    setisLoadingCreditCards(true);
-    apiBorrarTarjeta(tarjeta).then(res => {
-      console.log('CREDIT CARD DELETED', res);
-      getCreditCards(usuario);
-    });
+    const tarjetaSalv= await getTarjetas();
+    if (tarjetaSalv.card_id== tarjeta.card_id){
+      Snackbar.show({
+        text: 'Tarjeta Favorita, Elija otra',
+        duration: Snackbar.LENGTH_LONG,
+      });
+      setisLoadingCreditCards(false);
+    }else{
+      setisLoadingCreditCards(true);
+      apiBorrarTarjeta(tarjeta,usuario).then(res => {
+        console.log('CREDIT CARD DELETED', res);
+        getCreditCards(usuario);
+      });
+    }
+
   };
 
-  const updateCard = async (tarjeta, usuario, goToScreen, routeName) => {
+  const updateCard = async (tarjeta, usuario) => {
     setisLoadingCreditCards(true);
     apiActualizarTarjeta(tarjeta, usuario).then(res => {
-      if (res.value) {
+      if (res.default_source) {
         Snackbar.show({
           text: 'Credit Card Updated',
           duration: Snackbar.LENGTH_LONG,
         });
         console.log('CREDIT CARD UPDATED', res);
-        refreshCreditCards(usuario, goToScreen, routeName);
+        saveTarjetas(tarjeta).then(msg => {
+          console.log('tarjeta favorita cambiada');
+          getCreditCards(usuario)
+        });
+       
       } else {
         console.log(res.raw.code + ' ' + res.raw.message + ' ' + res.raw.param);
         Snackbar.show({

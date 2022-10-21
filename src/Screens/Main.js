@@ -25,6 +25,7 @@ import {SedeProvider} from '@context/SedeContext';
 import {CurrenciesProvider} from '@context/CurrencyContext';
 import {PromotionProvider} from '@context/PromotionContext';
 import {ReportsProvider} from '@context/ReportsContext';
+import { RatingsProvider } from '@context/RatingContext';
 
 const MainPage = () => {
   useEffect(() => {
@@ -53,6 +54,7 @@ const MainPage = () => {
                                         <CementeryProvider>
                                           <ProductsProvider>
                                             <ProductProvider>
+                                              <RatingsProvider>
                                               <CreditCardProvider>
                                                 <ReportsProvider>
                                                   <RouteBackProvider>
@@ -66,6 +68,7 @@ const MainPage = () => {
                                                   </RouteBackProvider>
                                                 </ReportsProvider>
                                               </CreditCardProvider>
+                                              </RatingsProvider>
                                             </ProductProvider>
                                           </ProductsProvider>
                                         </CementeryProvider>

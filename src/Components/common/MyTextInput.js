@@ -50,6 +50,7 @@ export default function MyTextInput(props) {
           />
         )
       }
+      autoCapitalize="none"
       errorStyle={{color: color.RED}}
       errorMessage={props.bolError ? props.strError : ''}
       editable={props.editable}

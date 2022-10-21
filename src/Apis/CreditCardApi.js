@@ -40,22 +40,15 @@ async function apiCrearTarjeta(tarjeta, usuario) {
 }
 
 async function apiActualizarTarjeta(tarjeta, usuario) {
-  let url = `${BASE_URL}/user.creditcards.update/${tarjeta._id}`;
-  let last4 = tarjeta.number.split(' ');
-  let expMonth = tarjeta.expiration.split('/');
-  console.log(last4, expMonth);
+  let url = `${BASE_URL}/user.creditcards.updatecreditcard/${usuario._id}/${tarjeta._id}`;
+  console.log(url);
   let card = {};
   try {
     let data = {
-      idUser: usuario._id,
-      number: tarjeta.number.split(' ').join(''),
-      exp_month: expMonth[0],
-      exp_year: expMonth[1],
-      cvc: tarjeta.cvv,
     };
-    console.log('TARJETA A ACTUALIZAR: ', data);
+    console.log('TARJETA A ACTUALIZAR: ', tarjeta);
     await fetch(url, {
-      method: 'PUT',
+      method: 'POST',
       body: JSON.stringify(data),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -77,16 +70,22 @@ async function apiActualizarTarjeta(tarjeta, usuario) {
   }
 }
 
-async function apiBorrarTarjeta(tarjeta) {
-  let url = `${BASE_URL}/user.creditcards.destroy/${tarjeta._id}`;
+async function apiBorrarTarjeta(tarjeta,usuario) {
+  let url = `${BASE_URL}/user.creditcards.destroy/${usuario._id}/${tarjeta._id}`;
+  console.log(url)
   let card = {};
   try {
+    let data = {
+    };
     await fetch(url, {
-      method: 'DEL',
-      redirect: 'follow',
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
     })
       .then(res => res.json())
-      .catch(error => console.error('Error', error))
+      .catch(error => console.error('Error BORRANDO TARJETA', error))
       .then(response => {
         card = response;
       });

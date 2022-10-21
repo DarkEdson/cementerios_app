@@ -1,6 +1,11 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {StyleSheet, Text, TouchableOpacity, SafeAreaView, View} from 'react-native';
-import {CreditCardInput} from 'react-native-credit-card-input';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  SafeAreaView,
+  View,
+} from 'react-native';
 import {saveTarjetas, getTarjetas} from '@storage/CreditCardAsyncStorage';
 import Snackbar from 'react-native-snackbar';
 //Recarga la screen

@@ -41,6 +41,7 @@ import {CategoryContext} from '@context/CategoryContext';
 import {ProductContext} from '@context/ProductContext';
 import {SedesContext} from '@context/SedesContext';
 import {SedeContext} from '@context/SedeContext';
+import { RatingsContext } from '@context/RatingContext';
 import {CurrenciesContext} from '@context/CurrencyContext';
 import {CreditCardContext} from '@context/CreditCardContext';
 
@@ -54,6 +55,7 @@ export default function InitialScreen(props) {
   const [countries] = useContext(CountriesContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const {tags} = useContext(ScreentagContext);
+  const {isLoadingRatings, ratings,getRatings} = useContext(RatingsContext)
   const {setRouteBack, setRouteBackComp} = useContext(RouteBackContext);
   const {setisCategory, setCategory} = useContext(CategoryContext);
   const [Product, setProduct] = useContext(ProductContext);
@@ -351,6 +353,23 @@ export default function InitialScreen(props) {
                     />
                   </View>
                 )}
+              </View>
+              <View style={[styles.cementeriestitle, styles.titles]}>
+                <Text style={styles.titleText}>
+                {tags.CompanyDetailScreen.mas != ''
+                ? tags.CompanyDetailScreen.mas
+                : 'Mas Populares'}
+                </Text>
+                <MyTextButton
+                  titulo={
+                    tags.HomeScreen.labelvertodos != ''
+                      ? tags.HomeScreen.labelvertodos
+                      : 'Ver todos'
+                  }
+                  underline={true}
+                  color="blue"
+                  onPress={() => goToScreen('Productos')}
+                />
               </View>
             </View>
             <View style={styles.boxTransparent} />
