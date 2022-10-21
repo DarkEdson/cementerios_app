@@ -18,6 +18,7 @@ import {BASE_URL_IMG} from '@utils/config';
 import CardProductoVenta from '@Components/CardSellProduct/';
 import ToolBar from '@Components/common/toolBar';
 import LargeButton from '@Components/common/largeButton';
+import PurchaseModal from '@Components/PurchaseModal/PurchaseModal';
 import MyButton from '@Components/common/MyButton';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
@@ -34,7 +35,6 @@ import {SedesContext} from '@context/SedesContext';
 import {ProductsContext} from '@context/ProductsContext';
 import {PromotionContext} from '../../context/PromotionContext';
 import {CreditCardContext} from '@context/CreditCardContext';
-
 //Estilos Generales
 import color from '@styles/colors';
 import {
@@ -43,14 +43,17 @@ import {
   informationIconStyles,
 } from '@styles/stylesGeneral';
 
+
 //tags.PaymentScreen.agregar != '' ? tags.PaymentScreen.agregar :
 export default function VistaPago(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
-  const {creditCards,creditCard} = useContext(CreditCardContext);
+  const {creditCards,creditCard,    updateCard,
+    deleteCard,isLoadingCreditCards} = useContext(CreditCardContext);
   const {promotionList, validPromo, setpromotionList} =
     useContext(PromotionContext);
   const [Product, setProduct] = useContext(ProductContext);
+  const [visible, setVisible] = useState(false);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const [sede, setSede] = useContext(SedeContext);
   const {Currency, getCurrency} = useContext(CurrenciesContext);
@@ -127,6 +130,10 @@ export default function VistaPago(props) {
     total: 0,
   });
 
+  const toggleDialog = () => {
+    setVisible(true);
+  };
+
   return (
     <SafeAreaView style={mainStyles.containers}>
       {isLoadingCart ? (
@@ -144,7 +151,22 @@ export default function VistaPago(props) {
             size="small"
           />
         </View>
-      ) : (
+      ) : isLoadingCreditCards ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingCreditCards}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
+          />
+        </View>
+      ) :(
         <View style={styles.vista}>
           <ToolBar
             titulo={
@@ -271,7 +293,9 @@ export default function VistaPago(props) {
                   titulo={
                     '****-****-****-'+creditCard.last4
                   }
-                  onPressRight={() => {}}
+                  onPressRight= {() => {
+                    toggleDialog();
+                  }}
                   iconRight={true}
                 />
               </View> : <View style={styles.espacio}>
@@ -301,6 +325,14 @@ export default function VistaPago(props) {
               <View style={mainStyles.boxTransparent} />
             </View>
           </ScrollView>
+          {visible == false ? null : (
+          <PurchaseModal
+            customModal={visible}
+            setCustomModal={setVisible}
+            deleteCards={deleteCard}
+            updateCards={updateCard}
+          />
+        )}
         </View>
       )}
     </SafeAreaView>
