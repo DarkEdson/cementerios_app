@@ -76,7 +76,7 @@ const RankingModal = props => {
             };
             console.log(califica);
             props.calificar(califica);
-            props.getRatings(idLang, idPais);
+            props.getRatings(props.idLang, props.idPais);
             toggleDialog();
           }}
         />
