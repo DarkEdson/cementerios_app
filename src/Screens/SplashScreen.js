@@ -83,9 +83,12 @@ export default function SplashScreen(props) {
           style={splashStyles.logo}
           source={require('@images/main_logo.png')}
         />
+        <View style={{alignContent:'center', alignItems: 'center', alignSelf:'center'}}>
         <Text style={splashStyles.texto}>
           {bienvenida == 'es' ? 'Bienvenido' : 'Welcome'}
         </Text>
+        </View>
+        
       </ImageBackground>
     </View>
   );

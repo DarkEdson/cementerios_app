@@ -93,7 +93,11 @@ export default function EditProfileScreen(props) {
 
           <ScrollView>
             <View style={styles.editField}>
-              <Text style={styles.titleLabel}>Username:</Text>
+              <Text style={styles.titleLabel}>{
+                  tags.EditUserScreen.username != ''
+                    ? tags.EditUserScreen.username
+                    : 'Username'
+                }</Text>
               <MyTextInput
                 keyboardType={null}
                 placeholder={
@@ -105,7 +109,11 @@ export default function EditProfileScreen(props) {
                 onChangeText={user => setData({...data, username: user})}
                 image="account"
               />
-              <Text style={styles.titleLabel}>Name:</Text>
+              <Text style={styles.titleLabel}>{
+                  tags.EditUserScreen.name != ''
+                    ? tags.EditUserScreen.name
+                    : 'Nombres'
+                }</Text>
               <MyTextInput
                 keyboardType={null}
                 placeholder={
@@ -117,7 +125,11 @@ export default function EditProfileScreen(props) {
                 onChangeText={nombre => setData({...data, name: nombre})}
                 image="account-circle"
               />
-              <Text style={styles.titleLabel}>Lastname:</Text>
+              <Text style={styles.titleLabel}>{
+                  tags.EditUserScreen.lastname != ''
+                    ? tags.EditUserScreen.lastname
+                    : 'Apellidos'
+                }</Text>
               <MyTextInput
                 keyboardType={null}
                 value={data.lastname}
@@ -131,7 +143,11 @@ export default function EditProfileScreen(props) {
                 }
                 image="account-circle"
               />
-              <Text style={styles.titleLabel}>e-mail</Text>
+              <Text style={styles.titleLabel}>{
+                  tags.EditUserScreen.email != ''
+                    ? tags.EditUserScreen.email
+                    : 'e-mail'
+                }</Text>
               <MyTextInput
                 keyboardType={null}
                 value={data.email}
@@ -143,7 +159,11 @@ export default function EditProfileScreen(props) {
                 }
                 image="email"
               />
-              <Text style={styles.titleLabel}>Phone:</Text>
+              <Text style={styles.titleLabel}>{
+                  tags.EditUserScreen.phone != ''
+                    ? tags.EditUserScreen.phone
+                    : 'phone'
+                }</Text>
               <MyTextInput
                 keyboardType={null}
                 value={data.phone}
@@ -155,7 +175,11 @@ export default function EditProfileScreen(props) {
                 }
                 image="card-account-details"
               />
-              <Text style={styles.titleLabel}>Paypal ID:</Text>
+              <Text style={styles.titleLabel}>{
+                  tags.EditUserScreen.paypalid != ''
+                    ? tags.EditUserScreen.paypalid
+                    : 'PayPal ID'
+                }</Text>
               <MyTextInput
                 keyboardType={null}
                 value={data.paypal_id}

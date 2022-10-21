@@ -24,6 +24,7 @@ import BtnCategoria from '@Components/BtnCategoria/';
 import ToolBarSession from '@Components/common/toolBarSession';
 import MyTextButton from '@Components/common/MyTextButton';
 import CardColaborador from '@Components/CardColaborador/';
+import CardProducto from '@Components/CardProducto/index';
 //Contextos
 import {UsuarioContext} from '@context/UsuarioContext';
 import {CementeryContext} from '@context/CementeryContext';
@@ -117,6 +118,7 @@ export default function InitialScreen(props) {
       getCategories(country, GlobalLanguage);
       getPromotions(country, GlobalLanguage);
       getProductsbyCountry(country, GlobalLanguage);
+      getRatings(GlobalLanguage._id,country.value);
       getCementeries(country);
       getCreditCards(loginUser.usuario);
       setubicaciones(getUbicaciones);
@@ -371,6 +373,47 @@ export default function InitialScreen(props) {
                   onPress={() => goToScreen('Productos')}
                 />
               </View>
+              <View>
+                {isLoadingRatings ? (
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <View style={styles.boxTransparent} />
+                    <FAB
+                      loading
+                      color={color.PRINCIPALCOLOR}
+                      visible={isLoadingRatings}
+                      icon={{name: 'add', color: 'white'}}
+                      size="small"
+                    />
+                    <View style={styles.boxTransparent} />
+                  </View>
+                ) : ratings.length >= 1 ? (
+              <View >
+                {ratings.map((product, key) => {
+                  return (
+                    <CardProducto
+                      key={key}
+                      onPressProduct={() => selectedProduct(product, 'Product')}
+                      urlImagen={product.principalImage}
+                      titulo={product.name}
+                      descripcion={product.description}
+                      precio={tags.ProductsScreen.detallePrecio != ''
+                      ? tags.ProductsScreen.detallePrecio
+                      : 'Ver Precio Dentro'}
+                    />
+                  );
+                })}
+                <View style={styles.boxTransparent} />
+                </View>
+                ) : (
+                  <View style={styles.noPromoView}>
+                    <Text style={styles.promoText}>No Populars</Text>
+                  </View>
+                )}
+              </View>
             </View>
             <View style={styles.boxTransparent} />
             <View style={styles.boxTransparent} />
@@ -380,6 +423,21 @@ export default function InitialScreen(props) {
     </SafeAreaView>
   );
 
+  function selectedProduct(producto, routeName) {
+      categories.forEach(category => {
+        if (category._id == producto.idCategory) {
+          setCategory(category);
+          prodSel(producto, routeName, 'Productos')
+        }
+      }); 
+  }
+  function prodSel(producto, routeName, routeB) {
+    setrutaCart(false)
+    setProduct(producto);
+    getMultimediabyProduct(producto);
+    setRouteBack(routeB);
+    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName)
+  }
   function prodByCategory(category, routeName) {
     {
       console.log(category);
@@ -417,6 +475,7 @@ export default function InitialScreen(props) {
       getCategories(pais, GlobalLanguage);
       getPromotions(pais, GlobalLanguage);
       getProductsbyCountry(pais, GlobalLanguage);
+      getRatings(GlobalLanguage._id,pais.value);
       getCementeries(pais);
       removeAllItemstoCart();
       setafiliateCart({});

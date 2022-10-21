@@ -199,6 +199,8 @@ const splashStyles = StyleSheet.create({
   texto: {
     fontWeight: 'bold',
     color: color.WHITE,
+    textAlign:'center',
+    alignSelf:'center',
     justifyContent: 'center',
     marginBottom: Dimensions.get('screen').height * 0.4,
     marginHorizontal: Dimensions.get('screen').width * 0.37,

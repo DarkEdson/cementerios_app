@@ -21,8 +21,10 @@ import VistaProducto from '@Screens/Producto/Producto';
 import VistaPago from '@Screens/Payments/Pago';
 import VistaCodigoPromocion from '@Screens/Promo/CodigoPromocion';
 import PaymentMethodDetailScreen from '@Screens/Payments/PaymentMethodDetailScreen';
+import HelpScreen from '@Screens/Profile/HelpScreen';
 import {AuthContext} from '@context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Stack = createStackNavigator();
 
@@ -190,6 +192,13 @@ const AppNavigationV2 = () => {
         <Stack.Screen
           name="PaymentMethodDetail"
           component={PaymentMethodDetailScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+         <Stack.Screen
+          name="Help"
+          component={HelpScreen}
           options={{
             headerShown: false,
           }}

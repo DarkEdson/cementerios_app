@@ -71,7 +71,7 @@ async function apiActualizarTarjeta(tarjeta, usuario) {
 }
 
 async function apiBorrarTarjeta(tarjeta,usuario) {
-  let url = `${BASE_URL}/user.creditcards.destroy/${usuario._id}/${tarjeta._id}`;
+  let url = `${BASE_URL}/user.creditcards.deletecreditcard/${usuario._id}/${tarjeta._id}`;
   console.log(url)
   let card = {};
   try {

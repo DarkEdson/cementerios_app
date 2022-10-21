@@ -10,10 +10,10 @@ export const RatingsProvider = ({children}) => {
 
 
 
-  const getRatings = async (Idlanguaje) => {
+  const getRatings = async (Idlanguaje,countryID) => {
     setisLoadingRatings(true)
-    getRatingsApi(Idlanguaje).then(res => {
-    //    res.sort((a, b) => a.code.localeCompare(b.code));
+    getRatingsApi(Idlanguaje,countryID).then(res => {
+        res.sort((a, b) => a.ranking.localeCompare(b.ranking));
         console.log('RATINGS',res)
         setRatings(res)
         setisLoadingRatings(false);

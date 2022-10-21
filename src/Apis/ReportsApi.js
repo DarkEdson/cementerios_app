@@ -34,13 +34,11 @@ async function apiReporteVendedor(usuarioID, lenguajeID, fechaIni, fechaFin) {
   }
 }
 
-async function apiReporteCliente(usuarioID, lenguajeID, fechaIni, fechaFin) {
+async function apiReporteCliente(usuarioID, lenguajeID) {
   let url = `${BASE_URL}/payment.getsalesbyclient`;
   let compras = {};
   try {
     let data = {
-      start_date: fechaIni,
-      finish_date: fechaFin,
       idUser: usuarioID,
       idLanguage: lenguajeID,
     };

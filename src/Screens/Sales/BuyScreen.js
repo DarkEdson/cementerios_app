@@ -12,8 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import {Icon, FAB, ListItem, Button} from '@rneui/themed';
-//import DatePicker from 'react-native-date-ranges';
-import DatePicker from 'react-native-date-picker';
+import Snackbar from 'react-native-snackbar';
 //URL de server
 import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 //Recarga la screen
@@ -29,14 +28,35 @@ import color from '@styles/colors';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ReportsContext} from '@context/ReportsContext';
 import {UsuarioContext} from '@context/UsuarioContext';
+import { RouteBackContext } from '@context/RouteBackContext';
 import {GlobalLanguageContext} from '@context/LanguageContext';
+import { ProductContext } from '@context/ProductContext';
+import { ProductsContext } from '@context/ProductsContext';
+import { CategoriesContext } from '@context/CategoriesContext';
+import { CategoryContext } from '@context/CategoryContext';
+import { SedesContext } from '@context/SedesContext';
+import { SedeContext } from '@context/SedeContext';
+import { ShoppingCartContext } from '@context/ShoppingCartContext';
 
 //tags.SellsScreen.labelfechafin != '' ? tags.SellsScreen.labelfechafin :
 //tags.SellsScreen.labelfechainicio != '' ? tags.SellsScreen.labelfechainicio :
 export default function BuyScreen(props) {
   const {tags} = useContext(ScreentagContext);
   const [loginUser] = useContext(UsuarioContext);
+  const [Product, setProduct] = useContext(ProductContext);
+  const {  setrutaCart } = useContext(ShoppingCartContext);
+  const [sede, setSede] = useContext(SedeContext);
+  const { isLoadingSedes,  getSedeDirect } = useContext(SedesContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
+  const { categories } =
+  useContext(CategoriesContext);
+  const { setRouteBack } = useContext(RouteBackContext);
+  const {
+    ProductsCountry,
+    isLoadingProducts,
+    getMultimediabyProduct,
+  } = useContext(ProductsContext);
+const { isCategory, setisCategory, setCategory } = useContext(CategoryContext);
   const {
     getReportClient,
     ReportsClients,
@@ -44,24 +64,19 @@ export default function BuyScreen(props) {
     prodsClients,
     isLoadingReports,
   } = useContext(ReportsContext);
-  const [dateInicio, setDateInicio] = useState(new Date());
-  const [openInicio, setOpenInicio] = useState(false);
-  const [dateFinal, setDateFinal] = useState(new Date());
-  const [openFinal, setOpenFinal] = useState(false);
-  const dateRef = React.useRef();
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
   // Cargar informacion de la vista
   useEffect(() => {
     setprodsClients([]);
-    //   console.log(dateRef);
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: 0,
       comision: 0,
       total: 0,
     });
+    buscaCompras();
     if (isFocused) {
       getInitialData();
       console.log('isFocused Compras Detail');
@@ -76,37 +91,9 @@ export default function BuyScreen(props) {
   });
 
   function buscaCompras() {
-    let monthInicial = '01';
-    let monthFinal = '01';
-    let dayInicial = '01';
-    let dayFinal = '01';
-    if (dateInicio.getMonth() + 1 <= 9) {
-      monthInicial = `0${dateInicio.getMonth()}`;
-    } else {
-      monthInicial = dateInicio.getMonth() + 1;
-    }
-    if (dateFinal.getMonth() + 1 <= 9) {
-      monthFinal = `0${dateFinal.getMonth()}`;
-    } else {
-      monthFinal = dateFinal.getMonth() + 1;
-    }
-    if (dateInicio.getDate() <= 9) {
-      dayInicial = `0${dateInicio.getDate()}`;
-    } else {
-      dayInicial = dateInicio.getDate();
-    }
-    if (dateFinal.getDate() <= 9) {
-      dayFinal = `0${dateFinal.getDate()}`;
-    } else {
-      dayFinal = dateFinal.getDate();
-    }
-    let fechaInicial = `${dateInicio.getFullYear()}-${monthInicial}-${dayInicial}`;
-    let fechaFinal = `${dateFinal.getFullYear()}-${monthFinal}-${dayFinal}`;
     getReportClient(
       loginUser.usuario._id,
       GlobalLanguage._id,
-      fechaInicial,
-      fechaFinal,
       setValoresVenta,
     );
   }
@@ -128,7 +115,37 @@ export default function BuyScreen(props) {
             size="small"
           />
         </View>
-      ) : (
+      ) : isLoadingProducts ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingProducts}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
+          />
+        </View>
+      ) : isLoadingSedes ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}>
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingSedes}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
+          />
+        </View>
+      ) :(
         <View>
           <StatusBar
             backgroundColor={color.PRINCIPALCOLOR}
@@ -147,88 +164,19 @@ export default function BuyScreen(props) {
           <ScrollView>
             <View style={styles.container}>
               <View style={styles.fechas}>
-                <TouchableOpacity onPress={() => setOpenInicio(true)}>
-                  <View style={styles.viewPadre}>
-                    <View style={styles.viewHijo}>
-                      <Text style={styles.texto}>
-                        {' '}
-                        {tags.SellsScreen.labelfechainicio != ''
-                          ? tags.SellsScreen.labelfechainicio
-                          : 'Fecha Inicio:'}{' '}
-                      </Text>
-                    </View>
-                    <View style={styles.viewHijo2}>
-                      <Text style={styles.textoFecha}>
-                        {dateInicio.getFullYear()}-{dateInicio.getMonth() + 1}-
-                        {dateInicio.getDate()}
-                      </Text>
-                      <DatePicker
-                        modal
-                        mode="date"
-                        open={openInicio}
-                        date={new Date()}
-                        onConfirm={dateInicio => {
-                          setOpenInicio(false);
-                          setDateInicio(dateInicio);
-                        }}
-                        onCancel={() => {
-                          setOpenInicio(false);
-                        }}
-                      />
-                    </View>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setOpenFinal(true)}>
-                  <View style={styles.viewPadre}>
-                    <View style={styles.viewHijo}>
-                      <Text style={styles.texto}>
-                        {' '}
-                        {tags.SellsScreen.labelfechafin != ''
-                          ? tags.SellsScreen.labelfechafin
-                          : 'Fecha Inicio:'}{' '}
-                      </Text>
-                    </View>
-                    <View style={styles.viewHijo2}>
-                      <Text style={styles.textoFecha}>
-                        {dateFinal.getFullYear()}-{dateFinal.getMonth() + 1}-
-                        {dateFinal.getDate()}
-                      </Text>
-                      <DatePicker
-                        modal
-                        mode="date"
-                        open={openFinal}
-                        date={new Date()}
-                        onConfirm={dateFinal => {
-                          setOpenFinal(false);
-                          setDateFinal(dateFinal);
-                        }}
-                        onCancel={() => {
-                          setOpenFinal(false);
-                        }}
-                      />
-                    </View>
-                  </View>
-                </TouchableOpacity>
-                <MyButton
-                  titulo={
-                    tags.SellsScreen.search != ''
-                      ? tags.SellsScreen.search
-                      : 'Search.'
-                  }
-                  onPress={() => buscaCompras()}
-                />
               </View>
               {prodsClients.length >= 1
                 ? prodsClients.map((producto, key) => (
                     <CardProductoVenta
                       key={key}
                       urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
-                      titulo={producto.image}
+                      titulo={producto.name}
                       styles={{marginLeft: 10}}
-                      moneda="$"
+                      moneda={producto.currency}
                       descripcion={producto.descripcion}
                       precio={producto.value}
                       cantidad={producto.quantity}
+                      onPressProduct={() => selectedProduct(producto, 'Product')}
                     />
                   ))
                 : null}
@@ -247,6 +195,34 @@ export default function BuyScreen(props) {
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
+  }
+
+  function selectedProduct(producto, routeName) {
+    ProductsCountry.forEach(prod=>{
+      if(prod._id==producto.idProduct){
+        categories.forEach(category => {
+          if (category._id == prod.idCategory) {
+            setCategory(category);
+            prodSel(prod, routeName, 'Productos')
+          }
+        });
+      }else{
+        Snackbar.show({
+          text: 'Producto ya no existe',
+          duration: Snackbar.LENGTH_LONG,
+        });
+        //M
+      }
+    })
+      
+  }
+
+  function prodSel(producto, routeName, routeB) {
+    setrutaCart(false)
+    setProduct(producto);
+    getMultimediabyProduct(producto);
+    setRouteBack(routeB);
+    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName)
   }
 }
 
