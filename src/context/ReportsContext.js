@@ -11,9 +11,9 @@ export const ReportsProvider = ({children}) => {
   const [prodsSellers, setprodsSellers] = useState([]);
   const [isLoadingReports, setisLoadingReports] = useState(false);
 
-  const getReportClient = async (usuarioID, lenguajeID, fechaIni, fechaFin,setValoresVenta) => {
+  const getReportClient = async (usuarioID, lenguajeID,setValoresVenta) => {
     setisLoadingReports(true);
-    apiReporteCliente(usuarioID, lenguajeID, fechaIni, fechaFin).then(res => {
+    apiReporteCliente(usuarioID, lenguajeID).then(res => {
       console.log('REPORTE DE CLIENTES COMPRAS', res);
       setReportsClients(res);
       setprodsClients(res.products)

@@ -475,6 +475,7 @@ export default function InitialScreen(props) {
       getCategories(pais, GlobalLanguage);
       getPromotions(pais, GlobalLanguage);
       getProductsbyCountry(pais, GlobalLanguage);
+      getRatings(GlobalLanguage._id,pais.value);
       getCementeries(pais);
       removeAllItemstoCart();
       setafiliateCart({});
