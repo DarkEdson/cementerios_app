@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
   SafeAreaView,
   StatusBar,
   Alert,
@@ -33,8 +34,9 @@ import {CurrenciesContext} from '@context/CurrencyContext';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardColaborador from '@Components/CardColaborador/';
+import CardColabGeneral from '@Components/CardColabGeneral';
 
-//tags.CementeriesScreen.placeholder != '' ? tags.CementeriesScreen.placeholder :
+//tags.ProductsScreen.labelsearch1 != '' ? tags.ProductsScreen.labelsearch1 : 'Cementerio, Producto, Categoría...'
 export default function CompanyScreen(props) {
   const [cementery, setCementery] = useContext(CementeryContext);
   const {setrutaCart} = useContext(ShoppingCartContext);
@@ -50,63 +52,24 @@ export default function CompanyScreen(props) {
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
-
   // Cargar informacion de la vista
   useEffect(() => {
-    setcementeriosTotal(Cementeries);
-    // Actualizar valores de la vista
-    //setArrProductosDisp(Cementeries);
+    setArrCementeriosDisp(Cementeries);
     if (isFocused) {
       getInitialData();
-      console.log('isFocused Cementeries All');
+      console.log('isFocused in Cementeries');
     }
     //props, isFocused
-  }, []);
-
-  // Variables de la vista
-  const [cementeriosTotal, setcementeriosTotal] = useState([]);
+  }, [props, isFocused]);
 
   // Variable de trabajo
   const [arrCementeriosDisp, setArrCementeriosDisp] = useState([]);
+  // Variable de trabajo
+  const [arrProductosDisp, setArrProductosDisp] = useState([]);
 
   return (
     <SafeAreaView style={mainStyles.containers}>
-      <View style={styles.container}>
-        <StatusBar
-          backgroundColor={color.PRINCIPALCOLOR}
-          barStyle="dark-content"
-          translucent={true}
-        />
-        <ToolBar
-          titulo={
-            tags.CementeriesScreen.titulo != ''
-              ? tags.CementeriesScreen.titulo
-              : 'Cementerios'
-          }
-          onPressLeft={() => goToScreen('Initial')}
-          iconLeft={true}
-        />
-        <View style={styles.containerHeader}>
-          <View style={styles.searchSection}>
-            <TextInput
-              style={styles.input}
-              placeholder={
-                tags.CementeriesScreen.placeholder != ''
-                  ? tags.CementeriesScreen.placeholder
-                  : 'Cementerio, Producto, Categoría...'
-              }
-              onChangeText={val => {
-                setArrCementeriosDisp(
-                  Cementeries.filter(c =>
-                    c.name
-                      .toLocaleLowerCase()
-                      .includes(val.toLocaleLowerCase()),
-                  ),
-                );
-              }}
-            />
-          </View>
-        </View>
+      <View>
         {isLoadingSedes ? (
           <View
             style={{
@@ -123,31 +86,60 @@ export default function CompanyScreen(props) {
             />
           </View>
         ) : (
-          <ScrollView>
+          <View>
+            <StatusBar
+              backgroundColor={color.PRINCIPALCOLOR}
+              barStyle="dark-content"
+              translucent={true}
+            />
+            <ToolBar
+              titulo={
+                tags.CementeriesScreen.titulo != ''
+                  ? tags.CementeriesScreen.titulo
+                  : 'Cementerios'
+              }
+              onPressLeft={() => goToScreen('Initial')}
+              iconLeft={true}
+            />
             <View style={styles.containerHeader}>
-              {arrCementeriosDisp.length >= 1
-                ? arrCementeriosDisp.map((company, key) => {
-                    return (
-                      <CardColaborador
-                        key={key}
-                        onPressColab={() => selectCementery(company, 'Company')}
-                        urlImagen={company.image}
-                        nombre={company.name}
-                      />
+              <View style={styles.searchSection}>
+                <TextInput
+                  style={styles.btnStyle}
+                  placeholder={
+                    tags.CementeriesScreen.placeholder != ''
+                      ? tags.CementeriesScreen.placeholder
+                      : 'Cementerio, Producto, Categoría...'
+                  }
+                  onChangeText={val => {
+                    setArrCementeriosDisp(
+                      Cementeries.filter(c =>
+                        c.name
+                          .toLocaleLowerCase()
+                          .includes(val.toLocaleLowerCase()),
+                      ),
                     );
-                  })
-                : Cementeries.map((company, key) => {
-                    return (
-                      <CardColaborador
-                        key={key}
-                        onPressColab={() => selectCementery(company, 'Company')}
-                        urlImagen={company.image}
-                        nombre={company.name}
-                      />
-                    );
-                  })}
+                  }}
+                />
+              </View>
             </View>
-          </ScrollView>
+
+            <ScrollView style={styles.scroll}>
+              <View style={styles.containerHeader}>
+                {arrCementeriosDisp.map((company, key) => {
+                  return (
+                    <CardColabGeneral
+                      key={key}
+                      onPressColab={() => selectCementery(company, 'Company')}
+                      urlImagen={company.image}
+                      nombre={company.name}
+                    />
+                  );
+                })}
+                <View style={styles.boxTransparent} />
+              </View>
+              <View style={styles.boxTransparent} />
+            </ScrollView>
+          </View>
         )}
       </View>
     </SafeAreaView>
@@ -166,41 +158,6 @@ export default function CompanyScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  containerHeader: {
-    backgroundColor: color.WHITE,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  promociones: {
-    width: '100%',
-    height: 180,
-    borderWidth: 1,
-    borderColor: 'red',
-  },
-  txtNuevoComponente: {
-    marginTop: 20,
-    marginLeft: 20,
-    marginBottom: 15,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
   titulo: {
     fontWeight: '800',
     fontSize: 30,
@@ -208,11 +165,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 25,
   },
+  containerHeader: {
+    backgroundColor: color.WHITE,
+  },
+  boxTransparent: {
+    backgroundColor: color.WHITE,
+    marginBottom: Dimensions.get('screen').height * 0.027,
+  },
   scroll: {
     height: '80%',
   },
   searchSection: {
-    borderBottomWidth: 1,
     borderColor: 'grey',
     borderRadius: 2,
     alignSelf: 'center',
@@ -220,12 +183,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     width: '85%',
     height: Platform.OS === 'ios' ? 40 : 50,
-    backgroundColor: color.White,
   },
   input: {
     paddingTop: 10,
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 0,
+  },
+  btnStyle: {
+    width: '100%',
+    marginBottom: 7,
+    paddingLeft: 10,
+    borderRadius: 10,
+    backgroundColor: color.GRAY2,
   },
 });

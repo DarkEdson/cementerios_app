@@ -7,3 +7,11 @@ export const CATEGORIES_URL = 'categories/';
 export const COMPANIES_URL = 'companies/';
 export const PROMOTIONS_URL = 'promotions/';
 export const IMGEXTENSIONS = ['jpg', 'JPG', 'png', 'PNG', 'jpeg', 'JPEG'];
+
+//formatea el monto a forma "##,###,###.##"
+export const formatAmount = amount => {
+  const re = '\\d(?=(\\d{' + 3 + '})+' + (2 > 0 ? '\\.' : '$') + ')';
+  return parseFloat(amount)
+    .toFixed(Math.max(0, ~~2))
+    .replace(new RegExp(re, 'g'), '$&,');
+};

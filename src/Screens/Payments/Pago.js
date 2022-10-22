@@ -13,7 +13,7 @@ import Snackbar from 'react-native-snackbar';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //URL de server
-import {BASE_URL_IMG} from '@utils/config';
+import {BASE_URL_IMG, formatAmount} from '@utils/config';
 //Componentes
 import CardProductoVenta from '@Components/CardSellProduct/';
 import ToolBar from '@Components/common/toolBar';
@@ -43,13 +43,17 @@ import {
   informationIconStyles,
 } from '@styles/stylesGeneral';
 
-
 //tags.PaymentScreen.agregar != '' ? tags.PaymentScreen.agregar :
 export default function VistaPago(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
-  const {creditCards,creditCard,    updateCard,
-    deleteCard,isLoadingCreditCards} = useContext(CreditCardContext);
+  const {
+    creditCards,
+    creditCard,
+    updateCard,
+    deleteCard,
+    isLoadingCreditCards,
+  } = useContext(CreditCardContext);
   const {promotionList, validPromo, setpromotionList} =
     useContext(PromotionContext);
   const [Product, setProduct] = useContext(ProductContext);
@@ -109,9 +113,9 @@ export default function VistaPago(props) {
     console.log(Currency);
     // Calcular valores de la vista
     setValoresVenta({
-      subTotal: subtotal,
-      entrega: descuento,
-      total: subtotal - descuento,
+      subTotal: formatAmount(subtotal),
+      entrega: formatAmount(descuento),
+      total: formatAmount(subtotal - descuento),
     });
     console.log('PRODS A ENVIAR', sendProds);
     setProductosCarrito(sendProds);
@@ -166,7 +170,7 @@ export default function VistaPago(props) {
             size="small"
           />
         </View>
-      ) :(
+      ) : (
         <View style={styles.vista}>
           <ToolBar
             titulo={
@@ -221,7 +225,13 @@ export default function VistaPago(props) {
                           titulo={prod.name}
                           descripcion={prod.description}
                           moneda={prod.moneda ? prod.moneda : Currency.symbol}
-                          precio={prod.price}
+                          precio={
+                            prod.price.includes(',')
+                              ? formatAmount(
+                                  parseFloat(prod.price.replace(/,/g, '')),
+                                )
+                              : formatAmount(parseFloat(prod.price))
+                          }
                           cantidad={prod.cantidad}
                         />
                       </ListItem.Content>
@@ -287,28 +297,34 @@ export default function VistaPago(props) {
                   iconRight={true}
                 />
               </View>
-              {creditCards.length >= 1?   <View style={styles.espacio}>
-                <LargeButton
-                  colorStyle={{color: color.PRINCIPALCOLOR, fontWeight: '600'}}
-                  titulo={
-                    '****-****-****-'+creditCard.last4
-                  }
-                  onPressRight= {() => {
-                    toggleDialog();
-                  }}
-                  iconRight={true}
-                />
-              </View> : <View style={styles.espacio}>
-                <LargeButton
-                  colorStyle={{color: color.PRINCIPALCOLOR, fontWeight: '600'}}
-                  titulo={
-                    'No Cards'
-                  }
-                  onPressRight={() =>  goToScreen('PaymentMethod')}
-                  iconRight={true}
-                />
-              </View> }
-           
+              {creditCards.length >= 1 ? (
+                <View style={styles.espacio}>
+                  <LargeButton
+                    colorStyle={{
+                      color: color.PRINCIPALCOLOR,
+                      fontWeight: '600',
+                    }}
+                    titulo={'****-****-****-' + creditCard.last4}
+                    onPressRight={() => {
+                      toggleDialog();
+                    }}
+                    iconRight={true}
+                  />
+                </View>
+              ) : (
+                <View style={styles.espacio}>
+                  <LargeButton
+                    colorStyle={{
+                      color: color.PRINCIPALCOLOR,
+                      fontWeight: '600',
+                    }}
+                    titulo={'No Cards'}
+                    onPressRight={() => goToScreen('PaymentMethod')}
+                    iconRight={true}
+                  />
+                </View>
+              )}
+
               <View style={{alignItems: 'center'}}>
                 <MyButton
                   titulo={
@@ -326,13 +342,13 @@ export default function VistaPago(props) {
             </View>
           </ScrollView>
           {visible == false ? null : (
-          <PurchaseModal
-            customModal={visible}
-            setCustomModal={setVisible}
-            deleteCards={deleteCard}
-            updateCards={updateCard}
-          />
-        )}
+            <PurchaseModal
+              customModal={visible}
+              setCustomModal={setVisible}
+              deleteCards={deleteCard}
+              updateCards={updateCard}
+            />
+          )}
         </View>
       )}
     </SafeAreaView>

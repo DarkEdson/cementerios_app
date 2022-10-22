@@ -17,7 +17,12 @@ import ReadMore from 'react-native-read-more-text';
 import {useSharedValue} from 'react-native-reanimated';
 import ImageView from 'react-native-image-viewing';
 //URL de server
-import {BASE_URL_IMG, PRODUCTS_URL, IMGEXTENSIONS} from '@utils/config';
+import {
+  BASE_URL_IMG,
+  PRODUCTS_URL,
+  IMGEXTENSIONS,
+  formatAmount,
+} from '@utils/config';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
@@ -127,7 +132,7 @@ export default function VistaProducto(props) {
         setPropsVista({
           rating: {
             valor: prod.ranking,
-            label: 'Ratink',
+            label: 'Rating',
           },
         });
       }
@@ -167,7 +172,7 @@ export default function VistaProducto(props) {
   const [propsVista, setPropsVista] = useState({
     rating: {
       valor: 0,
-      label: 'Ratink',
+      label: 'Rating',
     },
   });
 
@@ -237,7 +242,14 @@ export default function VistaProducto(props) {
               <InformationIcon
                 tipo="font-awesome-5"
                 image="dollar-sign"
-                titulo={Currency.symbol + '.' + Product.price}
+                //Product.price.includes(',') ? formatAmount(parseFloat(Product.price.replace(/,/g, ''))) : formatAmount(parseFloat(Product.price))
+                titulo={
+                  Currency.symbol +
+                  '.' +
+                  (Product.price.includes(',')
+                    ? formatAmount(parseFloat(Product.price.replace(/,/g, '')))
+                    : formatAmount(parseFloat(Product.price)))
+                }
                 subtitulo={
                   tags.ProductDetailScreen.precio != ''
                     ? tags.ProductDetailScreen.precio

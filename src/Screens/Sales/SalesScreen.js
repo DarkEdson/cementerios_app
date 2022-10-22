@@ -15,7 +15,7 @@ import {Icon, FAB, ListItem, Button} from '@rneui/themed';
 //import DatePicker from 'react-native-date-ranges';
 import DatePicker from 'react-native-date-picker';
 //URL de server
-import {BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
+import {BASE_URL_IMG, PRODUCTS_URL, formatAmount} from '@utils/config';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
@@ -233,11 +233,11 @@ export default function SalesScreen(props) {
                     <CardProductoVenta
                       key={key}
                       urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
-                      titulo={producto.image}
+                      titulo={producto.name}
                       styles={{marginLeft: 10}}
-                      moneda="$"
+                      moneda={producto.currency}
                       descripcion={producto.descripcion}
-                      precio={producto.value}
+                      precio={formatAmount(producto.value)}
                       cantidad={producto.quantity}
                     />
                   ))
@@ -249,7 +249,7 @@ export default function SalesScreen(props) {
                     : ' Subtotal'}
                 </Text>
                 <Text style={styles.valorCuenta}>
-                  $ {valoresVenta.subTotal}
+                  $ {formatAmount(valoresVenta.subTotal)}
                 </Text>
               </View>
               <View style={styles.espacio}>
@@ -259,14 +259,16 @@ export default function SalesScreen(props) {
                     : ' Comisión'}
                 </Text>
                 <Text style={styles.valorCuenta}>
-                  $ {valoresVenta.comision}
+                  $ {formatAmount(valoresVenta.comision)}
                 </Text>
               </View>
               <View style={styles.espacio}>
                 <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
                   Total
                 </Text>
-                <Text style={styles.valorCuenta}>$ {valoresVenta.total}</Text>
+                <Text style={styles.valorCuenta}>
+                  $ {formatAmount(valoresVenta.total)}
+                </Text>
               </View>
               <View style={styles.boxTransparent} />
             </View>
