@@ -2,14 +2,18 @@ import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
+  Modal,
   Alert,
   StyleSheet,
+  ActivityIndicator,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 import {Icon, FAB, ListItem, Button} from '@rneui/themed';
 import Snackbar from 'react-native-snackbar';
+import Feather from 'react-native-vector-icons/Feather';
+import {WebView} from 'react-native-webview';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //URL de server
@@ -76,6 +80,11 @@ export default function VistaPago(props) {
     seteditable,
   } = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
+  //Inicia para PayPal
+  const [showGateway, setShowGateway] = useState(false);
+  const [prog, setProg] = useState(false);
+  const [progClr, setProgClr] = useState('#000');
+  //Finaliza para PayPal
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
@@ -111,7 +120,7 @@ export default function VistaPago(props) {
     }
     //Consultar Moneda
     getCurrency({_id: sede.idAffiliate});
-    console.log(Currency);
+    console.log('DATOS DE MONEDa', Currency);
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: formatAmount(subtotal),
@@ -348,6 +357,27 @@ export default function VistaPago(props) {
                   onPress={() => realizarPago()}
                 />
               </View>
+              <View style={{alignItems: 'center'}}>
+                <MyButton
+                  titulo={
+                    tags.PaymentScreen.pagar != ''
+                      ? tags.PaymentScreen.pagar +
+                        ' Usando Paypal' +
+                        ' (' +
+                        Currency.symbol +
+                        '. ' +
+                        valoresVenta.total +
+                        ')'
+                      : 'Pagar' +
+                        ' (' +
+                        Currency.symbol +
+                        '. ' +
+                        valoresVenta.total +
+                        ')'
+                  }
+                  onPress={() => setShowGateway(true)}
+                />
+              </View>
               <View style={mainStyles.boxTransparent} />
             </View>
           </ScrollView>
@@ -359,6 +389,59 @@ export default function VistaPago(props) {
               updateCards={updateCard}
             />
           )}
+          {showGateway ? (
+            <Modal
+              visible={showGateway}
+              onDismiss={() => setShowGateway(false)}
+              onRequestClose={() => setShowGateway(false)}
+              animationType={'fade'}
+              transparent
+            >
+              <View style={styles.webViewCon}>
+                <View style={styles.wbHead}>
+                  <TouchableOpacity
+                    style={{padding: 13}}
+                    onPress={() => setShowGateway(false)}
+                  >
+                    <Feather name={'x'} size={24} />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      flex: 1,
+                      textAlign: 'center',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#00457C',
+                    }}
+                  >
+                    PayPal GateWay
+                  </Text>
+                  <View style={{padding: 13}}>
+                    <ActivityIndicator size={24} color={'#00457C'} />
+                  </View>
+                </View>
+                <WebView
+                  source={{uri: 'https://www.google.com'}}
+                  style={{flex: 1}}
+                  onMessage={onMessage}
+                  onLoadStart={() => {
+                    setProg(true);
+                    setProgClr('#000');
+                  }}
+                  onLoadProgress={() => {
+                    setProg(true);
+                    setProgClr('#00457C');
+                  }}
+                  onLoadEnd={() => {
+                    setProg(false);
+                  }}
+                  onLoad={() => {
+                    setProg(false);
+                  }}
+                />
+              </View>
+            </Modal>
+          ) : null}
         </View>
       )}
     </SafeAreaView>
@@ -423,6 +506,8 @@ export default function VistaPago(props) {
 
     //P
   }
+
+  function pagarPaypal() {}
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
@@ -497,6 +582,31 @@ export default function VistaPago(props) {
         },
       ],
     );
+  }
+
+  //funciones para Paypal
+
+  function onMessage(e) {
+    let data = e.nativeEvent.data;
+    setShowGateway(false);
+    console.log(data);
+  }
+
+  async function _onApprove(data, actions) {
+    let order = await actions.order.capture();
+    console.log(order);
+    window.ReactNativeWebView &&
+      window.ReactNativeWebView.postMessage(JSON.stringify(order));
+    return order;
+  }
+  function _onError(err) {
+    console.log(err);
+    let errObj = {
+      err: err,
+      status: 'FAILED',
+    };
+    window.ReactNativeWebView &&
+      window.ReactNativeWebView.postMessage(JSON.stringify(errObj));
   }
 }
 
@@ -584,5 +694,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     alignSelf: 'center',
+  },
+  webViewCon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  wbHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    zIndex: 25,
+    elevation: 2,
   },
 });
