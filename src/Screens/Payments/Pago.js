@@ -54,8 +54,9 @@ export default function VistaPago(props) {
     deleteCard,
     isLoadingCreditCards,
   } = useContext(CreditCardContext);
-  const {promotionList, validPromo, setpromotionList} =
-    useContext(PromotionContext);
+  const {promotionList, validPromo, setpromotionList} = useContext(
+    PromotionContext,
+  );
   const [Product, setProduct] = useContext(ProductContext);
   const [visible, setVisible] = useState(false);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
@@ -146,7 +147,8 @@ export default function VistaPago(props) {
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '50%',
-          }}>
+          }}
+        >
           <FAB
             loading
             color={color.PRINCIPALCOLOR}
@@ -161,7 +163,8 @@ export default function VistaPago(props) {
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '50%',
-          }}>
+          }}
+        >
           <FAB
             loading
             color={color.PRINCIPALCOLOR}
@@ -191,7 +194,6 @@ export default function VistaPago(props) {
                   return (
                     <ListItem.Swipeable
                       key={key}
-                      bottomDivider
                       leftContent={() => (
                         <Button
                           title="Info"
@@ -217,7 +219,8 @@ export default function VistaPago(props) {
                             backgroundColor: 'red',
                           }}
                         />
-                      )}>
+                      )}
+                    >
                       <ListItem.Content>
                         <CardProductoVenta
                           key={key}
@@ -331,9 +334,16 @@ export default function VistaPago(props) {
                     tags.PaymentScreen.pagar != ''
                       ? tags.PaymentScreen.pagar +
                         ' (' +
+                        Currency.symbol +
+                        '. ' +
                         valoresVenta.total +
                         ')'
-                      : 'Pagar' + ' (' + valoresVenta.total + ')'
+                      : 'Pagar' +
+                        ' (' +
+                        Currency.symbol +
+                        '. ' +
+                        valoresVenta.total +
+                        ')'
                   }
                   onPress={() => realizarPago()}
                 />

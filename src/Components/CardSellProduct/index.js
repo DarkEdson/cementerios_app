@@ -13,21 +13,20 @@ export default function CardProductoVenta(props) {
   return (
     <TouchableOpacity
       style={[styles.cuerpoCard, props.styles]}
-      onPress={props.onPressProduct}>
+      onPress={props.onPressProduct}
+    >
       <View style={{...styles.view, backgroundColor: props.bgColor}}>
         <View style={styles.right}>
           <Image style={styles.imgPromocion} source={{uri: props.urlImagen}} />
         </View>
         <View style={styles.center}>
           <Text style={styles.titulo}> {props.titulo} </Text>
-          <Text numberOfLines={4} style={styles.descripcion}>
+          <Text numberOfLines={3} style={styles.descripcion}>
             {props.descripcion}
           </Text>
         </View>
         <View style={styles.left}>
-          <Text style={styles.precio}>
-            {props.moneda + '.' + props.precio}{' '}
-          </Text>
+          <Text style={styles.precio}>{props.moneda + '.' + props.precio}</Text>
           <Text style={styles.cantidad}>x{props.cantidad}</Text>
         </View>
       </View>
@@ -37,29 +36,36 @@ export default function CardProductoVenta(props) {
 
 const styles = StyleSheet.create({
   cuerpoCard: {
-    width: '100%',
-    height: 80,
-    backgroundColor: '#fff',
+    width: '115%',
+    marginLeft: Dimensions.get('screen').width * -0.065,
+    height: 82,
+    backgroundColor: 'transparent',
   },
   view: {
     flexDirection: 'row',
   },
   center: {
+    // borderColor: 'red',
+    //borderWidth: 1,
     width: '55%',
     height: '100%',
     flexDirection: 'column',
     paddingLeft: 10,
+    paddingRight: 5,
   },
   left: {
-    width: '30%',
+    //borderColor: 'red',
+    // borderWidth: 1,
+    alignItems: 'flex-start',
+    width: '23%',
     height: '80%',
     paddingTop: 15,
     flexDirection: 'column',
-    paddingLeft: 15,
+    paddingLeft: 3,
   },
   right: {
     marginTop: 10,
-    width: '20%',
+    width: '22.2%',
     height: '75%',
     flexDirection: 'column',
   },
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
   precio: {
     fontWeight: 'bold',
     color: 'skyblue',
-    fontSize: 14,
+    fontSize: 13,
   },
   imgPromocion: {
     height: '100%',
