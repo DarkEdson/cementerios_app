@@ -460,11 +460,18 @@ export default function VistaPago(props) {
     }
     if (productosCarrito.length >= 1) {
       if (creditCards.length >= 1) {
+        let totalVenta;
+        if (valoresVenta.total.includes(',')) {
+          totalVenta = valoresVenta.total.replace(/,/g, '');
+        } else {
+          totalVenta = valoresVenta.total;
+        }
+        console.log(totalVenta);
         let sendData = {
           idCurrency: Currency._id,
           idLanguage: GlobalLanguage._id,
           idUser: loginUser.usuario._id,
-          value: valoresVenta.total,
+          value: totalVenta,
           products: productosCarrito,
           promotions: sendPromos,
           /*     {
