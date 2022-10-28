@@ -50,8 +50,11 @@ export default function BuyScreen(props) {
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const {categories} = useContext(CategoriesContext);
   const {setRouteBack} = useContext(RouteBackContext);
-  const {ProductsCountry, isLoadingProducts, getMultimediabyProduct} =
-    useContext(ProductsContext);
+  const {
+    ProductsCountry,
+    isLoadingProducts,
+    getMultimediabyProduct,
+  } = useContext(ProductsContext);
   const {isCategory, setisCategory, setCategory} = useContext(CategoryContext);
   const {
     getReportClient,
@@ -98,7 +101,8 @@ export default function BuyScreen(props) {
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '50%',
-          }}>
+          }}
+        >
           <FAB
             loading
             color={color.PRINCIPALCOLOR}
@@ -113,7 +117,8 @@ export default function BuyScreen(props) {
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '50%',
-          }}>
+          }}
+        >
           <FAB
             loading
             color={color.PRINCIPALCOLOR}
@@ -128,7 +133,8 @@ export default function BuyScreen(props) {
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '50%',
-          }}>
+          }}
+        >
           <FAB
             loading
             color={color.PRINCIPALCOLOR}
