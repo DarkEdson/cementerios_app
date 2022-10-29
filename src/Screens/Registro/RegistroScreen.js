@@ -10,6 +10,7 @@ import {
 import Snackbar from 'react-native-snackbar';
 import {SocialIcon, Icon} from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
+import {    GoogleSignin,    statusCodes,} from '@react-native-google-signin/google-signin';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
@@ -298,6 +299,17 @@ export default function RegistroScreen(props) {
               }
               button
               type="google-plus-official"
+              onPress={() => {
+                GoogleSignin.configure({ androidClientId: '607622761629-sdlr627m6781mjergpcn727jo9ovrm8p.apps.googleusercontent.com', 
+                iosClientId: '607622761629-2moln709psuiugvgbkhmg37ocqmn92dg.apps.googleusercontent.com', }); 
+                GoogleSignin.hasPlayServices().then((hasPlayService) => {
+                    if (hasPlayService) {
+                        GoogleSignin.signIn().then((userInfo) => {
+                            console.log(JSON.stringify(userInfo.user))
+                        }).catch((e) => { console.log("ERROR IS: " + JSON.stringify(e)); })
+                    }
+                }).catch((e) => { console.log("ERROR IS: " + JSON.stringify(e)); })
+            }}
             />
             <SocialIcon
               style={registroStyles.buttonSocialIcon}
