@@ -20,7 +20,7 @@ import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardProductoVenta from '@Components/CardSellProduct/';
-import CardProductoReporte from '@Components/common/cardReportProduct';
+import CardProductoReporte from '@Components/common/CardReportProduct';
 import MyButton from '@Components/common/MyButton';
 //Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
