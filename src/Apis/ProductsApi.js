@@ -16,7 +16,7 @@ async function productbyCountry(country, lenguaje) {
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
-            idHeadquarter: producto.idHeadquarter,
+            idAffiliate: producto.idAffiliate,
             code: producto.code,
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
             name: producto.labels[0].name,
@@ -48,7 +48,7 @@ async function productFullbyCategory(product, lenguaje) {
         productos = {
           _id: response._id,
           idCategory: response.idCategory,
-          idHeadquarter: response.idHeadquarter,
+          idAffiliate: response.idAffiliate,
           code: response.code,
           principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${response.image}`,
           name: response.labels[0].name,
@@ -75,6 +75,7 @@ async function productbyCategory(Category) {
       .then(res => res.json())
       .catch(error => console.error('Error byCAT', error))
       .then(response => {
+        console.log('PRODUCTOS POR CAT API RESP', response);
         response.forEach(async producto => {
           productos.push({
             _id: producto._id,
