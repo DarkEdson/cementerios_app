@@ -11,6 +11,7 @@ async function productbyCountry(country, lenguaje) {
       .then(res => res.json())
       .catch(error => console.error('Error', error))
       .then(response => {
+        console.log('PRODUCTOS API POR PAIS', response);
         response.forEach(producto => {
           productos.push({
             _id: producto._id,
@@ -91,7 +92,7 @@ async function productbyCategory(Category) {
 
 async function productbyHeadquarters(Sede, lenguaje) {
   let url = `${BASE_URL}/product.getprdsbyhq/${Sede._id}/${lenguaje._id}`;
-  console.log(url)
+  console.log(url);
   let productos = [];
   try {
     await fetch(url, {
@@ -101,7 +102,7 @@ async function productbyHeadquarters(Sede, lenguaje) {
       .then(res => res.json())
       .catch(error => console.error('Error en SEDES', error))
       .then(response => {
-        console.log(response)
+        console.log(response);
         response.forEach(producto => {
           productos.push({
             _id: producto._id,
@@ -117,7 +118,7 @@ async function productbyHeadquarters(Sede, lenguaje) {
       });
     return productos;
   } catch (error) {
-    console.error('RESPUESTA ERROR EN SEDES',error);
+    console.error('RESPUESTA ERROR EN SEDES', error);
     return productos;
   }
 }

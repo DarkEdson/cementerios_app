@@ -20,6 +20,7 @@ import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import ToolBar from '@Components/common/toolBar';
 import CardProductoVenta from '@Components/CardSellProduct/';
+import CardProductoReporte from '@Components/common/cardReportProduct';
 import MyButton from '@Components/common/MyButton';
 //Estilos Generales
 import {mainStyles} from '@styles/stylesGeneral';
@@ -164,12 +165,12 @@ export default function BuyScreen(props) {
               <View style={styles.fechas} />
               {prodsClients.length >= 1
                 ? prodsClients.map((producto, key) => (
-                    <CardProductoVenta
+                    <CardProductoReporte
                       key={key}
                       urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
                       titulo={producto.name}
                       styles={{marginLeft: 10}}
-                      moneda={producto.currency}
+                      moneda={'$'}
                       descripcion={producto.descripcion}
                       precio={formatAmount(producto.value)}
                       cantidad={producto.quantity}

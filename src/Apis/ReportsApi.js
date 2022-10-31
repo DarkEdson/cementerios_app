@@ -51,10 +51,10 @@ async function apiReporteCliente(usuarioID, lenguajeID) {
     })
       .then(res => res.json())
       .catch(error =>
-        console.error('Error en RESPUESTA API REPORTE VENDEDOR', error),
+        console.error('Error en RESPUESTA API REPORTE CLIENTE', error),
       )
       .then(response => {
-        console.log('dentro del API REPORTE VENDEDOR');
+        console.log('dentro del API REPORTE CLIENTE');
         console.log(response);
         compras = response;
       });
