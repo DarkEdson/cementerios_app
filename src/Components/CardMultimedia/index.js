@@ -26,19 +26,27 @@ export default function CardMultimedia(props) {
           source={{uri: props.urlImagen.name}}
         />
       ) : (
-        <Video
+        <Image
           style={props.style}
-          source={{uri: props.urlImagen.name}}
-          muted={true}
-          repeat={true}
-          resizeMode="stretch"
+          defaultSource={require('@images/loading.gif')}
+          source={require('@images/videoLoad.jpg')}
         />
       )}
       <View style={{alignItems: 'center', marginLeft: '20%', marginTop: 5}}>
-        <Text style={props.textStyle}>{
-        //imgName.description
-        }</Text>
+        <Text style={props.textStyle}>
+          {
+            //imgName.description
+          }
+        </Text>
       </View>
     </TouchableOpacity>
   );
 }
+/*<Video
+          style={props.style}
+          source={{uri: props.urlImagen.name}}
+          muted={true}
+          repeat={true}
+          paused={true}
+          resizeMode="stretch"
+        />*/

@@ -35,14 +35,16 @@ const CustomModal = props => {
         transparent={true}
         onBackdropPress={() => console.log('Pressed')}
         visible={myModalVisible}
-        onRequestClose={setmyModalVisible}>
+        onRequestClose={setmyModalVisible}
+      >
         <View
           style={{
             position: 'absolute',
             backgroundColor: '#9C9A9AB0',
             width: '100%',
             height: '100%',
-          }}>
+          }}
+        >
           <View style={{padding: '1%'}}>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Pressable style={styles.btnIconBack2} onPress={ocultarModal}>
@@ -69,6 +71,7 @@ const CustomModal = props => {
               <View>
                 <View style={styles.imgContainer}>
                   <Video
+                    poster="http://34.125.91.120/images/imgbin_video-sound-png.png"
                     style={styles.video}
                     source={{uri: props.urlImagen}}
                     paused={false}
@@ -89,7 +92,8 @@ const CustomModal = props => {
                 position: 'absolute',
                 bottom: 70,
                 left: '45%',
-              }}>
+              }}
+            >
               <Text style={props.textStyle}>{props.item.description}</Text>
             </View>
           </View>

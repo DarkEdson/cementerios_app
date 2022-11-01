@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-export default function CardProductoVenta(props) {
+export default function CardProductoReporte(props) {
   return (
     <TouchableOpacity
       style={[styles.cuerpoCard, props.styles]}
@@ -36,8 +36,8 @@ export default function CardProductoVenta(props) {
 
 const styles = StyleSheet.create({
   cuerpoCard: {
-    width: '115%',
-    marginLeft: Dimensions.get('screen').width * -0.065,
+    width: '100%',
+    //    marginLeft: Dimensions.get('screen').width * -0.065,
     height: 82,
     backgroundColor: 'transparent',
   },
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     //borderColor: 'red',
     // borderWidth: 1,
     alignItems: 'flex-start',
-    width: '23%',
+    width: '20%',
     height: '80%',
     paddingTop: 15,
     flexDirection: 'column',
