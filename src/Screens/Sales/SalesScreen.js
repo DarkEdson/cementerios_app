@@ -238,7 +238,7 @@ export default function SalesScreen(props) {
                       urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
                       titulo={producto.name}
                       styles={{marginLeft: 10}}
-                      moneda={producto.currency}
+                      moneda={producto.currency ? producto.currency : '$'}
                       descripcion={producto.descripcion}
                       precio={formatAmount(producto.value)}
                       cantidad={producto.quantity}
