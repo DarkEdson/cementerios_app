@@ -22,7 +22,8 @@ async function productbyCountry(country, lenguaje) {
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
             name: producto.labels[0].name,
             description: producto.labels[0].description,
-            price: producto.labels[0].price,
+            price: producto.headquarters[0].price,
+            currency: producto.headquarters[0].currency,
           });
         });
       });
@@ -50,12 +51,13 @@ async function productFullbyCategory(product, lenguaje) {
           _id: response._id,
           idCategory: response.idCategory,
           idAffiliate: response.idAffiliate,
-          idHeadquarter: producto.headquarters[0]._id,
+          idHeadquarter: response.headquarters[0]._id,
           code: response.code,
           principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${response.image}`,
           name: response.labels[0].name,
           description: response.labels[0].description,
-          price: response.labels[0].price,
+          price: response.headquarters[0].price,
+          currency: response.headquarters[0].currency,
         };
       });
     return productos;
@@ -110,13 +112,14 @@ async function productbyHeadquarters(Sede, lenguaje) {
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
-            idHeadquarter: producto.headquarters[0]._id,
+            idHeadquarter: Sede._id,
             idAffiliate: producto.idAffiliate,
             code: producto.code,
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
             name: producto.labels[0].name,
             description: producto.labels[0].description,
-            price: producto.labels[0].price,
+            price: producto.price,
+            currency: producto.currency,
           });
         });
       });

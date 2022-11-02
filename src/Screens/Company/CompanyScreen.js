@@ -59,8 +59,9 @@ export default function CompanyScreen(props) {
     setafiliateCart,
   } = useContext(ShoppingCartContext);
   const [Product, setProduct] = useContext(ProductContext);
-  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
-    useContext(RouteBackContext);
+  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} = useContext(
+    RouteBackContext,
+  );
   const {categories} = useContext(CategoriesContext);
   const {setCategory} = useContext(CategoryContext);
   const {Sedes, isLoadingSedes, getSedeDirect} = useContext(SedesContext);
@@ -258,7 +259,8 @@ export default function CompanyScreen(props) {
                   <TouchableOpacity
                     onPress={() => {
                       console.log(item);
-                    }}>
+                    }}
+                  >
                     <Text style={CementeryScreen.subtitleFooterText}>
                       {item.name}
                     </Text>
@@ -277,7 +279,8 @@ export default function CompanyScreen(props) {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginTop: '25%',
-                }}>
+                }}
+              >
                 <FAB
                   loading
                   color={color.PRINCIPALCOLOR}
@@ -292,7 +295,8 @@ export default function CompanyScreen(props) {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginTop: '25%',
-                }}>
+                }}
+              >
                 <FAB
                   loading
                   color={color.PRINCIPALCOLOR}
@@ -311,7 +315,7 @@ export default function CompanyScreen(props) {
                       urlImagen={product.principalImage}
                       titulo={product.name}
                       descripcion={product.description}
-                      moneda={Currency.symbol}
+                      moneda={product.currency.symbol}
                       precio={product.price}
                     />
                   );
@@ -330,7 +334,7 @@ export default function CompanyScreen(props) {
                     urlImagen={product.principalImage}
                     titulo={product.name}
                     descripcion={product.description}
-                    moneda={Currency.symbol}
+                    moneda={product.currency.symbol}
                     precio={
                       product.price.includes(',')
                         ? formatAmount(

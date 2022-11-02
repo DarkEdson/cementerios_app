@@ -211,7 +211,7 @@ export default function BuyScreen(props) {
           }
         });
       } else {
-        flag = false;
+        //  flag = false;
         //M
       }
     });
