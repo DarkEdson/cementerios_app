@@ -61,8 +61,9 @@ const PAGE_WIDTH = Dimensions.get('screen').width;
 export default function VistaProducto(props) {
   const {tags} = useContext(ScreentagContext);
   const [loginUser] = useContext(UsuarioContext);
-  const {isLoadingRatings, createRatings, ratings, getRatings} =
-    useContext(RatingsContext);
+  const {isLoadingRatings, createRatings, ratings, getRatings} = useContext(
+    RatingsContext,
+  );
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const {country} = useContext(CountryContext);
   const [Product, setProduct] = useContext(ProductContext);
@@ -205,7 +206,8 @@ export default function VistaProducto(props) {
     return (
       <Text
         style={{color: color.PRINCIPALCOLOR, marginTop: 5}}
-        onPress={handlePress}>
+        onPress={handlePress}
+      >
         Read more
       </Text>
     );
@@ -215,7 +217,8 @@ export default function VistaProducto(props) {
     return (
       <Text
         style={{color: color.PRINCIPALCOLOR, marginTop: 5}}
-        onPress={handlePress}>
+        onPress={handlePress}
+      >
         Show less
       </Text>
     );
@@ -244,7 +247,7 @@ export default function VistaProducto(props) {
                 image="dollar-sign"
                 //Product.price.includes(',') ? formatAmount(parseFloat(Product.price.replace(/,/g, ''))) : formatAmount(parseFloat(Product.price))
                 titulo={
-                  Currency.symbol +
+                  Product.currency.symbol +
                   '.' +
                   (Product.price.includes(',')
                     ? formatAmount(parseFloat(Product.price.replace(/,/g, '')))
@@ -292,7 +295,8 @@ export default function VistaProducto(props) {
               numberOfLines={3}
               renderTruncatedFooter={renderTruncatedFooter}
               renderRevealedFooter={renderRevealedFooter}
-              onReady={handleTextReady}>
+              onReady={handleTextReady}
+            >
               <Text
                 style={styles.descDato}
                 //numberOfLines={10}
@@ -307,7 +311,8 @@ export default function VistaProducto(props) {
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: '10%',
-                  }}>
+                  }}
+                >
                   <FAB
                     loading
                     color={color.PRINCIPALCOLOR}
@@ -358,7 +363,8 @@ export default function VistaProducto(props) {
                     } else {
                       resta();
                     }
-                  }}>
+                  }}
+                >
                   <Text style={styles.txtCantBtn}> - </Text>
                 </TouchableOpacity>
                 <Text style={styles.txtCant}> {cantProductos} </Text>
@@ -366,13 +372,15 @@ export default function VistaProducto(props) {
                   style={styles.btnCant}
                   onPress={() => {
                     suma();
-                  }}>
+                  }}
+                >
                   <Text style={styles.txtCantBtn}> + </Text>
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
                 style={styles.btnAgregar}
-                onPress={() => itemToCart(Product, 'Payments')}>
+                onPress={() => itemToCart(Product, 'Payments')}
+              >
                 <Text style={styles.txtAgregar}>
                   {tags.ProductDetailScreen.btnagregar != ''
                     ? tags.ProductDetailScreen.btnagregar
@@ -421,7 +429,11 @@ export default function VistaProducto(props) {
   }
 
   function itemToCart(producto, routeName) {
-    let item = {...producto, cantidad: cantProductos, moneda: Currency.symbol};
+    let item = {
+      ...producto,
+      cantidad: cantProductos,
+      moneda: producto.currency.symbol,
+    };
     console.log(item);
     if (rutaCart) {
       setafiliateCart(cementery);

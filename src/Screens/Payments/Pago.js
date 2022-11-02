@@ -236,7 +236,9 @@ export default function VistaPago(props) {
                           urlImagen={prod.principalImage}
                           titulo={prod.name}
                           descripcion={prod.description}
-                          moneda={prod.moneda ? prod.moneda : Currency.symbol}
+                          moneda={
+                            prod.moneda ? prod.moneda : prod.currency.symbol
+                          }
                           precio={
                             prod.price.includes(',')
                               ? formatAmount(
@@ -357,27 +359,29 @@ export default function VistaPago(props) {
                   onPress={() => realizarPago()}
                 />
               </View>
-              <View style={{alignItems: 'center'}}>
-                <MyButton
-                  titulo={
-                    tags.PaymentScreen.pagar != ''
-                      ? tags.PaymentScreen.pagar +
-                        ' Usando Paypal' +
-                        ' (' +
-                        Currency.symbol +
-                        '. ' +
-                        valoresVenta.total +
-                        ')'
-                      : 'Pagar' +
-                        ' (' +
-                        Currency.symbol +
-                        '. ' +
-                        valoresVenta.total +
-                        ')'
-                  }
-                  onPress={() => setShowGateway(true)}
-                />
-              </View>
+              {
+                // <View style={{alignItems: 'center'}}>
+                //   <MyButton
+                //     titulo={
+                //       tags.PaymentScreen.pagar != ''
+                //         ? tags.PaymentScreen.pagar +
+                //           ' Usando Paypal' +
+                //           ' (' +
+                //           Currency.symbol +
+                //           '. ' +
+                //           valoresVenta.total +
+                //           ')'
+                //         : 'Pagar' +
+                //           ' (' +
+                //           Currency.symbol +
+                //           '. ' +
+                //           valoresVenta.total +
+                //           ')'
+                //     }
+                //     onPress={() => setShowGateway(true)}
+                //   />
+                // </View>
+              }
               <View style={mainStyles.boxTransparent} />
             </View>
           </ScrollView>
