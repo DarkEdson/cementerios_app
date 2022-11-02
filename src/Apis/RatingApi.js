@@ -45,12 +45,13 @@ async function getRatingsApi(lenguajeid, countryID) {
           ratings.push({
             _id: prod._id,
             idCategory: prod.idCategory,
-            idHeadquarter: prod.idHeadquarter,
+            idHeadquarter: prod.headquarters[0]._id,
             code: prod.code,
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${prod.image}`,
             name: prod.labels[0].name,
             description: prod.labels[0].description,
-            price: prod.labels[0].price,
+            price: prod.headquarters[0].price,
+            currency: prod.headquarters[0].currency,
             ranking: prod.ranking,
           });
         });
