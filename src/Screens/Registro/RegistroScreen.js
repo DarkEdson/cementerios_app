@@ -8,9 +8,12 @@ import {
   StyleSheet,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
-import {SocialIcon, Icon} from '@rneui/themed';
+import {SocialIcon, Icon, Dialog, CheckBox} from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
-import {    GoogleSignin,    statusCodes,} from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
@@ -47,6 +50,14 @@ export default function RegistroScreen(props) {
   const [role, setUsertype] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [checked, setChecked] = useState(1);
+  const [variableSocial, setVariableSocial] = useState(null);
+  const [tagsModal, settags] = useState({
+    btncancelar: 'Cancel',
+    btnconfirmar: 'CONFIRM',
+    titulo: 'Selecciona Tipo Usuario',
+  });
 
   useEffect(() => {
     if (isFocused) {
@@ -57,6 +68,9 @@ export default function RegistroScreen(props) {
     //props, isFocused
   }, []);
 
+  const toggleDialog = () => {
+    setVisible(!visible);
+  };
   const handlePasswordChange = val => {
     if (confirmPassword != '') {
       if (val == confirmPassword) {
@@ -136,7 +150,8 @@ export default function RegistroScreen(props) {
       <ScrollView
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
-        style={{backgroundColor: color.WHITE}}>
+        style={{backgroundColor: color.WHITE}}
+      >
         <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
         <ToolBar
           titulo={
@@ -203,19 +218,6 @@ export default function RegistroScreen(props) {
             onPressIcon={() => setHidePasswordConfirm(!hidePasswordConfirm)}
             onEndEditing={e => handlePasswordConfirm(e.nativeEvent.text)}
           />
-          {/*
- <MyTextInput
-          keyboardType={null}
-          placeholder={
-            tags.registerScreen.inputtipo != ''
-              ? tags.registerScreen.inputtipo
-              : 'Tipo usuario'
-          }
-          image="account-circle"
-          value={usertype}
-          onChangeText={usertype => setUsertype(usertype)}
-        />
-      */}
           <View style={styles.containerDropStyle}>
             <Icon
               style={{marginLeft: 10, marginTop: 12}}
@@ -289,6 +291,10 @@ export default function RegistroScreen(props) {
               }
               button
               type="facebook"
+              onPress={() => {
+                toggleDialog();
+                setVariableSocial('F');
+              }}
             />
             <SocialIcon
               style={registroStyles.buttonSocialIcon}
@@ -300,34 +306,73 @@ export default function RegistroScreen(props) {
               button
               type="google-plus-official"
               onPress={() => {
-                GoogleSignin.configure({ androidClientId: '607622761629-sdlr627m6781mjergpcn727jo9ovrm8p.apps.googleusercontent.com', 
-                iosClientId: '607622761629-2moln709psuiugvgbkhmg37ocqmn92dg.apps.googleusercontent.com', }); 
-                GoogleSignin.hasPlayServices().then((hasPlayService) => {
-                    if (hasPlayService) {
-                        GoogleSignin.signIn().then((userInfo) => {
-                            console.log(JSON.stringify(userInfo.user))
-                        }).catch((e) => { console.log("ERROR IS: " + JSON.stringify(e)); })
-                    }
-                }).catch((e) => { console.log("ERROR IS: " + JSON.stringify(e)); })
-            }}
-            />
-            <SocialIcon
-              style={registroStyles.buttonSocialIcon}
-              title={
-                tags.registerScreen.btnapple != ''
-                  ? tags.registerScreen.btnapple
-                  : 'Continuar con Apple'
-              }
-              button
-              type="twitter"
+                toggleDialog();
+                setVariableSocial('G');
+              }}
             />
           </View>
           <View style={loginStyles.boxTransparent} />
+          <Dialog isVisible={visible} onBackdropPress={toggleDialog}>
+            <Dialog.Title
+              title={
+                tags.registerScreen.inputtipo != ''
+                  ? tags.registerScreen.inputtipo
+                  : 'Tipo usuario'
+              }
+            />
+            {tiposUsuario.map((tipo, i) => {
+              return (
+                <CheckBox
+                  key={i}
+                  title={tipo.label}
+                  containerStyle={styles.container}
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={checked === i + 1}
+                  onPress={() => {
+                    setUsertype(tipo.value);
+                    setChecked(i + 1);
+                  }}
+                />
+              );
+            })}
+
+            <Dialog.Actions>
+              <Dialog.Button
+                title={
+                  tags.registerScreen.btnsiguiente != ''
+                    ? tags.registerScreen.btnsiguiente
+                    : 'CONFIRMAR'
+                }
+                onPress={() => {
+                  socialConnect(variableSocial);
+                  toggleDialog();
+                }}
+              />
+              <Dialog.Button
+                title={
+                  tagsModal.btncancelar != '' ? tagsModal.btncancelar : 'CANCEL'
+                }
+                onPress={toggleDialog}
+              />
+            </Dialog.Actions>
+          </Dialog>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 
+  function socialConnect(socialVariable) {
+    if (socialVariable == 'F') {
+      //
+      console.log(socialVariable);
+      FacebookLogin();
+    } else if (socialVariable == 'G') {
+      //
+      console.log(socialVariable);
+      GoogleLogin();
+    }
+  }
   function registroParcial() {
     if (
       password == '' ||
@@ -372,6 +417,34 @@ export default function RegistroScreen(props) {
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
   }
+
+  function GoogleLogin() {
+    GoogleSignin.configure({
+      androidClientId:
+        '607622761629-sdlr627m6781mjergpcn727jo9ovrm8p.apps.googleusercontent.com',
+      iosClientId:
+        '607622761629-2moln709psuiugvgbkhmg37ocqmn92dg.apps.googleusercontent.com',
+    });
+    GoogleSignin.hasPlayServices()
+      .then(hasPlayService => {
+        if (hasPlayService) {
+          GoogleSignin.signIn()
+            .then(userInfo => {
+              console.log(JSON.stringify(userInfo.user));
+            })
+            .catch(e => {
+              console.log('ERROR IS: ' + JSON.stringify(e));
+            });
+        }
+      })
+      .catch(e => {
+        console.log('ERROR IS: ' + JSON.stringify(e));
+      });
+  }
+
+  function FacebookLogin() {
+    //
+  }
 }
 
 const styles = StyleSheet.create({
@@ -388,4 +461,5 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: color.INPUTCOLOR,
   },
+  container: {backgroundColor: 'white', borderWidth: 0},
 });
