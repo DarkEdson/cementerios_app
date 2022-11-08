@@ -30,6 +30,8 @@ import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {GlobalLanguageContext} from '@context/LanguageContext';
+import {CountryContext} from '@context/CountryContext';
+import {CategoriesContext} from '@context/CategoriesContext';
 //Async Storage
 import {
   getLanguague,
@@ -45,6 +47,8 @@ export default function PersonalDataScreen(props) {
   const [lenguajes, setLenguajes] = useState([]);
   const [defaultLanguage, setdefaultLanguage] = useState({});
   const [GlobalLanguage, setGlobalLanguage] = useContext(GlobalLanguageContext);
+  const {country} = useContext(CountryContext);
+  const {getCategories} = useContext(CategoriesContext);
   const [nuevoLenguaje, setnuevoLenguaje] = useState({});
   let arrayLenguajes = [];
   const [isLoading, setLoading] = useState(false);
@@ -83,7 +87,8 @@ export default function PersonalDataScreen(props) {
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: '50%',
-              }}>
+              }}
+            >
               <Text style={{paddingVertical: 10}}>
                 {nuevoLenguaje.code == 'en'
                   ? 'Updating Configuration'
@@ -241,6 +246,7 @@ export default function PersonalDataScreen(props) {
                           setnuevoLenguaje(item);
                           updateLanguage(item, actualizaTags);
                           setGlobalLanguage(item);
+                          getCategories(country, item);
                         }
                       });
                     }}
