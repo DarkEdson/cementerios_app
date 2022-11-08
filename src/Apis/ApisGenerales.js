@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import {Platform, NativeModules} from 'react-native';
 import {BASE_URL} from '@utils/config';
 import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,10 +31,25 @@ async function apiLanguage() {
 
 async function apiScreen(idScreen) {
   const lenguajer = await getLanguague();
+  let deviceLanguage =
+    Platform.OS === 'ios'
+      ? NativeModules.SettingsManager.settings.AppleLocale ||
+        NativeModules.SettingsManager.settings.AppleLanguages[0]
+      : NativeModules.I18nManager.localeIdentifier;
+  let defaultLanguage = deviceLanguage.substr(0, 2);
+  let lenguaje;
+  if (defaultLanguage == 'es') {
+    lenguaje = {_id: '633225cf5531aa122f71a7e4'};
+  } else {
+    lenguaje = {_id: '633225de5531aa122f71a7e6'};
+  }
+  let url;
+  if (lenguajer == null) {
+    url = `${BASE_URL}/view.labels.getbyidandlan/${idScreen}/${lenguaje._id}`;
+  } else {
+    url = `${BASE_URL}/view.labels.getbyidandlan/${idScreen}/${lenguajer._id}`;
+  }
 
-  const lenguaje = {_id: '633225cf5531aa122f71a7e4'};
-
-  let url = `${BASE_URL}/view.labels.getbyidandlan/${idScreen}/${lenguajer._id}`;
   let etiquetas = [];
   try {
     await fetch(url, {
