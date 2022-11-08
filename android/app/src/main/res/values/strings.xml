@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">cementerios_ui</string>
+    <string name="app_name">cementerios_ui</string>  
+    <string name="facebook_app_id">960598888457473</string>
 </resources>

@@ -14,6 +14,12 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {
+  LoginManager,
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
+} from 'react-native-fbsdk';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
@@ -53,11 +59,48 @@ export default function RegistroScreen(props) {
   const [visible, setVisible] = useState(false);
   const [checked, setChecked] = useState(1);
   const [variableSocial, setVariableSocial] = useState(null);
+  const [state, setState] = useState({userInfo: {}});
+  const [stateGoogle, setStateGoogle] = useState({user: null});
   const [tagsModal, settags] = useState({
     btncancelar: 'Cancel',
     btnconfirmar: 'CONFIRM',
     titulo: 'Selecciona Tipo Usuario',
   });
+
+  const logoutWithFacebook = () => {
+    LoginManager.logOut();
+    setState({userInfo: {}});
+  };
+
+  const signOutGoogle = async () => {
+    try {
+      await GoogleSignin.signOut();
+      setStateGoogle({user: null}); // Remember to remove the user from your app's state as well
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getInfoFromToken = token => {
+    const PROFILE_REQUEST_PARAMS = {
+      fields: {
+        string: 'id,name,first_name,last_name',
+      },
+    };
+    const profileRequest = new GraphRequest(
+      '/me',
+      {token, parameters: PROFILE_REQUEST_PARAMS},
+      (error, user) => {
+        if (error) {
+          console.log('login info has error: ' + error);
+        } else {
+          setState({userInfo: user});
+          console.log('result:', user);
+        }
+      },
+    );
+    new GraphRequestManager().addRequest(profileRequest).start();
+  };
 
   useEffect(() => {
     if (isFocused) {
@@ -431,6 +474,7 @@ export default function RegistroScreen(props) {
           GoogleSignin.signIn()
             .then(userInfo => {
               console.log(JSON.stringify(userInfo.user));
+              signOutGoogle();
             })
             .catch(e => {
               console.log('ERROR IS: ' + JSON.stringify(e));
@@ -443,7 +487,25 @@ export default function RegistroScreen(props) {
   }
 
   function FacebookLogin() {
-    //
+    // Attempt a login using the Facebook login dialog asking for default permissions.
+    LoginManager.logInWithPermissions(['public_profile']).then(
+      login => {
+        if (login.isCancelled) {
+          console.log('Login cancelled');
+          logoutWithFacebook();
+        } else {
+          AccessToken.getCurrentAccessToken().then(data => {
+            const accessToken = data.accessToken.toString();
+            getInfoFromToken(accessToken);
+            console.log('Logueado?');
+            // logoutWithFacebook();
+          });
+        }
+      },
+      error => {
+        console.log('Login fail with error: ' + error);
+      },
+    );
   }
 }
 
