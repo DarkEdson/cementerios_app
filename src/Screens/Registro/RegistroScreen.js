@@ -498,7 +498,7 @@ export default function RegistroScreen(props) {
             const accessToken = data.accessToken.toString();
             getInfoFromToken(accessToken);
             console.log('Logueado?');
-            // logoutWithFacebook();
+            logoutWithFacebook();
           });
         }
       },
