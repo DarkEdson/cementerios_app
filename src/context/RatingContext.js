@@ -1,11 +1,18 @@
 import React, {createContext, useEffect, useState} from 'react';
 //Apis
-import {createRatingApi, getRatingsApi} from '@Apis/RatingApi';
+import {
+  createRatingApi,
+  getRatingsApi,
+  getRatingCommentsApi,
+  findProductSell,
+} from '@Apis/RatingApi';
 
 export const RatingsContext = createContext();
 
 export const RatingsProvider = ({children}) => {
   const [ratings, setRatings] = useState([]);
+  const [ratingsComments, setRatingsComments] = useState([]);
+  const [productoVendido, setproductoVendido] = useState(false);
   const [isLoadingRatings, setisLoadingRatings] = useState(true);
 
   const getRatings = async (Idlanguaje, countryID) => {
@@ -26,6 +33,28 @@ export const RatingsProvider = ({children}) => {
     });
   };
 
+  const getRatingsComments = async (Idlanguaje, countryID, productID) => {
+    setisLoadingRatings(true);
+    getRatingCommentsApi(Idlanguaje, countryID, productID).then(res => {
+      console.log('RATINGS COMMENTS', res);
+      setRatingsComments(res);
+      setisLoadingRatings(false);
+    });
+  };
+
+  const findProdSell = async (Idlanguaje, countryID, userID) => {
+    setisLoadingRatings(true);
+    findProductSell(Idlanguaje, countryID, userID).then(res => {
+      console.log('RATINGS COMMENTS', res);
+      if (res.length >= 0) {
+        setproductoVendido(true);
+      } else {
+        setproductoVendido(false);
+      }
+      setisLoadingRatings(false);
+    });
+  };
+
   useEffect(() => {}, []);
 
   return (
@@ -33,9 +62,14 @@ export const RatingsProvider = ({children}) => {
       value={{
         ratings,
         isLoadingRatings,
+        ratingsComments,
+        productoVendido,
         getRatings,
+        getRatingsComments,
         createRatings,
-      }}>
+        findProdSell,
+      }}
+    >
       {children}
     </RatingsContext.Provider>
   );

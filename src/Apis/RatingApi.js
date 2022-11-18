@@ -63,4 +63,70 @@ async function getRatingsApi(lenguajeid, countryID) {
   }
 }
 
-export {createRatingApi, getRatingsApi};
+async function getRatingCommentsApi(lenguajeid, countryID, productID) {
+  let url = `${BASE_URL}/ranking.getrankingswithcomsbyprod/${lenguajeid}/${countryID}/${productID}`;
+  let ratings = [];
+  try {
+    await fetch(url, {
+      method: 'GET',
+      redirect: 'follow',
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error Rating', error))
+      .then(response => {
+        console.log('RESPUESTA GET RATINGS COMMENTS API', response);
+        response.forEach(prod => {
+          ratings.push({
+            _id: prod._id,
+            idCategory: prod.idCategory,
+            idAffiliate: prod.idAffiliate,
+            code: prod.code,
+            principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${prod.image}`,
+            name: prod.labels[0].name,
+            description: prod.labels[0].description,
+            price: prod.headquarters[0].price,
+            comment: prod.comment,
+            ranking: prod.ranking,
+          });
+        });
+      });
+    return ratings;
+  } catch (error) {
+    console.error(error);
+    return ratings;
+  }
+}
+
+async function findProductSell(lenguajeid, userID, productID) {
+  let url = `${BASE_URL}/sale.getprodbyidanduser/${lenguajeid}/${productID}/${userID}`;
+  let sellprod = [];
+  try {
+    await fetch(url, {
+      method: 'GET',
+      redirect: 'follow',
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error SALE', error))
+      .then(response => {
+        console.log('RESPUESTA SI EL PRODUCTO FUE COMPRADO API', response);
+        response.forEach(prod => {
+          sellprod.push({
+            _id: prod._id,
+            idCategory: prod.idCategory,
+            idAffiliate: prod.idAffiliate,
+            code: prod.code,
+            principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${prod.image}`,
+            name: prod.labels[0].name,
+            description: prod.labels[0].description,
+            price: prod.headquarters[0].price,
+          });
+        });
+      });
+    return sellprod;
+  } catch (error) {
+    console.error(error);
+    return sellprod;
+  }
+}
+
+export {createRatingApi, getRatingsApi, getRatingCommentsApi, findProductSell};

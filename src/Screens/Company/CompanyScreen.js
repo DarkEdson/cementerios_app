@@ -78,6 +78,7 @@ export default function CompanyScreen(props) {
     getProductsbySede,
     getProductsbySedewithCat,
     getMultimediabyProduct,
+    productRankingSede,
   } = useContext(ProductsContext);
   const [visible, setVisible] = useState(false);
   const [visibleImg, setIsVisibleImg] = useState(false);
@@ -130,6 +131,7 @@ export default function CompanyScreen(props) {
     setcategoriesArray(cats);
     console.log('SEDES', Sedes);
     console.log('SEDE', sede);
+    console.log('RANKING SEDE', productRankingSede);
     getProductsbySede(sede, GlobalLanguage);
     setcant(ShoppingCart.length);
     let info = '';
@@ -225,7 +227,7 @@ export default function CompanyScreen(props) {
                 transparent={true}
                 tipo="ant-design"
                 image="star"
-                titulo="4.3"
+                titulo={productRankingSede ? productRankingSede : 0}
                 subtitulo="(200+ Ratings)"
                 onPress={() => {}}
               />

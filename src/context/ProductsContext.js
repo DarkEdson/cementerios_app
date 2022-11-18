@@ -15,6 +15,7 @@ export const ProductsProvider = ({children}) => {
   const [ProductsCategory, setProductsCategory] = useState([]);
   const [ProductMultimedia, setProductMultimedia] = useState([]);
   const [ProductsFullCategory, setProductsFullCategory] = useState([]);
+  const [productRankingSede, setproductRankingSede] = useState(0);
   const [ProductsSedes, setProductsSede] = useState([]);
   const [isLoadingProducts, setisLoadingProducts] = useState(true);
 
@@ -54,11 +55,18 @@ export const ProductsProvider = ({children}) => {
   };
 
   const getProductsbySede = async (sede, languaje) => {
+    let sedeRanking = 0;
     setisLoadingProducts(true);
     productbyHeadquarters(sede, languaje).then(res => {
       res.sort((a, b) => a.code.localeCompare(b.code));
       console.log('PRODUCTOS por SEDE', res);
       setProductsSede(res);
+      res.forEach(prod => {
+        console.log('RANK INDIV', prod.ranking);
+        sedeRanking = sedeRanking + prod.ranking;
+      });
+      console.log('sede RANK?', sedeRanking);
+      setproductRankingSede(sedeRanking);
       setisLoadingProducts(false);
     });
   };
@@ -69,11 +77,16 @@ export const ProductsProvider = ({children}) => {
     category,
     selectCategory,
   ) => {
+    let sedeRanking = 0;
     setisLoadingProducts(true);
     productbyHeadquarters(sede, languaje).then(res => {
       res.sort((a, b) => a.code.localeCompare(b.code));
-      console.log('PRODUCTOS por SEDE', res);
+      console.log('PRODUCTOS por SEDE con CAT', res);
       setProductsSede(res);
+      res.map(prod => {
+        sedeRanking = sedeRanking + prod.ranking;
+      });
+      setproductRankingSede(sedeRanking);
       selectCategory(category, res);
       setisLoadingProducts(false);
     });
@@ -100,13 +113,15 @@ export const ProductsProvider = ({children}) => {
         ProductsSedes,
         isLoadingProducts,
         ProductMultimedia,
+        productRankingSede,
         getProductsbyCountry,
         getProductsbyCategory,
         getProductsbySede,
         getProductsbySedewithCat,
         getProductsFullbyCategory,
         getMultimediabyProduct,
-      }}>
+      }}
+    >
       {children}
     </ProductsContext.Provider>
   );

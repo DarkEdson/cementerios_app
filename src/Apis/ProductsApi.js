@@ -107,7 +107,7 @@ async function productbyHeadquarters(Sede, lenguaje) {
       .then(res => res.json())
       .catch(error => console.error('Error en SEDES', error))
       .then(response => {
-        console.log(response);
+        console.log('PRODUCTOS en SEDE', response);
         response.forEach(producto => {
           productos.push({
             _id: producto._id,
@@ -120,6 +120,7 @@ async function productbyHeadquarters(Sede, lenguaje) {
             description: producto.labels[0].description,
             price: producto.price,
             currency: producto.currency,
+            ranking: producto.ranking,
           });
         });
       });
