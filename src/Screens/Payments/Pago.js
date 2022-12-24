@@ -77,7 +77,10 @@ export default function VistaPago(props) {
     recipe,
     sendShoppingCartSell,
     isLoadingCart,
+    setisLoadingCart,
     seteditable,
+    sendPaypalData,
+    linkPago
   } = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   //Inicia para PayPal
@@ -90,6 +93,7 @@ export default function VistaPago(props) {
 
   // Cargar informacion de la vista
   useEffect(() => {
+    //setisLoadingCart(false)
     let subtotal = 0;
     let descPercent = 0.0;
     let descuento = 0;
@@ -360,27 +364,27 @@ export default function VistaPago(props) {
                 />
               </View>
               {
-                // <View style={{alignItems: 'center'}}>
-                //   <MyButton
-                //     titulo={
-                //       tags.PaymentScreen.pagar != ''
-                //         ? tags.PaymentScreen.pagar +
-                //           ' Usando Paypal' +
-                //           ' (' +
-                //           Currency.symbol +
-                //           '. ' +
-                //           valoresVenta.total +
-                //           ')'
-                //         : 'Pagar' +
-                //           ' (' +
-                //           Currency.symbol +
-                //           '. ' +
-                //           valoresVenta.total +
-                //           ')'
-                //     }
-                //     onPress={() => setShowGateway(true)}
-                //   />
-                // </View>
+                 <View style={{alignItems: 'center'}}>
+                   <MyButton
+                     titulo={
+                       tags.PaymentScreen.pagar != ''
+                         ? tags.PaymentScreen.pagar +
+                           ' Usando Paypal' +
+                           ' (' +
+                           Currency.symbol +
+                           '. ' +
+                           valoresVenta.total +
+                           ')'
+                         : 'Pagar' +
+                           ' (' +
+                           Currency.symbol +
+                           '. ' +
+                           valoresVenta.total +
+                           ')'
+                     }
+                     onPress={() => pagarPaypal()}
+                   />
+                 </View>
               }
               <View style={mainStyles.boxTransparent} />
             </View>
@@ -425,7 +429,7 @@ export default function VistaPago(props) {
                   </View>
                 </View>
                 <WebView
-                  source={{uri: 'https://www.google.com'}}
+                  source={{uri: linkPago}}
                   style={{flex: 1}}
                   onMessage={onMessage}
                   onLoadStart={() => {
@@ -476,6 +480,7 @@ export default function VistaPago(props) {
           idLanguage: GlobalLanguage._id,
           idUser: loginUser.usuario._id,
           value: totalVenta,
+          type: "credit_card",
           products: productosCarrito,
           promotions: sendPromos,
           /*     {
@@ -518,7 +523,42 @@ export default function VistaPago(props) {
     //P
   }
 
-  function pagarPaypal() {}
+  function pagarPaypal() {
+    let sendPromos = [];
+    if (promotionList.length >= 1) {
+      promotionList.map(promo => {
+        sendPromos.push({
+          idPromotion: promo.idPromotion,
+          type: promo.type,
+        });
+      });
+    }
+    let totalVenta;
+        if (valoresVenta.total.includes(',')) {
+          totalVenta = valoresVenta.total.replace(/,/g, '');
+        } else {
+          totalVenta = valoresVenta.total;
+        }
+    console.log(totalVenta);
+        let sendData = {
+          idCurrency: Currency._id,
+          idLanguage: GlobalLanguage._id,
+          idUser: loginUser.usuario._id,
+          value: totalVenta,
+          type: "paypal",
+          products: productosCarrito,
+          promotions: sendPromos,
+          /*     {
+                "idPromotion": "633b2bd9880e100adaf47a89",
+                "type": "V"
+            },
+            {
+                "idPromotion": "633b2bd9880e100adaf47a89",
+                "type": "P"
+            }*/
+        };
+    sendPaypalData(sendData,Currency.code,setShowGateway)
+  }
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
@@ -600,7 +640,7 @@ export default function VistaPago(props) {
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
-    console.log(data);
+    console.log('MENSAJE DE WEBMODAL',data);
   }
 
   async function _onApprove(data, actions) {

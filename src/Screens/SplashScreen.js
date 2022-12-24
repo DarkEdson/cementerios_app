@@ -145,6 +145,7 @@ export default function SplashScreen(props) {
     setScreenId(pantallasID);
     pantallasID.forEach(pantalla => {
       updateTags(pantalla);
+      
     });
     if (response == null) {
       setTimeout(() => {

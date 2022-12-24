@@ -1,5 +1,5 @@
 import React, {createContext, useState, useEffect} from 'react';
-import {apiPago} from '@Apis/ApisGenerales';
+import {apiPago,apiLinkPaypal} from '@Apis/ApisGenerales';
 import Snackbar from 'react-native-snackbar';
 
 const initialState = [];
@@ -11,6 +11,7 @@ function ShoppingCartProvider({children}) {
   const [afiliateCart, setafiliateCart] = useState({});
   const [isLoadingCart, setisLoadingCart] = useState(false);
   const [recipe, setrecipe] = useState({});
+  const [linkPago, setLinkPago] = useState('http://www.google.com');
   const [carrito, setcarrito] = useState(false);
   //rutaCart sirve para saber si se limpia el carrito al entrar al producto o al entrar al afiliado
   const [rutaCart, setrutaCart] = useState(false);
@@ -181,6 +182,25 @@ function ShoppingCartProvider({children}) {
     });
   }
 
+
+
+  async function sendPaypalData(
+    dataCart,
+    currentcyCode,
+    setShowGateway
+  ) {
+    setisLoadingCart(true);
+    console.log('CARRITO DATa', dataCart)
+    apiLinkPaypal(currentcyCode,dataCart.value,dataCart).then(res => {
+      console.log('RESPUESTA DE LINK COMPRA PAYPAL', res);
+      setisLoadingCart(false);
+      setLinkPago(res);
+      setShowGateway(true)
+      
+    });
+  }
+
+
   return (
     <ShoppingCartContext.Provider
       value={{
@@ -197,8 +217,11 @@ function ShoppingCartProvider({children}) {
         recipe,
         sendShoppingCartSell,
         isLoadingCart,
+        setisLoadingCart,
         editable,
         seteditable,
+        sendPaypalData,
+        linkPago
       }}>
       {children}
     </ShoppingCartContext.Provider>

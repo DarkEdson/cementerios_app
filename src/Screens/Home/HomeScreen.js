@@ -21,7 +21,7 @@ const Tab = createMaterialBottomTabNavigator();
 export default function HomeScreen(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
-  useEffect(() => {}, []);
+  useEffect(() => {console.log("EtIqueTAS PROBAR", tags)}, []);
 
   return (
     <Tab.Navigator
