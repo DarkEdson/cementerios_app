@@ -80,7 +80,8 @@ export default function VistaPago(props) {
     setisLoadingCart,
     seteditable,
     sendPaypalData,
-    linkPago
+    linkPago,
+    tokenPago
   } = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   //Inicia para PayPal
@@ -369,7 +370,7 @@ export default function VistaPago(props) {
                      titulo={
                        tags.PaymentScreen.pagar != ''
                          ? tags.PaymentScreen.pagar +
-                           ' Usando Paypal' +
+                           ' con Paypal' +
                            ' (' +
                            Currency.symbol +
                            '. ' +
@@ -409,7 +410,8 @@ export default function VistaPago(props) {
                 <View style={styles.wbHead}>
                   <TouchableOpacity
                     style={{padding: 13}}
-                    onPress={() => setShowGateway(false)}
+                    onPress={() => {setShowGateway(false)
+                    console.log('MODAL CERRADO', tokenPago)}}
                   >
                     <Feather name={'x'} size={24} />
                   </TouchableOpacity>
@@ -641,24 +643,15 @@ export default function VistaPago(props) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
     console.log('MENSAJE DE WEBMODAL',data);
+    Alert.alert('MENSAJE DE WEBMODAL', data, [
+      {
+        text: 'Ok',
+        onPress: () => {},
+        style: 'cancel',
+      },
+    ]);
   }
 
-  async function _onApprove(data, actions) {
-    let order = await actions.order.capture();
-    console.log(order);
-    window.ReactNativeWebView &&
-      window.ReactNativeWebView.postMessage(JSON.stringify(order));
-    return order;
-  }
-  function _onError(err) {
-    console.log(err);
-    let errObj = {
-      err: err,
-      status: 'FAILED',
-    };
-    window.ReactNativeWebView &&
-      window.ReactNativeWebView.postMessage(JSON.stringify(errObj));
-  }
 }
 
 const styles = StyleSheet.create({

@@ -198,7 +198,7 @@ async function apiLinkPaypal(codigoMoneda, ValorPago,dataPay) {
       .then(response => {
         console.log('dentro de RESPUESTA API LINK PAGO PAYPAL');
         console.log(response);
-        resp = response.url;
+        resp = response;
       });
     return resp;
   } catch (error) {

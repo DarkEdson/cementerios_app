@@ -12,6 +12,7 @@ function ShoppingCartProvider({children}) {
   const [isLoadingCart, setisLoadingCart] = useState(false);
   const [recipe, setrecipe] = useState({});
   const [linkPago, setLinkPago] = useState('http://www.google.com');
+  const [tokenPago, setTokenPago] = useState('');
   const [carrito, setcarrito] = useState(false);
   //rutaCart sirve para saber si se limpia el carrito al entrar al producto o al entrar al afiliado
   const [rutaCart, setrutaCart] = useState(false);
@@ -194,7 +195,8 @@ function ShoppingCartProvider({children}) {
     apiLinkPaypal(currentcyCode,dataCart.value,dataCart).then(res => {
       console.log('RESPUESTA DE LINK COMPRA PAYPAL', res);
       setisLoadingCart(false);
-      setLinkPago(res);
+      setLinkPago(res.url);
+      setTokenPago(res.token)
       setShowGateway(true)
       
     });
@@ -221,7 +223,8 @@ function ShoppingCartProvider({children}) {
         editable,
         seteditable,
         sendPaypalData,
-        linkPago
+        linkPago,
+        tokenPago
       }}>
       {children}
     </ShoppingCartContext.Provider>
