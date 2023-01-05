@@ -24,6 +24,7 @@ import ToolBar from '@Components/common/toolBar';
 import LargeButton from '@Components/common/largeButton';
 import PurchaseModal from '@Components/PurchaseModal/PurchaseModal';
 import MyButton from '@Components/common/MyButton';
+import MyButtonImage from '@Components/common/MyButtonImage';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ProductContext} from '@context/ProductContext';
@@ -369,25 +370,7 @@ export default function VistaPago(props) {
               </View>
               {
                 <View style={{alignItems: 'center'}}>
-                  <MyButton
-                    titulo={
-                      tags.PaymentScreen.pagar != ''
-                        ? tags.PaymentScreen.pagar +
-                          ' con Paypal' +
-                          ' (' +
-                          Currency.symbol +
-                          '. ' +
-                          valoresVenta.total +
-                          ')'
-                        : 'Pagar' +
-                          ' (' +
-                          Currency.symbol +
-                          '. ' +
-                          valoresVenta.total +
-                          ')'
-                    }
-                    onPress={() => pagarPaypal()}
-                  />
+                  <MyButtonImage transparent onPress={() => pagarPaypal()} />
                 </View>
               }
               <View style={mainStyles.boxTransparent} />

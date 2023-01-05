@@ -106,6 +106,15 @@ const mainStyles = StyleSheet.create({
     borderRadius: 60,
   },
 
+  btnTransparents: {
+    backgroundColor: 'rgba(52, 52, 52, 0)',
+    width: Dimensions.get('screen').width * 0.9,
+    marginTop: 40,
+    marginBottom: 20,
+    alignItems: 'center',
+    borderRadius: 15,
+  },
+
   btnUnderline: {
     textDecorationLine: 'underline',
   },
