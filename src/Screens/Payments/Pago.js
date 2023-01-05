@@ -81,7 +81,9 @@ export default function VistaPago(props) {
     seteditable,
     sendPaypalData,
     linkPago,
-    tokenPago
+    tokenPago,
+    flagPaypal,
+    getPaypalAnswer,
   } = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   //Inicia para PayPal
@@ -100,6 +102,7 @@ export default function VistaPago(props) {
     let descuento = 0;
     let sendProds = [];
     console.log(promotionList, validPromo);
+    console.log('TAGS', tags.PaymentScreen);
     // Productos del carrito
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
     ShoppingCart.forEach(item => {
@@ -365,27 +368,27 @@ export default function VistaPago(props) {
                 />
               </View>
               {
-                 <View style={{alignItems: 'center'}}>
-                   <MyButton
-                     titulo={
-                       tags.PaymentScreen.pagar != ''
-                         ? tags.PaymentScreen.pagar +
-                           ' con Paypal' +
-                           ' (' +
-                           Currency.symbol +
-                           '. ' +
-                           valoresVenta.total +
-                           ')'
-                         : 'Pagar' +
-                           ' (' +
-                           Currency.symbol +
-                           '. ' +
-                           valoresVenta.total +
-                           ')'
-                     }
-                     onPress={() => pagarPaypal()}
-                   />
-                 </View>
+                <View style={{alignItems: 'center'}}>
+                  <MyButton
+                    titulo={
+                      tags.PaymentScreen.pagar != ''
+                        ? tags.PaymentScreen.pagar +
+                          ' con Paypal' +
+                          ' (' +
+                          Currency.symbol +
+                          '. ' +
+                          valoresVenta.total +
+                          ')'
+                        : 'Pagar' +
+                          ' (' +
+                          Currency.symbol +
+                          '. ' +
+                          valoresVenta.total +
+                          ')'
+                    }
+                    onPress={() => pagarPaypal()}
+                  />
+                </View>
               }
               <View style={mainStyles.boxTransparent} />
             </View>
@@ -410,8 +413,9 @@ export default function VistaPago(props) {
                 <View style={styles.wbHead}>
                   <TouchableOpacity
                     style={{padding: 13}}
-                    onPress={() => {setShowGateway(false)
-                    console.log('MODAL CERRADO', tokenPago)}}
+                    onPress={() => {
+                      confirmarPaypal();
+                    }}
                   >
                     <Feather name={'x'} size={24} />
                   </TouchableOpacity>
@@ -482,7 +486,7 @@ export default function VistaPago(props) {
           idLanguage: GlobalLanguage._id,
           idUser: loginUser.usuario._id,
           value: totalVenta,
-          type: "credit_card",
+          type: 'credit_card',
           products: productosCarrito,
           promotions: sendPromos,
           /*     {
@@ -525,6 +529,7 @@ export default function VistaPago(props) {
     //P
   }
 
+  //FUNCIONES PAYPAL
   function pagarPaypal() {
     let sendPromos = [];
     if (promotionList.length >= 1) {
@@ -535,31 +540,48 @@ export default function VistaPago(props) {
         });
       });
     }
-    let totalVenta;
-        if (valoresVenta.total.includes(',')) {
-          totalVenta = valoresVenta.total.replace(/,/g, '');
-        } else {
-          totalVenta = valoresVenta.total;
-        }
-    console.log(totalVenta);
-        let sendData = {
-          idCurrency: Currency._id,
-          idLanguage: GlobalLanguage._id,
-          idUser: loginUser.usuario._id,
-          value: totalVenta,
-          type: "paypal",
-          products: productosCarrito,
-          promotions: sendPromos,
-          /*     {
-                "idPromotion": "633b2bd9880e100adaf47a89",
-                "type": "V"
-            },
-            {
-                "idPromotion": "633b2bd9880e100adaf47a89",
-                "type": "P"
-            }*/
-        };
-    sendPaypalData(sendData,Currency.code,setShowGateway)
+    if (productosCarrito.length >= 1) {
+      let totalVenta;
+      if (valoresVenta.total.includes(',')) {
+        totalVenta = valoresVenta.total.replace(/,/g, '');
+      } else {
+        totalVenta = valoresVenta.total;
+      }
+      console.log(totalVenta);
+      let sendData = {
+        idCurrency: Currency._id,
+        idLanguage: GlobalLanguage._id,
+        idUser: loginUser.usuario._id,
+        value: totalVenta,
+        type: 'paypal',
+        products: productosCarrito,
+        promotions: sendPromos,
+      };
+      console.log(sendData);
+      sendPaypalData(sendData, Currency.code, setShowGateway);
+    } else {
+      Snackbar.show({
+        text:
+          tags.PaymentScreen.emptyCart != ''
+            ? tags.PaymentScreen.emptyCart
+            : 'Carrito Vacio, Agregue un producto',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
+  }
+
+  //FUNCION CONFIRM PAYPAL
+  function confirmarPaypal() {
+    setShowGateway(false);
+    getPaypalAnswer(
+      tokenPago,
+      goToScreen,
+      'Initial',
+      setpromotionList,
+      tags.PaymentScreen,
+    );
+    console.log('FLAGS TEST', flagPaypal);
+    console.log('MENSAJE DE WEBMODAL', tokenPago);
   }
 
   function goToScreen(routeName) {
@@ -642,16 +664,7 @@ export default function VistaPago(props) {
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
-    console.log('MENSAJE DE WEBMODAL',data);
-    Alert.alert('MENSAJE DE WEBMODAL', data, [
-      {
-        text: 'Ok',
-        onPress: () => {},
-        style: 'cancel',
-      },
-    ]);
   }
-
 }
 
 const styles = StyleSheet.create({

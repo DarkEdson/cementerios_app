@@ -1,5 +1,5 @@
 import React, {createContext, useState, useEffect} from 'react';
-import {apiPago,apiLinkPaypal} from '@Apis/ApisGenerales';
+import {apiPago, apiLinkPaypal, apiPaypalAnswer} from '@Apis/ApisGenerales';
 import Snackbar from 'react-native-snackbar';
 
 const initialState = [];
@@ -11,9 +11,11 @@ function ShoppingCartProvider({children}) {
   const [afiliateCart, setafiliateCart] = useState({});
   const [isLoadingCart, setisLoadingCart] = useState(false);
   const [recipe, setrecipe] = useState({});
+  //Link y token pago sirven para manejar las respuestas de paypal, asi como flag paypal
   const [linkPago, setLinkPago] = useState('http://www.google.com');
   const [tokenPago, setTokenPago] = useState('');
   const [carrito, setcarrito] = useState(false);
+  const [flagPaypal, setFlagPaypal] = useState(false);
   //rutaCart sirve para saber si se limpia el carrito al entrar al producto o al entrar al afiliado
   const [rutaCart, setrutaCart] = useState(false);
   //editable sirve para saber si el producto viene del carrito, por lo que incluira cantidad
@@ -183,25 +185,51 @@ function ShoppingCartProvider({children}) {
     });
   }
 
-
-
-  async function sendPaypalData(
-    dataCart,
-    currentcyCode,
-    setShowGateway
-  ) {
+  async function sendPaypalData(dataCart, currentcyCode, setShowGateway) {
     setisLoadingCart(true);
-    console.log('CARRITO DATa', dataCart)
-    apiLinkPaypal(currentcyCode,dataCart.value,dataCart).then(res => {
+    console.log('CARRITO DATa', dataCart);
+    apiLinkPaypal(currentcyCode, dataCart.value, dataCart).then(res => {
       console.log('RESPUESTA DE LINK COMPRA PAYPAL', res);
       setisLoadingCart(false);
       setLinkPago(res.url);
-      setTokenPago(res.token)
-      setShowGateway(true)
-      
+      setTokenPago(res.token);
+      setShowGateway(true);
     });
   }
 
+  async function getPaypalAnswer(
+    tokenPago,
+    goToScreen,
+    routeName,
+    setPromotionList,
+    tagsMsg,
+  ) {
+    setisLoadingCart(true);
+    apiPaypalAnswer(tokenPago).then(res => {
+      console.log('RESPUESTA DE PAYPAL TRANSACCION', res);
+      setisLoadingCart(false);
+      if (res == 'Pago Completado Exitosamente') {
+        setFlagPaypal(true);
+        Snackbar.show({
+          text: tagsMsg.success ? tagsMsg.success + ' ' + res : res,
+          duration: Snackbar.LENGTH_LONG,
+        });
+        console.log('carrito vacio');
+        setShoppingCart([]);
+        setPromotionList([]);
+        setcarrito(false);
+        goToScreen(routeName);
+      } else {
+        console.log(res);
+        Snackbar.show({
+          text: tagsMsg.failed ? tagsMsg.failed + ' ' + res : res,
+          duration: Snackbar.LENGTH_LONG,
+        });
+      }
+      setFlagPaypal(false);
+      return false;
+    });
+  }
 
   return (
     <ShoppingCartContext.Provider
@@ -224,8 +252,11 @@ function ShoppingCartProvider({children}) {
         seteditable,
         sendPaypalData,
         linkPago,
-        tokenPago
-      }}>
+        tokenPago,
+        flagPaypal,
+        getPaypalAnswer,
+      }}
+    >
       {children}
     </ShoppingCartContext.Provider>
   );

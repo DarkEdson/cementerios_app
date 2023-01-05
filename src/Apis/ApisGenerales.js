@@ -177,11 +177,11 @@ async function apiUpdateUser(user, idUser) {
   }
 }
 
-async function apiLinkPaypal(codigoMoneda, ValorPago,dataPay) {
+async function apiLinkPaypal(codigoMoneda, ValorPago, dataPay) {
   let url = `${BASE_URL}/payment.paypal.create?cur=${codigoMoneda}&amt=${ValorPago}`;
-  console.log('VALORES DEL API LINK PAYPAL',codigoMoneda, ValorPago);
-  console.log('VALORES A ENVIAR POR PAYPAL', dataPay)
-  console.log('VALOR DE URL PAYPAL',url)
+  console.log('VALORES DEL API LINK PAYPAL', codigoMoneda, ValorPago);
+  console.log('VALORES A ENVIAR POR PAYPAL', dataPay);
+  console.log('VALOR DE URL PAYPAL', url);
   let resp = 'https://m.facebook.com';
   try {
     await fetch(url, {
@@ -207,6 +207,35 @@ async function apiLinkPaypal(codigoMoneda, ValorPago,dataPay) {
   }
 }
 
+async function apiPaypalAnswer(tokenPago) {
+  let url = `${BASE_URL}/payment.paypal.getresponse`;
+  console.log(tokenPago);
+  let resp = {};
+  try {
+    let data = {
+      token: tokenPago,
+    };
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error en RESPUESTA TOKEN PAYPAL', error))
+      .then(response => {
+        console.log('dentro del API RESPUESTA PAYPAL');
+        console.log(response);
+        resp = response.response;
+      });
+    return resp;
+  } catch (error) {
+    console.error('ERROR EN API RESPUESTA PAYPAL', error);
+    return resp;
+  }
+}
+
 export {
   apiLanguage,
   apiScreen,
@@ -214,5 +243,6 @@ export {
   apiPago,
   apiChangePassword,
   apiUpdateUser,
-  apiLinkPaypal
+  apiLinkPaypal,
+  apiPaypalAnswer,
 };
