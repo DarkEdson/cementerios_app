@@ -371,6 +371,29 @@ export default function VistaPago(props) {
               {
                 <View style={{alignItems: 'center'}}>
                   <MyButtonImage transparent onPress={() => pagarPaypal()} />
+                  {loginUser.usuario.role == 'seller' ||
+                  loginUser.usuario.role == 'SELLER' ||
+                  loginUser.usuario.role == 'Seller' ? (
+                    <MyButton
+                      titulo={
+                        tags.PaymentScreen.pagar != ''
+                          ? tags.PaymentScreen.pagar +
+                            ' Link' +
+                            ' (' +
+                            Currency.symbol +
+                            '. ' +
+                            valoresVenta.total +
+                            ')'
+                          : 'Pagar' +
+                            ' (' +
+                            Currency.symbol +
+                            '. ' +
+                            valoresVenta.total +
+                            ')'
+                      }
+                      onPress={() => {}}
+                    />
+                  ) : null}
                 </View>
               }
               <View style={mainStyles.boxTransparent} />
