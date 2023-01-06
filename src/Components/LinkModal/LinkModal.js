@@ -1,6 +1,6 @@
 //import liraries
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Alert} from 'react-native';
 import color from '@styles/colors';
 import {AirbnbRating, Dialog, CheckBox} from '@rneui/themed';
 import Snackbar from 'react-native-snackbar';
@@ -135,8 +135,17 @@ const LinkModal = props => {
         sellerID: props.shoppingCart.idUser,
       };
       console.log('Info a Enviar', sendInfo);
-      toggleDialog();
       props.generaLink(sendInfo);
+      toggleDialog();
+      Alert.alert('Link Alert', `Link Enviado a ${data.email}, favor revisar`, [
+        {
+          text: 'Ok',
+          onPress: () => {
+            toggleDialog();
+          },
+          style: 'cancel',
+        },
+      ]);
     }
   }
 
