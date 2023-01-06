@@ -110,6 +110,7 @@ const LinkModal = props => {
   );
 
   function dataUser() {
+    let validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (data.name == '') {
       mensajeSnack(
         props.tags.EditUserScreen.whitename != ''
@@ -128,7 +129,7 @@ const LinkModal = props => {
           ? props.tags.EditUserScreen.whiteemail
           : 'Correo en Blanco',
       );
-    } else {
+    } else if (data.email.match(validRegex)) {
       let sendInfo = {
         clientData: [data],
         shoppingCart: [props.shoppingCart],
@@ -146,6 +147,8 @@ const LinkModal = props => {
           style: 'cancel',
         },
       ]);
+    } else {
+      mensajeSnack('Correo Invalido');
     }
   }
 
