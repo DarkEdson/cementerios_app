@@ -25,6 +25,7 @@ import LargeButton from '@Components/common/largeButton';
 import PurchaseModal from '@Components/PurchaseModal/PurchaseModal';
 import MyButton from '@Components/common/MyButton';
 import MyButtonImage from '@Components/common/MyButtonImage';
+import LinkModal from '@Components/LinkModal/LinkModal';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ProductContext} from '@context/ProductContext';
@@ -85,10 +86,13 @@ export default function VistaPago(props) {
     tokenPago,
     flagPaypal,
     getPaypalAnswer,
+    generaLinkPago,
   } = useContext(ShoppingCartContext);
   const {RouteBack} = useContext(RouteBackContext);
   //Inicia para PayPal
   const [showGateway, setShowGateway] = useState(false);
+  const [linkFlagModal, setLinkFlagModal] = useState(false);
+  const [linkCart, setLinkCart] = useState(null);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
   //Finaliza para PayPal
@@ -152,7 +156,9 @@ export default function VistaPago(props) {
     entrega: 0,
     total: 0,
   });
-
+  const toggleLinkDialog = () => {
+    setLinkFlagModal(true);
+  };
   const toggleDialog = () => {
     setVisible(true);
   };
@@ -391,7 +397,9 @@ export default function VistaPago(props) {
                             valoresVenta.total +
                             ')'
                       }
-                      onPress={() => {}}
+                      onPress={() => {
+                        crearLink();
+                      }}
                     />
                   ) : null}
                 </View>
@@ -462,6 +470,15 @@ export default function VistaPago(props) {
               </View>
             </Modal>
           ) : null}
+          {linkFlagModal == false ? null : (
+            <LinkModal
+              customModal={linkFlagModal}
+              tags={tags}
+              setCustomModal={setLinkFlagModal}
+              shoppingCart={linkCart}
+              generaLink={generaLinkPago}
+            />
+          )}
         </View>
       )}
     </SafeAreaView>
@@ -588,6 +605,48 @@ export default function VistaPago(props) {
     );
     console.log('FLAGS TEST', flagPaypal);
     console.log('MENSAJE DE WEBMODAL', tokenPago);
+  }
+
+  //FUNCION GENERA LINK PAGO
+  function crearLink() {
+    let sendPromos = [];
+    if (promotionList.length >= 1) {
+      promotionList.map(promo => {
+        sendPromos.push({
+          idPromotion: promo.idPromotion,
+          type: promo.type,
+        });
+      });
+    }
+    if (productosCarrito.length >= 1) {
+      let totalVenta;
+      if (valoresVenta.total.includes(',')) {
+        totalVenta = valoresVenta.total.replace(/,/g, '');
+      } else {
+        totalVenta = valoresVenta.total;
+      }
+      console.log(totalVenta);
+      let sendData = {
+        idCurrency: Currency._id,
+        idLanguage: GlobalLanguage._id,
+        idUser: loginUser.usuario._id,
+        value: totalVenta,
+        type: 'paypal',
+        products: productosCarrito,
+        promotions: sendPromos,
+      };
+      console.log(sendData);
+      setLinkCart(sendData);
+      toggleLinkDialog();
+    } else {
+      Snackbar.show({
+        text:
+          tags.PaymentScreen.emptyCart != ''
+            ? tags.PaymentScreen.emptyCart
+            : 'Carrito Vacio, Agregue un producto',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
   }
 
   function goToScreen(routeName) {

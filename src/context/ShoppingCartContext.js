@@ -1,5 +1,10 @@
 import React, {createContext, useState, useEffect} from 'react';
-import {apiPago, apiLinkPaypal, apiPaypalAnswer} from '@Apis/ApisGenerales';
+import {
+  apiPago,
+  apiLinkPaypal,
+  apiPaypalAnswer,
+  apiCreateLink,
+} from '@Apis/ApisGenerales';
 import Snackbar from 'react-native-snackbar';
 
 const initialState = [];
@@ -231,6 +236,14 @@ function ShoppingCartProvider({children}) {
     });
   }
 
+  async function generaLinkPago(linkData) {
+    setisLoadingCart(true);
+    console.log('LINK DATA', linkData);
+    apiCreateLink(linkData).then(res => {
+      console.log('RESPUESTA DE LINK PAGO', res);
+      setisLoadingCart(false);
+    });
+  }
   return (
     <ShoppingCartContext.Provider
       value={{
@@ -255,6 +268,7 @@ function ShoppingCartProvider({children}) {
         tokenPago,
         flagPaypal,
         getPaypalAnswer,
+        generaLinkPago,
       }}
     >
       {children}

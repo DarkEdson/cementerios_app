@@ -236,6 +236,33 @@ async function apiPaypalAnswer(tokenPago) {
   }
 }
 
+async function apiCreateLink(dataLink) {
+  let url = `${BASE_URL}/payment.order`;
+  console.log(dataLink);
+  let resp = {};
+  try {
+    let data = dataLink;
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error en RESPUESTA LINK PAGO', error))
+      .then(response => {
+        console.log('dentro del API RESPUESTA LINK PAGO');
+        console.log(response);
+        resp = response;
+      });
+    return resp;
+  } catch (error) {
+    console.error('ERROR EN API RESPUESTA LINK PAGO', error);
+    return resp;
+  }
+}
+
 export {
   apiLanguage,
   apiScreen,
@@ -245,4 +272,5 @@ export {
   apiUpdateUser,
   apiLinkPaypal,
   apiPaypalAnswer,
+  apiCreateLink,
 };

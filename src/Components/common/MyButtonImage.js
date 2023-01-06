@@ -19,6 +19,7 @@ const MyButtonImage = props => {
   return (
     <TouchableOpacity style={[sButton, props.style]} onPress={props.onPress}>
       <Image
+        resizeMode="center"
         style={styles.imagestyle}
         source={require('@images/paypalbutton.png')}
       />
@@ -30,8 +31,11 @@ const MyButtonImage = props => {
 
 const styles = StyleSheet.create({
   imagestyle: {
-    width: Dimensions.get('screen').width * 0.95,
-    height: 50,
+    marginTop: Dimensions.get('screen').height * -0.082,
+    marginBottom: Dimensions.get('screen').height * -0.1,
+    width: Dimensions.get('screen').width * 0.99,
+    height: Dimensions.get('screen').height * 0.164,
+    borderRadius: 50,
     alignItems: 'center',
   },
 });
