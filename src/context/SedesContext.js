@@ -14,9 +14,10 @@ export const SedesProvider = ({children}) => {
     goToScreen,
     routeName,
     country,
+    language,
   ) => {
     setisLoadingSedes(true);
-    sedesApi(cementery, country).then(res => {
+    sedesApi(cementery, country, language).then(res => {
       res.sort((a, b) => a.code.localeCompare(b.code));
       console.log('SEDES', res);
       setSedes(res);
@@ -57,7 +58,8 @@ export const SedesProvider = ({children}) => {
         getSedes,
         getSede,
         getSedeDirect,
-      }}>
+      }}
+    >
       {children}
     </SedesContext.Provider>
   );

@@ -1,6 +1,7 @@
 import {BASE_URL, BASE_URL_IMG, PRODUCTS_URL} from '@utils/config';
 
 async function productbyCountry(country, lenguaje) {
+  console.log('api prods pais', lenguaje);
   let url = `${BASE_URL}/product.getprodsbycou/${country.value}/${lenguaje._id}`;
   let productos = [];
   try {
@@ -29,7 +30,7 @@ async function productbyCountry(country, lenguaje) {
       });
     return productos;
   } catch (error) {
-    console.error(error);
+    console.error('ERROR EN PRODUCTOS API POR PAIS', error);
     return productos;
   }
 }

@@ -42,7 +42,7 @@ import {CategoryContext} from '@context/CategoryContext';
 import {ProductContext} from '@context/ProductContext';
 import {SedesContext} from '@context/SedesContext';
 import {SedeContext} from '@context/SedeContext';
-import { RatingsContext } from '@context/RatingContext';
+import {RatingsContext} from '@context/RatingContext';
 import {CurrenciesContext} from '@context/CurrencyContext';
 import {CreditCardContext} from '@context/CreditCardContext';
 
@@ -56,14 +56,16 @@ export default function InitialScreen(props) {
   const [countries] = useContext(CountriesContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const {tags} = useContext(ScreentagContext);
-  const {isLoadingRatings, ratings,getRatings} = useContext(RatingsContext)
+  const {isLoadingRatings, ratings, getRatings} = useContext(RatingsContext);
   const {setRouteBack, setRouteBackComp} = useContext(RouteBackContext);
   const {setisCategory, setCategory} = useContext(CategoryContext);
   const [Product, setProduct] = useContext(ProductContext);
-  const {categories, isLoadingCategories, getCategories} =
-    useContext(CategoriesContext);
-  const {Cementeries, isLoadingCementeries, getCementeries} =
-    useContext(CementeriesContext);
+  const {categories, isLoadingCategories, getCategories} = useContext(
+    CategoriesContext,
+  );
+  const {Cementeries, isLoadingCementeries, getCementeries} = useContext(
+    CementeriesContext,
+  );
   const {
     setrutaCart,
     ShoppingCart,
@@ -71,10 +73,12 @@ export default function InitialScreen(props) {
     removeAllItemstoCart,
     setafiliateCart,
   } = useContext(ShoppingCartContext);
-  const {Sedes, isLoadingSedes, getSedes, getSedeDirect} =
-    useContext(SedesContext);
-  const {Promotions, isLoadingPromotions, getPromotions} =
-    useContext(PromotionsContext);
+  const {Sedes, isLoadingSedes, getSedes, getSedeDirect} = useContext(
+    SedesContext,
+  );
+  const {Promotions, isLoadingPromotions, getPromotions} = useContext(
+    PromotionsContext,
+  );
   const {getCurrency} = useContext(CurrenciesContext);
   const {
     ProductsCountry,
@@ -83,8 +87,12 @@ export default function InitialScreen(props) {
     getProductsbyCategory,
     getMultimediabyProduct,
   } = useContext(ProductsContext);
-  const {country, updateDefaultCountry, isLoadingCountry, getDefaultCountry} =
-    useContext(CountryContext);
+  const {
+    country,
+    updateDefaultCountry,
+    isLoadingCountry,
+    getDefaultCountry,
+  } = useContext(CountryContext);
 
   const [ubicationSelect, setubicationSelect] = useState({
     label: `${countries[0].name}, ${countries[0].code.toUpperCase()}`,
@@ -118,7 +126,7 @@ export default function InitialScreen(props) {
       getCategories(country, GlobalLanguage);
       getPromotions(country, GlobalLanguage);
       getProductsbyCountry(country, GlobalLanguage);
-      getRatings(GlobalLanguage._id,country.value);
+      getRatings(GlobalLanguage._id, country.value);
       getCementeries(country);
       getCreditCards(loginUser.usuario);
       setubicaciones(getUbicaciones);
@@ -140,7 +148,8 @@ export default function InitialScreen(props) {
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '50%',
-          }}>
+          }}
+        >
           <FAB
             loading
             color={color.PRINCIPALCOLOR}
@@ -155,7 +164,8 @@ export default function InitialScreen(props) {
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '50%',
-          }}>
+          }}
+        >
           <FAB
             loading
             color={color.PRINCIPALCOLOR}
@@ -231,7 +241,8 @@ export default function InitialScreen(props) {
                     style={{
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <View style={styles.boxTransparent} />
                     <FAB
                       loading
@@ -274,7 +285,8 @@ export default function InitialScreen(props) {
                     style={{
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <FAB
                       loading
                       color={color.PRINCIPALCOLOR}
@@ -323,7 +335,8 @@ export default function InitialScreen(props) {
                     style={{
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <View style={styles.boxTransparent} />
                     <FAB
                       loading
@@ -358,9 +371,9 @@ export default function InitialScreen(props) {
               </View>
               <View style={[styles.cementeriestitle, styles.titles]}>
                 <Text style={styles.titleText}>
-                {tags.CompanyDetailScreen.mas != ''
-                ? tags.CompanyDetailScreen.mas
-                : 'Mas Populares'}
+                  {tags.CompanyDetailScreen.mas != ''
+                    ? tags.CompanyDetailScreen.mas
+                    : 'Mas Populares'}
                 </Text>
                 <MyTextButton
                   titulo={
@@ -379,7 +392,8 @@ export default function InitialScreen(props) {
                     style={{
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <View style={styles.boxTransparent} />
                     <FAB
                       loading
@@ -391,23 +405,27 @@ export default function InitialScreen(props) {
                     <View style={styles.boxTransparent} />
                   </View>
                 ) : ratings.length >= 1 ? (
-              <View >
-                {ratings.map((product, key) => {
-                  return (
-                    <CardProducto
-                      key={key}
-                      onPressProduct={() => selectedProduct(product, 'Product')}
-                      urlImagen={product.principalImage}
-                      titulo={product.name}
-                      descripcion={product.description}
-                      precio={tags.ProductsScreen.detallePrecio != ''
-                      ? tags.ProductsScreen.detallePrecio
-                      : 'Ver Precio Dentro'}
-                    />
-                  );
-                })}
-                <View style={styles.boxTransparent} />
-                </View>
+                  <View>
+                    {ratings.map((product, key) => {
+                      return (
+                        <CardProducto
+                          key={key}
+                          onPressProduct={() =>
+                            selectedProduct(product, 'Product')
+                          }
+                          urlImagen={product.principalImage}
+                          titulo={product.name}
+                          descripcion={product.description}
+                          precio={
+                            tags.ProductsScreen.detallePrecio != ''
+                              ? tags.ProductsScreen.detallePrecio
+                              : 'Ver Precio Dentro'
+                          }
+                        />
+                      );
+                    })}
+                    <View style={styles.boxTransparent} />
+                  </View>
                 ) : (
                   <View style={styles.noPromoView}>
                     <Text style={styles.promoText}>No Populars</Text>
@@ -424,19 +442,19 @@ export default function InitialScreen(props) {
   );
 
   function selectedProduct(producto, routeName) {
-      categories.forEach(category => {
-        if (category._id == producto.idCategory) {
-          setCategory(category);
-          prodSel(producto, routeName, 'Productos')
-        }
-      }); 
+    categories.forEach(category => {
+      if (category._id == producto.idCategory) {
+        setCategory(category);
+        prodSel(producto, routeName, 'Productos');
+      }
+    });
   }
   function prodSel(producto, routeName, routeB) {
-    setrutaCart(false)
+    setrutaCart(false);
     setProduct(producto);
     getMultimediabyProduct(producto);
     setRouteBack(routeB);
-    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName)
+    getSedeDirect(producto.idHeadquarter, setSede, goToScreen, routeName);
   }
   function prodByCategory(category, routeName) {
     {
@@ -475,7 +493,7 @@ export default function InitialScreen(props) {
       getCategories(pais, GlobalLanguage);
       getPromotions(pais, GlobalLanguage);
       getProductsbyCountry(pais, GlobalLanguage);
-      getRatings(GlobalLanguage._id,pais.value);
+      getRatings(GlobalLanguage._id, pais.value);
       getCementeries(pais);
       removeAllItemstoCart();
       setafiliateCart({});
@@ -486,7 +504,14 @@ export default function InitialScreen(props) {
     setrutaCart(true);
     setCementery(cementery);
     getCurrency(cementery);
-    getSedes(cementery, setSede, goToScreen, routeName, country);
+    getSedes(
+      cementery,
+      setSede,
+      goToScreen,
+      routeName,
+      country,
+      GlobalLanguage,
+    );
     setRouteBackComp('Home');
   }
 

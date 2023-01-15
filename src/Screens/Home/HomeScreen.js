@@ -21,7 +21,9 @@ const Tab = createMaterialBottomTabNavigator();
 export default function HomeScreen(props) {
   const [loginUser] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
-  useEffect(() => {console.log("EtIqueTAS PROBAR", tags)}, []);
+  useEffect(() => {
+    //console.log("EtIqueTAS PROBAR", tags)
+  }, []);
 
   return (
     <Tab.Navigator
@@ -39,7 +41,8 @@ export default function HomeScreen(props) {
         shadowColor: '#333',
         shadowOpacity: 0.6,
         shadowRadius: 2,
-      }}>
+      }}
+    >
       <Tab.Screen
         name="Initial"
         component={InitialScreen}

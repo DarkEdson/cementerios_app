@@ -92,7 +92,8 @@ export default function VistaProductos(props) {
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: '50%',
-            }}>
+            }}
+          >
             <FAB
               loading
               color={color.PRINCIPALCOLOR}
@@ -107,7 +108,8 @@ export default function VistaProductos(props) {
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: '50%',
-            }}>
+            }}
+          >
             <FAB
               loading
               color={color.PRINCIPALCOLOR}
@@ -206,6 +208,7 @@ export default function VistaProductos(props) {
 
   function prodSel(producto, routeName, routeB) {
     setrutaCart(false);
+    console.log('SELECCION DE PRODUCTO EN PRODUCTOS POR PAIS', producto);
     setProduct(producto);
     getMultimediabyProduct(producto);
     setRouteBack(routeB);

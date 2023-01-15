@@ -1,8 +1,6 @@
+import {BASE_URL, BASE_URL_IMG, CATEGORIES_URL} from '@utils/config';
 
-import {BASE_URL,BASE_URL_IMG, CATEGORIES_URL} from '@utils/config';
-
-
- async function categoriesApi(country,lenguaje) {
+async function categoriesApi(country, lenguaje) {
   let url = `${BASE_URL}/category.getcatsbycou/${country.value}/${lenguaje._id}`;
   let categorias = [];
   try {
@@ -13,19 +11,20 @@ import {BASE_URL,BASE_URL_IMG, CATEGORIES_URL} from '@utils/config';
       .then(res => res.json())
       .catch(error => console.error('Error Categoria', error))
       .then(response => {
+        console.log('RESPUESTA EN CATEGORIAS', response);
         response.forEach(categoria => {
-            categorias.push({
+          categorias.push({
             _id: categoria._id,
             code: categoria.code,
             image: `${BASE_URL_IMG}${CATEGORIES_URL}${categoria.image}`,
-            name:categoria.labels[0].name,
-            description:categoria.labels[0].description,
+            name: categoria.labels[0].name,
+            description: categoria.labels[0].description,
           });
         });
       });
     return categorias;
   } catch (error) {
-    console.error(error);
+    console.error('ERROR EN RESPUESTA CATEGORIAS', error);
     return categorias;
   }
 }
@@ -41,13 +40,13 @@ async function categoryApi(idCategory) {
       .then(res => res.json())
       .catch(error => console.error('Error Categoria', error))
       .then(response => {
-            categorias={
-            _id: response._id,
-            code: response.code,
-            image: `${BASE_URL_IMG}${CATEGORIES_URL}${response.image}`,
-            name:response.labels[0].name,
-            description:response.labels[0].description,
-          }
+        categorias = {
+          _id: response._id,
+          code: response.code,
+          image: `${BASE_URL_IMG}${CATEGORIES_URL}${response.image}`,
+          name: response.labels[0].name,
+          description: response.labels[0].description,
+        };
       });
     return categorias;
   } catch (error) {
@@ -56,7 +55,4 @@ async function categoryApi(idCategory) {
   }
 }
 
-export {
-  categoriesApi,
-  categoryApi
-}
+export {categoriesApi, categoryApi};

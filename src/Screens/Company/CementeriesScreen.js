@@ -26,6 +26,7 @@ import {CementeryContext} from '@context/CementeryContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 import {CementeriesContext} from '@context/CementeriesContext';
+import {GlobalLanguageContext} from '@context/LanguageContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {CountryContext} from '@context/CountryContext';
 import {SedesContext} from '@context/SedesContext';
@@ -42,8 +43,10 @@ export default function CompanyScreen(props) {
   const {setrutaCart} = useContext(ShoppingCartContext);
   const [sede, setSede] = useContext(SedeContext);
   const {getCurrency} = useContext(CurrenciesContext);
-  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} =
-    useContext(RouteBackContext);
+  const [GlobalLanguage] = useContext(GlobalLanguageContext);
+  const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} = useContext(
+    RouteBackContext,
+  );
   const {Cementeries} = useContext(CementeriesContext);
   const {isLoadingSedes, getSedes} = useContext(SedesContext);
   const {country} = useContext(CountryContext);
@@ -76,7 +79,8 @@ export default function CompanyScreen(props) {
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: '50%',
-            }}>
+            }}
+          >
             <FAB
               loading
               color={color.PRINCIPALCOLOR}
@@ -148,7 +152,14 @@ export default function CompanyScreen(props) {
     setrutaCart(true);
     setCementery(cementery);
     getCurrency(cementery);
-    getSedes(cementery, setSede, goToScreen, routeName, country);
+    getSedes(
+      cementery,
+      setSede,
+      goToScreen,
+      routeName,
+      country,
+      GlobalLanguage,
+    );
     setRouteBackComp('Cementeries');
   }
 

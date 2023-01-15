@@ -347,7 +347,7 @@ export const ScreentagProvider = ({children}) => {
       }
     }
     if (pantalla.code == 'v23') {
-      console.log('V23 TAGS', etiquetas);
+      //console.log('V23 TAGS', etiquetas);
       if (etiquetas.length != 0) {
         setTags(prevState => ({
           ...prevState,
@@ -384,7 +384,8 @@ export const ScreentagProvider = ({children}) => {
       value={{
         tags,
         updateTags,
-      }}>
+      }}
+    >
       {children}
     </ScreentagContext.Provider>
   );
