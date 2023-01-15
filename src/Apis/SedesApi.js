@@ -39,6 +39,7 @@ async function sedesApi(cementery, country, language) {
 
 async function sedeApi(sedeID) {
   let url = `${BASE_URL}/affiliate.headquarters.show/${sedeID}`;
+  console.log('URL SEDE API', url);
   let sedes = {};
   try {
     await fetch(url, {

@@ -18,13 +18,17 @@ async function productbyCountry(country, lenguaje) {
             _id: producto._id,
             idCategory: producto.idCategory,
             idAffiliate: producto.idAffiliate,
-            idHeadquarter: producto.headquarters[0]._id,
+            idHeadquarter: producto.headquarters[0].idHeadquarter,
             code: producto.code,
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
             name: producto.labels[0].name,
             description: producto.labels[0].description,
             price: producto.headquarters[0].price,
-            currency: producto.headquarters[0].currency,
+            currency: producto.currency,
+            financing: producto.financing
+              ? producto.financing
+              : {number_of_installments: '0', percentage: '0'},
+            type: producto.type ? producto.type : '1',
           });
         });
       });
@@ -122,6 +126,10 @@ async function productbyHeadquarters(Sede, lenguaje) {
             price: producto.price,
             currency: producto.currency,
             ranking: producto.ranking,
+            financing: producto.financing
+              ? producto.financing
+              : {number_of_installments: '0', percentage: '0'},
+            type: producto.type ? producto.type : '1',
           });
         });
       });

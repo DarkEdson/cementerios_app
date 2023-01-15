@@ -109,7 +109,7 @@ export default function VistaProducto(props) {
     } else {
       setCantProductos(1);
     }
-    console.log('Producto escogido', Product);
+    console.log('ESTE PRODUCTO ESCOGIDO', Product);
     console.log(rutaCart);
     //Vacia Carrito si no viene de Afiliado
     if (rutaCart == false) {
