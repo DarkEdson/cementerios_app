@@ -112,18 +112,36 @@ export default function VistaPago(props) {
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
     ShoppingCart.forEach(item => {
       let precioItem;
-      if (item.price.includes(',')) {
-        precioItem = item.price.replace(/,/g, '');
+      if (item.type == '2') {
+        if (item.priceFinancing.includes(',')) {
+          precioItem = item.priceFinancing.replace(/,/g, '');
+        } else {
+          precioItem = item.priceFinancing;
+        }
       } else {
-        precioItem = item.price;
+        if (item.price.includes(',')) {
+          precioItem = item.price.replace(/,/g, '');
+        } else {
+          precioItem = item.price;
+        }
       }
+
       console.log('valor item', precioItem, parseFloat(precioItem));
       subtotal = subtotal + item.cantidad * parseFloat(precioItem);
-      sendProds.push({
-        idProduct: item._id,
-        quantity: item.cantidad,
-        paid_value: item.cantidad * parseFloat(precioItem),
-      });
+      if (item.type == '2') {
+        sendProds.push({
+          idProduct: item._id,
+          quantity: item.cantidad,
+          paid_value: item.cantidad * parseFloat(precioItem),
+          financing: item.financing,
+        });
+      } else {
+        sendProds.push({
+          idProduct: item._id,
+          quantity: item.cantidad,
+          paid_value: item.cantidad * parseFloat(precioItem),
+        });
+      }
     });
     if (promotionList.length >= 1) {
       if (validPromo.type == 'V' || validPromo.type == 'v') {
@@ -252,7 +270,11 @@ export default function VistaPago(props) {
                           titulo={prod.name}
                           descripcion={prod.description}
                           moneda={
-                            prod.moneda ? prod.moneda : prod.currency.symbol
+                            prod.moneda
+                              ? prod.moneda
+                              : prod.currency.symbol
+                              ? prod.currency.symbol
+                              : '$'
                           }
                           precio={
                             prod.price.includes(',')
@@ -708,7 +730,7 @@ export default function VistaPago(props) {
               entrega: descuento,
               total: subtotal - descuento,
             });
-            console.log('PRODS A ENVIAR', sendProds);
+            console.log('PRODS A ENVIAR BORRADOS DEBE SER 0', sendProds);
             setProductosCarrito(sendProds);
           },
         },

@@ -31,6 +31,7 @@ async function createRatingApi(califica) {
 
 async function getRatingsApi(lenguajeid, countryID) {
   let url = `${BASE_URL}/ranking.getrankings/${lenguajeid}/${countryID}`;
+  console.log('URL EN RATING API', url);
   let ratings = [];
   try {
     await fetch(url, {
@@ -53,10 +54,10 @@ async function getRatingsApi(lenguajeid, countryID) {
             price: prod.headquarters[0].price,
             currency: prod.headquarters[0].currency,
             ranking: prod.ranking,
-            financing: producto.financing
-              ? producto.financing
-              : {number_of_installments: '0', percentage: '0'},
-            type: producto.type ? producto.type : '1',
+            financing: prod.financing
+              ? prod.financing
+              : [{number_of_installments: '0', percentage: '0'}],
+            type: prod.type ? prod.type : '1',
           });
         });
       });

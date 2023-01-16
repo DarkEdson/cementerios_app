@@ -27,7 +27,7 @@ async function productbyCountry(country, lenguaje) {
             currency: producto.currency,
             financing: producto.financing
               ? producto.financing
-              : {number_of_installments: '0', percentage: '0'},
+              : [{number_of_installments: '0', percentage: '0'}],
             type: producto.type ? producto.type : '1',
           });
         });
@@ -102,7 +102,7 @@ async function productbyCategory(Category) {
 
 async function productbyHeadquarters(Sede, lenguaje) {
   let url = `${BASE_URL}/product.getprdsbyhq/${Sede._id}/${lenguaje._id}`;
-  console.log(url);
+  console.log('URL SEDE HQ', url);
   let productos = [];
   try {
     await fetch(url, {
@@ -128,7 +128,7 @@ async function productbyHeadquarters(Sede, lenguaje) {
             ranking: producto.ranking,
             financing: producto.financing
               ? producto.financing
-              : {number_of_installments: '0', percentage: '0'},
+              : [{number_of_installments: '0', percentage: '0'}],
             type: producto.type ? producto.type : '1',
           });
         });

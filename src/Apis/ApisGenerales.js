@@ -94,7 +94,7 @@ async function apiIdScreens() {
 
 async function apiPago(dataPay) {
   let url = `${BASE_URL}/payment.create`;
-  console.log(dataPay);
+  console.log('DATA ENVIADA A PAGO TARJETA', dataPay);
   let resp = {};
   try {
     let data = dataPay;
@@ -108,7 +108,7 @@ async function apiPago(dataPay) {
       .then(res => res.json())
       .catch(error => console.error('Error en RESPUESTA API PAGO', error))
       .then(response => {
-        console.log('dentro del API PAYMENT');
+        console.log('dentro del API PAYMENT TARJETA');
         console.log(response);
         resp = response;
       });

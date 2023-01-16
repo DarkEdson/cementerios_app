@@ -16,7 +16,7 @@ export const formatAmount = amount => {
     .replace(new RegExp(re, 'g'), '$&,');
 
   let arrayRes = result.split('.');
-  console.log(arrayRes, result);
+  console.log('FORMANT AMOUNT CHANGE', arrayRes, result);
   if (parseInt(arrayRes[arrayRes.length - 1]) >= 1) {
     return result;
   } else {

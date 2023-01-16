@@ -11,7 +11,8 @@ import {
   //Image,
   TouchableOpacity,
 } from 'react-native';
-import {Image, FAB} from '@rneui/themed';
+import {Image, FAB, CheckBox} from '@rneui/themed';
+import Snackbar from 'react-native-snackbar';
 import Carousel from 'react-native-reanimated-carousel';
 import ReadMore from 'react-native-read-more-text';
 import {useSharedValue} from 'react-native-reanimated';
@@ -27,7 +28,7 @@ import {
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import MyFloatButton from '@Components/common/MyFloatButton';
-import MyButton from '@Components/common/MyButton';
+import MyTextInput from '@Components/common/MyTextInput';
 import InformationIcon from '@Components/common/InformationIcon';
 import CustomModal from '@Components/CustomModal/CustomModal';
 import RankingModal from '@Components/RankingModal/RankingModal';
@@ -91,8 +92,13 @@ export default function VistaProducto(props) {
   const [visible, setIsVisible] = useState(false);
   const [ProductImages, setProductImages] = useState([]);
   const [ProductVideos, setProductVideos] = useState([]);
+  const [financing, setFinancing] = useState([
+    {number_of_installments: '0', percentage: '100'},
+  ]);
   const {Category} = useContext(CategoryContext);
-
+  const [checked, setChecked] = useState(1);
+  const [cuotas, setCuotas] = useState(0);
+  const [porcent, setPorcent] = useState(1);
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
@@ -110,6 +116,17 @@ export default function VistaProducto(props) {
       setCantProductos(1);
     }
     console.log('ESTE PRODUCTO ESCOGIDO', Product);
+    if (Product.type == '2') {
+      let financingGroup = financing;
+      console.log('FINANCIAMIENTO A VER', financing, Product.financing);
+      if (financingGroup.includes(Product.financing)) {
+        console.log('existe');
+      } else {
+        financingGroup.push(Product.financing);
+      }
+      console.log('GRUPO DE FINANCIERO', financingGroup);
+      setFinancing(financingGroup);
+    }
     console.log(rutaCart);
     //Vacia Carrito si no viene de Afiliado
     if (rutaCart == false) {
@@ -247,14 +264,29 @@ export default function VistaProducto(props) {
                 image="dollar-sign"
                 //Product.price.includes(',') ? formatAmount(parseFloat(Product.price.replace(/,/g, ''))) : formatAmount(parseFloat(Product.price))
                 titulo={
-                  Product.currency.symbol +
-                  '.' +
-                  (Product.price.includes(',')
-                    ? formatAmount(parseFloat(Product.price.replace(/,/g, '')))
-                    : formatAmount(parseFloat(Product.price)))
+                  Product.type == '2'
+                    ? Product.currency.symbol +
+                      '.' +
+                      (Product.price.includes(',')
+                        ? formatAmount(
+                            parseFloat(Product.price.replace(/,/g, '')) *
+                              porcent,
+                          )
+                        : formatAmount(parseFloat(Product.price) * porcent))
+                    : Product.currency.symbol +
+                      '.' +
+                      (Product.price.includes(',')
+                        ? formatAmount(
+                            parseFloat(Product.price.replace(/,/g, '')),
+                          )
+                        : formatAmount(parseFloat(Product.price)))
                 }
                 subtitulo={
-                  tags.ProductDetailScreen.precio != ''
+                  Product.type == '2'
+                    ? tags.ProductDetailScreen.precio != ''
+                      ? tags.ProductDetailScreen.precio + ' Financiado'
+                      : 'Precio Financiado'
+                    : tags.ProductDetailScreen.precio != ''
                     ? tags.ProductDetailScreen.precio
                     : 'Precio'
                 }
@@ -354,6 +386,68 @@ export default function VistaProducto(props) {
                   onRequestClose={() => setIsVisible(false)}
                 />
               ) : null}
+              {Product.type == '2' ? (
+                <View>
+                  <Text style={styles.titulo2}>Financiamiento</Text>
+                  {financing.map((financiamiento, i) => {
+                    return (
+                      <CheckBox
+                        key={i}
+                        title={
+                          `${financiamiento.percentage} % -> ` +
+                          (tags.ProductDetailScreen.precio != ''
+                            ? tags.ProductDetailScreen.precio + ': '
+                            : 'Precio: ') +
+                          (Product.currency.symbol +
+                            '.' +
+                            (Product.price.includes(',')
+                              ? formatAmount(
+                                  parseFloat(Product.price.replace(/,/g, '')) *
+                                    (parseInt(financiamiento.percentage) / 100),
+                                )
+                              : formatAmount(
+                                  parseFloat(Product.price) *
+                                    (parseInt(financiamiento.percentage) / 100),
+                                )))
+                        }
+                        containerStyle={styles.container}
+                        checkedIcon="dot-circle-o"
+                        uncheckedIcon="circle-o"
+                        checked={checked === i + 1}
+                        onPress={() => {
+                          // setsede(sede);
+                          if (checked == 1) {
+                            setCuotas(financiamiento.number_of_installments);
+                          }
+                          setPorcent(parseInt(financiamiento.percentage) / 100);
+                          setChecked(i + 1);
+                        }}
+                      />
+                    );
+                  })}
+                  {checked == 2 ? (
+                    <MyTextInput
+                      keyboardType="number"
+                      placeholder="cuotas"
+                      image="contrast"
+                      value={cuotas}
+                      onChangeText={cuotas => {
+                        if (
+                          cuotas <= Product.financing.number_of_installments
+                        ) {
+                          setCuotas(cuotas);
+                        } else {
+                          Snackbar.show({
+                            text: `Cantidad maxima de cuotas es: ${Product.financing.number_of_installments}`,
+                            duration: Snackbar.LENGTH_LONG,
+                          });
+                          setCuotas(Product.financing.number_of_installments);
+                        }
+                      }}
+                    />
+                  ) : null}
+                </View>
+              ) : null}
               <View style={styles.numCant}>
                 <TouchableOpacity
                   style={styles.btnCant}
@@ -429,11 +523,42 @@ export default function VistaProducto(props) {
   }
 
   function itemToCart(producto, routeName) {
-    let item = {
-      ...producto,
-      cantidad: cantProductos,
-      moneda: producto.currency.symbol,
-    };
+    let item;
+    if (producto.type == '2' && porcent < 1) {
+      item = {
+        ...producto,
+        cantidad: cantProductos,
+        moneda: producto.currency.symbol,
+        financing: {
+          number_of_installments: `${cuotas}`,
+          percentage: `${producto.financing.percentage}`,
+        },
+        priceFinancing: Product.price.includes(',')
+          ? formatAmount(
+              parseFloat(Product.price.replace(/,/g, '')) *
+                (parseInt(producto.financing.percentage) / 100),
+            )
+          : formatAmount(
+              parseFloat(Product.price) *
+                (parseInt(producto.financing.percentage) / 100),
+            ),
+      };
+    } else if (producto.type == '2' && porcent == 1) {
+      item = {
+        ...producto,
+        cantidad: cantProductos,
+        moneda: producto.currency.symbol,
+        type: '1',
+      };
+      delete item.financing;
+    } else {
+      item = {
+        ...producto,
+        cantidad: cantProductos,
+        moneda: producto.currency.symbol,
+      };
+    }
+
     console.log(item);
     if (rutaCart) {
       setafiliateCart(cementery);
