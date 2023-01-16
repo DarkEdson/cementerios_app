@@ -114,14 +114,16 @@ export const ScreentagProvider = ({children}) => {
       }
     }
     if (pantalla.code == 'v08') {
+      console.log('ETIQUETAS PROD DETAIL', etiquetas);
       if (etiquetas.length != 0) {
         setTags(prevState => ({
           ...prevState,
           ProductDetailScreen: {
             btnagregar: etiquetas[0].description,
             detalle: etiquetas[1].description,
-            precio: etiquetas[2].description,
-            sede: etiquetas[3].description,
+            financing: etiquetas[2].description,
+            precio: etiquetas[3].description,
+            sede: etiquetas[4].description,
           },
         }));
       }

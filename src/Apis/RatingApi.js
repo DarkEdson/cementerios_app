@@ -104,6 +104,7 @@ async function getRatingCommentsApi(lenguajeid, countryID, productID) {
 
 async function findProductSell(lenguajeid, userID, productID) {
   let url = `${BASE_URL}/sale.getprodbyidanduser/${lenguajeid}/${productID}/${userID}`;
+  console.log('URL de PRODUCTO VENDIDO EN RANKING', url);
   let sellprod = [];
   try {
     await fetch(url, {

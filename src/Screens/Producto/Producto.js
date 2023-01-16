@@ -62,9 +62,14 @@ const PAGE_WIDTH = Dimensions.get('screen').width;
 export default function VistaProducto(props) {
   const {tags} = useContext(ScreentagContext);
   const [loginUser] = useContext(UsuarioContext);
-  const {isLoadingRatings, createRatings, ratings, getRatings} = useContext(
-    RatingsContext,
-  );
+  const {
+    isLoadingRatings,
+    createRatings,
+    ratings,
+    getRatings,
+    findProdSell,
+    getRatingsComments,
+  } = useContext(RatingsContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const {country} = useContext(CountryContext);
   const [Product, setProduct] = useContext(ProductContext);
@@ -110,6 +115,13 @@ export default function VistaProducto(props) {
   };
   // Cargar informacion de la vista
   useEffect(() => {
+    console.log('Producto?', Product);
+    let respuestaProductoVendido = findProdSell(
+      GlobalLanguage._id,
+      loginUser.usuario._id,
+      Product._id,
+    );
+    console.log('SE VENDIO EL PRODUCTO?', respuestaProductoVendido);
     console.log('ITEM EDITABLE?', editable);
     if (editable) {
       setCantProductos(Product.cantidad);
@@ -285,7 +297,11 @@ export default function VistaProducto(props) {
                 subtitulo={
                   Product.type == '2'
                     ? tags.ProductDetailScreen.precio != ''
-                      ? tags.ProductDetailScreen.precio + ' Financiado'
+                      ? tags.ProductDetailScreen.precio +
+                        ' ' +
+                        (tags.ProductDetailScreen.financing != ''
+                          ? tags.ProductDetailScreen.financing
+                          : ' Financiado')
                       : 'Precio Financiado'
                     : tags.ProductDetailScreen.precio != ''
                     ? tags.ProductDetailScreen.precio
@@ -389,7 +405,11 @@ export default function VistaProducto(props) {
               ) : null}
               {Product.type == '2' ? (
                 <View>
-                  <Text style={styles.titulo2}>Financiamiento</Text>
+                  <Text style={styles.titulo2}>
+                    {tags.ProductDetailScreen.financing != ''
+                      ? tags.ProductDetailScreen.financing
+                      : 'FINANCIAMIENTO'}
+                  </Text>
                   {financing.map((financiamiento, i) => {
                     return (
                       <CheckBox

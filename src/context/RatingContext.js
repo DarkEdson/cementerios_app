@@ -42,9 +42,9 @@ export const RatingsProvider = ({children}) => {
     });
   };
 
-  const findProdSell = async (Idlanguaje, countryID, userID) => {
+  const findProdSell = async (lenguajeid, userID, productID) => {
     setisLoadingRatings(true);
-    findProductSell(Idlanguaje, countryID, userID).then(res => {
+    findProductSell(lenguajeid, userID, productID).then(res => {
       console.log('RATINGS COMMENTS', res);
       if (res.length >= 0) {
         setproductoVendido(true);
