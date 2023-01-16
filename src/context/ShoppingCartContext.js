@@ -58,17 +58,39 @@ function ShoppingCartProvider({children}) {
       if (!existe) {
         actualCart.push(item);
       } else {
-        actualCart.push({
-          _id: itemRepetido._id,
-          cantidad: itemRepetido.cantidad + item.cantidad,
-          code: itemRepetido.code,
-          description: itemRepetido.description,
-          idCategory: itemRepetido.idCategory,
-          idHeadquarter: itemRepetido.idHeadquarter,
-          name: itemRepetido.name,
-          price: itemRepetido.price,
-          principalImage: itemRepetido.principalImage,
-        });
+        if (itemRepetido.type == '2') {
+          actualCart.push({
+            _id: itemRepetido._id,
+            cantidad: itemRepetido.cantidad + item.cantidad,
+            currency: itemRepetido.currency,
+            code: itemRepetido.code,
+            description: itemRepetido.description,
+            idCategory: itemRepetido.idCategory,
+            idHeadquarter: itemRepetido.idHeadquarter,
+            financing: itemRepetido.financing,
+            priceFinancing: itemRepetido.priceFinancing,
+            name: itemRepetido.name,
+            price: itemRepetido.price,
+            principalImage: itemRepetido.principalImage,
+            ranking: itemRepetido.ranking,
+            type: itemRepetido.type,
+          });
+        } else {
+          actualCart.push({
+            _id: itemRepetido._id,
+            cantidad: itemRepetido.cantidad + item.cantidad,
+            currency: itemRepetido.currency,
+            code: itemRepetido.code,
+            description: itemRepetido.description,
+            idCategory: itemRepetido.idCategory,
+            idHeadquarter: itemRepetido.idHeadquarter,
+            name: itemRepetido.name,
+            price: itemRepetido.price,
+            principalImage: itemRepetido.principalImage,
+            ranking: itemRepetido.ranking,
+            type: itemRepetido.type,
+          });
+        }
         console.log('CARRITO TRAS PUSH', actualCart);
       }
     } else {
@@ -84,11 +106,13 @@ function ShoppingCartProvider({children}) {
   function updateItemtoCart(item) {
     existe = false;
     let itemRepetido;
+    console.log('SHOPPING CART EN UPDATE', ShoppingCart);
     actualCart = ShoppingCart;
     if (actualCart.length >= 1) {
       actualCart.map(prod => {
         if (prod._id === item._id) {
           itemRepetido = prod;
+          console.log('ESTO ES TRUE en repetido', prod, item);
           actualCart = actualCart.filter(item => item !== prod);
           console.log('CARRO TRAS FILTRO', actualCart);
           existe = true;
@@ -101,29 +125,52 @@ function ShoppingCartProvider({children}) {
       if (!existe) {
         actualCart.push(item);
       } else {
-        actualCart.push({
-          _id: itemRepetido._id,
-          cantidad: item.cantidad,
-          code: itemRepetido.code,
-          description: itemRepetido.description,
-          idCategory: itemRepetido.idCategory,
-          idHeadquarter: itemRepetido.idHeadquarter,
-          name: itemRepetido.name,
-          price: itemRepetido.price,
-          principalImage: itemRepetido.principalImage,
-        });
+        if (itemRepetido.type == '2') {
+          actualCart.push({
+            _id: itemRepetido._id,
+            cantidad: item.cantidad,
+            currency: itemRepetido.currency,
+            financing: itemRepetido.financing,
+            priceFinancing: itemRepetido.priceFinancing,
+            code: itemRepetido.code,
+            description: itemRepetido.description,
+            idCategory: itemRepetido.idCategory,
+            idHeadquarter: itemRepetido.idHeadquarter,
+            name: itemRepetido.name,
+            price: itemRepetido.price,
+            principalImage: itemRepetido.principalImage,
+            ranking: itemRepetido.ranking,
+            type: itemRepetido.type,
+          });
+        } else {
+          actualCart.push({
+            _id: itemRepetido._id,
+            cantidad: item.cantidad,
+            currency: itemRepetido.currency,
+            code: itemRepetido.code,
+            description: itemRepetido.description,
+            idCategory: itemRepetido.idCategory,
+            idHeadquarter: itemRepetido.idHeadquarter,
+            name: itemRepetido.name,
+            price: itemRepetido.price,
+            principalImage: itemRepetido.principalImage,
+            ranking: itemRepetido.ranking,
+            type: itemRepetido.type,
+          });
+        }
+
         console.log('CARRITO TRAS PUSH', actualCart);
       }
     } else {
       actualCart.push(item);
     }
-    console.log('Carrito Actual', actualCart);
-    console.log('item a agregar', item);
+    console.log('Carrito Actual en UPDATE', actualCart);
+    console.log('item a agregar en UPDATE', item);
     setcarrito(true);
     setShoppingCart(actualCart);
   }
 
-  function removeItemtoCart(value) {
+  function removeItemtoCart(value, goToScreen) {
     existe = false;
     actualCart = ShoppingCart;
 
@@ -134,7 +181,9 @@ function ShoppingCartProvider({children}) {
       setShoppingCart(actualCart);
       if (actualCart.length == 0) {
         console.log('carrito vacio');
+        setShoppingCart([]);
         setcarrito(false);
+        goToScreen('Initial');
       }
     } else {
       console.log('carrito vacio');

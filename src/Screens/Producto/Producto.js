@@ -110,6 +110,7 @@ export default function VistaProducto(props) {
   };
   // Cargar informacion de la vista
   useEffect(() => {
+    console.log('ITEM EDITABLE?', editable);
     if (editable) {
       setCantProductos(Product.cantidad);
     } else {
@@ -557,9 +558,10 @@ export default function VistaProducto(props) {
         cantidad: cantProductos,
         moneda: producto.currency.symbol,
       };
+      delete item.financing;
     }
 
-    console.log(item);
+    console.log('ITEM A AGREGAR O EDITAR EN EL CARRITO', item);
     if (rutaCart) {
       setafiliateCart(cementery);
     } else {
@@ -569,6 +571,7 @@ export default function VistaProducto(props) {
         }
       });
     }
+    console.log('SERA EDITADO?', editable);
     if (editable) {
       updateItemtoCart(item);
     } else {

@@ -703,7 +703,7 @@ export default function VistaPago(props) {
               ? tags.closeSessionScreen.btnsi
               : 'Si',
           onPress: () => {
-            removeItemtoCart(item);
+            removeItemtoCart(item, goToScreen);
             let subtotal = 0;
             let descuento = 0;
             let sendProds = [];
@@ -723,6 +723,12 @@ export default function VistaPago(props) {
                   paid_value: item.cantidad * parseFloat(precioItem),
                 });
               });
+            }
+            console.log('CARRITO TRAS BORRAR ITEM', ShoppingCart);
+            if (ShoppingCart.length == 0) {
+              subtotal = 0;
+              descuento = 0;
+              sendProds = [];
             }
             // Calcular valores de la vista
             setValoresVenta({
