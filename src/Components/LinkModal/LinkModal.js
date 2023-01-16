@@ -152,7 +152,7 @@ const LinkModal = props => {
         ],
       );
     } else {
-      mensajeSnack('Correo Invalido');
+      mensajeSnack(`${props.tags.dialogAlertsScreen.v}`);
     }
   }
 
