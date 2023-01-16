@@ -447,25 +447,28 @@ export default function VistaProducto(props) {
                     );
                   })}
                   {checked == 2 ? (
-                    <MyTextInput
-                      keyboardType="number"
-                      placeholder="cuotas"
-                      image="contrast"
-                      value={cuotas}
-                      onChangeText={cuotas => {
-                        if (
-                          cuotas <= Product.financing.number_of_installments
-                        ) {
-                          setCuotas(cuotas);
-                        } else {
-                          Snackbar.show({
-                            text: `Cantidad maxima de cuotas es: ${Product.financing.number_of_installments}`,
-                            duration: Snackbar.LENGTH_LONG,
-                          });
-                          setCuotas(Product.financing.number_of_installments);
-                        }
-                      }}
-                    />
+                    <View>
+                      <Text style={styles.promoText}>Cuotas</Text>
+                      <MyTextInput
+                        keyboardType="number"
+                        placeholder="cuotas"
+                        image="contrast"
+                        value={cuotas}
+                        onChangeText={cuotas => {
+                          if (
+                            cuotas <= Product.financing.number_of_installments
+                          ) {
+                            setCuotas(cuotas);
+                          } else {
+                            Snackbar.show({
+                              text: `Cantidad maxima de cuotas es: ${Product.financing.number_of_installments}`,
+                              duration: Snackbar.LENGTH_LONG,
+                            });
+                            setCuotas(Product.financing.number_of_installments);
+                          }
+                        }}
+                      />
+                    </View>
                   ) : null}
                 </View>
               ) : null}
