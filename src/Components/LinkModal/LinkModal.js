@@ -138,15 +138,19 @@ const LinkModal = props => {
       console.log('Info a Enviar', sendInfo);
       props.generaLink(sendInfo);
       toggleDialog();
-      Alert.alert('Link Alert', `Link Enviado a ${data.email}, favor revisar`, [
-        {
-          text: 'Ok',
-          onPress: () => {
-            toggleDialog();
+      Alert.alert(
+        'Link Alert',
+        `${props.tags.dialogAlertsScreen.t} ${data.email}, ${props.tags.dialogAlertsScreen.u}`,
+        [
+          {
+            text: 'Ok',
+            onPress: () => {
+              toggleDialog();
+            },
+            style: 'cancel',
           },
-          style: 'cancel',
-        },
-      ]);
+        ],
+      );
     } else {
       mensajeSnack('Correo Invalido');
     }
