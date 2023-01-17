@@ -455,10 +455,29 @@ export default function VistaProducto(props) {
                         image="contrast"
                         value={cuotas}
                         onChangeText={cuotas => {
+                          console.log(
+                            cuotas,
+                            parseInt(Product.financing.number_of_installments),
+                          );
                           if (
-                            cuotas <= Product.financing.number_of_installments
+                            cuotas <=
+                            parseInt(Product.financing.number_of_installments)
                           ) {
                             setCuotas(cuotas);
+                          } else {
+                            Snackbar.show({
+                              text: `Cantidad maxima de cuotas es: ${Product.financing.number_of_installments}`,
+                              duration: Snackbar.LENGTH_LONG,
+                            });
+                            setCuotas(Product.financing.number_of_installments);
+                          }
+                        }}
+                        onEndEditing={cuotas => {
+                          if (
+                            parseInt(cuotas.nativeEvent.text) <=
+                            parseInt(Product.financing.number_of_installments)
+                          ) {
+                            setCuotas(cuotas.nativeEvent.text);
                           } else {
                             Snackbar.show({
                               text: `Cantidad maxima de cuotas es: ${Product.financing.number_of_installments}`,
