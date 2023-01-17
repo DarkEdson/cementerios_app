@@ -450,7 +450,7 @@ export default function VistaProducto(props) {
                     <View>
                       <Text style={styles.promoText}>Cuotas</Text>
                       <MyTextInput
-                        keyboardType={null}
+                        keyboardType="numeric"
                         placeholder="cuotas"
                         image="contrast"
                         value={cuotas}
