@@ -446,51 +446,49 @@ export default function VistaPago(props) {
               transparent
             >
               <SafeAreaView style={mainStyles.containers}>
-                <View style={styles.webViewCon}>
-                  <View style={styles.wbHead}>
-                    <TouchableOpacity
-                      style={{padding: 13}}
-                      onPress={() => {
-                        confirmarPaypal();
-                      }}
-                    >
-                      <Feather name={'x'} size={24} />
-                    </TouchableOpacity>
-                    <Text
-                      style={{
-                        flex: 1,
-                        textAlign: 'center',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#00457C',
-                      }}
-                    >
-                      PayPal GateWay
-                    </Text>
-                    <View style={{padding: 13}}>
-                      <ActivityIndicator size={24} color={'#00457C'} />
-                    </View>
+                <View style={styles.wbHead}>
+                  <TouchableOpacity
+                    style={{padding: 13}}
+                    onPress={() => {
+                      confirmarPaypal();
+                    }}
+                  >
+                    <Feather name={'x'} size={24} />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      flex: 1,
+                      textAlign: 'center',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#00457C',
+                    }}
+                  >
+                    PayPal GateWay
+                  </Text>
+                  <View style={{padding: 13}}>
+                    <ActivityIndicator size={24} color={'#00457C'} />
                   </View>
-                  <WebView
-                    source={{uri: linkPago}}
-                    style={{flex: 1}}
-                    onMessage={onMessage}
-                    onLoadStart={() => {
-                      setProg(true);
-                      setProgClr('#000');
-                    }}
-                    onLoadProgress={() => {
-                      setProg(true);
-                      setProgClr('#00457C');
-                    }}
-                    onLoadEnd={() => {
-                      setProg(false);
-                    }}
-                    onLoad={() => {
-                      setProg(false);
-                    }}
-                  />
                 </View>
+                <WebView
+                  source={{uri: linkPago}}
+                  style={{flex: 1}}
+                  onMessage={onMessage}
+                  onLoadStart={() => {
+                    setProg(true);
+                    setProgClr('#000');
+                  }}
+                  onLoadProgress={() => {
+                    setProg(true);
+                    setProgClr('#00457C');
+                  }}
+                  onLoadEnd={() => {
+                    setProg(false);
+                  }}
+                  onLoad={() => {
+                    setProg(false);
+                  }}
+                />
               </SafeAreaView>
             </Modal>
           ) : null}
