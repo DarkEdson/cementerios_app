@@ -272,12 +272,20 @@ export default function VistaPago(props) {
                           moneda={
                             prod.moneda
                               ? prod.moneda
-                              : prod.currency.symbol
-                              ? prod.currency.symbol
+                              : prod.currency.code
+                              ? prod.currency.code
                               : '$'
                           }
                           precio={
-                            prod.price.includes(',')
+                            prod.type == '2'
+                              ? prod.priceFinancing.includes(',')
+                                ? formatAmount(
+                                    parseFloat(
+                                      prod.priceFinancing.replace(/,/g, ''),
+                                    ),
+                                  )
+                                : formatAmount(parseFloat(prod.priceFinancing))
+                              : prod.price.includes(',')
                               ? formatAmount(
                                   parseFloat(prod.price.replace(/,/g, '')),
                                 )
@@ -299,7 +307,7 @@ export default function VistaPago(props) {
                 </Text>
                 <Text style={styles.valorCuenta}>
                   {' '}
-                  {Currency.symbol + '.' + valoresVenta.subTotal}
+                  {Currency.code + '.' + valoresVenta.subTotal}
                 </Text>
               </View>
               <View style={styles.espacio}>
@@ -309,7 +317,7 @@ export default function VistaPago(props) {
                     : 'Entrega'}
                 </Text>
                 <Text style={styles.valorCuenta}>
-                  {Currency.symbol + '.' + valoresVenta.entrega}
+                  {Currency.code + '.' + valoresVenta.entrega}
                 </Text>
               </View>
               <View style={styles.espacio2}>
@@ -319,7 +327,7 @@ export default function VistaPago(props) {
                     : 'Total (incl. IVA)'}
                 </Text>
                 <Text style={styles.valorCuenta}>
-                  {Currency.symbol + '.' + valoresVenta.total}
+                  {Currency.code + '.' + valoresVenta.total}
                 </Text>
               </View>
               <View style={styles.espacio}>
@@ -382,13 +390,13 @@ export default function VistaPago(props) {
                     tags.PaymentScreen.pagar != ''
                       ? tags.PaymentScreen.pagar +
                         ' (' +
-                        Currency.symbol +
+                        Currency.code +
                         '. ' +
                         valoresVenta.total +
                         ')'
                       : 'Pagar' +
                         ' (' +
-                        Currency.symbol +
+                        Currency.code +
                         '. ' +
                         valoresVenta.total +
                         ')'
@@ -408,13 +416,13 @@ export default function VistaPago(props) {
                           ? tags.PaymentScreen.pagar +
                             ' Link' +
                             ' (' +
-                            Currency.symbol +
+                            Currency.code +
                             '. ' +
                             valoresVenta.total +
                             ')'
                           : 'Pagar' +
                             ' (' +
-                            Currency.symbol +
+                            Currency.code +
                             '. ' +
                             valoresVenta.total +
                             ')'
@@ -774,9 +782,9 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   productos: {
-    width: '90%',
-    marginLeft: '5%',
-    marginRight: '5%',
+    width: '97%',
+    marginLeft: '4%',
+    marginRight: '4%',
     marginBottom: 30,
     borderBottomWidth: 1,
     paddingBottom: 40,
