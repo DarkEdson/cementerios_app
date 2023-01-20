@@ -317,7 +317,7 @@ export default function CompanyScreen(props) {
                       urlImagen={product.principalImage}
                       titulo={product.name}
                       descripcion={product.description}
-                      moneda={product.currency.symbol}
+                      moneda={product.currency.code}
                       precio={product.price}
                     />
                   );
@@ -336,7 +336,7 @@ export default function CompanyScreen(props) {
                     urlImagen={product.principalImage}
                     titulo={product.name}
                     descripcion={product.description}
-                    moneda={product.currency.symbol}
+                    moneda={product.currency.code}
                     precio={
                       product.price.includes(',')
                         ? formatAmount(

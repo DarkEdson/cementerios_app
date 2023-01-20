@@ -26,7 +26,17 @@ export default function CardProductoVenta(props) {
           </Text>
         </View>
         <View style={styles.left}>
-          <Text style={styles.precio}>{props.moneda + '.' + props.precio}</Text>
+          <Text
+            style={
+              props.precio.length <= 8
+                ? styles.precio
+                : props.precio.length >= 10
+                ? styles.precio100k
+                : styles.precio10k
+            }
+          >
+            {props.moneda + '.' + props.precio}
+          </Text>
           <Text style={styles.cantidad}>x{props.cantidad}</Text>
         </View>
       </View>
@@ -57,7 +67,7 @@ const styles = StyleSheet.create({
     //borderColor: 'red',
     // borderWidth: 1,
     alignItems: 'flex-start',
-    width: '23%',
+    width: '29%',
     height: '80%',
     paddingTop: 15,
     flexDirection: 'column',
@@ -93,6 +103,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'skyblue',
     fontSize: 13,
+  },
+  precio10k: {
+    fontWeight: 'bold',
+    color: 'skyblue',
+    fontSize: 12,
+  },
+  precio100k: {
+    fontWeight: 'bold',
+    color: 'skyblue',
+    fontSize: 11,
   },
   imgPromocion: {
     height: '100%',

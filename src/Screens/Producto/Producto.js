@@ -278,7 +278,7 @@ export default function VistaProducto(props) {
                 //Product.price.includes(',') ? formatAmount(parseFloat(Product.price.replace(/,/g, ''))) : formatAmount(parseFloat(Product.price))
                 titulo={
                   Product.type == '2'
-                    ? Product.currency.symbol +
+                    ? Product.currency.code +
                       '.' +
                       (Product.price.includes(',')
                         ? formatAmount(
@@ -286,7 +286,7 @@ export default function VistaProducto(props) {
                               porcent,
                           )
                         : formatAmount(parseFloat(Product.price) * porcent))
-                    : Product.currency.symbol +
+                    : Product.currency.code +
                       '.' +
                       (Product.price.includes(',')
                         ? formatAmount(
@@ -419,7 +419,7 @@ export default function VistaProducto(props) {
                           (tags.ProductDetailScreen.precio != ''
                             ? tags.ProductDetailScreen.precio + ': '
                             : 'Precio: ') +
-                          (Product.currency.symbol +
+                          (Product.currency.code +
                             '.' +
                             (Product.price.includes(',')
                               ? formatAmount(
@@ -571,7 +571,7 @@ export default function VistaProducto(props) {
       item = {
         ...producto,
         cantidad: cantProductos,
-        moneda: producto.currency.symbol,
+        moneda: producto.currency.code,
         financing: {
           number_of_installments: `${cuotas}`,
           percentage: `${producto.financing.percentage}`,
@@ -590,7 +590,7 @@ export default function VistaProducto(props) {
       item = {
         ...producto,
         cantidad: cantProductos,
-        moneda: producto.currency.symbol,
+        moneda: producto.currency.code,
         type: '1',
       };
       delete item.financing;
@@ -598,7 +598,7 @@ export default function VistaProducto(props) {
       item = {
         ...producto,
         cantidad: cantProductos,
-        moneda: producto.currency.symbol,
+        moneda: producto.currency.code,
       };
       delete item.financing;
     }
