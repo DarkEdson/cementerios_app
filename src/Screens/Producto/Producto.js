@@ -128,7 +128,7 @@ export default function VistaProducto(props) {
     } else {
       setCantProductos(1);
     }
-    console.log('ESTE PRODUCTO ESCOGIDO', Product);
+    console.log('ESTE PRODUCTO ESCOGIDO', Product, 'CON el PRECIO', Product.price);
     if (Product.type == '2') {
       let financingGroup = financing;
       console.log('FINANCIAMIENTO A VER', financing, Product.financing);
@@ -440,6 +440,7 @@ export default function VistaProducto(props) {
                           if (checked == 1) {
                             setCuotas(financiamiento.number_of_installments);
                           }
+                          console.log('ESTE PORCENTAJE',parseInt(financiamiento.percentage) / 100)
                           setPorcent(parseInt(financiamiento.percentage) / 100);
                           setChecked(i + 1);
                         }}
