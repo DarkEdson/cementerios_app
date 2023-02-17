@@ -1,8 +1,8 @@
 //import liraries
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {View, Text, StyleSheet, TextInput, Alert} from 'react-native';
 import color from '@styles/colors';
-import { AirbnbRating, Dialog, CheckBox } from '@rneui/themed';
+import {AirbnbRating, Dialog, CheckBox} from '@rneui/themed';
 import Snackbar from 'react-native-snackbar';
 import MyButton from '@Components/common/MyButton';
 import MyTextInput from '@Components/common/MyTextInput';
@@ -23,6 +23,7 @@ const LinkModal = props => {
     lastname: '',
     email: '',
     phone: '',
+    nit: '',
   });
 
   const toggleDialog = () => {
@@ -33,7 +34,7 @@ const LinkModal = props => {
   useEffect(() => {
     settags(props.tags);
     setVisible(props.customModal);
-    return () => { };
+    return () => {};
   }, []);
 
   return (
@@ -52,7 +53,7 @@ const LinkModal = props => {
             : 'Nombres'
         }
         value={data.name}
-        onChangeText={nombre => setData({ ...data, name: nombre })}
+        onChangeText={nombre => setData({...data, name: nombre})}
         image="account-circle"
       />
       <Text style={styles.titleLabel}>
@@ -63,7 +64,7 @@ const LinkModal = props => {
       <MyTextInput
         keyboardType={null}
         value={data.lastname}
-        onChangeText={apellido => setData({ ...data, lastname: apellido })}
+        onChangeText={apellido => setData({...data, lastname: apellido})}
         placeholder={
           props.tags.EditUserScreen.lastname != ''
             ? props.tags.EditUserScreen.lastname
@@ -79,7 +80,7 @@ const LinkModal = props => {
       <MyTextInput
         keyboardType={null}
         value={data.email}
-        onChangeText={correo => setData({ ...data, email: correo })}
+        onChangeText={correo => setData({...data, email: correo})}
         placeholder={
           props.tags.EditUserScreen.email != ''
             ? props.tags.EditUserScreen.email
@@ -87,21 +88,28 @@ const LinkModal = props => {
         }
         image="email"
       />
-      <Text style={styles.titleLabel}>{
-        props.tags.EditUserScreen.phone != ''
+      <Text style={styles.titleLabel}>
+        {props.tags.EditUserScreen.phone != ''
           ? props.tags.EditUserScreen.phone
-          : 'phone'
-      }</Text>
+          : 'phone'}
+      </Text>
       <MyTextInput
         keyboardType={null}
         value={data.phone}
-        onChangeText={tel => setData({ ...data, phone: tel })}
+        onChangeText={tel => setData({...data, phone: tel})}
         placeholder={
           props.tags.EditUserScreen.phone != ''
             ? props.tags.EditUserScreen.phone
             : 'phone'
         }
         image="card-account-details"
+      />
+      <MyTextInput
+        keyboardType={null}
+        value={data.nit}
+        onChangeText={nitClient => setData({...data, nit: nitClient})}
+        placeholder={'NIT'}
+        image="identifier"
       />
       <Dialog.Actions>
         <Dialog.Button
@@ -209,7 +217,7 @@ const styles = StyleSheet.create({
     width: '10%',
     height: '19.2%',
   },
-  container: { backgroundColor: 'white', borderWidth: 0 },
+  container: {backgroundColor: 'white', borderWidth: 0},
   btnIconBack2: {
     alignItems: 'center',
     width: '10%',
