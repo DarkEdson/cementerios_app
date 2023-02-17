@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {CheckBox} from '@rneui/themed';
+import DatePicker from 'react-native-date-picker';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
@@ -18,6 +19,7 @@ import color from '@styles/colors';
 import MyTextInput from '@Components/common/MyTextInput';
 import ToolBar from '@Components/common/toolBar';
 import MyButton from '@Components/common/MyButton';
+import DateButton from '@Components/common/DateButton';
 //Contextos
 import {RegisterContext} from '@context/RegisterContext';
 import {AuthContext} from '@context/AuthContext';
@@ -35,11 +37,15 @@ export default function RegistroScreen(props) {
   const getInitialData = async () => {};
 
   const [TC, setTC] = useState(false);
+  const [birthday, setBirthday] = useState(new Date());
+  const [openDate, setOpenDate] = useState(false);
   const [data, setData] = useState({
     name: '',
     lastname: '',
     paypal_id: '',
-    phone: ''
+    phone: '',
+    nit: '',
+    birthdayDate: '',
   });
 
   useEffect(() => {
@@ -60,68 +66,88 @@ export default function RegistroScreen(props) {
   }, []);
 
   return (
-    <SafeAreaView style={mainStyles.containers} > 
-    <ScrollView
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="always"
-      style={{backgroundColor: color.WHITE}}>
-      <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
-      <ToolBar
-        titulo={
-          tags.registerAddScreen.completa != ''
-            ? tags.registerAddScreen.completa
-            : 'Completa tus datos'
-        }
-        onPressLeft={() => goToScreen('Registro')}
-        iconLeft={true}
-      />
-      <View style={mainStyles.container}>
-        <MyTextInput
-          keyboardType={null}
-          placeholder={
-            tags.registerAddScreen.inputnombres != ''
-              ? tags.registerAddScreen.inputnombres
-              : 'Nombres'
+    <SafeAreaView style={mainStyles.containers}>
+      <ScrollView
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="always"
+        style={{backgroundColor: color.WHITE}}
+      >
+        <StatusBar backgroundColor={color.PRINCIPALCOLOR} translucent={true} />
+        <ToolBar
+          titulo={
+            tags.registerAddScreen.completa != ''
+              ? tags.registerAddScreen.completa
+              : 'Completa tus datos'
           }
-          value={data.name}
-          onChangeText={nombre => setData({...data, name: nombre})}
-          image="account-circle"
+          onPressLeft={() => goToScreen('Registro')}
+          iconLeft={true}
         />
-        <MyTextInput
-          keyboardType={null}
-          value={data.lastname}
-          onChangeText={apellido => setData({...data, lastname: apellido})}
-          placeholder={
-            tags.registerAddScreen.inputapellidos != ''
-              ? tags.registerAddScreen.inputapellidos
-              : 'Apellidos'
-          }
-          image="account-circle"
-        />
-        <MyTextInput
-          keyboardType={null}
-          value={data.paypal_id}
-          onChangeText={paypalID => setData({...data, paypal_id: paypalID})}
-          placeholder={
-            tags.registerAddScreen.inputpaypalid != ''
-              ? tags.registerAddScreen.inputpaypalid
-              : 'PayPal ID'
-          }
-          image="credit-card-outline"
-        />
-        <MyTextInput
-          keyboardType={'phone-pad'}
-          value={data.phone}
-          onChangeText={phones => setData({...data, phone: phones})}
-          placeholder={
-            tags.registerAddScreen.phone != ''
-              ? tags.registerAddScreen.phone
-              : 'Phone'
-          }
-          image="phone"
-        />
-
-    {  /*
+        <View style={mainStyles.container}>
+          <MyTextInput
+            keyboardType={null}
+            placeholder={
+              tags.registerAddScreen.inputnombres != ''
+                ? tags.registerAddScreen.inputnombres
+                : 'Nombres'
+            }
+            value={data.name}
+            onChangeText={nombre => setData({...data, name: nombre})}
+            image="account-circle"
+          />
+          <MyTextInput
+            keyboardType={null}
+            value={data.lastname}
+            onChangeText={apellido => setData({...data, lastname: apellido})}
+            placeholder={
+              tags.registerAddScreen.inputapellidos != ''
+                ? tags.registerAddScreen.inputapellidos
+                : 'Apellidos'
+            }
+            image="account-circle"
+          />
+          <MyTextInput
+            keyboardType={null}
+            value={data.paypal_id}
+            onChangeText={paypalID => setData({...data, paypal_id: paypalID})}
+            placeholder={
+              tags.registerAddScreen.inputpaypalid != ''
+                ? tags.registerAddScreen.inputpaypalid
+                : 'PayPal ID'
+            }
+            image="credit-card-outline"
+          />
+          <MyTextInput
+            keyboardType={'phone-pad'}
+            value={data.phone}
+            onChangeText={phones => setData({...data, phone: phones})}
+            placeholder={
+              tags.registerAddScreen.phone != ''
+                ? tags.registerAddScreen.phone
+                : 'Phone'
+            }
+            image="phone"
+          />
+          {registerUser.role != 'seller' ? (
+            <>
+              <MyTextInput
+                keyboardType={null}
+                value={data.nit}
+                onChangeText={nitClient => setData({...data, nit: nitClient})}
+                placeholder={'NIT'}
+                image="identifier"
+              />
+              <DateButton
+                setOpen={setOpenDate}
+                setDate={setBirthday}
+                open={openDate}
+                date={birthday}
+                setDateData={setDateData}
+                tagFecha="Fecha Nacimiento: "
+                image="calendar-range"
+              />
+            </>
+          ) : null}
+          {/*
       <CheckBox
           containerStyle={registroStyles.checkBox}
           textStyle={{color: color.PRINCIPALCOOR}}
@@ -136,18 +162,19 @@ export default function RegistroScreen(props) {
           checkedColor={color.PRINCIPALCOLOR}
         />
         */}
-        <MyButton
-          titulo={
-            tags.registerAddScreen.btncompletar != ''
-              ? tags.registerAddScreen.btncompletar
-              : 'COMPLETAR REGISTRO'
-          }
-          onPress={() => registrar()}
-        />
-      </View>
-    </ScrollView>
+          <MyButton
+            titulo={
+              tags.registerAddScreen.btncompletar != ''
+                ? tags.registerAddScreen.btncompletar
+                : 'COMPLETAR REGISTRO'
+            }
+            onPress={() => registrar()}
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
+
   function registrar() {
     console.log(data);
     if (data.name == '' || data.name == ' ') {
@@ -170,11 +197,42 @@ export default function RegistroScreen(props) {
         text: 'Datos en blanco Debe Ingresar un Telefono',
         duration: Snackbar.LENGTH_LONG,
       });
-    } else  {
+    } else {
       register(data, goToScreen, loginAction, tags.dialogAlertsScreen);
     }
   }
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
+  }
+
+  function setDateData(dateData) {
+    let actualDate = new Date();
+    let month = dateData.getMonth() + 1;
+    let day = dateData.getDate();
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    if (day < 10) {
+      day = `0${day}`;
+    }
+    let edad = actualDate.getFullYear() - dateData.getFullYear();
+    let m = actualDate.getMonth() - dateData.getMonth();
+    if (m < 0 || (m === 0 && actualDate.getDate() < dateData.getDate())) {
+      edad--;
+    }
+    let myDate = `${dateData.getFullYear()}/${month}/${day}`;
+    console.log(myDate, edad);
+    if (edad < 18) {
+      Snackbar.show({
+        text: 'menor de edad, ingrese edad correcta',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      setData({...data, birthday: myDate});
+      Snackbar.show({
+        text: 'fecha guardada',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
   }
 }

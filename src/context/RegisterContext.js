@@ -10,6 +10,8 @@ const initialState = {
   role: '',
   paypal_id: '',
   avatar: '',
+  nit: '',
+  birthdayDate: '',
 };
 const RegisterContext = createContext();
 

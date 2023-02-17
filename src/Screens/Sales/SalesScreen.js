@@ -177,6 +177,7 @@ export default function SalesScreen(props) {
                       </Text>
                       <DatePicker
                         modal
+                        textColor={color.PRINCIPALCOLOR}
                         mode="date"
                         open={openInicio}
                         date={new Date()}
@@ -208,6 +209,7 @@ export default function SalesScreen(props) {
                       </Text>
                       <DatePicker
                         modal
+                        textColor={color.PRINCIPALCOLOR}
                         mode="date"
                         open={openFinal}
                         date={new Date()}

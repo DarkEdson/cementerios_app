@@ -27,6 +27,8 @@ export const AuthProvider = ({children}) => {
         lastname: userNew.lastname,
         paypal_id: userNew.paypal_id,
         phone: userNew.phone,
+        nit: userNew?.nit || '',
+        birthdayDate: userNew?.birthdayDate || '',
         status: '0',
       })
       .then(res => {
@@ -250,7 +252,8 @@ export const AuthProvider = ({children}) => {
         logout,
         cambiaClave,
         actualizaUsuario,
-      }}>
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

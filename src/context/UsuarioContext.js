@@ -15,6 +15,8 @@ const initialState = {
     id_number: '',
     paypal_id: '',
     image: '',
+    nit: '',
+    birthdayDate: '',
   },
   activo: false,
   token: '',
