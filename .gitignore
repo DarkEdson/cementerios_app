@@ -61,3 +61,26 @@ buck-out/
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
+Gemfile.lock
+ios/Podfile.lock
+ios/cementerios_ui.xcodeproj/project.pbxproj
+ios/Pods/Manifest.lock
+ios/Pods/Pods.xcodeproj/project.pbxproj
+ios/Pods/Target Support Files/Pods-cementerios_ui/Pods-cementerios_ui-acknowledgements.markdown
+ios/Pods/Target Support Files/Pods-cementerios_ui/Pods-cementerios_ui-acknowledgements.plist
+ios/Pods/Target Support Files/Pods-cementerios_ui/Pods-cementerios_ui-resources-Debug-input-files.xcfilelist
+ios/Pods/Target Support Files/Pods-cementerios_ui/Pods-cementerios_ui-resources-Debug-output-files.xcfilelist
+ios/Pods/Target Support Files/Pods-cementerios_ui/Pods-cementerios_ui-resources-Release-input-files.xcfilelist
+ios/Pods/Target Support Files/Pods-cementerios_ui/Pods-cementerios_ui-resources-Release-output-files.xcfilelist
+ios/Pods/Target Support Files/Pods-cementerios_ui/Pods-cementerios_ui-resources.sh
+ios/Pods/Target Support Files/Pods-cementerios_ui/Pods-cementerios_ui.debug.xcconfig
+ios/Pods/Target Support Files/Pods-cementerios_ui/Pods-cementerios_ui.release.xcconfig
+ios/Pods/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests-acknowledgements.markdown
+ios/Pods/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests-acknowledgements.plist
+ios/Pods/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests-resources-Debug-input-files.xcfilelist
+ios/Pods/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests-resources-Debug-output-files.xcfilelist
+ios/Pods/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests-resources-Release-input-files.xcfilelist
+ios/Pods/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests-resources-Release-output-files.xcfilelist
+ios/Pods/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests-resources.sh
+ios/Pods/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests.debug.xcconfig
+ios/Pods/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests.release.xcconfig
