@@ -36,7 +36,7 @@ export const RatingsProvider = ({children}) => {
   const getRatingsComments = async (Idlanguaje, countryID, productID) => {
     setisLoadingRatings(true);
     getRatingCommentsApi(Idlanguaje, countryID, productID).then(res => {
-      console.log('RATINGS COMMENTS', res);
+      console.log('RATINGS COMMENTS getRATINGSCOMMENTS', res);
       setRatingsComments(res);
       setisLoadingRatings(false);
     });
@@ -46,6 +46,7 @@ export const RatingsProvider = ({children}) => {
     setisLoadingRatings(true);
     findProductSell(lenguajeid, userID, productID).then(res => {
       console.log('RATINGS COMMENTS', res);
+      console.log('Longitud resp', res.length);
       if (res.length >= 0) {
         setproductoVendido(true);
       } else {

@@ -89,7 +89,7 @@ async function getRatingCommentsApi(lenguajeid, countryID, productID) {
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${prod.image}`,
             name: prod.labels[0].name,
             description: prod.labels[0].description,
-            price: prod.headquarters[0].price,
+            price: prod.labels[0].price,
             comment: prod.comment,
             ranking: prod.ranking,
           });

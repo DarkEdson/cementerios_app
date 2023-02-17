@@ -66,8 +66,10 @@ export default function VistaProducto(props) {
     isLoadingRatings,
     createRatings,
     ratings,
+    ratingsComments,
     getRatings,
     findProdSell,
+    productoVendido,
     getRatingsComments,
   } = useContext(RatingsContext);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
@@ -116,12 +118,23 @@ export default function VistaProducto(props) {
   // Cargar informacion de la vista
   useEffect(() => {
     console.log('Producto?', Product);
-    let respuestaProductoVendido = findProdSell(
-      GlobalLanguage._id,
-      loginUser.usuario._id,
-      Product._id,
-    );
-    console.log('SE VENDIO EL PRODUCTO?', respuestaProductoVendido);
+    (async () => {
+      await findProdSell(
+        GlobalLanguage._id,
+        loginUser.usuario._id,
+        Product._id,
+      );
+      console.log('SE VENDIO EL PRODUCTO?', productoVendido);
+      if (!productoVendido) {
+        await getRatingsComments(
+          GlobalLanguage._id,
+          country.value,
+          Product._id,
+        );
+      }
+      await getRatingsComments(GlobalLanguage._id, country.value, Product._id);
+    })();
+
     console.log('ITEM EDITABLE?', editable);
     if (editable) {
       setCantProductos(Product.cantidad);
@@ -555,6 +568,8 @@ export default function VistaProducto(props) {
             getRatings={getRatings}
             idLang={GlobalLanguage._id}
             idPais={country.value}
+            ratingsComments={ratingsComments}
+            productoVendido={productoVendido}
           />
         )}
       </View>

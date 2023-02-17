@@ -1,6 +1,6 @@
 //import liraries
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput, ScrollView} from 'react-native';
 import color from '@styles/colors';
 import {AirbnbRating, Dialog, CheckBox} from '@rneui/themed';
 import MyButton from '@Components/common/MyButton';
@@ -40,51 +40,78 @@ const RankingModal = props => {
 
   return (
     <Dialog isVisible={visible} onBackdropPress={toggleDialog}>
-      <Dialog.Title title={'Rating'} />
-      <AirbnbRating
-        showRating={false}
-        selectedColor={color.PRINCIPALCOLOR}
-        ratingContainerStyle={{marginBottom: 25}}
-        reviewColor={color.PRINCIPALCOLOR}
-        size={25}
-        onFinishRating={rating => {
-          setChecked(rating);
-        }}
-      />
-      <UselessTextInput
-        multiline
-        numberOfLines={25}
-        onChangeText={text => setComment(text)}
-        value={comment}
-        style={{
-          padding: 10,
-          margin: 2,
-          borderWidth: 1,
-          borderColor: color.PRINCIPALCOLOR,
-          borderRadius: 15,
-        }}
-      />
-      <Dialog.Actions>
-        <Dialog.Button
-          title={tags.btnconfirmar != '' ? tags.btnconfirmar : 'CONFIRMAR'}
-          onPress={() => {
-            let califica = {
-              idProduct: props.prod._id,
-              idUser: props.user._id,
-              value: checked,
-              observation: comment,
-            };
-            console.log(califica);
-            props.calificar(califica);
-            props.getRatings(props.idLang, props.idPais);
-            toggleDialog();
-          }}
-        />
-        <Dialog.Button
-          title={tags.btncancelar != '' ? tags.btncancelar : 'CANCEL'}
-          onPress={toggleDialog}
-        />
-      </Dialog.Actions>
+      {props.productoVendido ? (
+        <>
+          <Dialog.Title title={'Rating'} />
+          <AirbnbRating
+            showRating={false}
+            selectedColor={color.PRINCIPALCOLOR}
+            ratingContainerStyle={{marginBottom: 25}}
+            reviewColor={color.PRINCIPALCOLOR}
+            size={25}
+            onFinishRating={rating => {
+              setChecked(rating);
+            }}
+          />
+          <UselessTextInput
+            multiline
+            numberOfLines={25}
+            onChangeText={text => setComment(text)}
+            value={comment}
+            style={{
+              padding: 10,
+              margin: 2,
+              borderWidth: 1,
+              borderColor: color.PRINCIPALCOLOR,
+              borderRadius: 15,
+            }}
+          />
+          <Dialog.Actions>
+            <Dialog.Button
+              title={tags.btnconfirmar != '' ? tags.btnconfirmar : 'CONFIRMAR'}
+              onPress={() => {
+                let califica = {
+                  idProduct: props.prod._id,
+                  idUser: props.user._id,
+                  value: checked,
+                  observation: comment,
+                };
+                console.log(califica);
+                props.calificar(califica);
+                props.getRatings(props.idLang, props.idPais);
+                toggleDialog();
+              }}
+            />
+            <Dialog.Button
+              title={tags.btncancelar != '' ? tags.btncancelar : 'CANCEL'}
+              onPress={toggleDialog}
+            />
+          </Dialog.Actions>
+        </>
+      ) : props.ratingsComments.length > 0 ? (
+        <ScrollView>
+          {props.ratingsComments.map((comment, key) => (
+            <>
+              <View style={styles.container} key={key}>
+                <Text style={styles.titulo}>{key + 1}</Text>
+                <AirbnbRating
+                  showRating={false}
+                  defaultRating={comment.ranking}
+                  selectedColor={color.PRINCIPALCOLOR}
+                  ratingContainerStyle={{marginBottom: 25}}
+                  reviewColor={color.PRINCIPALCOLOR}
+                  size={25}
+                  isDisabled={true}
+                />
+                <Text style={styles.titulo}>Opinion:</Text>
+                <Text style={styles.textContainer}>{comment.comment} hola</Text>
+              </View>
+            </>
+          ))}
+        </ScrollView>
+      ) : (
+        <Text>No Valorations Get</Text>
+      )}
     </Dialog>
   );
 };
@@ -100,10 +127,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: color.INPUTCOLOR,
+    borderWidth: 0.25,
+    padding: 7,
+    borderColor: 'black',
+    borderRadius: 5,
   },
   titulo: {
     fontWeight: '700',
-    fontSize: 23,
+    fontSize: 15,
     textAlign: 'left',
     marginTop: 5,
     marginBottom: 5,
@@ -117,7 +149,14 @@ const styles = StyleSheet.create({
     width: '10%',
     height: '19.2%',
   },
-  container: {backgroundColor: 'white', borderWidth: 0},
+  container: {
+    backgroundColor: 'white',
+    borderWidth: 0.12,
+    padding: 7,
+    borderColor: 'gray',
+    borderRadius: 5,
+    marginBottom: 5,
+  },
   btnIconBack2: {
     alignItems: 'center',
     width: '10%',
