@@ -15,6 +15,7 @@ async function apiLanguage() {
       .then(res => res.json())
       .catch(error => console.error('Error', error))
       .then(response => {
+        console.log('RESPUESTA LENGUAJE', response);
         response.forEach(language => {
           lenguajes.push({
             _id: language._id,

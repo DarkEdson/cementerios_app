@@ -1,7 +1,9 @@
-export const BASE_URL = 'http://34.171.224.39:4000/api';
+export const BASE_URL = 'https://cementeriosdelmar.com/api-app';
+//export const BASE_URL = 'http://34.171.224.39:4000/api';
 //34.171.224.39
 //proyectocementeriogt.gq
-export const BASE_URL_IMG = 'http://34.171.224.39/images/';
+//export const BASE_URL_IMG = 'http://34.171.224.39/images/';
+export const BASE_URL_IMG = 'https://www.senoriales.com/images-app/dev/';
 export const PRODUCTS_URL = 'products/';
 export const CATEGORIES_URL = 'categories/';
 export const COMPANIES_URL = 'companies/';

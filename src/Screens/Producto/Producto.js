@@ -100,7 +100,11 @@ export default function VistaProducto(props) {
   const [ProductImages, setProductImages] = useState([]);
   const [ProductVideos, setProductVideos] = useState([]);
   const [financing, setFinancing] = useState([
-    {number_of_installments: '0', percentage: '100'},
+    {
+      number_of_installments: '0',
+      initial_percentage: '0',
+      final_percentage: '100',
+    },
   ]);
   const {Category} = useContext(CategoryContext);
   const [checked, setChecked] = useState(1);
@@ -141,7 +145,12 @@ export default function VistaProducto(props) {
     } else {
       setCantProductos(1);
     }
-    console.log('ESTE PRODUCTO ESCOGIDO', Product, 'CON el PRECIO', Product.price);
+    console.log(
+      'ESTE PRODUCTO ESCOGIDO',
+      Product,
+      'CON el PRECIO',
+      Product.price,
+    );
     if (Product.type == '2') {
       let financingGroup = financing;
       console.log('FINANCIAMIENTO A VER', financing, Product.financing);
@@ -453,7 +462,10 @@ export default function VistaProducto(props) {
                           if (checked == 1) {
                             setCuotas(financiamiento.number_of_installments);
                           }
-                          console.log('ESTE PORCENTAJE',parseInt(financiamiento.percentage) / 100)
+                          console.log(
+                            'ESTE PORCENTAJE',
+                            parseInt(financiamiento.percentage) / 100,
+                          );
                           setPorcent(parseInt(financiamiento.percentage) / 100);
                           setChecked(i + 1);
                         }}

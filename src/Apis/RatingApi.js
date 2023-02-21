@@ -56,7 +56,13 @@ async function getRatingsApi(lenguajeid, countryID) {
             ranking: prod.ranking,
             financing: prod.financing
               ? prod.financing
-              : [{number_of_installments: '0', percentage: '0'}],
+              : [
+                  {
+                    number_of_installments: '0',
+                    initial_percentage: '0',
+                    final_percentage: '100',
+                  },
+                ],
             type: prod.type ? prod.type : '1',
           });
         });

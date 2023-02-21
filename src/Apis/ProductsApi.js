@@ -27,7 +27,13 @@ async function productbyCountry(country, lenguaje) {
             currency: producto.currency,
             financing: producto.financing
               ? producto.financing
-              : [{number_of_installments: '0', percentage: '0'}],
+              : [
+                  {
+                    number_of_installments: '0',
+                    initial_percentage: '0',
+                    final_percentage: '100',
+                  },
+                ],
             type: producto.type ? producto.type : '1',
           });
         });
@@ -128,7 +134,13 @@ async function productbyHeadquarters(Sede, lenguaje) {
             ranking: producto.ranking,
             financing: producto.financing
               ? producto.financing
-              : [{number_of_installments: '0', percentage: '0'}],
+              : [
+                  {
+                    number_of_installments: '0',
+                    initial_percentage: '0',
+                    final_percentage: '100',
+                  },
+                ],
             type: producto.type ? producto.type : '1',
           });
         });
