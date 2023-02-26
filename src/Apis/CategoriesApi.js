@@ -11,7 +11,7 @@ async function categoriesApi(country, lenguaje) {
       .then(res => res.json())
       .catch(error => console.error('Error Categoria', error))
       .then(response => {
-        console.log('RESPUESTA EN CATEGORIAS', response);
+        console.log('RESPUESTA EN CATEGORIAS API', response);
         response.forEach(categoria => {
           categorias.push({
             _id: categoria._id,

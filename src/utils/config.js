@@ -3,7 +3,7 @@ export const BASE_URL = 'https://cementeriosdelmar.com/api-app';
 //34.171.224.39
 //proyectocementeriogt.gq
 //export const BASE_URL_IMG = 'http://34.171.224.39/images/';
-export const BASE_URL_IMG = 'https://www.senoriales.com/images-app/dev/';
+export const BASE_URL_IMG = 'https://www.senoriales.com/images-app/prod/';
 export const PRODUCTS_URL = 'products/';
 export const CATEGORIES_URL = 'categories/';
 export const COMPANIES_URL = 'companies/';
