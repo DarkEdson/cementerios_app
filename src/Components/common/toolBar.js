@@ -8,14 +8,15 @@ import color from '@styles/colors';
 
 export default function ToolBar(props) {
   return (
-    <View style={[props.style, mainStyles.toolBarStyle]}>
+    <View style={[mainStyles.toolBarStyle, props.style]}>
       {props.titulo && (
         <Text style={mainStyles.toolBarText}>{props.titulo}</Text>
       )}
       {props.iconLeft && (
         <TouchableOpacity
           style={{position: 'absolute', left: 20, top: 12}}
-          onPress={props.onPressLeft}>
+          onPress={props.onPressLeft}
+        >
           <Icon
             size={35}
             color={color.BLACK}

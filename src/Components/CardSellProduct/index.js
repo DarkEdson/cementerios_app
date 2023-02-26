@@ -24,8 +24,6 @@ export default function CardProductoVenta(props) {
           <Text numberOfLines={3} style={styles.descripcion}>
             {props.descripcion}
           </Text>
-        </View>
-        <View style={styles.left}>
           <Text
             style={
               props.precio.length <= 8
@@ -46,22 +44,22 @@ export default function CardProductoVenta(props) {
 
 const styles = StyleSheet.create({
   cuerpoCard: {
-    width: '115%',
-    marginLeft: Dimensions.get('screen').width * -0.065,
-    height: 82,
-    backgroundColor: 'transparent',
+    width: '110%',
+    marginLeft: Dimensions.get('screen').width * -0.025,
+    height: 100,
+    // backgroundColor: color.GRAY,
   },
   view: {
     flexDirection: 'row',
+    borderRadius: 15,
   },
   center: {
     // borderColor: 'red',
     //borderWidth: 1,
-    width: '55%',
+    width: '60%',
     height: '100%',
     flexDirection: 'column',
     paddingLeft: 10,
-    paddingRight: 5,
   },
   left: {
     //borderColor: 'red',
@@ -75,7 +73,7 @@ const styles = StyleSheet.create({
   },
   right: {
     marginTop: 10,
-    width: '22.2%',
+    width: '40%',
     height: '75%',
     flexDirection: 'column',
   },
@@ -102,7 +100,7 @@ const styles = StyleSheet.create({
   precio: {
     fontWeight: 'bold',
     color: 'skyblue',
-    fontSize: 13,
+    fontSize: 20,
   },
   precio10k: {
     fontWeight: 'bold',

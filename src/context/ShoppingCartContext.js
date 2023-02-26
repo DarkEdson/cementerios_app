@@ -103,7 +103,7 @@ function ShoppingCartProvider({children}) {
     setShoppingCart(actualCart);
   }
 
-  function updateItemtoCart(item) {
+  function updateItemtoCart(item, calculoTienda) {
     existe = false;
     let itemRepetido;
     console.log('SHOPPING CART EN UPDATE', ShoppingCart);
@@ -167,6 +167,7 @@ function ShoppingCartProvider({children}) {
     console.log('Carrito Actual en UPDATE', actualCart);
     console.log('item a agregar en UPDATE', item);
     setcarrito(true);
+    calculoTienda(actualCart);
     setShoppingCart(actualCart);
   }
 

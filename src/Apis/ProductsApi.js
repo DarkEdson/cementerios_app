@@ -14,6 +14,14 @@ async function productbyCountry(country, lenguaje) {
       .then(response => {
         console.log('PRODUCTOS API POR PAIS', response);
         response.forEach(producto => {
+          if (producto.financing) {
+            console.log(
+              'PRODUCTO FINANCING EN API',
+              producto.financing,
+              producto,
+            );
+          }
+
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
@@ -120,6 +128,13 @@ async function productbyHeadquarters(Sede, lenguaje) {
       .then(response => {
         console.log('PRODUCTOS en SEDE', response);
         response.forEach(producto => {
+          if (producto.financing) {
+            console.log(
+              'PRODUCTO FINANCING EN API',
+              producto.financing,
+              producto,
+            );
+          }
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,

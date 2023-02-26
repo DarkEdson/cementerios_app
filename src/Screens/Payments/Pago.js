@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import {Icon, FAB, ListItem, Button} from '@rneui/themed';
+import {Icon, FAB, ListItem, Button, Divider} from '@rneui/themed';
 import Snackbar from 'react-native-snackbar';
 import Feather from 'react-native-vector-icons/Feather';
 import {WebView} from 'react-native-webview';
@@ -20,9 +20,11 @@ import {useIsFocused} from '@react-navigation/native';
 import {BASE_URL_IMG, formatAmount} from '@utils/config';
 //Componentes
 import CardProductoVenta from '@Components/CardSellProduct/';
+import CardProductoCarrito from '../../Components/common/CardProductoCarrito';
 import ToolBar from '@Components/common/toolBar';
 import LargeButton from '@Components/common/largeButton';
 import PurchaseModal from '@Components/PurchaseModal/PurchaseModal';
+import PaymentModalList from '../../Components/common/PaymentMethodListModal';
 import MyButton from '@Components/common/MyButton';
 import MyButtonImage from '@Components/common/MyButtonImage';
 import LinkModal from '@Components/LinkModal/LinkModal';
@@ -65,6 +67,7 @@ export default function VistaPago(props) {
   );
   const [Product, setProduct] = useContext(ProductContext);
   const [visible, setVisible] = useState(false);
+  const [visiblePago, setVisiblePago] = useState(false);
   const [GlobalLanguage] = useContext(GlobalLanguageContext);
   const [sede, setSede] = useContext(SedeContext);
   const {Currency, getCurrency} = useContext(CurrenciesContext);
@@ -72,6 +75,13 @@ export default function VistaPago(props) {
   const {setCategory} = useContext(CategoryContext);
   const {getSedeDirect} = useContext(SedesContext);
   const {getMultimediabyProduct} = useContext(ProductsContext);
+  const [formaPago, setformaPago] = useState('Tarjeta de Credito');
+  const [formasPago, setformasPago] = useState([
+    {id: 1, name: 'Tarjeta de Credito'},
+    {id: 2, name: 'Paypal'},
+    {id: 3, name: 'Link de Pago'},
+  ]);
+  const [opcionPago, setopcionPago] = useState(1);
 
   const {
     ShoppingCart,
@@ -80,6 +90,7 @@ export default function VistaPago(props) {
     sendShoppingCartSell,
     isLoadingCart,
     setisLoadingCart,
+    updateItemtoCart,
     seteditable,
     sendPaypalData,
     linkPago,
@@ -102,14 +113,59 @@ export default function VistaPago(props) {
   // Cargar informacion de la vista
   useEffect(() => {
     //setisLoadingCart(false)
-    let subtotal = 0;
-    let descPercent = 0.0;
-    let descuento = 0;
-    let sendProds = [];
     console.log(promotionList, validPromo);
     console.log('TAGS', tags.PaymentScreen);
     // Productos del carrito
     console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
+    calculoTienda(ShoppingCart);
+    if (isFocused) {
+      getInitialData();
+      console.log('isFocused Payment');
+    }
+    //props, isFocused
+  }, [props, isFocused]);
+
+  // Variables del carrito de compras
+  const [productosCarrito, setProductosCarrito] = useState([]);
+  const [valoresVenta, setValoresVenta] = useState({
+    subTotal: 0,
+    entrega: 0,
+    total: 0,
+  });
+  const toggleLinkDialog = () => {
+    setLinkFlagModal(true);
+  };
+  const toggleDialog = () => {
+    setVisible(true);
+  };
+
+  const togglePaymentDialog = () => {
+    setVisiblePago(true);
+  };
+
+  function terminarCompra() {
+    console.log(opcionPago, formaPago);
+    switch (opcionPago) {
+      case 1:
+        realizarPago();
+        break;
+      case 2:
+        pagarPaypal();
+        break;
+      case 3:
+        crearLink();
+        break;
+      default:
+        console.log('no hay opcion para esta forma de pago');
+        break;
+    }
+  }
+
+  function calculoTienda(ShoppingCart) {
+    let subtotal = 0;
+    let descPercent = 0.0;
+    let descuento = 0;
+    let sendProds = [];
     ShoppingCart.forEach(item => {
       let precioItem;
       if (item.type == '2') {
@@ -160,27 +216,30 @@ export default function VistaPago(props) {
     });
     console.log('PRODS A ENVIAR', sendProds);
     setProductosCarrito(sendProds);
-    if (isFocused) {
-      getInitialData();
-      console.log('isFocused Payment');
-    }
-    //props, isFocused
-  }, [props, isFocused]);
+  }
+  const [cantProductos, setCantProductos] = useState(1);
 
-  // Variables del carrito de compras
-  const [productosCarrito, setProductosCarrito] = useState([]);
-  const [valoresVenta, setValoresVenta] = useState({
-    subTotal: 0,
-    entrega: 0,
-    total: 0,
-  });
-  const toggleLinkDialog = () => {
-    setLinkFlagModal(true);
-  };
-  const toggleDialog = () => {
-    setVisible(true);
-  };
+  function suma(prod) {
+    let aumenta = prod.cantidad;
+    let producto = {
+      ...prod,
+      cantidad: prod.cantidad + 1,
+    };
+    console.log(aumenta, 'aumenta');
+    setCantProductos(aumenta + 1);
+    updateItemtoCart(producto, calculoTienda);
+  }
 
+  function resta(prod) {
+    let disminuye = prod.cantidad;
+    let producto = {
+      ...prod,
+      cantidad: prod.cantidad - 1,
+    };
+    console.log(disminuye, 'disminuye');
+    setCantProductos(disminuye - 1);
+    updateItemtoCart(producto, calculoTienda);
+  }
   return (
     <SafeAreaView style={mainStyles.containers}>
       {isLoadingCart ? (
@@ -217,21 +276,56 @@ export default function VistaPago(props) {
         </View>
       ) : (
         <View style={styles.vista}>
-          <ToolBar
-            titulo={
-              tags.PaymentScreen.compra != ''
-                ? tags.PaymentScreen.compra
-                : 'Compra'
-            }
-            onPressLeft={() => {
-              goToScreen('Productos');
-              seteditable(false);
+          <View
+            style={{
+              backgroundColor: color.PRINCIPALCOLOR,
             }}
-            iconLeft={true}
-          />
-          <ScrollView>
-            <View>
-              <View style={styles.productos}>
+          >
+            <ToolBar
+              titulo={
+                tags.PaymentScreen.compra != ''
+                  ? tags.PaymentScreen.compra
+                  : 'Compra'
+              }
+              onPressLeft={() => {
+                goToScreen('Productos');
+                seteditable(false);
+              }}
+              iconLeft={true}
+              style={{
+                backgroundColor: color.PRINCIPALCOLOR,
+                borderBottomColor: color.PRINCIPALCOLOR,
+                borderBottomWidth: 0.5,
+              }}
+            />
+            <View style={styles.subHeader}>
+              <Text style={{...styles.txtTituloHeader, fontWeight: '600'}}>
+                Confirma tu Compra
+              </Text>
+              <Text style={styles.valorCuentaHeader}>
+                Total: {''}
+                <Text style={{color: color.PRINCIPALCOLOR}}>
+                  {' '}
+                  {Currency.code + '.' + valoresVenta.total}
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <ScrollView
+            style={{
+              backgroundColor: color.INPUTCOLOR,
+            }}
+          >
+            <>
+              <Text style={styles.sectionHeader}>
+                1. Productos{' '}
+                {'(' +
+                  ShoppingCart.length +
+                  ' Producto' +
+                  (ShoppingCart.length <= 1 ? '' : 's') +
+                  ')'}
+              </Text>
+              <ScrollView style={styles.productos}>
                 {ShoppingCart.map((prod, key) => {
                   return (
                     <ListItem.Swipeable
@@ -264,47 +358,161 @@ export default function VistaPago(props) {
                       )}
                     >
                       <ListItem.Content>
-                        <CardProductoVenta
-                          key={key}
-                          urlImagen={prod.principalImage}
-                          titulo={prod.name}
-                          descripcion={prod.description}
-                          moneda={
-                            prod.moneda
-                              ? prod.moneda
-                              : prod.currency.code
-                              ? prod.currency.code
-                              : '$'
-                          }
-                          precio={
-                            prod.type == '2'
-                              ? prod.priceFinancing.includes(',')
+                        <View
+                          style={{
+                            height: 175,
+                          }}
+                        >
+                          <CardProductoCarrito
+                            key={key}
+                            urlImagen={prod.principalImage}
+                            producto={prod}
+                            suma={suma}
+                            resta={resta}
+                            cantProductos={cantProductos}
+                            titulo={prod.name}
+                            descripcion={prod.description}
+                            moneda={
+                              prod.moneda
+                                ? prod.moneda
+                                : prod.currency.code
+                                ? prod.currency.code
+                                : '$'
+                            }
+                            precio={
+                              prod.type == '2'
+                                ? prod.priceFinancing.includes(',')
+                                  ? formatAmount(
+                                      parseFloat(
+                                        prod.priceFinancing.replace(/,/g, ''),
+                                      ),
+                                    )
+                                  : formatAmount(
+                                      parseFloat(prod.priceFinancing),
+                                    )
+                                : prod.price.includes(',')
                                 ? formatAmount(
-                                    parseFloat(
-                                      prod.priceFinancing.replace(/,/g, ''),
-                                    ),
+                                    parseFloat(prod.price.replace(/,/g, '')),
                                   )
-                                : formatAmount(parseFloat(prod.priceFinancing))
-                              : prod.price.includes(',')
-                              ? formatAmount(
-                                  parseFloat(prod.price.replace(/,/g, '')),
-                                )
-                              : formatAmount(parseFloat(prod.price))
-                          }
-                          cantidad={prod.cantidad}
-                        />
+                                : formatAmount(parseFloat(prod.price))
+                            }
+                            cantidad={prod.cantidad}
+                          />
+                          <Divider orientation="vertical" />
+                        </View>
                       </ListItem.Content>
-                      <ListItem.Chevron />
                     </ListItem.Swipeable>
                   );
                 })}
-              </View>
+              </ScrollView>
+            </>
+            <Text style={styles.sectionHeader}>2. Formas de Pago</Text>
+            <View style={styles.whiteSection}>
               <View style={styles.espacio}>
-                <Text style={styles.txtTitulo}>
-                  {tags.PaymentScreen.subtotal != ''
-                    ? tags.PaymentScreen.subtotal
-                    : 'Subtotal'}
-                </Text>
+                <View style={styles.txtForm}>
+                  <Text style={{fontSize: 15, fontWeight: '500'}}>
+                    {formaPago}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.btnForm}
+                  onPress={togglePaymentDialog}
+                >
+                  <Text style={styles.txtChangeForm}>Cambiar</Text>
+                </TouchableOpacity>
+              </View>
+              {opcionPago == 1 ? (
+                creditCards.length >= 1 ? (
+                  <View>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text style={{fontSize: 15, fontWeight: '500'}}>
+                        Seleccione Tarjeta de Credito
+                      </Text>
+                    </View>
+                    <View style={styles.espacio}>
+                      <LargeButton
+                        colorStyle={{
+                          color: color.PRINCIPALCOLOR,
+                          fontWeight: '600',
+                        }}
+                        titulo={'****-****-****-' + creditCard.last4}
+                        onPressRight={() => {
+                          toggleDialog();
+                        }}
+                        iconRight={true}
+                      />
+                    </View>
+                  </View>
+                ) : (
+                  <View>
+                    <View style={styles.espacio}>
+                      <LargeButton
+                        colorStyle={{
+                          color: color.PRINCIPALCOLOR,
+                          fontWeight: '600',
+                        }}
+                        titulo={'No Cards'}
+                        onPressRight={() => goToScreen('PaymentMethod')}
+                        iconRight={true}
+                      />
+                    </View>
+                  </View>
+                )
+              ) : null}
+            </View>
+            <Text style={styles.sectionHeader}>3. Promociones</Text>
+            <View style={styles.whiteSection}>
+              <View style={[styles.espacio, {paddingTop: 5}]}>
+                <LargeButton
+                  colorStyle={{
+                    color: color.PRINCIPALCOLOR,
+                    fontWeight: '600',
+                  }}
+                  titulo={
+                    tags.PaymentScreen.codigo != ''
+                      ? tags.PaymentScreen.codigo
+                      : 'Codigo de Promocion'
+                  }
+                  onPressRight={() => goToScreen('PromoCode')}
+                  iconRight={true}
+                />
+              </View>
+            </View>
+            <Text style={styles.sectionHeader}>4. Resumen</Text>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: '92%',
+                marginLeft: '4%',
+                marginRight: '4%',
+                marginTop: 7,
+                marginBottom: 7,
+              }}
+            >
+              <View style={styles.espacio3}>
+                <View
+                  style={{
+                    width: '50%',
+                    marginLeft: '-1%',
+                  }}
+                >
+                  <Text style={styles.txtPrices2}>
+                    {tags.PaymentScreen.subtotal != ''
+                      ? tags.PaymentScreen.subtotal
+                      : 'Subtotal'}
+                  </Text>
+                  <Text style={styles.txtPrices2}>
+                    {'(' +
+                      ShoppingCart.length +
+                      ' Producto' +
+                      (ShoppingCart.length <= 1 ? '' : 's') +
+                      ')'}{' '}
+                  </Text>
+                </View>
                 <Text style={styles.valorCuenta}>
                   {' '}
                   {Currency.code + '.' + valoresVenta.subTotal}
@@ -320,6 +528,7 @@ export default function VistaPago(props) {
                   {Currency.code + '.' + valoresVenta.entrega}
                 </Text>
               </View>
+              <Divider orientation="vertical" />
               <View style={styles.espacio2}>
                 <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
                   {tags.PaymentScreen.total != ''
@@ -330,113 +539,36 @@ export default function VistaPago(props) {
                   {Currency.code + '.' + valoresVenta.total}
                 </Text>
               </View>
-              <View style={styles.espacio}>
-                <LargeButton
-                  titulo={
-                    tags.PaymentScreen.agregar != ''
-                      ? tags.PaymentScreen.agregar
-                      : 'Agregar mas productos'
-                  }
-                  onPressRight={() => {
-                    goToScreen('Initial');
-                    seteditable(false);
-                  }}
-                  iconRight={true}
-                />
-              </View>
-              <View style={styles.espacio}>
-                <LargeButton
-                  colorStyle={{color: color.PRINCIPALCOLOR, fontWeight: '600'}}
-                  titulo={
-                    tags.PaymentScreen.codigo != ''
-                      ? tags.PaymentScreen.codigo
-                      : 'Codigo de Promocion'
-                  }
-                  onPressRight={() => goToScreen('PromoCode')}
-                  iconRight={true}
-                />
-              </View>
-              {creditCards.length >= 1 ? (
-                <View style={styles.espacio}>
-                  <LargeButton
-                    colorStyle={{
-                      color: color.PRINCIPALCOLOR,
-                      fontWeight: '600',
-                    }}
-                    titulo={'****-****-****-' + creditCard.last4}
-                    onPressRight={() => {
-                      toggleDialog();
-                    }}
-                    iconRight={true}
-                  />
-                </View>
-              ) : (
-                <View style={styles.espacio}>
-                  <LargeButton
-                    colorStyle={{
-                      color: color.PRINCIPALCOLOR,
-                      fontWeight: '600',
-                    }}
-                    titulo={'No Cards'}
-                    onPressRight={() => goToScreen('PaymentMethod')}
-                    iconRight={true}
-                  />
-                </View>
-              )}
-
-              <View style={{alignItems: 'center'}}>
-                <MyButton
-                  titulo={
-                    tags.PaymentScreen.pagar != ''
-                      ? tags.PaymentScreen.pagar +
-                        ' (' +
-                        Currency.code +
-                        '. ' +
-                        valoresVenta.total +
-                        ')'
-                      : 'Pagar' +
-                        ' (' +
-                        Currency.code +
-                        '. ' +
-                        valoresVenta.total +
-                        ')'
-                  }
-                  onPress={() => realizarPago()}
-                />
-              </View>
-              {
-                <View style={{alignItems: 'center'}}>
-                  <MyButtonImage transparent onPress={() => pagarPaypal()} />
-                  {loginUser.usuario.role == 'seller' ||
-                  loginUser.usuario.role == 'SELLER' ||
-                  loginUser.usuario.role == 'Seller' ? (
-                    <MyButton
-                      titulo={
-                        tags.PaymentScreen.pagar != ''
-                          ? tags.PaymentScreen.pagar +
-                            ' Link' +
-                            ' (' +
-                            Currency.code +
-                            '. ' +
-                            valoresVenta.total +
-                            ')'
-                          : 'Pagar' +
-                            ' (' +
-                            Currency.code +
-                            '. ' +
-                            valoresVenta.total +
-                            ')'
-                      }
-                      onPress={() => {
-                        crearLink();
-                      }}
-                    />
-                  ) : null}
-                </View>
-              }
-              <View style={mainStyles.boxTransparent} />
             </View>
           </ScrollView>
+          {visiblePago == false ? null : (
+            <PaymentModalList
+              setCustomModal={setVisiblePago}
+              formaPago={formaPago}
+              customModal={visiblePago}
+              formasPago={formasPago}
+              setopcionPago={setopcionPago}
+              tags={tags.sedeSelectScreen}
+              setFormaPago={setformaPago}
+            />
+          )}
+          <View
+            style={{
+              backgroundColor: color.PRINCIPALCOLOR,
+            }}
+          >
+            <TouchableOpacity onPress={terminarCompra}>
+              <Text
+                style={{
+                  ...styles.txtTituloFooter,
+                  fontWeight: '600',
+                  height: 40,
+                }}
+              >
+                Terminar Compra
+              </Text>
+            </TouchableOpacity>
+          </View>
           {visible == false ? null : (
             <PurchaseModal
               customModal={visible}
@@ -781,14 +913,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 25,
   },
+  subHeader: {
+    backgroundColor: color.WHITE,
+    borderBottomColor: color.GRAY,
+    borderBottomWidth: 0.6,
+    flexDirection: 'row',
+    paddingVertical: 5,
+  },
   productos: {
-    width: '97%',
+    width: '92%',
     marginLeft: '4%',
     marginRight: '4%',
-    marginBottom: 30,
-    borderBottomWidth: 1,
-    paddingBottom: 40,
-    borderColor: 'grey',
+    marginTop: 7,
+    marginBottom: 7,
   },
   btnAgregar: {
     width: '80%',
@@ -805,6 +942,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     color: 'white',
+  },
+  sectionHeader: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    paddingLeft: 7,
+    paddingTop: 7,
   },
   espacio: {
     width: '90%',
@@ -825,11 +968,30 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     flexDirection: 'row',
   },
+  espacio3: {
+    width: '90%',
+    height: 50,
+    marginBottom: 3,
+    borderColor: 'grey',
+    flexDirection: 'row',
+    marginLeft: '5%',
+    marginRight: '5%',
+  },
   txtTitulo: {
     fontSize: 17,
     textAlign: 'left',
     width: '50%',
     alignSelf: 'center',
+  },
+  txtPrices: {
+    fontSize: 17,
+    textAlign: 'left',
+    width: '50%',
+    alignSelf: 'center',
+  },
+  txtPrices2: {
+    fontSize: 17,
+    textAlign: 'left',
   },
   valorCuenta: {
     borderColor: 'black',
@@ -838,6 +1000,53 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'right',
     width: '50%',
+    alignSelf: 'center',
+  },
+  txtTituloHeader: {
+    fontSize: 15,
+    textAlign: 'center',
+    width: '45%',
+    alignSelf: 'center',
+  },
+  txtTituloFooter: {
+    fontSize: 20,
+    textAlign: 'center',
+    alignSelf: 'center',
+  },
+  btnForm: {
+    alignItems: 'flex-end',
+    alignContent: 'flex-end',
+    width: '30%',
+    paddingTop: 15,
+  },
+  txtForm: {
+    width: '75%',
+    alignContent: 'center',
+    alignItems: 'center',
+    paddingTop: 13,
+  },
+  whiteSection: {
+    backgroundColor: 'white',
+    width: '92%',
+    marginLeft: '4%',
+    marginRight: '4%',
+    marginTop: 7,
+    marginBottom: 7,
+  },
+  txtChangeForm: {
+    fontSize: 14,
+    borderBottomWidth: 1,
+    fontWeight: '400',
+    textAlign: 'center',
+    alignSelf: 'center',
+  },
+  valorCuentaHeader: {
+    borderColor: 'black',
+    //  borderWidth:1,
+    fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center',
+    width: '55%',
     alignSelf: 'center',
   },
   txtUnico1: {

@@ -43,6 +43,13 @@ async function getRatingsApi(lenguajeid, countryID) {
       .then(response => {
         console.log('RESPUESTA GET RATINGS API', response);
         response.forEach(prod => {
+          if (prod.financing) {
+            console.log(
+              'PRODUCTO FINANCING  en API RATING',
+              prod.financing,
+              prod,
+            );
+          }
           ratings.push({
             _id: prod._id,
             idCategory: prod.idCategory,
