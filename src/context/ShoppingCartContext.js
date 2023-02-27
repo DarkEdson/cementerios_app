@@ -292,6 +292,7 @@ function ShoppingCartProvider({children}) {
     apiCreateLink(linkData).then(res => {
       console.log('RESPUESTA DE LINK PAGO', res);
       setisLoadingCart(false);
+      console.log('carrito vacio');
     });
   }
   return (

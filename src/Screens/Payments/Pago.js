@@ -680,6 +680,7 @@ export default function VistaPago(props) {
               setCustomModal={setLinkFlagModal}
               shoppingCart={linkCart}
               generaLink={generaLinkPago}
+              goToScreen={goToScreen}
             />
           )}
         </View>

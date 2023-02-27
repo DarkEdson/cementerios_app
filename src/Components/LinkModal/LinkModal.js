@@ -6,11 +6,12 @@ import {AirbnbRating, Dialog, CheckBox} from '@rneui/themed';
 import Snackbar from 'react-native-snackbar';
 import MyButton from '@Components/common/MyButton';
 import MyTextInput from '@Components/common/MyTextInput';
+import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import Card from '../Card';
 // create a component
 const LinkModal = props => {
   const [visible, setVisible] = useState(false);
-
+  const {removeAllItemstoCart} = useContext(ShoppingCartContext);
   const [comment, setComment] = useState('');
   const [checked, setChecked] = useState(3);
   const [tags, settags] = useState({
@@ -172,6 +173,8 @@ const LinkModal = props => {
             text: 'Ok',
             onPress: () => {
               toggleDialog();
+              removeAllItemstoCart();
+              props.goToScreen('Initial');
             },
             style: 'cancel',
           },
