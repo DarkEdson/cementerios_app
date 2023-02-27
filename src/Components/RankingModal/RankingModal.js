@@ -33,6 +33,7 @@ const RankingModal = props => {
   };
 
   useEffect(() => {
+    console.log(props.productoVendido);
     settags(props.tags);
     setVisible(props.customModal);
     return () => {};
@@ -104,13 +105,15 @@ const RankingModal = props => {
                   isDisabled={true}
                 />
                 <Text style={styles.titulo}>Opinion:</Text>
-                <Text style={styles.textContainer}>{comment.comment} hola</Text>
+                <Text style={styles.textContainer}>{comment.comment}</Text>
               </View>
             </>
           ))}
         </ScrollView>
       ) : (
-        <Text>No Valorations Get</Text>
+        <Text>
+          {props.noComments ? props.noComments : 'No Valorations Get'}
+        </Text>
       )}
     </Dialog>
   );

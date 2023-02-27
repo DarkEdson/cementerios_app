@@ -104,6 +104,7 @@ const LinkModal = props => {
         }
         image="card-account-details"
       />
+      <Text style={styles.titleLabel}>NIT</Text>
       <MyTextInput
         keyboardType={null}
         value={data.nit}

@@ -36,7 +36,9 @@ const PaymentModalList = props => {
 
   return (
     <Dialog isVisible={visible} onBackdropPress={toggleDialog}>
-      <Dialog.Title title={'Seleccionar Forma de Pago'} />
+      <Dialog.Title
+        title={props.title ? props.title : 'Selecciona Metodo de Pago'}
+      />
       {props.formasPago.map((forma, i) => {
         return (
           <CheckBox

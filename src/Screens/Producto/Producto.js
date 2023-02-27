@@ -442,9 +442,9 @@ export default function VistaProducto(props) {
                   <MyTextInput
                     keyboardType="numeric"
                     placeholder={
-                      tags.ProductDetailScreen.financing != ''
-                        ? tags.ProductDetailScreen.financing
-                        : 'FINANCIAMIENTO'
+                      tags.ProductDetailScreen.enganche != ''
+                        ? tags.ProductDetailScreen.enganche
+                        : 'Enganche'
                     }
                     image="contrast"
                     value={realPercent}
@@ -500,10 +500,18 @@ export default function VistaProducto(props) {
                       });
                     }}
                   />
-                  <Text style={styles.promoText}>Cuotas</Text>
+                  <Text style={styles.promoText}>
+                    {tags.ProductDetailScreen.cuotas != ''
+                      ? tags.ProductDetailScreen.cuotas
+                      : 'Cuotas'}
+                  </Text>
                   <MyTextInput
                     keyboardType="numeric"
-                    placeholder="cuotas"
+                    placeholder={
+                      tags.ProductDetailScreen.cuotas != ''
+                        ? tags.ProductDetailScreen.cuotas
+                        : 'Cuotas'
+                    }
                     image="contrast"
                     value={cuotas}
                     onChangeText={cuotas => {
@@ -513,7 +521,11 @@ export default function VistaProducto(props) {
                         setCuotas(cuotas);
                       } else {
                         Snackbar.show({
-                          text: `Cantidad maxima de cuotas es: ${cuotasMax}`,
+                          text: `${
+                            tags.ProductDetailScreen.txtCuotasMsj != ''
+                              ? tags.ProductDetailScreen.txtCuotasMsj
+                              : 'Cantidad maxima de cuotas es:'
+                          } ${cuotasMax}`,
                           duration: Snackbar.LENGTH_LONG,
                         });
                         setCuotas(cuotasMax);
@@ -526,7 +538,11 @@ export default function VistaProducto(props) {
                         setCuotas(cuotas.nativeEvent.text);
                       } else {
                         Snackbar.show({
-                          text: `Cantidad maxima de cuotas es: ${cuotasMax}`,
+                          text: `${
+                            tags.ProductDetailScreen.txtCuotasMsj != ''
+                              ? tags.ProductDetailScreen.txtCuotasMsj
+                              : 'Cantidad maxima de cuotas es:'
+                          } ${cuotasMax}`,
                           duration: Snackbar.LENGTH_LONG,
                         });
                         setCuotas(cuotasMax);
@@ -601,6 +617,11 @@ export default function VistaProducto(props) {
             idPais={country.value}
             ratingsComments={ratingsComments}
             productoVendido={productoVendido}
+            noComments={
+              tags.ProductDetailScreen.txtComments != ''
+                ? tags.ProductDetailScreen.txtComments
+                : 'No hay comentarios aun'
+            }
           />
         )}
       </View>

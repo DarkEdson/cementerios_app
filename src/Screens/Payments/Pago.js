@@ -207,7 +207,7 @@ export default function VistaPago(props) {
     }
     //Consultar Moneda
     getCurrency({_id: sede.idAffiliate});
-    console.log('DATOS DE MONEDa', Currency);
+    console.log('DATOS DE MONEDA', Currency);
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: formatAmount(subtotal),
@@ -300,7 +300,9 @@ export default function VistaPago(props) {
             />
             <View style={styles.subHeader}>
               <Text style={{...styles.txtTituloHeader, fontWeight: '600'}}>
-                Confirma tu Compra
+                {tags.PaymentScreen.confirmPurchaseTxt != ''
+                  ? tags.PaymentScreen.confirmPurchaseTxt
+                  : 'Compra'}
               </Text>
               <Text style={styles.valorCuentaHeader}>
                 Total: {''}
@@ -318,10 +320,17 @@ export default function VistaPago(props) {
           >
             <>
               <Text style={styles.sectionHeader}>
-                1. Productos{' '}
+                1.{' '}
+                {tags.PaymentScreen.product != ''
+                  ? tags.PaymentScreen.product
+                  : 'Productos'}
+                {'s '}
                 {'(' +
                   ShoppingCart.length +
-                  ' Producto' +
+                  ' ' +
+                  (tags.PaymentScreen.product != ''
+                    ? tags.PaymentScreen.product
+                    : 'Producto') +
                   (ShoppingCart.length <= 1 ? '' : 's') +
                   ')'}
               </Text>
@@ -406,7 +415,12 @@ export default function VistaPago(props) {
                 })}
               </ScrollView>
             </>
-            <Text style={styles.sectionHeader}>2. Formas de Pago</Text>
+            <Text style={styles.sectionHeader}>
+              2.{' '}
+              {tags.PaymentScreen.paymentMethodTxt != ''
+                ? tags.PaymentScreen.paymentMethodTxt
+                : 'Formas de Pago'}
+            </Text>
             <View style={styles.whiteSection}>
               <View style={styles.espacio}>
                 <View style={styles.txtForm}>
@@ -418,7 +432,12 @@ export default function VistaPago(props) {
                   style={styles.btnForm}
                   onPress={togglePaymentDialog}
                 >
-                  <Text style={styles.txtChangeForm}>Cambiar</Text>
+                  <Text style={styles.txtChangeForm}>
+                    {' '}
+                    {tags.PaymentScreen.change != ''
+                      ? tags.PaymentScreen.change
+                      : 'Cambiar'}
+                  </Text>
                 </TouchableOpacity>
               </View>
               {opcionPago == 1 ? (
@@ -430,7 +449,9 @@ export default function VistaPago(props) {
                       }}
                     >
                       <Text style={{fontSize: 15, fontWeight: '500'}}>
-                        Seleccione Tarjeta de Credito
+                        {tags.PaymentScreen.selectCard != ''
+                          ? tags.PaymentScreen.selectCard
+                          : 'Selecciona Tarjeta'}
                       </Text>
                     </View>
                     <View style={styles.espacio}>
@@ -464,7 +485,12 @@ export default function VistaPago(props) {
                 )
               ) : null}
             </View>
-            <Text style={styles.sectionHeader}>3. Promociones</Text>
+            <Text style={styles.sectionHeader}>
+              3.{' '}
+              {tags.PaymentScreen.promotions != ''
+                ? tags.PaymentScreen.promotions
+                : 'Promociones'}
+            </Text>
             <View style={styles.whiteSection}>
               <View style={[styles.espacio, {paddingTop: 5}]}>
                 <LargeButton
@@ -482,7 +508,12 @@ export default function VistaPago(props) {
                 />
               </View>
             </View>
-            <Text style={styles.sectionHeader}>4. Resumen</Text>
+            <Text style={styles.sectionHeader}>
+              4.{' '}
+              {tags.PaymentScreen.resumen != ''
+                ? tags.PaymentScreen.resumen
+                : 'Resumen'}
+            </Text>
             <View
               style={{
                 backgroundColor: 'white',
@@ -508,7 +539,10 @@ export default function VistaPago(props) {
                   <Text style={styles.txtPrices2}>
                     {'(' +
                       ShoppingCart.length +
-                      ' Producto' +
+                      ' ' +
+                      (tags.PaymentScreen.product != ''
+                        ? tags.PaymentScreen.product
+                        : 'Producto') +
                       (ShoppingCart.length <= 1 ? '' : 's') +
                       ')'}{' '}
                   </Text>
@@ -544,6 +578,11 @@ export default function VistaPago(props) {
           {visiblePago == false ? null : (
             <PaymentModalList
               setCustomModal={setVisiblePago}
+              title={
+                tags.PaymentScreen.selectPaymentTitle != ''
+                  ? tags.PaymentScreen.selectPaymentTitle
+                  : 'Selecciona metodo de Pago'
+              }
               formaPago={formaPago}
               customModal={visiblePago}
               formasPago={formasPago}
@@ -565,7 +604,9 @@ export default function VistaPago(props) {
                   height: 40,
                 }}
               >
-                Terminar Compra
+                {tags.PaymentScreen.finishPurchaseBtn != ''
+                  ? tags.PaymentScreen.finishPurchaseBtn
+                  : 'Terminar Compra'}
               </Text>
             </TouchableOpacity>
           </View>
