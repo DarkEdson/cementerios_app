@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {SafeAreaView} from "react-native";
+import {SafeAreaView} from 'react-native';
 import AppNavigations from '@routes/AppNavigationV2';
 import {UsuarioProvider} from '@context/UsuarioContext';
 import {CementeryProvider} from '@context/CementeryContext';
@@ -25,72 +25,75 @@ import {SedeProvider} from '@context/SedeContext';
 import {CurrenciesProvider} from '@context/CurrencyContext';
 import {PromotionProvider} from '@context/PromotionContext';
 import {ReportsProvider} from '@context/ReportsContext';
-import { RatingsProvider } from '@context/RatingContext';
+import {RatingsProvider} from '@context/RatingContext';
+import {TermsProvider} from '@context/TermsContext';
 
 const MainPage = () => {
   useEffect(() => {
     console.log('MainPage');
   }, []);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-    <AuthProvider>
-      <ScreentagProvider>
-        <ScreenIdProvider>
-          <LanguaguesProvider>
-            <GlobalLanguageProvider>
-              <SedesProvider>
-                <SedeProvider>
-                  <UsuarioProvider>
-                    <RegisterProvider>
-                      <ShoppingCartProvider>
-                        <CountriesProvider>
-                          <CountryProvider>
-                            <CementeriesProvider>
-                              <CurrenciesProvider>
-                                <CategoriesProvider>
-                                  <CategoryProvider>
-                                    <PromotionsProvider>
-                                      <PromotionProvider>
-                                        <CementeryProvider>
-                                          <ProductsProvider>
-                                            <ProductProvider>
-                                              <RatingsProvider>
-                                              <CreditCardProvider>
-                                                <ReportsProvider>
-                                                  <RouteBackProvider>
-                                                    {
-                                                      //el ultimo nivel, la app
-                                                    }
-                                                    <AppNavigations />
-                                                    {
-                                                      //
-                                                    }
-                                                  </RouteBackProvider>
-                                                </ReportsProvider>
-                                              </CreditCardProvider>
-                                              </RatingsProvider>
-                                            </ProductProvider>
-                                          </ProductsProvider>
-                                        </CementeryProvider>
-                                      </PromotionProvider>
-                                    </PromotionsProvider>
-                                  </CategoryProvider>
-                                </CategoriesProvider>
-                              </CurrenciesProvider>
-                            </CementeriesProvider>
-                          </CountryProvider>
-                        </CountriesProvider>
-                      </ShoppingCartProvider>
-                    </RegisterProvider>
-                  </UsuarioProvider>
-                </SedeProvider>
-              </SedesProvider>
-            </GlobalLanguageProvider>
-          </LanguaguesProvider>
-        </ScreenIdProvider>
-      </ScreentagProvider>
-    </AuthProvider>
-</SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
+      <AuthProvider>
+        <ScreentagProvider>
+          <ScreenIdProvider>
+            <TermsProvider>
+              <LanguaguesProvider>
+                <GlobalLanguageProvider>
+                  <SedesProvider>
+                    <SedeProvider>
+                      <UsuarioProvider>
+                        <RegisterProvider>
+                          <ShoppingCartProvider>
+                            <CountriesProvider>
+                              <CountryProvider>
+                                <CementeriesProvider>
+                                  <CurrenciesProvider>
+                                    <CategoriesProvider>
+                                      <CategoryProvider>
+                                        <PromotionsProvider>
+                                          <PromotionProvider>
+                                            <CementeryProvider>
+                                              <ProductsProvider>
+                                                <ProductProvider>
+                                                  <RatingsProvider>
+                                                    <CreditCardProvider>
+                                                      <ReportsProvider>
+                                                        <RouteBackProvider>
+                                                          {
+                                                            //el ultimo nivel, la app
+                                                          }
+                                                          <AppNavigations />
+                                                          {
+                                                            //
+                                                          }
+                                                        </RouteBackProvider>
+                                                      </ReportsProvider>
+                                                    </CreditCardProvider>
+                                                  </RatingsProvider>
+                                                </ProductProvider>
+                                              </ProductsProvider>
+                                            </CementeryProvider>
+                                          </PromotionProvider>
+                                        </PromotionsProvider>
+                                      </CategoryProvider>
+                                    </CategoriesProvider>
+                                  </CurrenciesProvider>
+                                </CementeriesProvider>
+                              </CountryProvider>
+                            </CountriesProvider>
+                          </ShoppingCartProvider>
+                        </RegisterProvider>
+                      </UsuarioProvider>
+                    </SedeProvider>
+                  </SedesProvider>
+                </GlobalLanguageProvider>
+              </LanguaguesProvider>
+            </TermsProvider>
+          </ScreenIdProvider>
+        </ScreentagProvider>
+      </AuthProvider>
+    </SafeAreaView>
   );
 };
 

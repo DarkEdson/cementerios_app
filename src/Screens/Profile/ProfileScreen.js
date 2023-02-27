@@ -26,10 +26,12 @@ import color from '@styles/colors';
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
+import {TermsContext} from '@context/TermsContext';
 //URL de server
 import {BASE_URL_IMG} from '@utils/config';
 
 export default function ProfileScreen(props) {
+  const {setAcceptTerm} = useContext(TermsContext);
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const {removeAllItemstoCart} = useContext(ShoppingCartContext);
   const {tags} = useContext(ScreentagContext);
@@ -70,7 +72,8 @@ export default function ProfileScreen(props) {
               style={styles.btnProfile}
               onPress={() => {
                 console.log('editar imagen');
-              }}>
+              }}
+            >
               {loginUser.usuario.avatar ? (
                 <Avatar
                   rounded
@@ -146,7 +149,8 @@ export default function ProfileScreen(props) {
             <ImageBackground
               source={require('@images/profilepic.png')}
               resizeMode="stretch"
-              style={loginStyles.logoBackground}>
+              style={loginStyles.logoBackground}
+            >
               <Image
                 source={require('@images/logo.png')}
                 style={loginStyles.logoImage}
@@ -183,6 +187,7 @@ export default function ProfileScreen(props) {
                     : 'Sesion Cerrada Exitosamente.',
               },
             });
+            setAcceptTerm(0);
             removeAllItemstoCart();
             goToScreen('Login');
           },

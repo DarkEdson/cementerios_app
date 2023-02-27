@@ -1,14 +1,14 @@
 import {BASE_URL, BASE_URL_IMG, CATEGORIES_URL} from '@utils/config';
 
-async function getTermsApi(idAffiliate, lenguaje, role) {
+async function getTermsApi(lenguaje, role) {
   let url = `${BASE_URL}/terms.getterm`;
-  console.log('Obteniendo TERMINOS');
+
   let resp = null;
   let dataTerms = {
-    idAffiliate: idAffiliate,
     idLanguage: lenguaje._id,
     role: role,
   };
+  console.log('Obteniendo TERMINOS', dataTerms);
   try {
     let data = dataTerms;
     await fetch(url, {
@@ -24,7 +24,6 @@ async function getTermsApi(idAffiliate, lenguaje, role) {
       )
       .then(response => {
         console.log('dentro del API OBTENER TERMINOS');
-        console.log(response);
         resp = response;
       });
     return resp;
@@ -36,12 +35,13 @@ async function getTermsApi(idAffiliate, lenguaje, role) {
 
 async function getTermsStatusApi(idTerm, idUser) {
   let url = `${BASE_URL}/terms.gettermstatus`;
-  console.log('Obteniendo Status de Terminos');
+
   let resp = null;
   let dataTerm = {
     idTerm: idTerm,
     idUser: idUser,
   };
+  console.log('Obteniendo Status de Terminos', dataTerm);
   try {
     let data = dataTerm;
     await fetch(url, {
@@ -56,7 +56,7 @@ async function getTermsStatusApi(idTerm, idUser) {
         console.error('Error en RESPUESTA API STATUS TERM', error),
       )
       .then(response => {
-        console.log('dentro del API TERMS STATUS');
+        console.log('dentro del API TERMS STATUS', response);
         console.log(response);
         resp = response;
       });
