@@ -67,48 +67,38 @@ async function getTermsStatusApi(idTerm, idUser) {
   }
 }
 
-async function saveTermStatusApi(idTerm, idUser, status, idTermStatus = null) {
+async function saveTermStatusApi(idTerm, idUser, status) {
   let url = `${BASE_URL}/terms.savestate`;
   console.log('aceptando Status de Terminos');
   let resp = null;
   let dataTerm;
-  if (idTermStatus != null) {
-    dataTerm = {
-      id: idTermStatus,
-      idTerm: idTerm,
-      idUser: idUser,
-      status: status,
-    };
-  } else {
-    dataTerm = {
-      idTerm: idTerm,
-      idUser: idUser,
-      status: status,
-    };
-
-    try {
-      let data = dataTerm;
-      await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: new Headers({
-          'Content-Type': 'application/json',
-        }),
-      })
-        .then(res => res.json())
-        .catch(error =>
-          console.error('Error en RESPUESTA API aceptando STATUS TERM', error),
-        )
-        .then(response => {
-          console.log('dentro del API aceptando TERMS STATUS');
-          console.log(response);
-          resp = response;
-        });
-      return resp;
-    } catch (error) {
-      console.error('ERROR EN API aceptando STATUS TERMS', error);
-      return resp;
-    }
+  dataTerm = {
+    idTerm: idTerm,
+    idUser: idUser,
+    status: status,
+  };
+  try {
+    let data = dataTerm;
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .then(res => res.json())
+      .catch(error =>
+        console.error('Error en RESPUESTA API aceptando STATUS TERM', error),
+      )
+      .then(response => {
+        console.log('dentro del API aceptando TERMS STATUS');
+        console.log(response);
+        resp = response;
+      });
+    return resp;
+  } catch (error) {
+    console.error('ERROR EN API aceptando STATUS TERMS', error);
+    return resp;
   }
 }
 
