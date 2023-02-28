@@ -171,7 +171,7 @@ function ShoppingCartProvider({children}) {
     setShoppingCart(actualCart);
   }
 
-  function removeItemtoCart(value, goToScreen) {
+  function removeItemtoCart(value, goToScreen, calculoBorrarItem) {
     existe = false;
     actualCart = ShoppingCart;
 
@@ -190,6 +190,7 @@ function ShoppingCartProvider({children}) {
       console.log('carrito vacio');
       setcarrito(false);
     }
+    calculoBorrarItem(actualCart);
   }
 
   function removeAllItemstoCart() {

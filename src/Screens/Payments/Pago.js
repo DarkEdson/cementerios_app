@@ -869,6 +869,45 @@ export default function VistaPago(props) {
     });
   }
 
+  //add calculoTienda
+
+  function calculoBorrarItem(carrito) {
+    let subtotal = 0;
+    let descuento = 0;
+    let sendProds = [];
+    // Productos del carrito
+    if (carrito.length >= 1) {
+      carrito.forEach(item => {
+        let precioItem;
+        if (item.price.includes(',')) {
+          precioItem = item.price.replace(/,/g, '');
+        } else {
+          precioItem = item.price;
+        }
+        subtotal = subtotal + item.cantidad * parseFloat(precioItem);
+        sendProds.push({
+          idProduct: item._id,
+          quantity: item.cantidad,
+          paid_value: item.cantidad * parseFloat(precioItem),
+        });
+      });
+    }
+    console.log('CARRITO TRAS BORRAR ITEM', carrito);
+    if (carrito.length == 0) {
+      subtotal = 0;
+      descuento = 0;
+      sendProds = [];
+    }
+    // Calcular valores de la vista
+    setValoresVenta({
+      subTotal: subtotal,
+      entrega: descuento,
+      total: subtotal - descuento,
+    });
+    console.log('PRODS A ENVIAR BORRADOS DEBE SER 0', sendProds);
+    setProductosCarrito(sendProds);
+  }
+
   function borrarItem(item) {
     console.log(item);
     Alert.alert(
@@ -885,41 +924,7 @@ export default function VistaPago(props) {
               ? tags.closeSessionScreen.btnsi
               : 'Si',
           onPress: () => {
-            removeItemtoCart(item, goToScreen);
-            let subtotal = 0;
-            let descuento = 0;
-            let sendProds = [];
-            // Productos del carrito
-            if (ShoppingCart.length >= 1) {
-              ShoppingCart.forEach(item => {
-                let precioItem;
-                if (item.price.includes(',')) {
-                  precioItem = item.price.replace(/,/g, '');
-                } else {
-                  precioItem = item.price;
-                }
-                subtotal = subtotal + item.cantidad * parseFloat(precioItem);
-                sendProds.push({
-                  idProduct: item._id,
-                  quantity: item.cantidad,
-                  paid_value: item.cantidad * parseFloat(precioItem),
-                });
-              });
-            }
-            console.log('CARRITO TRAS BORRAR ITEM', ShoppingCart);
-            if (ShoppingCart.length == 0) {
-              subtotal = 0;
-              descuento = 0;
-              sendProds = [];
-            }
-            // Calcular valores de la vista
-            setValoresVenta({
-              subTotal: subtotal,
-              entrega: descuento,
-              total: subtotal - descuento,
-            });
-            console.log('PRODS A ENVIAR BORRADOS DEBE SER 0', sendProds);
-            setProductosCarrito(sendProds);
+            removeItemtoCart(item, goToScreen, calculoBorrarItem);
           },
         },
         {
