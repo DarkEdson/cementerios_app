@@ -99,6 +99,7 @@ export default function VistaProducto(props) {
   const [visible, setIsVisible] = useState(false);
   const [ProductImages, setProductImages] = useState([]);
   const [ProductVideos, setProductVideos] = useState([]);
+  const [engancheReal, setengancheReal] = useState(0);
   const [financing, setFinancing] = useState([
     {
       number_of_installments: '0',
@@ -310,14 +311,10 @@ export default function VistaProducto(props) {
                       (Product.price.includes(',')
                         ? formatAmount(
                             (parseFloat(Product.price.replace(/,/g, '')) *
-                              parseInt(realPercent)) /
+                              100) /
                               100,
                           )
-                        : formatAmount(
-                            (parseFloat(Product.price) *
-                              parseInt(realPercent)) /
-                              100,
-                          ))
+                        : formatAmount((parseFloat(Product.price) * 100) / 100))
                     : Product.currency.code +
                       '.' +
                       (Product.price.includes(',')
@@ -454,6 +451,13 @@ export default function VistaProducto(props) {
                     setrealPercent(100);
                     setPorcent(1);
                     setCuotas(0);
+                    if (Product.price.includes(',')) {
+                      setengancheReal(
+                        parseFloat(Product.price.replace(/,/g, '')),
+                      );
+                    } else {
+                      setengancheReal(parseFloat(Product.price));
+                    }
                   }}
                 />
                 <CheckBox
@@ -470,6 +474,14 @@ export default function VistaProducto(props) {
                     setchecked2(!checked2);
                     setchecked1(!checked1);
                     setvisibleMethod(true);
+                    if (Product.price.includes(',')) {
+                      setengancheReal(
+                        parseFloat(Product.price.replace(/,/g, '')),
+                      );
+                    } else {
+                      setengancheReal(parseFloat(Product.price));
+                    }
+                    setCuotas(0);
                   }}
                 />
               </View>
@@ -516,6 +528,20 @@ export default function VistaProducto(props) {
                                 setPorcent(1);
                               }
                             });
+                            if (Product.price.includes(',')) {
+                              setengancheReal(
+                                (parseFloat(Product.price.replace(/,/g, '')) *
+                                  parseInt(porcentaje)) /
+                                  100,
+                              );
+                              100;
+                            } else {
+                              setengancheReal(
+                                (parseFloat(Product.price) *
+                                  parseInt(porcentaje)) /
+                                  100,
+                              );
+                            }
                           }}
                           onEndEditing={porcentaje => {
                             financing.forEach(financia => {
@@ -579,51 +605,73 @@ export default function VistaProducto(props) {
                         ? tags.ProductDetailScreen.cuotas
                         : 'Cuotas'}
                     </Text>
-                    <MyTextInput
-                      keyboardType="numeric"
-                      placeholder={
-                        tags.ProductDetailScreen.cuotas != ''
-                          ? tags.ProductDetailScreen.cuotas
-                          : 'Cuotas'
-                      }
-                      image="contrast"
-                      value={cuotas}
-                      onChangeText={cuotas => {
-                        console.log('PORCENT?', porcent);
-                        console.log(cuotas, parseInt(cuotasMax));
-                        if (cuotas <= parseInt(cuotasMax)) {
-                          setCuotas(cuotas);
-                        } else {
-                          Snackbar.show({
-                            text: `${
-                              tags.ProductDetailScreen.txtCuotasMsj != ''
-                                ? tags.ProductDetailScreen.txtCuotasMsj
-                                : 'Cantidad maxima de cuotas es:'
-                            } ${cuotasMax}`,
-                            duration: Snackbar.LENGTH_LONG,
-                          });
-                          setCuotas(cuotasMax);
-                        }
-                      }}
-                      onEndEditing={cuotas => {
-                        if (
-                          parseInt(cuotas.nativeEvent.text) <=
-                          parseInt(cuotasMax)
-                        ) {
-                          setCuotas(cuotas.nativeEvent.text);
-                        } else {
-                          Snackbar.show({
-                            text: `${
-                              tags.ProductDetailScreen.txtCuotasMsj != ''
-                                ? tags.ProductDetailScreen.txtCuotasMsj
-                                : 'Cantidad maxima de cuotas es:'
-                            } ${cuotasMax}`,
-                            duration: Snackbar.LENGTH_LONG,
-                          });
-                          setCuotas(cuotasMax);
-                        }
-                      }}
-                    />
+                    <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                      <View style={{width: '60%', marginHorizontal: '3%'}}>
+                        <MyTextInput
+                          keyboardType="numeric"
+                          placeholder={
+                            tags.ProductDetailScreen.cuotas != ''
+                              ? tags.ProductDetailScreen.cuotas
+                              : 'Cuotas'
+                          }
+                          image="contrast"
+                          value={cuotas}
+                          onChangeText={cuotas => {
+                            console.log('PORCENT?', porcent);
+                            console.log(cuotas, parseInt(cuotasMax));
+                            if (cuotas <= parseInt(cuotasMax)) {
+                              setCuotas(cuotas);
+                            } else {
+                              Snackbar.show({
+                                text: `${
+                                  tags.ProductDetailScreen.txtCuotasMsj != ''
+                                    ? tags.ProductDetailScreen.txtCuotasMsj
+                                    : 'Cantidad maxima de cuotas es:'
+                                } ${cuotasMax}`,
+                                duration: Snackbar.LENGTH_LONG,
+                              });
+                              setCuotas(cuotasMax);
+                            }
+                          }}
+                          onEndEditing={cuotas => {
+                            if (
+                              parseInt(cuotas.nativeEvent.text) <=
+                              parseInt(cuotasMax)
+                            ) {
+                              setCuotas(cuotas.nativeEvent.text);
+                            } else {
+                              Snackbar.show({
+                                text: `${
+                                  tags.ProductDetailScreen.txtCuotasMsj != ''
+                                    ? tags.ProductDetailScreen.txtCuotasMsj
+                                    : 'Cantidad maxima de cuotas es:'
+                                } ${cuotasMax}`,
+                                duration: Snackbar.LENGTH_LONG,
+                              });
+                              setCuotas(cuotasMax);
+                            }
+                          }}
+                        />
+                      </View>
+                      <View style={{width: '40%'}}>
+                        <Text style={styles.subtitulos}>
+                          {Product.currency.code +
+                            '.' +
+                            (Product.price.includes(',')
+                              ? formatAmount(
+                                  (parseFloat(Product.price.replace(/,/g, '')) -
+                                    engancheReal) /
+                                    (cuotas == 0 ? 1 : cuotas),
+                                )
+                              : Product.currency.code +
+                                '.' +
+                                formatAmount(
+                                  (parseFloat(Product.price) - engancheReal) /
+                                    (cuotas == 0 ? 1 : cuotas),
+                                ))}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                 ) : null
               ) : null}
