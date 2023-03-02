@@ -141,6 +141,7 @@ function ShoppingCartProvider({children}) {
             principalImage: itemRepetido.principalImage,
             ranking: itemRepetido.ranking,
             type: itemRepetido.type,
+            summaryFinancing: itemRepetido.summaryFinancing,
           });
         } else {
           actualCart.push({

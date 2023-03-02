@@ -116,7 +116,7 @@ export default function VistaPago(props) {
     console.log(promotionList, validPromo);
     console.log('TAGS', tags.PaymentScreen);
     // Productos del carrito
-    console.log(ShoppingCart, 'DENTRO DE VISTA COMPRAR');
+    console.log('DENTRO DE VISTA COMPRAR', ShoppingCart);
     calculoTienda(ShoppingCart);
     if (isFocused) {
       getInitialData();
@@ -163,22 +163,52 @@ export default function VistaPago(props) {
 
   function calculoTienda(ShoppingCart) {
     let subtotal = 0;
+    let cuotasTotal = 0;
+    let cuotasValorTotal = 0;
+    let engancheTotal = 0;
+    let financiadoTotal = 0;
+    let cashTotal = 0;
     let descPercent = 0.0;
     let descuento = 0;
     let sendProds = [];
+    //summaryFinancing.precio_sin_enganche     summaryFinancing.value_of_installment     cantidad financing.number_of_installments
     ShoppingCart.forEach(item => {
       let precioItem;
       if (item.type == '2') {
         if (item.priceFinancing.includes(',')) {
           precioItem = item.priceFinancing.replace(/,/g, '');
+          engancheTotal =
+            parseFloat(engancheTotal) +
+            parseFloat(item.priceFinancing.replace(/,/g, '')) * item.cantidad;
+          financiadoTotal +=
+            item.summaryFinancing.precio_sin_enganche * item.cantidad;
+          cuotasValorTotal =
+            parseFloat(cuotasValorTotal) +
+            parseFloat(item.summaryFinancing.value_of_installment);
+          cuotasTotal =
+            cuotasTotal +
+            parseInt(item.financing.number_of_installments) * item.cantidad;
         } else {
           precioItem = item.priceFinancing;
+          engancheTotal =
+            parseFloat(engancheTotal) +
+            parseFloat(item.priceFinancing) * item.cantidad;
+          financiadoTotal =
+            item.summaryFinancing.precio_sin_enganche * item.cantidad;
+          cuotasValorTotal =
+            parseFloat(cuotasValorTotal) +
+            parseFloat(item.summaryFinancing.value_of_installment);
+          cuotasTotal =
+            cuotasTotal +
+            parseInt(item.financing.number_of_installments) * item.cantidad;
         }
       } else {
         if (item.price.includes(',')) {
           precioItem = item.price.replace(/,/g, '');
+          cashTotal = cashTotal + item.price.replace(/,/g, '');
         } else {
           precioItem = item.price;
+          cashTotal = cashTotal + item.price;
         }
       }
 
@@ -213,6 +243,21 @@ export default function VistaPago(props) {
       subTotal: formatAmount(subtotal),
       entrega: formatAmount(descuento),
       total: formatAmount(subtotal - descuento),
+      totalCuotas: cuotasTotal,
+      totalValorCuotas: formatAmount(cuotasValorTotal),
+      TotalEfectivo: formatAmount(cashTotal),
+      totalEnganche: formatAmount(engancheTotal),
+      totalFinanciado: formatAmount(financiadoTotal),
+    });
+    console.log('VALORES VENTA ARRAY', {
+      subTotal: formatAmount(subtotal),
+      entrega: formatAmount(descuento),
+      total: formatAmount(subtotal - descuento),
+      totalCuotas: cuotasTotal,
+      totalValorCuotas: formatAmount(cuotasValorTotal),
+      TotalEfectivo: formatAmount(cashTotal),
+      totalEnganche: formatAmount(engancheTotal),
+      totalFinanciado: formatAmount(financiadoTotal),
     });
     console.log('PRODS A ENVIAR', sendProds);
     setProductosCarrito(sendProds);
@@ -220,6 +265,7 @@ export default function VistaPago(props) {
   const [cantProductos, setCantProductos] = useState(1);
 
   function suma(prod) {
+    console.log('PRODUCTO A SUMAR', prod);
     let aumenta = prod.cantidad;
     let producto = {
       ...prod,
@@ -231,6 +277,7 @@ export default function VistaPago(props) {
   }
 
   function resta(prod) {
+    console.log('PRODUCTO A Restar', prod);
     let disminuye = prod.cantidad;
     let producto = {
       ...prod,
@@ -417,6 +464,147 @@ export default function VistaPago(props) {
             </>
             <Text style={styles.sectionHeader}>
               2.{' '}
+              {tags.PaymentScreen.promotions != ''
+                ? tags.PaymentScreen.promotions
+                : 'Promociones'}
+            </Text>
+            <View style={styles.whiteSection}>
+              <View style={[styles.espacio, {paddingTop: 5}]}>
+                <LargeButton
+                  colorStyle={{
+                    color: color.PRINCIPALCOLOR,
+                    fontWeight: '600',
+                  }}
+                  titulo={
+                    tags.PaymentScreen.codigo != ''
+                      ? tags.PaymentScreen.codigo
+                      : 'Codigo de Promocion'
+                  }
+                  onPressRight={() => goToScreen('PromoCode')}
+                  iconRight={true}
+                />
+              </View>
+            </View>
+            <Text style={styles.sectionHeader}>
+              3.{' '}
+              {tags.PaymentScreen.resumen != ''
+                ? tags.PaymentScreen.resumen
+                : 'Resumen'}
+            </Text>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: '92%',
+                marginLeft: '4%',
+                marginRight: '4%',
+                marginTop: 7,
+                marginBottom: 7,
+              }}
+            >
+              <View style={styles.espacio3}>
+                {/*
+                  <View
+                  style={{
+                    width: '50%',
+                    marginLeft: '-1%',
+                  }}
+                >**/}
+                <Text style={styles.txtTitulo}>
+                  {tags.PaymentScreen.subtotal != ''
+                    ? tags.PaymentScreen.subtotal
+                    : 'Subtotal'}{' '}
+                  {tags.ProductDetailScreen.financing != ''
+                    ? tags.ProductDetailScreen.financing
+                    : 'FINANCIAMIENTO'}
+                </Text>
+                {/** 
+       <Text style={styles.txtPrices2}>
+                    {'(' +
+                      ShoppingCart.length +
+                      ' ' +
+                      (tags.PaymentScreen.product != ''
+                        ? tags.PaymentScreen.product
+                        : 'Producto') +
+                      (ShoppingCart.length <= 1 ? '' : 's') +
+                      ')'}{' '}
+                  </Text>
+                  </View>
+                  **/}
+
+                <Text style={styles.valorCuenta}>
+                  {' '}
+                  {Currency.code + '.' + valoresVenta.totalEnganche}
+                </Text>
+              </View>
+              <View style={styles.espacio3}>
+                <Text style={styles.txtTitulo}>
+                  {tags.PaymentScreen.subtotal != ''
+                    ? tags.PaymentScreen.subtotal
+                    : 'Subtotal'}{' '}
+                  {tags.ProductDetailScreen.cash != ''
+                    ? tags.ProductDetailScreen.cash
+                    : 'Cash'}
+                </Text>
+                <Text style={styles.valorCuenta}>
+                  {' '}
+                  {Currency.code + '.' + valoresVenta.TotalEfectivo}
+                </Text>
+              </View>
+              <View style={styles.espacio}>
+                <Text style={styles.txtTitulo}>
+                  {tags.PaymentScreen.entrega != ''
+                    ? tags.PaymentScreen.entrega
+                    : 'Entrega'}
+                </Text>
+                <Text style={styles.valorCuenta}>
+                  {Currency.code + '.' + valoresVenta.entrega}
+                </Text>
+              </View>
+              <Divider orientation="vertical" />
+              <View style={styles.espacio2}>
+                <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
+                  {tags.PaymentScreen.total != ''
+                    ? tags.PaymentScreen.total
+                    : 'Total (incl. IVA)'}
+                </Text>
+                <Text style={styles.valorCuenta}>
+                  {Currency.code + '.' + valoresVenta.total}
+                </Text>
+              </View>
+              <View style={styles.espacioTitle}>
+                <Text style={{fontSize: 15, fontWeight: '500'}}>
+                  {tags.ProductDetailScreen.financing != ''
+                    ? tags.ProductDetailScreen.financing
+                    : 'FINANCIAMIENTO'}
+                </Text>
+              </View>
+              <View style={styles.espacio}>
+                <Text style={styles.txtTitulo}>
+                  {valoresVenta.totalCuotas}{' '}
+                  {tags.ProductDetailScreen.cuotas != ''
+                    ? tags.ProductDetailScreen.cuotas
+                    : 'Cuotas'}
+                  {' de'}
+                </Text>
+                <Text style={styles.valorCuenta}>
+                  {' '}
+                  {Currency.code + '.' + valoresVenta.totalValorCuotas}
+                </Text>
+              </View>
+              <View style={styles.espacio2}>
+                <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
+                  Total{' '}
+                  {tags.ProductDetailScreen.financing != ''
+                    ? tags.ProductDetailScreen.financing
+                    : 'FINANCIAMIENTO'}
+                </Text>
+                <Text style={styles.valorCuenta}>
+                  {Currency.code + '.' + valoresVenta.totalFinanciado}
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.sectionHeader}>
+              4.{' '}
               {tags.PaymentScreen.paymentMethodTxt != ''
                 ? tags.PaymentScreen.paymentMethodTxt
                 : 'Formas de Pago'}
@@ -484,95 +672,6 @@ export default function VistaPago(props) {
                   </View>
                 )
               ) : null}
-            </View>
-            <Text style={styles.sectionHeader}>
-              3.{' '}
-              {tags.PaymentScreen.promotions != ''
-                ? tags.PaymentScreen.promotions
-                : 'Promociones'}
-            </Text>
-            <View style={styles.whiteSection}>
-              <View style={[styles.espacio, {paddingTop: 5}]}>
-                <LargeButton
-                  colorStyle={{
-                    color: color.PRINCIPALCOLOR,
-                    fontWeight: '600',
-                  }}
-                  titulo={
-                    tags.PaymentScreen.codigo != ''
-                      ? tags.PaymentScreen.codigo
-                      : 'Codigo de Promocion'
-                  }
-                  onPressRight={() => goToScreen('PromoCode')}
-                  iconRight={true}
-                />
-              </View>
-            </View>
-            <Text style={styles.sectionHeader}>
-              4.{' '}
-              {tags.PaymentScreen.resumen != ''
-                ? tags.PaymentScreen.resumen
-                : 'Resumen'}
-            </Text>
-            <View
-              style={{
-                backgroundColor: 'white',
-                width: '92%',
-                marginLeft: '4%',
-                marginRight: '4%',
-                marginTop: 7,
-                marginBottom: 7,
-              }}
-            >
-              <View style={styles.espacio3}>
-                <View
-                  style={{
-                    width: '50%',
-                    marginLeft: '-1%',
-                  }}
-                >
-                  <Text style={styles.txtPrices2}>
-                    {tags.PaymentScreen.subtotal != ''
-                      ? tags.PaymentScreen.subtotal
-                      : 'Subtotal'}
-                  </Text>
-                  <Text style={styles.txtPrices2}>
-                    {'(' +
-                      ShoppingCart.length +
-                      ' ' +
-                      (tags.PaymentScreen.product != ''
-                        ? tags.PaymentScreen.product
-                        : 'Producto') +
-                      (ShoppingCart.length <= 1 ? '' : 's') +
-                      ')'}{' '}
-                  </Text>
-                </View>
-                <Text style={styles.valorCuenta}>
-                  {' '}
-                  {Currency.code + '.' + valoresVenta.subTotal}
-                </Text>
-              </View>
-              <View style={styles.espacio}>
-                <Text style={styles.txtTitulo}>
-                  {tags.PaymentScreen.entrega != ''
-                    ? tags.PaymentScreen.entrega
-                    : 'Entrega'}
-                </Text>
-                <Text style={styles.valorCuenta}>
-                  {Currency.code + '.' + valoresVenta.entrega}
-                </Text>
-              </View>
-              <Divider orientation="vertical" />
-              <View style={styles.espacio2}>
-                <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-                  {tags.PaymentScreen.total != ''
-                    ? tags.PaymentScreen.total
-                    : 'Total (incl. IVA)'}
-                </Text>
-                <Text style={styles.valorCuenta}>
-                  {Currency.code + '.' + valoresVenta.total}
-                </Text>
-              </View>
             </View>
           </ScrollView>
           {visiblePago == false ? null : (
@@ -873,36 +972,107 @@ export default function VistaPago(props) {
 
   function calculoBorrarItem(carrito) {
     let subtotal = 0;
+    let cuotasTotal = 0;
+    let cuotasValorTotal = 0;
+    let engancheTotal = 0;
+    let financiadoTotal = 0;
+    let cashTotal = 0;
+    let descPercent = 0.0;
     let descuento = 0;
     let sendProds = [];
     // Productos del carrito
     if (carrito.length >= 1) {
+      console.log('ENTRE A CARRITO EN BORRAR ITEM CON MAYOR QUE 1');
       carrito.forEach(item => {
         let precioItem;
-        if (item.price.includes(',')) {
-          precioItem = item.price.replace(/,/g, '');
+        if (item.type == '2') {
+          if (item.priceFinancing.includes(',')) {
+            precioItem = item.priceFinancing.replace(/,/g, '');
+            engancheTotal =
+              parseFloat(engancheTotal) +
+              parseFloat(item.priceFinancing.replace(/,/g, '')) * item.cantidad;
+            financiadoTotal +=
+              item.summaryFinancing.precio_sin_enganche * item.cantidad;
+            cuotasValorTotal =
+              parseFloat(cuotasValorTotal) +
+              parseFloat(item.summaryFinancing.value_of_installment);
+            cuotasTotal =
+              cuotasTotal +
+              parseInt(item.financing.number_of_installments) * item.cantidad;
+          } else {
+            precioItem = item.priceFinancing;
+            engancheTotal =
+              parseFloat(engancheTotal) +
+              parseFloat(item.priceFinancing) * item.cantidad;
+            financiadoTotal =
+              item.summaryFinancing.precio_sin_enganche * item.cantidad;
+            cuotasValorTotal =
+              parseFloat(cuotasValorTotal) +
+              parseFloat(item.summaryFinancing.value_of_installment);
+            cuotasTotal =
+              cuotasTotal +
+              parseInt(item.financing.number_of_installments) * item.cantidad;
+          }
         } else {
-          precioItem = item.price;
+          if (item.price.includes(',')) {
+            precioItem = item.price.replace(/,/g, '');
+            cashTotal = cashTotal + item.price.replace(/,/g, '');
+          } else {
+            precioItem = item.price;
+            cashTotal = cashTotal + item.price;
+          }
         }
+
+        console.log('valor item', precioItem, parseFloat(precioItem));
         subtotal = subtotal + item.cantidad * parseFloat(precioItem);
-        sendProds.push({
-          idProduct: item._id,
-          quantity: item.cantidad,
-          paid_value: item.cantidad * parseFloat(precioItem),
-        });
+        if (item.type == '2') {
+          sendProds.push({
+            idProduct: item._id,
+            quantity: item.cantidad,
+            paid_value: item.cantidad * parseFloat(precioItem),
+            financing: item.financing,
+          });
+        } else {
+          sendProds.push({
+            idProduct: item._id,
+            quantity: item.cantidad,
+            paid_value: item.cantidad * parseFloat(precioItem),
+          });
+        }
       });
     }
     console.log('CARRITO TRAS BORRAR ITEM', carrito);
     if (carrito.length == 0) {
       subtotal = 0;
+      cuotasTotal = 0;
+      cuotasValorTotal = 0;
+      engancheTotal = 0;
+      financiadoTotal = 0;
+      cashTotal = 0;
+      descPercent = 0.0;
       descuento = 0;
       sendProds = [];
     }
     // Calcular valores de la vista
+    if (promotionList.length >= 1) {
+      if (validPromo.type == 'V' || validPromo.type == 'v') {
+        descuento = subtotal * (parseFloat(validPromo.discount) / 100);
+        console.log('descuento?', subtotal, descuento);
+      }
+    }
+    //Consultar Moneda
+    getCurrency({_id: sede.idAffiliate});
+    console.log('DATOS DE MONEDA', Currency);
+    // Calcular valores de la vista
     setValoresVenta({
-      subTotal: subtotal,
-      entrega: descuento,
-      total: subtotal - descuento,
+      subTotal: formatAmount(subtotal),
+      entrega: formatAmount(descuento),
+      total: formatAmount(subtotal - descuento),
+      totalCuotas: cuotasTotal,
+      totalValorCuotas: formatAmount(cuotasValorTotal),
+      TotalEfectivo: formatAmount(cashTotal),
+      totalEnganche: formatAmount(engancheTotal),
+      totalFinanciado: formatAmount(financiadoTotal),
     });
     console.log('PRODS A ENVIAR BORRADOS DEBE SER 0', sendProds);
     setProductosCarrito(sendProds);
@@ -1004,6 +1174,16 @@ const styles = StyleSheet.create({
     marginBottom: 3,
     borderColor: 'grey',
     flexDirection: 'row',
+  },
+  espacioTitle: {
+    width: '90%',
+    alignItems: 'center',
+    marginLeft: '5%',
+    marginRight: '5%',
+    height: 50,
+    paddingTop: 10,
+    marginBottom: 3,
+    borderColor: 'grey',
   },
   espacio2: {
     width: '90%',
