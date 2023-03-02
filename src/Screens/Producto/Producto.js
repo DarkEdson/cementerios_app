@@ -669,20 +669,24 @@ export default function VistaProducto(props) {
                       </View>
                       <View style={{width: '40%'}}>
                         <Text style={styles.subtitulos}>
-                          {Product.currency.code +
-                            '.' +
-                            (Product.price.includes(',')
-                              ? formatAmount(
-                                  (parseFloat(Product.price.replace(/,/g, '')) -
-                                    engancheReal) /
-                                    (cuotas == 0 ? 1 : cuotas),
-                                )
-                              : Product.currency.code +
-                                '.' +
-                                formatAmount(
-                                  (parseFloat(Product.price) - engancheReal) /
-                                    (cuotas == 0 ? 1 : cuotas),
-                                ))}
+                          {cuotas == 0
+                            ? 'Agregue cuotas'
+                            : Product.currency.code +
+                              '.' +
+                              (Product.price.includes(',')
+                                ? formatAmount(
+                                    (parseFloat(
+                                      Product.price.replace(/,/g, ''),
+                                    ) -
+                                      engancheReal) /
+                                      (cuotas == 0 ? 1 : cuotas),
+                                  )
+                                : Product.currency.code +
+                                  '.' +
+                                  formatAmount(
+                                    (parseFloat(Product.price) - engancheReal) /
+                                      (cuotas == 0 ? 1 : cuotas),
+                                  ))}
                         </Text>
                       </View>
                     </View>
@@ -829,13 +833,29 @@ export default function VistaProducto(props) {
       });
     }
     console.log('SERA EDITADO?', editable);
-    if (editable) {
-      updateItemtoCart(item, calculoTienda);
+    if (porcent == 1 && cuotas == 0 && checked2 == true) {
+      Snackbar.show({
+        text: `Ingrese enganche, hasta maximo de 99%`,
+        duration: Snackbar.LENGTH_LONG,
+      });
     } else {
-      addItemtoCart(item);
+      if (
+        (cuotas == 0 && checked2 == true) ||
+        (cuotas == '' && checked2 == true)
+      ) {
+        Snackbar.show({
+          text: `Ingrese Cuotas hasta un maximo de ${cuotasMax}`,
+          duration: Snackbar.LENGTH_LONG,
+        });
+      } else {
+        if (editable) {
+          updateItemtoCart(item, calculoTienda);
+        } else {
+          addItemtoCart(item);
+        }
+        goToScreen(routeName);
+      }
     }
-
-    goToScreen(routeName);
   }
 }
 
