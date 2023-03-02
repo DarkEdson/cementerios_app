@@ -120,14 +120,15 @@ export const ScreentagProvider = ({children}) => {
           ...prevState,
           ProductDetailScreen: {
             btnagregar: etiquetas[0].description,
-            cuotas: etiquetas[1].description,
-            detalle: etiquetas[2].description,
-            enganche: etiquetas[3].description,
-            financing: etiquetas[4].description,
-            precio: etiquetas[5].description,
-            sede: etiquetas[6].description,
-            txtComments: etiquetas[7].description,
-            txtCuotasMsj: etiquetas[8].description,
+            cash: etiquetas[1].description,
+            cuotas: etiquetas[2].description,
+            detalle: etiquetas[3].description,
+            enganche: etiquetas[4].description,
+            financing: etiquetas[5].description,
+            precio: etiquetas[6].description,
+            sede: etiquetas[7].description,
+            txtComments: etiquetas[8].description,
+            txtCuotasMsj: etiquetas[9].description,
           },
         }));
       }

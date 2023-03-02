@@ -11,7 +11,7 @@ import {
   //Image,
   TouchableOpacity,
 } from 'react-native';
-import {Image, FAB, CheckBox} from '@rneui/themed';
+import {Image, FAB, CheckBox, Divider} from '@rneui/themed';
 import Snackbar from 'react-native-snackbar';
 import Carousel from 'react-native-reanimated-carousel';
 import ReadMore from 'react-native-read-more-text';
@@ -114,6 +114,9 @@ export default function VistaProducto(props) {
   const [realPercent, setrealPercent] = useState(100);
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
+  const [checked1, setchecked1] = useState(true);
+  const [checked2, setchecked2] = useState(false);
+  const [visibleMethod, setvisibleMethod] = useState(false);
 
   const progressValue = useSharedValue(0);
   const baseOptions = {
@@ -432,124 +435,197 @@ export default function VistaProducto(props) {
                   onRequestClose={() => setIsVisible(false)}
                 />
               ) : null}
-              {Product.type == '2' ? (
-                <View>
-                  <Text style={styles.titulo2}>
-                    {tags.ProductDetailScreen.financing != ''
+              <Divider />
+              <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                <CheckBox
+                  title={
+                    tags.ProductDetailScreen.cash != ''
+                      ? tags.ProductDetailScreen.cash
+                      : 'Cash'
+                  }
+                  containerStyle={styles.container}
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={checked1}
+                  onPress={() => {
+                    setchecked2(!checked2);
+                    setchecked1(!checked1);
+                    setvisibleMethod(false);
+                    setrealPercent(100);
+                    setPorcent(1);
+                    setCuotas(0);
+                  }}
+                />
+                <CheckBox
+                  title={
+                    tags.ProductDetailScreen.financing != ''
                       ? tags.ProductDetailScreen.financing
-                      : 'FINANCIAMIENTO'}
-                  </Text>
-                  <MyTextInput
-                    keyboardType="numeric"
-                    placeholder={
-                      tags.ProductDetailScreen.enganche != ''
-                        ? tags.ProductDetailScreen.enganche
-                        : 'Enganche'
-                    }
-                    image="contrast"
-                    value={realPercent}
-                    onChangeText={porcentaje => {
-                      financing.forEach(financia => {
-                        if (
-                          parseInt(financia.initial_percentage) <=
-                            parseInt(porcentaje) &&
-                          parseInt(porcentaje) <=
-                            parseInt(financia.final_percentage)
-                        ) {
-                          console.log(
-                            'PRUEBA EN IF DE PORCENTAJE',
-                            porcentaje,
-                            financia.initial_percentage,
-                            financia.final_percentage,
-                            parseInt(financia.number_of_installments),
-                          );
-                          setrealPercent(parseInt(porcentaje));
-                          setPorcent(parseInt(porcentaje) / 100);
-                          setcuotasMax(financia.number_of_installments);
-                        } else if (porcentaje == '') {
-                          setrealPercent(100);
-                          setPorcent(1);
-                        }
-                      });
-                    }}
-                    onEndEditing={porcentaje => {
-                      financing.forEach(financia => {
-                        if (
-                          parseInt(financia.initial_percentage) <=
-                            parseInt(porcentaje.nativeEvent.text) &&
-                          parseInt(porcentaje.nativeEvent.text) <=
-                            parseInt(financia.final_percentage)
-                        ) {
-                          console.log(
-                            'PRUEBA EN IF DE PORCENTAJE',
-                            porcentaje.nativeEvent.text,
-                            financia.initial_percentage,
-                            financia.final_percentage,
-                            parseInt(financia.number_of_installments),
-                          );
-                          setrealPercent(porcentaje.nativeEvent.text);
-                          setPorcent(
-                            parseInt(porcentaje.nativeEvent.text) / 100,
-                          );
-                          console.log('PORCENT?', porcent);
-                          setcuotasMax(financia.number_of_installments);
-                        } else if (porcentaje.nativeEvent.text == '') {
-                          setrealPercent(100);
-                          setPorcent(1);
-                        }
-                      });
-                    }}
-                  />
-                  <Text style={styles.promoText}>
-                    {tags.ProductDetailScreen.cuotas != ''
-                      ? tags.ProductDetailScreen.cuotas
-                      : 'Cuotas'}
-                  </Text>
-                  <MyTextInput
-                    keyboardType="numeric"
-                    placeholder={
-                      tags.ProductDetailScreen.cuotas != ''
+                      : 'FINANCIAMIENTO'
+                  }
+                  containerStyle={styles.container}
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={checked2}
+                  onPress={() => {
+                    setchecked2(!checked2);
+                    setchecked1(!checked1);
+                    setvisibleMethod(true);
+                  }}
+                />
+              </View>
+              <Divider />
+              {visibleMethod ? (
+                Product.type == '2' ? (
+                  <View>
+                    <Text style={styles.titulo2}>
+                      {tags.ProductDetailScreen.financing != ''
+                        ? tags.ProductDetailScreen.financing
+                        : 'FINANCIAMIENTO'}
+                    </Text>
+                    <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                      <View style={{width: '60%', marginHorizontal: '3%'}}>
+                        <MyTextInput
+                          keyboardType="numeric"
+                          placeholder={
+                            tags.ProductDetailScreen.enganche != ''
+                              ? tags.ProductDetailScreen.enganche
+                              : 'Enganche'
+                          }
+                          image="percent-outline"
+                          value={realPercent}
+                          onChangeText={porcentaje => {
+                            financing.forEach(financia => {
+                              if (
+                                parseInt(financia.initial_percentage) <=
+                                  parseInt(porcentaje) &&
+                                parseInt(porcentaje) <=
+                                  parseInt(financia.final_percentage)
+                              ) {
+                                console.log(
+                                  'PRUEBA EN IF DE PORCENTAJE',
+                                  porcentaje,
+                                  financia.initial_percentage,
+                                  financia.final_percentage,
+                                  parseInt(financia.number_of_installments),
+                                );
+                                setrealPercent(parseInt(porcentaje));
+                                setPorcent(parseInt(porcentaje) / 100);
+                                setcuotasMax(financia.number_of_installments);
+                              } else if (porcentaje == '') {
+                                setrealPercent(100);
+                                setPorcent(1);
+                              }
+                            });
+                          }}
+                          onEndEditing={porcentaje => {
+                            financing.forEach(financia => {
+                              if (
+                                parseInt(financia.initial_percentage) <=
+                                  parseInt(porcentaje.nativeEvent.text) &&
+                                parseInt(porcentaje.nativeEvent.text) <=
+                                  parseInt(financia.final_percentage)
+                              ) {
+                                console.log(
+                                  'PRUEBA EN IF DE PORCENTAJE',
+                                  porcentaje.nativeEvent.text,
+                                  financia.initial_percentage,
+                                  financia.final_percentage,
+                                  parseInt(financia.number_of_installments),
+                                );
+                                setrealPercent(porcentaje.nativeEvent.text);
+                                setPorcent(
+                                  parseInt(porcentaje.nativeEvent.text) / 100,
+                                );
+                                console.log('PORCENT?', porcent);
+                                setcuotasMax(financia.number_of_installments);
+                              } else if (porcentaje.nativeEvent.text == '') {
+                                setrealPercent(100);
+                                setPorcent(1);
+                              }
+                            });
+                          }}
+                        />
+                      </View>
+                      <View style={{width: '40%'}}>
+                        <Text style={styles.subtitulos}>
+                          {Product.type == '2'
+                            ? Product.currency.code +
+                              '.' +
+                              (Product.price.includes(',')
+                                ? formatAmount(
+                                    (parseFloat(
+                                      Product.price.replace(/,/g, ''),
+                                    ) *
+                                      parseInt(realPercent)) /
+                                      100,
+                                  )
+                                : formatAmount(
+                                    (parseFloat(Product.price) *
+                                      parseInt(realPercent)) /
+                                      100,
+                                  ))
+                            : Product.currency.code +
+                              '.' +
+                              (Product.price.includes(',')
+                                ? formatAmount(
+                                    parseFloat(Product.price.replace(/,/g, '')),
+                                  )
+                                : formatAmount(parseFloat(Product.price)))}
+                        </Text>
+                      </View>
+                    </View>
+                    <Text style={styles.promoText}>
+                      {tags.ProductDetailScreen.cuotas != ''
                         ? tags.ProductDetailScreen.cuotas
-                        : 'Cuotas'
-                    }
-                    image="contrast"
-                    value={cuotas}
-                    onChangeText={cuotas => {
-                      console.log('PORCENT?', porcent);
-                      console.log(cuotas, parseInt(cuotasMax));
-                      if (cuotas <= parseInt(cuotasMax)) {
-                        setCuotas(cuotas);
-                      } else {
-                        Snackbar.show({
-                          text: `${
-                            tags.ProductDetailScreen.txtCuotasMsj != ''
-                              ? tags.ProductDetailScreen.txtCuotasMsj
-                              : 'Cantidad maxima de cuotas es:'
-                          } ${cuotasMax}`,
-                          duration: Snackbar.LENGTH_LONG,
-                        });
-                        setCuotas(cuotasMax);
+                        : 'Cuotas'}
+                    </Text>
+                    <MyTextInput
+                      keyboardType="numeric"
+                      placeholder={
+                        tags.ProductDetailScreen.cuotas != ''
+                          ? tags.ProductDetailScreen.cuotas
+                          : 'Cuotas'
                       }
-                    }}
-                    onEndEditing={cuotas => {
-                      if (
-                        parseInt(cuotas.nativeEvent.text) <= parseInt(cuotasMax)
-                      ) {
-                        setCuotas(cuotas.nativeEvent.text);
-                      } else {
-                        Snackbar.show({
-                          text: `${
-                            tags.ProductDetailScreen.txtCuotasMsj != ''
-                              ? tags.ProductDetailScreen.txtCuotasMsj
-                              : 'Cantidad maxima de cuotas es:'
-                          } ${cuotasMax}`,
-                          duration: Snackbar.LENGTH_LONG,
-                        });
-                        setCuotas(cuotasMax);
-                      }
-                    }}
-                  />
-                </View>
+                      image="contrast"
+                      value={cuotas}
+                      onChangeText={cuotas => {
+                        console.log('PORCENT?', porcent);
+                        console.log(cuotas, parseInt(cuotasMax));
+                        if (cuotas <= parseInt(cuotasMax)) {
+                          setCuotas(cuotas);
+                        } else {
+                          Snackbar.show({
+                            text: `${
+                              tags.ProductDetailScreen.txtCuotasMsj != ''
+                                ? tags.ProductDetailScreen.txtCuotasMsj
+                                : 'Cantidad maxima de cuotas es:'
+                            } ${cuotasMax}`,
+                            duration: Snackbar.LENGTH_LONG,
+                          });
+                          setCuotas(cuotasMax);
+                        }
+                      }}
+                      onEndEditing={cuotas => {
+                        if (
+                          parseInt(cuotas.nativeEvent.text) <=
+                          parseInt(cuotasMax)
+                        ) {
+                          setCuotas(cuotas.nativeEvent.text);
+                        } else {
+                          Snackbar.show({
+                            text: `${
+                              tags.ProductDetailScreen.txtCuotasMsj != ''
+                                ? tags.ProductDetailScreen.txtCuotasMsj
+                                : 'Cantidad maxima de cuotas es:'
+                            } ${cuotasMax}`,
+                            duration: Snackbar.LENGTH_LONG,
+                          });
+                          setCuotas(cuotasMax);
+                        }
+                      }}
+                    />
+                  </View>
+                ) : null
               ) : null}
               <View style={styles.numCant}>
                 <TouchableOpacity
@@ -725,6 +801,13 @@ const styles = StyleSheet.create({
     fontSize: 23,
     textAlign: 'left',
     marginTop: 5,
+    marginBottom: 5,
+  },
+  subtitulos: {
+    fontWeight: '500',
+    fontSize: 18,
+    textAlign: 'left',
+    marginTop: '14%',
     marginBottom: 5,
   },
   titulo2: {
