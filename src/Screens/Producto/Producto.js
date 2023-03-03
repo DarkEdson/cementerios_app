@@ -618,6 +618,7 @@ export default function VistaProducto(props) {
                           image="contrast"
                           value={cuotas}
                           onChangeText={cuotas => {
+                            let cuotasMonto;
                             console.log('PORCENT?', porcent);
                             console.log(cuotas, parseInt(cuotasMax));
                             if (cuotas <= parseInt(cuotasMax)) {
@@ -633,6 +634,18 @@ export default function VistaProducto(props) {
                               });
                               setCuotas(cuotasMax);
                             }
+                            cuotasMonto = Product.price.includes(',')
+                              ? (parseFloat(Product.price.replace(/,/g, '')) -
+                                  engancheReal) /
+                                (parseInt(cuotas) == 0
+                                  ? 1
+                                  : parseInt(cuotas))
+                              : (parseFloat(Product.price) - engancheReal) /
+                                (parseInt(cuotas) == 0
+                                  ? 1
+                                  : parseInt(cuotas));
+
+                            setvalorCuotas(cuotasMonto);
                           }}
                           onEndEditing={cuotas => {
                             let cuotasMonto;
@@ -663,7 +676,7 @@ export default function VistaProducto(props) {
                                   ? 1
                                   : parseInt(cuotas.nativeEvent.text));
 
-                            setvalorCuotas(cuotasMonto);
+                            console.log('CUOTAS NAVIE EVENT',cuotas.nativeEvent.text)
                           }}
                         />
                       </View>
@@ -788,7 +801,7 @@ export default function VistaProducto(props) {
           percentage: `${realPercent}`,
         },
         summaryFinancing: {
-          value_of_installment: `${valorCuotas}`,
+          value_of_installment: valorCuotas,
           precio_sin_enganche: Product.price.includes(',')
             ? parseFloat(Product.price.replace(/,/g, '')) -
               parseFloat(Product.price.replace(/,/g, '')) *

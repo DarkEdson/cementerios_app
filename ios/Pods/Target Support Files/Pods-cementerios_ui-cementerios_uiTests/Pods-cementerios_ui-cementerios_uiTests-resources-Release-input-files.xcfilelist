@@ -1,4 +1,6 @@
 ${PODS_ROOT}/Target Support Files/Pods-cementerios_ui-cementerios_uiTests/Pods-cementerios_ui-cementerios_uiTests-resources.sh
+${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/GoogleSignIn/GoogleSignIn.bundle
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf
