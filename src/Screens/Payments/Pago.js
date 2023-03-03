@@ -78,8 +78,11 @@ export default function VistaPago(props) {
   const [formaPago, setformaPago] = useState('Tarjeta de Credito');
   const [formasPago, setformasPago] = useState([
     {id: 1, name: 'Tarjeta de Credito'},
-    {id: 2, name: 'Paypal'},
-    {id: 3, name: 'Link de Pago'},
+    {id: 2, name: 'Link de Pago'},
+  ]);
+  //    {id: 3, name: 'Paypal'},
+  const [formasPagoClient, setformasPagoClient] = useState([
+    {id: 1, name: 'Tarjeta de Credito'},
   ]);
   const [opcionPago, setopcionPago] = useState(1);
 
@@ -150,10 +153,10 @@ export default function VistaPago(props) {
         realizarPago();
         break;
       case 2:
-        pagarPaypal();
+        crearLink();
         break;
       case 3:
-        crearLink();
+        pagarPaypal();
         break;
       default:
         console.log('no hay opcion para esta forma de pago');
@@ -501,65 +504,50 @@ export default function VistaPago(props) {
                 marginBottom: 7,
               }}
             >
-              <View style={styles.espacio3}>
-                {/*
-                  <View
-                  style={{
-                    width: '50%',
-                    marginLeft: '-1%',
-                  }}
-                >**/}
-                <Text style={styles.txtTitulo}>
-                  {tags.PaymentScreen.subtotal != ''
-                    ? tags.PaymentScreen.subtotal
-                    : 'Subtotal'}{' '}
-                  {tags.ProductDetailScreen.financing != ''
-                    ? tags.ProductDetailScreen.financing
-                    : 'FINANCIAMIENTO'}
-                </Text>
-                {/** 
-       <Text style={styles.txtPrices2}>
-                    {'(' +
-                      ShoppingCart.length +
-                      ' ' +
-                      (tags.PaymentScreen.product != ''
-                        ? tags.PaymentScreen.product
-                        : 'Producto') +
-                      (ShoppingCart.length <= 1 ? '' : 's') +
-                      ')'}{' '}
+              {valoresVenta.totalEnganche == 0 ? null : (
+                <View style={styles.espacio3}>
+                  <Text style={styles.txtTitulo}>
+                    {tags.PaymentScreen.subtotal != ''
+                      ? tags.PaymentScreen.subtotal
+                      : 'Subtotal'}{' '}
+                    {tags.ProductDetailScreen.financing != ''
+                      ? tags.ProductDetailScreen.financing
+                      : 'FINANCIAMIENTO'}
                   </Text>
-                  </View>
-                  **/}
-
-                <Text style={styles.valorCuenta}>
-                  {' '}
-                  {Currency.code + '.' + valoresVenta.totalEnganche}
-                </Text>
-              </View>
-              <View style={styles.espacio3}>
-                <Text style={styles.txtTitulo}>
-                  {tags.PaymentScreen.subtotal != ''
-                    ? tags.PaymentScreen.subtotal
-                    : 'Subtotal'}{' '}
-                  {tags.ProductDetailScreen.cash != ''
-                    ? tags.ProductDetailScreen.cash
-                    : 'Cash'}
-                </Text>
-                <Text style={styles.valorCuenta}>
-                  {' '}
-                  {Currency.code + '.' + valoresVenta.TotalEfectivo}
-                </Text>
-              </View>
-              <View style={styles.espacio}>
-                <Text style={styles.txtTitulo}>
-                  {tags.PaymentScreen.entrega != ''
-                    ? tags.PaymentScreen.entrega
-                    : 'Entrega'}
-                </Text>
-                <Text style={styles.valorCuenta}>
-                  {Currency.code + '.' + valoresVenta.entrega}
-                </Text>
-              </View>
+                  <Text style={styles.valorCuenta}>
+                    {' '}
+                    {Currency.code + '.' + valoresVenta.totalEnganche}
+                  </Text>
+                </View>
+              )}
+              {valoresVenta.TotalEfectivo == 0 ? null : (
+                <View style={styles.espacio3}>
+                  <Text style={styles.txtTitulo}>
+                    {tags.PaymentScreen.subtotal != ''
+                      ? tags.PaymentScreen.subtotal
+                      : 'Subtotal'}{' '}
+                    {tags.ProductDetailScreen.cash != ''
+                      ? tags.ProductDetailScreen.cash
+                      : 'Cash'}
+                  </Text>
+                  <Text style={styles.valorCuenta}>
+                    {' '}
+                    {Currency.code + '.' + valoresVenta.TotalEfectivo}
+                  </Text>
+                </View>
+              )}
+              {valoresVenta.entrega == 0 ? null : (
+                <View style={styles.espacio}>
+                  <Text style={styles.txtTitulo}>
+                    {tags.PaymentScreen.entrega != ''
+                      ? tags.PaymentScreen.entrega
+                      : 'Entrega'}
+                  </Text>
+                  <Text style={styles.valorCuenta}>
+                    {Currency.code + '.' + valoresVenta.entrega}
+                  </Text>
+                </View>
+              )}
               <Divider orientation="vertical" />
               <View style={styles.espacio2}>
                 <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
@@ -684,7 +672,13 @@ export default function VistaPago(props) {
               }
               formaPago={formaPago}
               customModal={visiblePago}
-              formasPago={formasPago}
+              formasPago={
+                loginUser.usuario.role == 'seller' ||
+                loginUser.usuario.role == 'SELLER' ||
+                loginUser.usuario.role == 'Seller'
+                  ? formasPago
+                  : formasPagoClient
+              }
               setopcionPago={setopcionPago}
               tags={tags.sedeSelectScreen}
               setFormaPago={setformaPago}
