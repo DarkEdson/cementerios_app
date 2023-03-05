@@ -66,8 +66,7 @@ async function getRatingsApi(lenguajeid, countryID) {
               : [
                   {
                     number_of_installments: '0',
-                    initial_percentage: '0',
-                    final_percentage: '100',
+                    percentage: '100',
                   },
                 ],
             type: prod.type ? prod.type : '1',

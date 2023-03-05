@@ -14,6 +14,8 @@ async function productbyCountry(country, lenguaje) {
       .then(response => {
         console.log('PRODUCTOS API POR PAIS', response);
         response.forEach(producto => {
+          console.log('PORCENTAJES API PROD', producto.financing)
+          console.log('CONFIRMAR QUE ENTRO Y EJECUTA');
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
@@ -30,8 +32,7 @@ async function productbyCountry(country, lenguaje) {
               : [
                   {
                     number_of_installments: '0',
-                    initial_percentage: '0',
-                    final_percentage: '100',
+                    percentage: '100',
                   },
                 ],
             type: producto.type ? producto.type : '1',
@@ -119,8 +120,9 @@ async function productbyHeadquarters(Sede, lenguaje) {
       .catch(error => console.error('Error en SEDES', error))
       .then(response => {
         console.log('PRODUCTOS en SEDE', response);
+       
         response.forEach(producto => {
-          console.log(producto.labels);
+          
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
@@ -138,8 +140,7 @@ async function productbyHeadquarters(Sede, lenguaje) {
               : [
                   {
                     number_of_installments: '0',
-                    initial_percentage: '0',
-                    final_percentage: '100',
+                    percentage: '100',
                   },
                 ],
             type: producto.type ? producto.type : '1',
