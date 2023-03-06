@@ -507,9 +507,6 @@ export default function VistaPago(props) {
               {valoresVenta.totalEnganche == 0 ? null : (
                 <View style={styles.espacio3}>
                   <Text style={styles.txtTitulo}>
-                    {tags.ProductDetailScreen.financing != ''
-                      ? tags.ProductDetailScreen.financing
-                      : 'FINANCIAMIENTO'}{' '}
                     {tags.ProductDetailScreen.enganche != ''
                       ? tags.ProductDetailScreen.enganche
                       : 'Enganche'}
