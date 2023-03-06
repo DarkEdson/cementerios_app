@@ -548,13 +548,7 @@ export default function VistaProducto(props) {
                           data={financing}
                           //     defaultValue={defaultLanguage}
                           //   defaultValueByIndex={0}
-                          defaultButtonText={
-                            financing[0].percentage +
-                            '% -> ' +
-                            (tags.ProductDetailScreen.precio != ''
-                              ? tags.ProductDetailScreen.precio + ': '
-                              : 'Precio: ')
-                          }
+                          defaultButtonText={financing[0].percentage + '%'}
                           buttonTextStyle={{
                             textAlign: 'left',
                             color: color.TEXTCOLOR,
@@ -634,16 +628,10 @@ export default function VistaProducto(props) {
                             setvalorCuotas(cuotasMonto);
                           }}
                           buttonTextAfterSelection={(selectedItem, index) => {
-                            return (
-                              selectedItem.percentage +
-                              '% -> ' +
-                              (tags.ProductDetailScreen.precio != ''
-                                ? tags.ProductDetailScreen.precio + ': '
-                                : 'Precio: ')
-                            );
+                            return selectedItem.percentage + '%';
                           }}
                           rowTextForSelection={(item, index) => {
-                            return item.percentage;
+                            return item.percentage + '%';
                           }}
                         />
                       </View>
