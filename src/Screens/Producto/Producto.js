@@ -12,7 +12,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Image, FAB, CheckBox, Divider} from '@rneui/themed';
+import {Icon} from '@rneui/base';
 import Snackbar from 'react-native-snackbar';
+import SelectDropdown from 'react-native-select-dropdown';
 import Carousel from 'react-native-reanimated-carousel';
 import ReadMore from 'react-native-read-more-text';
 import {useSharedValue} from 'react-native-reanimated';
@@ -471,33 +473,15 @@ export default function VistaProducto(props) {
                   uncheckedIcon="circle-o"
                   checked={checked2}
                   onPress={() => {
-                    let realEnganche
+                    let realEnganche;
                     setchecked2(!checked2);
                     setchecked1(!checked1);
                     setrealPercent(parseInt(financing[0].percentage));
-                          setcuotasMax(financing[0].number_of_installments);
-                          setCuotas(financing[0].number_of_installments)
-                          setPorcent(parseInt(financing[0].percentage) / 100);
-                          setChecked(1);
-                          if (Product.price.includes(',')) {
-                            setengancheReal(
-                              (parseFloat(Product.price.replace(/,/g, '')) *
-                                parseInt(financing[0].percentage)) /
-                                100,
-                            );
-                            100;
-                          } else {
-                            setengancheReal(
-                              (parseFloat(Product.price) *
-                                parseInt(financing[0].percentage)) /
-                                100,
-                            );
-                          }
-                    setvisibleMethod(true);
+                    setcuotasMax(financing[0].number_of_installments);
+                    setCuotas(financing[0].number_of_installments);
+                    setPorcent(parseInt(financing[0].percentage) / 100);
+                    setChecked(1);
                     if (Product.price.includes(',')) {
-                      realEnganche=((parseFloat(Product.price.replace(/,/g, '')) *
-                      parseInt(financing[0].percentage)) /
-                      100)
                       setengancheReal(
                         (parseFloat(Product.price.replace(/,/g, '')) *
                           parseInt(financing[0].percentage)) /
@@ -505,9 +489,29 @@ export default function VistaProducto(props) {
                       );
                       100;
                     } else {
-                      realEnganche=((parseFloat(Product.price) *
-                      parseInt(financiamiento.percentage)) /
-                      100)
+                      setengancheReal(
+                        (parseFloat(Product.price) *
+                          parseInt(financing[0].percentage)) /
+                          100,
+                      );
+                    }
+                    setvisibleMethod(true);
+                    if (Product.price.includes(',')) {
+                      realEnganche =
+                        (parseFloat(Product.price.replace(/,/g, '')) *
+                          parseInt(financing[0].percentage)) /
+                        100;
+                      setengancheReal(
+                        (parseFloat(Product.price.replace(/,/g, '')) *
+                          parseInt(financing[0].percentage)) /
+                          100,
+                      );
+                      100;
+                    } else {
+                      realEnganche =
+                        (parseFloat(Product.price) *
+                          parseInt(financiamiento.percentage)) /
+                        100;
                       setengancheReal(
                         (parseFloat(Product.price) *
                           parseInt(financiamiento.percentage)) /
@@ -515,17 +519,17 @@ export default function VistaProducto(props) {
                       );
                     }
                     cuotasMonto = Product.price.includes(',')
-                        ? (parseFloat(Product.price.replace(/,/g, '')) -
-                            realEnganche) /
-                          (parseInt(financing[0].number_of_installments) == 0
-                            ? 1
-                            : parseInt(financing[0].number_of_installments))
-                        : (parseFloat(Product.price) - realEnganche) /
-                          (parseInt(financing[0].number_of_installments) == 0
-                            ? 1
-                            : parseInt(financing[0].number_of_installments));
+                      ? (parseFloat(Product.price.replace(/,/g, '')) -
+                          realEnganche) /
+                        (parseInt(financing[0].number_of_installments) == 0
+                          ? 1
+                          : parseInt(financing[0].number_of_installments))
+                      : (parseFloat(Product.price) - realEnganche) /
+                        (parseInt(financing[0].number_of_installments) == 0
+                          ? 1
+                          : parseInt(financing[0].number_of_installments));
 
-                      setvalorCuotas(cuotasMonto);
+                    setvalorCuotas(cuotasMonto);
                   }}
                 />
               </View>
@@ -540,73 +544,108 @@ export default function VistaProducto(props) {
                     </Text>
                     <View style={{flexDirection: 'row', alignSelf: 'center'}}>
                       <View style={{width: '60%', marginHorizontal: '3%'}}>
-                        {financing.map((financiamiento, i) => {
-                    return (
-                      <CheckBox
-                        key={i}
-                        title={
-                          `${financiamiento.percentage} % -> ` +
-                          (tags.ProductDetailScreen.precio != ''
-                            ? tags.ProductDetailScreen.precio + ': '
-                            : 'Precio: ')
-                        }
-                        containerStyle={styles.container}
-                        checkedIcon="dot-circle-o"
-                        uncheckedIcon="circle-o"
-                        checked={checked === i + 1}
-                        onPress={() => {
-                          let realEnganche
-                          console.log(
-                            'ESTE PORCENTAJE',
-                            parseInt(financiamiento.percentage) / 100,
-                          );
-                          console.log(
-                            'PRUEBA EN CHECK DE PORCENTAJE',
-                            financiamiento.percentage,
-                            parseInt(financiamiento.number_of_installments),
-                          );
-                          setrealPercent(parseInt(financiamiento.percentage));
-                          setcuotasMax(financiamiento.number_of_installments);
-                          setCuotas(financiamiento.number_of_installments)
-                          setPorcent(parseInt(financiamiento.percentage) / 100);
-                          setChecked(i + 1);
-                          if (Product.price.includes(',')) {
-                            realEnganche=((parseFloat(Product.price.replace(/,/g, '')) *
-                            parseInt(financiamiento.percentage)) /
-                            100)
-                            setengancheReal(
-                              (parseFloat(Product.price.replace(/,/g, '')) *
-                                parseInt(financiamiento.percentage)) /
-                                100,
-                            );
-                            100;
-                          } else {
-                            realEnganche=((parseFloat(Product.price) *
-                            parseInt(financiamiento.percentage)) /
-                            100)
-                            setengancheReal(
-                              (parseFloat(Product.price) *
-                                parseInt(financiamiento.percentage)) /
-                                100,
-                            );
+                        <SelectDropdown
+                          data={financing}
+                          //     defaultValue={defaultLanguage}
+                          //   defaultValueByIndex={0}
+                          defaultButtonText={
+                            financing[0].percentage +
+                            '% -> ' +
+                            (tags.ProductDetailScreen.precio != ''
+                              ? tags.ProductDetailScreen.precio + ': '
+                              : 'Precio: ')
                           }
-                          cuotasMonto = Product.price.includes(',')
+                          buttonTextStyle={{
+                            textAlign: 'left',
+                            color: color.TEXTCOLOR,
+                            marginLeft: 3,
+                          }}
+                          buttonStyle={styles.btnDropStyle}
+                          dropdownStyle={{marginLeft: 15}}
+                          renderDropdownIcon={isOpened => {
+                            return (
+                              <Icon
+                                style={{marginRight: 15}}
+                                type={'font-awesome'}
+                                name={isOpened ? 'chevron-up' : 'chevron-down'}
+                                color={'#444'}
+                                size={20}
+                              />
+                            );
+                          }}
+                          dropdownIconPosition="right"
+                          onSelect={(selectedItem, index) => {
+                            console.log(selectedItem);
+                            let realEnganche;
+                            console.log(
+                              'ESTE PORCENTAJE',
+                              parseInt(selectedItem.percentage) / 100,
+                            );
+                            console.log(
+                              'PRUEBA EN CHECK DE PORCENTAJE',
+                              selectedItem.percentage,
+                              parseInt(selectedItem.number_of_installments),
+                            );
+                            setrealPercent(parseInt(selectedItem.percentage));
+                            setcuotasMax(selectedItem.number_of_installments);
+                            setCuotas(selectedItem.number_of_installments);
+                            setPorcent(parseInt(selectedItem.percentage) / 100);
+                            if (Product.price.includes(',')) {
+                              realEnganche =
+                                (parseFloat(Product.price.replace(/,/g, '')) *
+                                  parseInt(selectedItem.percentage)) /
+                                100;
+                              setengancheReal(
+                                (parseFloat(Product.price.replace(/,/g, '')) *
+                                  parseInt(selectedItem.percentage)) /
+                                  100,
+                              );
+                              100;
+                            } else {
+                              realEnganche =
+                                (parseFloat(Product.price) *
+                                  parseInt(financiamiento.percentage)) /
+                                100;
+                              setengancheReal(
+                                (parseFloat(Product.price) *
+                                  parseInt(selectedItem.percentage)) /
+                                  100,
+                              );
+                            }
+                            cuotasMonto = Product.price.includes(',')
                               ? (parseFloat(Product.price.replace(/,/g, '')) -
                                   realEnganche) /
-                                (parseInt(financiamiento.number_of_installments) == 0
+                                (parseInt(
+                                  selectedItem.number_of_installments,
+                                ) == 0
                                   ? 1
-                                  : parseInt(financiamiento.number_of_installments))
+                                  : parseInt(
+                                      selectedItem.number_of_installments,
+                                    ))
                               : (parseFloat(Product.price) - realEnganche) /
-                                (parseInt(financiamiento.number_of_installments) == 0
+                                (parseInt(
+                                  selectedItem.number_of_installments,
+                                ) == 0
                                   ? 1
-                                  : parseInt(financiamiento.number_of_installments));
+                                  : parseInt(
+                                      selectedItem.number_of_installments,
+                                    ));
 
                             setvalorCuotas(cuotasMonto);
-                        }}
-                      />
-                    );
-                  })}
-                        
+                          }}
+                          buttonTextAfterSelection={(selectedItem, index) => {
+                            return (
+                              selectedItem.percentage +
+                              '% -> ' +
+                              (tags.ProductDetailScreen.precio != ''
+                                ? tags.ProductDetailScreen.precio + ': '
+                                : 'Precio: ')
+                            );
+                          }}
+                          rowTextForSelection={(item, index) => {
+                            return item.percentage;
+                          }}
+                        />
                       </View>
                       <View style={{width: '40%'}}>
                         <Text style={styles.subtitulos}>
@@ -672,13 +711,9 @@ export default function VistaProducto(props) {
                             cuotasMonto = Product.price.includes(',')
                               ? (parseFloat(Product.price.replace(/,/g, '')) -
                                   engancheReal) /
-                                (parseInt(cuotas) == 0
-                                  ? 1
-                                  : parseInt(cuotas))
+                                (parseInt(cuotas) == 0 ? 1 : parseInt(cuotas))
                               : (parseFloat(Product.price) - engancheReal) /
-                                (parseInt(cuotas) == 0
-                                  ? 1
-                                  : parseInt(cuotas));
+                                (parseInt(cuotas) == 0 ? 1 : parseInt(cuotas));
 
                             setvalorCuotas(cuotasMonto);
                           }}
@@ -711,7 +746,10 @@ export default function VistaProducto(props) {
                                   ? 1
                                   : parseInt(cuotas.nativeEvent.text));
 
-                            console.log('CUOTAS NAVIE EVENT',cuotas.nativeEvent.text)
+                            console.log(
+                              'CUOTAS NAVIE EVENT',
+                              cuotas.nativeEvent.text,
+                            );
                           }}
                         />
                       </View>
@@ -1096,5 +1134,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     color: 'white',
+  },
+  btnDropStyle: {
+    width: '91%',
+    borderColor: color.GRAY2,
+    borderRadius: 15,
   },
 });
