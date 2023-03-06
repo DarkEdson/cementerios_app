@@ -212,7 +212,7 @@ export default function CompanyScreen(props) {
               <InformationIcon
                 tipo="ionicons"
                 image="location-pin"
-                titulo={sede.name}
+                titulo={sede ? sede.name : 'sin sede'}
                 subtitulo={
                   tags.CompanyDetailScreen.sede != ''
                     ? tags.CompanyDetailScreen.sede
