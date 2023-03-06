@@ -507,12 +507,12 @@ export default function VistaPago(props) {
               {valoresVenta.totalEnganche == 0 ? null : (
                 <View style={styles.espacio3}>
                   <Text style={styles.txtTitulo}>
-                    {tags.PaymentScreen.subtotal != ''
-                      ? tags.PaymentScreen.subtotal
-                      : 'Subtotal'}{' '}
                     {tags.ProductDetailScreen.financing != ''
                       ? tags.ProductDetailScreen.financing
-                      : 'FINANCIAMIENTO'}
+                      : 'FINANCIAMIENTO'}{' '}
+                    {tags.ProductDetailScreen.enganche != ''
+                      ? tags.ProductDetailScreen.enganche
+                      : 'Enganche'}
                   </Text>
                   <Text style={styles.valorCuenta}>
                     {' '}
@@ -523,9 +523,9 @@ export default function VistaPago(props) {
               {valoresVenta.TotalEfectivo == 0 ? null : (
                 <View style={styles.espacio3}>
                   <Text style={styles.txtTitulo}>
-                    {tags.PaymentScreen.subtotal != ''
-                      ? tags.PaymentScreen.subtotal
-                      : 'Subtotal'}{' '}
+                    {tags.ProductDetailScreen.precio != ''
+                      ? tags.ProductDetailScreen.precio
+                      : 'Precio'}{' '}
                     {tags.ProductDetailScreen.cash != ''
                       ? tags.ProductDetailScreen.cash
                       : 'Cash'}
