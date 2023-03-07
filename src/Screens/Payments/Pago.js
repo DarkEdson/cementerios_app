@@ -177,9 +177,11 @@ export default function VistaPago(props) {
     //summaryFinancing.precio_sin_enganche     summaryFinancing.value_of_installment     cantidad financing.number_of_installments
     ShoppingCart.forEach(item => {
       let precioItem;
+      let precioItem2;
       if (item.type == '2') {
         if (item.priceFinancing.includes(',')) {
-          precioItem = item.priceFinancing.replace(/,/g, '');
+          precioItem = item.price.replace(/,/g, '');
+          precioItem2 = item.priceFinancing.replace(/,/g, '');
           engancheTotal =
             parseFloat(engancheTotal) +
             parseFloat(item.priceFinancing.replace(/,/g, '')) * item.cantidad;
@@ -192,7 +194,8 @@ export default function VistaPago(props) {
             cuotasTotal +
             parseInt(item.financing.number_of_installments) * item.cantidad;
         } else {
-          precioItem = item.priceFinancing;
+          precioItem = item.price;
+          precioItem2 = item.priceFinancing;
           engancheTotal =
             parseFloat(engancheTotal) +
             parseFloat(item.priceFinancing) * item.cantidad;
@@ -208,9 +211,11 @@ export default function VistaPago(props) {
       } else {
         if (item.price.includes(',')) {
           precioItem = item.price.replace(/,/g, '');
+          precioItem2 = item.price.replace(/,/g, '');
           cashTotal = cashTotal + item.price.replace(/,/g, '');
         } else {
           precioItem = item.price;
+          precioItem2 = item.price;
           cashTotal = cashTotal + item.price;
         }
       }
@@ -221,14 +226,14 @@ export default function VistaPago(props) {
         sendProds.push({
           idProduct: item._id,
           quantity: item.cantidad,
-          paid_value: item.cantidad * parseFloat(precioItem),
+          paid_value: item.cantidad * parseFloat(precioItem2),
           financing: item.financing,
         });
       } else {
         sendProds.push({
           idProduct: item._id,
           quantity: item.cantidad,
-          paid_value: item.cantidad * parseFloat(precioItem),
+          paid_value: item.cantidad * parseFloat(precioItem2),
         });
       }
     });
@@ -440,15 +445,11 @@ export default function VistaPago(props) {
                             }
                             precio={
                               prod.type == '2'
-                                ? prod.priceFinancing.includes(',')
+                                ? prod.price.includes(',')
                                   ? formatAmount(
-                                      parseFloat(
-                                        prod.priceFinancing.replace(/,/g, ''),
-                                      ),
+                                      parseFloat(prod.price.replace(/,/g, '')),
                                     )
-                                  : formatAmount(
-                                      parseFloat(prod.priceFinancing),
-                                    )
+                                  : formatAmount(parseFloat(prod.price))
                                 : prod.price.includes(',')
                                 ? formatAmount(
                                     parseFloat(prod.price.replace(/,/g, '')),
@@ -976,9 +977,11 @@ export default function VistaPago(props) {
       console.log('ENTRE A CARRITO EN BORRAR ITEM CON MAYOR QUE 1');
       carrito.forEach(item => {
         let precioItem;
+        let precioItem2;
         if (item.type == '2') {
           if (item.priceFinancing.includes(',')) {
-            precioItem = item.priceFinancing.replace(/,/g, '');
+            precioItem = item.price.replace(/,/g, '');
+            precioItem2 = item.priceFinancing.replace(/,/g, '');
             engancheTotal =
               parseFloat(engancheTotal) +
               parseFloat(item.priceFinancing.replace(/,/g, '')) * item.cantidad;
@@ -991,7 +994,8 @@ export default function VistaPago(props) {
               cuotasTotal +
               parseInt(item.financing.number_of_installments) * item.cantidad;
           } else {
-            precioItem = item.priceFinancing;
+            precioItem = item.price;
+            precioItem2 = item.priceFinancing;
             engancheTotal =
               parseFloat(engancheTotal) +
               parseFloat(item.priceFinancing) * item.cantidad;
@@ -1007,9 +1011,11 @@ export default function VistaPago(props) {
         } else {
           if (item.price.includes(',')) {
             precioItem = item.price.replace(/,/g, '');
+            precioItem2 = item.price.replace(/,/g, '');
             cashTotal = cashTotal + item.price.replace(/,/g, '');
           } else {
             precioItem = item.price;
+            precioItem2 = item.price;
             cashTotal = cashTotal + item.price;
           }
         }
@@ -1020,14 +1026,14 @@ export default function VistaPago(props) {
           sendProds.push({
             idProduct: item._id,
             quantity: item.cantidad,
-            paid_value: item.cantidad * parseFloat(precioItem),
+            paid_value: item.cantidad * parseFloat(precioItem2),
             financing: item.financing,
           });
         } else {
           sendProds.push({
             idProduct: item._id,
             quantity: item.cantidad,
-            paid_value: item.cantidad * parseFloat(precioItem),
+            paid_value: item.cantidad * parseFloat(precioItem2),
           });
         }
       });
