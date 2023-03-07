@@ -542,6 +542,11 @@ export default function VistaProducto(props) {
                         ? tags.ProductDetailScreen.financing
                         : 'FINANCIAMIENTO'}
                     </Text>
+                    <Text style={styles.promoText}>
+                      {tags.ProductDetailScreen.enganche != ''
+                        ? tags.ProductDetailScreen.enganche
+                        : 'Enganche'}
+                    </Text>
                     <View style={{flexDirection: 'row', alignSelf: 'center'}}>
                       <View style={{width: '60%', marginHorizontal: '3%'}}>
                         <SelectDropdown
