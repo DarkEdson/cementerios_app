@@ -174,7 +174,7 @@ export default function VistaProductos(props) {
                       onPressProduct={() => selectedProduct(product, 'Product')}
                       urlImagen={product.principalImage}
                       titulo={product.name}
-                      descripcion={product.description}
+                      descripcion={product.keywords}
                       precio={
                         tags.ProductsScreen.detallePrecio != ''
                           ? tags.ProductsScreen.detallePrecio

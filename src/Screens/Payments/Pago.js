@@ -435,7 +435,7 @@ export default function VistaPago(props) {
                             resta={resta}
                             cantProductos={cantProductos}
                             titulo={prod.name}
-                            descripcion={prod.description}
+                            descripcion={prod.keywords}
                             moneda={
                               prod.moneda
                                 ? prod.moneda

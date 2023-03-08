@@ -316,7 +316,7 @@ export default function CompanyScreen(props) {
                       onPressProduct={() => selectedProduct(product, 'Product')}
                       urlImagen={product.principalImage}
                       titulo={product.name}
-                      descripcion={product.description}
+                      descripcion={product.keywords}
                       moneda={product.currency.code}
                       precio={product.price}
                     />
@@ -335,7 +335,7 @@ export default function CompanyScreen(props) {
                     onPressProduct={() => selectedProduct(product, 'Product')}
                     urlImagen={product.principalImage}
                     titulo={product.name}
-                    descripcion={product.description}
+                    descripcion={product.keywords}
                     moneda={product.currency.code}
                     precio={
                       product.price.includes(',')
