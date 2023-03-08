@@ -14,18 +14,25 @@ async function productbyCountry(country, lenguaje) {
       .then(response => {
         console.log('PRODUCTOS API POR PAIS', response);
         response.forEach(producto => {
-          console.log('PORCENTAJES API PROD', producto.financing)
+          console.log('PORCENTAJES API PROD', producto.financing);
           console.log('CONFIRMAR QUE ENTRO Y EJECUTA');
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
             idAffiliate: producto.idAffiliate,
-            idHeadquarter: producto.headquarters[0].idHeadquarter,
+            idHeadquarter:
+              producto.headquarters.length > 0
+                ? producto.headquarters[0].idHeadquarter
+                : '',
             code: producto.code,
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
-            name: producto.labels[0].name,
-            description: producto.labels[0].description,
-            price: producto.headquarters[0].price,
+            name: producto.labels.length > 0 ? producto.labels[0].name : '',
+            description:
+              producto.labels.length > 0 ? producto.labels[0].description : '',
+            price:
+              producto.headquarters.length > 0
+                ? producto.headquarters[0].price
+                : '0.00',
             currency: producto.currency,
             financing: producto.financing
               ? producto.financing
@@ -63,13 +70,23 @@ async function productFullbyCategory(product, lenguaje) {
           _id: response._id,
           idCategory: response.idCategory,
           idAffiliate: response.idAffiliate,
-          idHeadquarter: response.headquarters[0]._id,
+          idHeadquarter:
+            response.headquarters.length > 0
+              ? response.headquarters[0]._id
+              : '',
           code: response.code,
           principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${response.image}`,
-          name: response.labels[0].name,
-          description: response.labels[0].description,
-          price: response.headquarters[0].price,
-          currency: response.headquarters[0].currency,
+          name: response.labels.length > 0 ? response.labels[0].name : '',
+          description:
+            response.labels.length > 0 ? response.labels[0].description : '',
+          price:
+            response.headquarters.length > 0
+              ? response.headquarters[0].price
+              : '0.00',
+          currency:
+            response.headquarters.length > 0
+              ? response.headquarters[0].currency
+              : '',
         };
       });
     return productos;
@@ -120,9 +137,8 @@ async function productbyHeadquarters(Sede, lenguaje) {
       .catch(error => console.error('Error en SEDES', error))
       .then(response => {
         console.log('PRODUCTOS en SEDE', response);
-       
+
         response.forEach(producto => {
-          
           productos.push({
             _id: producto._id,
             idCategory: producto.idCategory,
@@ -130,8 +146,9 @@ async function productbyHeadquarters(Sede, lenguaje) {
             idAffiliate: producto.idAffiliate,
             code: producto.code,
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
-            name: producto.labels[0].name,
-            description: producto.labels[0].description,
+            name: producto.labels.length > 0 ? producto.labels[0].name : '',
+            description:
+              producto.labels.length > 0 ? producto.labels[0].description : '',
             price: producto.price,
             currency: producto.currency,
             ranking: producto.ranking,
