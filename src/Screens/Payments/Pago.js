@@ -562,37 +562,43 @@ export default function VistaPago(props) {
                   {Currency.code + '.' + valoresVenta.totalPagar}
                 </Text>
               </View>
-              <View style={styles.espacioTitle}>
-                <Text style={{fontSize: 15, fontWeight: '500'}}>
-                  {tags.ProductDetailScreen.financing != ''
-                    ? tags.ProductDetailScreen.financing
-                    : 'FINANCIAMIENTO'}
-                </Text>
-              </View>
-              <View style={styles.espacio}>
-                <Text style={styles.txtTitulo}>
-                  {valoresVenta.totalCuotas}{' '}
-                  {tags.ProductDetailScreen.cuotas != ''
-                    ? tags.ProductDetailScreen.cuotas
-                    : 'Cuotas'}
-                  {' de'}
-                </Text>
-                <Text style={styles.valorCuenta}>
-                  {' '}
-                  {Currency.code + '.' + valoresVenta.totalValorCuotas}
-                </Text>
-              </View>
-              <View style={styles.espacio2}>
-                <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
-                  Total{' '}
-                  {tags.ProductDetailScreen.financing != ''
-                    ? tags.ProductDetailScreen.financing
-                    : 'FINANCIAMIENTO'}
-                </Text>
-                <Text style={styles.valorCuenta}>
-                  {Currency.code + '.' + valoresVenta.totalFinanciado}
-                </Text>
-              </View>
+              {valoresVenta.totalEnganche == 0 ? null : (
+                <>
+                  <View style={styles.espacioTitle}>
+                    <Text style={{fontSize: 15, fontWeight: '500'}}>
+                      {tags.ProductDetailScreen.financing != ''
+                        ? tags.ProductDetailScreen.financing
+                        : 'FINANCIAMIENTO'}
+                    </Text>
+                  </View>
+                  <View style={styles.espacio}>
+                    <Text style={styles.txtTitulo}>
+                      {valoresVenta.totalCuotas}{' '}
+                      {tags.ProductDetailScreen.cuotas != ''
+                        ? tags.ProductDetailScreen.cuotas
+                        : 'Cuotas'}
+                      {tags.PaymentScreen.silaba != ''
+                        ? tags.PaymentScreen.silaba
+                        : 'de'}
+                    </Text>
+                    <Text style={styles.valorCuenta}>
+                      {' '}
+                      {Currency.code + '.' + valoresVenta.totalValorCuotas}
+                    </Text>
+                  </View>
+                  <View style={styles.espacio2}>
+                    <Text style={{...styles.txtTitulo, fontWeight: '700'}}>
+                      Total{' '}
+                      {tags.ProductDetailScreen.financing != ''
+                        ? tags.ProductDetailScreen.financing
+                        : 'FINANCIAMIENTO'}
+                    </Text>
+                    <Text style={styles.valorCuenta}>
+                      {Currency.code + '.' + valoresVenta.totalFinanciado}
+                    </Text>
+                  </View>
+                </>
+              )}
             </View>
             <Text style={styles.sectionHeader}>
               4.{' '}

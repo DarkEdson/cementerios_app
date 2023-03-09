@@ -108,12 +108,18 @@ export default function InitialScreen(props) {
 
   const [ubicaciones, setubicaciones] = useState([]);
 
-  const baseOptions = {
+  const baseOptions2 = {
     vertical: false,
     borderColor: 'red',
     borderWidth: 1,
     width: PAGE_WIDTH * 0.85,
     height: PAGE_WIDTH * 0.56,
+  };
+
+  const baseOptions = {
+    vertical: false,
+    width: PAGE_WIDTH * 0.4,
+    height: PAGE_WIDTH / 2.5,
   };
   const [data, setData] = useState([{id: 1, name: 'example'}]);
 
@@ -372,6 +378,7 @@ export default function InitialScreen(props) {
                         />
                       );
                     })}
+
                     {/* <Carousel
                       {...baseOptions}
                       loop={true}

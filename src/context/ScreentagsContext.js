@@ -158,9 +158,10 @@ export const ScreentagProvider = ({children}) => {
             resumen: etiquetas[17].description,
             selectCard: etiquetas[18].description,
             selectPaymentTitle: etiquetas[19].description,
-            subtotal: etiquetas[20].description,
-            success: etiquetas[21].description,
-            total: etiquetas[22].description,
+            silaba: etiquetas[20].description,
+            subtotal: etiquetas[21].description,
+            success: etiquetas[22].description,
+            total: etiquetas[23].description,
           },
         }));
       }
