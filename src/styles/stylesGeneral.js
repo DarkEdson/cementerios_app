@@ -407,6 +407,12 @@ const informationIconStyles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 16,
   },
+  titleText14: {
+    fontWeight: '700',
+    color: color.BLACK,
+    justifyContent: 'center',
+    fontSize: 13,
+  },
   titleTextPrice: {
     fontWeight: '600',
     color: color.BLACK,
@@ -422,6 +428,7 @@ const informationIconStyles = StyleSheet.create({
   verticleLine: {
     height: '100%',
     width: 2,
+    marginRight: 10,
     backgroundColor: color.GRAY2,
   },
   logo: {

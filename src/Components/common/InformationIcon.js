@@ -24,8 +24,17 @@ const InformationIcon = props => {
             name={props.image}
           />
         </View>
-        <View>
-          <Text style={informationIconStyles.titleText}>{props.titulo}</Text>
+        <View style={{width: 95}}>
+          <Text
+            style={
+              props.titulo.length <= 11
+                ? informationIconStyles.titleText
+                : informationIconStyles.titleText14
+            }
+            numberOfLines={2}
+          >
+            {props.titulo}
+          </Text>
 
           <Text style={informationIconStyles.subtitleText}>
             {props.subtitulo}
