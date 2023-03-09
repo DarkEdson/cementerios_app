@@ -23,24 +23,23 @@ export default function CardColaborador(props) {
 const styles = StyleSheet.create({
   cuerpoCard: {
     marginTop: '2%',
-    marginBottom: '2%',
-    width: '45%',
-    height: '100%',
+    marginHorizontal: '5%',
+    width: '40%',
+    height: '80%',
   },
   view: {
     flexDirection: 'column',
   },
   top: {
-    height: '70%',
+    height: '75%',
     overflow: 'hidden',
     //borderColor: 'black',
     //borderWidth: 1,
     borderRadius: 40,
   },
   bottom: {
-    height: '30%',
+    height: '25%',
     flexDirection: 'row',
-    marginBottom: '3%',
   },
   titulo: {
     fontWeight: '700',

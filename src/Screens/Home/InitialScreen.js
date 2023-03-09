@@ -3,16 +3,17 @@ import {
   View,
   Text,
   StyleSheet,
+  ScrollView,
   ActivityIndicator,
   SafeAreaView,
   Dimensions,
   StatusBar,
   Alert,
 } from 'react-native';
-import {
-  GestureHandlerRootView,
-  ScrollView, // Note that this is not imported from react-native
-} from 'react-native-gesture-handler';
+// import {
+//   GestureHandlerRootView,
+//   ScrollView, // Note that this is not imported from react-native
+// } from 'react-native-gesture-handler';
 import {Icon, FAB} from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
 import Carousel from 'react-native-reanimated-carousel';
@@ -353,8 +354,25 @@ export default function InitialScreen(props) {
                     <View style={styles.boxTransparent} />
                   </View>
                 ) : (
-                  <View>
-                    <Carousel
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      borderColor: 'gray',
+                      height: 250,
+                      marginBottom: -25,
+                    }}
+                  >
+                    {Cementeries.map((Af, key) => {
+                      return (
+                        <CardColaborador
+                          key={key}
+                          urlImagen={Af.image}
+                          nombre={Af.name}
+                          onPressColab={() => selectCementery(Af, 'Company')}
+                        />
+                      );
+                    })}
+                    {/* <Carousel
                       {...baseOptions}
                       loop={true}
                       style={{
@@ -373,7 +391,7 @@ export default function InitialScreen(props) {
                           onPressColab={() => selectCementery(item, 'Company')}
                         />
                       )}
-                    />
+                    /> */}
                   </View>
                 )}
               </View>
