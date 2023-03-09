@@ -391,6 +391,7 @@ export const ScreentagProvider = ({children}) => {
             t: etiquetas[19].description,
             u: etiquetas[20].description,
             v: etiquetas[21].description,
+            w: etiquetas[22].description,
           },
         }));
       }

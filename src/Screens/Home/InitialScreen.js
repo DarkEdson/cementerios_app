@@ -461,7 +461,11 @@ export default function InitialScreen(props) {
                   </View>
                 ) : (
                   <View style={styles.noPromoView}>
-                    <Text style={styles.promoText}>No Populars</Text>
+                    <Text style={styles.promoText}>
+                      {tags.dialogAlertsScreen.w
+                        ? tags.dialogAlertsScreen.w
+                        : 'Sin Productos'}
+                    </Text>
                   </View>
                 )}
               </View>
