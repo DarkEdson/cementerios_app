@@ -29,7 +29,8 @@ async function productbyCountry(country, lenguaje) {
             name: producto.labels.length > 0 ? producto.labels[0].name : '',
             description:
               producto.labels.length > 0 ? producto.labels[0].description : '',
-            keywords: '',
+            keywords:
+              producto.labels.length > 0 ? producto.labels[0].keyword : '',
             price:
               producto.headquarters.length > 0
                 ? producto.headquarters[0].price
@@ -80,7 +81,8 @@ async function productFullbyCategory(product, lenguaje) {
           name: response.labels.length > 0 ? response.labels[0].name : '',
           description:
             response.labels.length > 0 ? response.labels[0].description : '',
-          keywords: '',
+          keywords:
+            response.labels.length > 0 ? response.labels[0].keyword : '',
           price:
             response.headquarters.length > 0
               ? response.headquarters[0].price
@@ -151,7 +153,8 @@ async function productbyHeadquarters(Sede, lenguaje) {
             name: producto.labels.length > 0 ? producto.labels[0].name : '',
             description:
               producto.labels.length > 0 ? producto.labels[0].description : '',
-            keywords: '',
+            keywords:
+              producto.labels.length > 0 ? producto.labels[0].keyword : '',
             price: producto.price,
             currency: producto.currency,
             ranking: producto.ranking,

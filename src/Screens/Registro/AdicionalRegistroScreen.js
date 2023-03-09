@@ -46,6 +46,12 @@ export default function RegistroScreen(props) {
     phone: '',
     nit: '',
     birthdayDate: '',
+    pais: '',
+    numercuenta: '',
+    tipocuenta: '',
+    banco: '',
+    codigoswift: '',
+    direccion: '',
   });
 
   useEffect(() => {
@@ -105,6 +111,7 @@ export default function RegistroScreen(props) {
             }
             image="account-circle"
           />
+          {/* 
           <MyTextInput
             keyboardType={null}
             value={data.paypal_id}
@@ -116,6 +123,7 @@ export default function RegistroScreen(props) {
             }
             image="credit-card-outline"
           />
+           */}
           <MyTextInput
             keyboardType={'phone-pad'}
             value={data.phone}
@@ -144,6 +152,55 @@ export default function RegistroScreen(props) {
                 setDateData={setDateData}
                 tagFecha="Fecha Nacimiento: "
                 image="calendar-range"
+              />
+            </>
+          ) : null}
+          {registerUser.role == 'seller' ? (
+            <>
+              <MyTextInput
+                keyboardType={null}
+                value={data.pais}
+                onChangeText={paisSeller =>
+                  setData({...data, pais: paisSeller})
+                }
+                placeholder={'Pais'}
+                image="identifier"
+              />
+              <MyTextInput
+                keyboardType={null}
+                value={data.numercuenta}
+                onChangeText={cuentaSeller =>
+                  setData({...data, numercuenta: cuentaSeller})
+                }
+                placeholder={'Numero de Cuenta'}
+                image="identifier"
+              />
+              <MyTextInput
+                keyboardType={null}
+                value={data.tipocuenta}
+                onChangeText={cuentatSeller =>
+                  setData({...data, tipocuenta: cuentatSeller})
+                }
+                placeholder={'Tipo Cuenta'}
+                image="identifier"
+              />
+              <MyTextInput
+                keyboardType={null}
+                value={data.banco}
+                onChangeText={bancoSeller =>
+                  setData({...data, banco: bancoSeller})
+                }
+                placeholder={'Banco'}
+                image="identifier"
+              />
+              <MyTextInput
+                keyboardType={null}
+                value={data.direccion}
+                onChangeText={addressSeller =>
+                  setData({...data, direccion: addressSeller})
+                }
+                placeholder={'Direccion'}
+                image="identifier"
               />
             </>
           ) : null}

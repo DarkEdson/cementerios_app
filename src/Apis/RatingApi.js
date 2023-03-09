@@ -59,7 +59,7 @@ async function getRatingsApi(lenguajeid, countryID) {
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${prod.image}`,
             name: prod.labels.length ? prod.labels[0].name : '',
             description: prod.labels.length ? prod.labels[0].description : '',
-            keywords: '',
+            keywords: prod.labels.length > 0 ? prod.labels[0].keyword : '',
             price: prod.headquarters.length
               ? prod.headquarters[0].price
               : '0.00',
@@ -107,7 +107,7 @@ async function getRatingCommentsApi(lenguajeid, countryID, productID) {
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${prod.image}`,
             name: prod.labels.length ? prod.labels[0].name : '',
             description: prod.labels.length ? prod.labels[0].description : '',
-            keywords: '',
+            keywords: prod.labels.length > 0 ? prod.labels[0].keyword : '',
             price: prod.labels.length ? prod.labels[0].price : '0.00',
             comment: prod.comment,
             ranking: prod.ranking,
@@ -143,7 +143,7 @@ async function findProductSell(lenguajeid, userID, productID) {
             principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${prod.image}`,
             name: prod.labels.length ? prod.labels[0].name : '',
             description: prod.labels.length ? prod.labels[0].description : '',
-            keywords: '',
+            keywords: prod.labels.length > 0 ? prod.labels[0].keyword : '',
             price: prod.labels.length ? prod.headquarters[0].price : '',
           });
         });

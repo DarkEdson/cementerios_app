@@ -29,6 +29,12 @@ export const AuthProvider = ({children}) => {
         phone: userNew.phone,
         nit: userNew?.nit || '',
         birthdayDate: userNew?.birthdayDate || '',
+        country: userNew?.pais || '',
+        accountNumber: userNew?.numercuenta || '',
+        accountType: userNew?.tipocuenta || '',
+        bank: userNew?.banco || '',
+        swiftCode: userNew?.codigoswift || '',
+        direction: userNew?.direccion || '',
         status: '0',
       })
       .then(res => {
