@@ -392,6 +392,7 @@ export const ScreentagProvider = ({children}) => {
             u: etiquetas[20].description,
             v: etiquetas[21].description,
             w: etiquetas[22].description,
+            x: etiquetas[23].description,
           },
         }));
       }
