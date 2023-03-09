@@ -164,7 +164,7 @@ export default function RegistroScreen(props) {
                   setData({...data, pais: paisSeller})
                 }
                 placeholder={'Pais'}
-                image="identifier"
+                image="earth"
               />
               <MyTextInput
                 keyboardType={null}
@@ -173,7 +173,7 @@ export default function RegistroScreen(props) {
                   setData({...data, numercuenta: cuentaSeller})
                 }
                 placeholder={'Numero de Cuenta'}
-                image="identifier"
+                image="book-account"
               />
               <MyTextInput
                 keyboardType={null}
@@ -182,7 +182,7 @@ export default function RegistroScreen(props) {
                   setData({...data, tipocuenta: cuentatSeller})
                 }
                 placeholder={'Tipo Cuenta'}
-                image="identifier"
+                image="card-account-details-outline"
               />
               <MyTextInput
                 keyboardType={null}
@@ -191,7 +191,7 @@ export default function RegistroScreen(props) {
                   setData({...data, banco: bancoSeller})
                 }
                 placeholder={'Banco'}
-                image="identifier"
+                image="bank"
               />
               <MyTextInput
                 keyboardType={null}
@@ -200,7 +200,7 @@ export default function RegistroScreen(props) {
                   setData({...data, direccion: addressSeller})
                 }
                 placeholder={'Direccion'}
-                image="identifier"
+                image="map-marker"
               />
             </>
           ) : null}
@@ -244,12 +244,15 @@ export default function RegistroScreen(props) {
         text: 'Datos en blanco Debe Ingresar un Apellido',
         duration: Snackbar.LENGTH_LONG,
       });
-    } else if (data.paypal_id == '' || data.paypal_id == ' ') {
-      Snackbar.show({
-        text: 'Datos en blanco Debe Ingresar un ID de Paypal',
-        duration: Snackbar.LENGTH_LONG,
-      });
-    } else if (data.phone == '' || data.phone == ' ') {
+    }
+
+    // else if (data.paypal_id == '' || data.paypal_id == ' ') {
+    //   Snackbar.show({
+    //     text: 'Datos en blanco Debe Ingresar un ID de Paypal',
+    //     duration: Snackbar.LENGTH_LONG,
+    //   });
+    // }
+    else if (data.phone == '' || data.phone == ' ') {
       Snackbar.show({
         text: 'Datos en blanco Debe Ingresar un Telefono',
         duration: Snackbar.LENGTH_LONG,

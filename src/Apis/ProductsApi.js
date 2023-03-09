@@ -25,7 +25,7 @@ async function productbyCountry(country, lenguaje) {
                 ? producto.headquarters[0].idHeadquarter
                 : '',
             code: producto.code,
-            principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
+            principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto._id}/${producto.image}`,
             name: producto.labels.length > 0 ? producto.labels[0].name : '',
             description:
               producto.labels.length > 0 ? producto.labels[0].description : '',
@@ -77,7 +77,7 @@ async function productFullbyCategory(product, lenguaje) {
               ? response.headquarters[0]._id
               : '',
           code: response.code,
-          principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${response.image}`,
+          principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${response._id}/${response.image}`,
           name: response.labels.length > 0 ? response.labels[0].name : '',
           description:
             response.labels.length > 0 ? response.labels[0].description : '',
@@ -117,7 +117,7 @@ async function productbyCategory(Category) {
           productos.push({
             _id: producto._id,
             code: producto.code,
-            principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
+            principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto._id}/${producto.image}`,
           });
         });
       });
@@ -149,7 +149,7 @@ async function productbyHeadquarters(Sede, lenguaje) {
             idHeadquarter: Sede._id,
             idAffiliate: producto.idAffiliate,
             code: producto.code,
-            principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`,
+            principalImage: `${BASE_URL_IMG}${PRODUCTS_URL}${producto._id}/${producto.image}`,
             name: producto.labels.length > 0 ? producto.labels[0].name : '',
             description:
               producto.labels.length > 0 ? producto.labels[0].description : '',
@@ -193,7 +193,7 @@ async function multimediabyProduct(product) {
             _id: producto._id,
             idProduct: producto.idProduct,
             code: producto.code,
-            name: `${BASE_URL_IMG}${PRODUCTS_URL}${producto.name}`,
+            name: `${BASE_URL_IMG}${PRODUCTS_URL}${producto._id}/${producto.name}`,
             description: producto.description,
           });
         });
