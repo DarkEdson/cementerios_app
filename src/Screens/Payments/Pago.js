@@ -174,6 +174,7 @@ export default function VistaPago(props) {
     let descPercent = 0.0;
     let descuento = 0;
     let sendProds = [];
+    let totalPagar = 0;
     //summaryFinancing.precio_sin_enganche     summaryFinancing.value_of_installment     cantidad financing.number_of_installments
     ShoppingCart.forEach(item => {
       let precioItem;
@@ -222,6 +223,7 @@ export default function VistaPago(props) {
 
       console.log('valor item', precioItem, parseFloat(precioItem));
       subtotal = subtotal + item.cantidad * parseFloat(precioItem);
+      totalPagar = totalPagar + item.cantidad * parseFloat(precioItem2);
       if (item.type == '2') {
         sendProds.push({
           idProduct: item._id,
@@ -246,6 +248,7 @@ export default function VistaPago(props) {
     //Consultar Moneda
     getCurrency({_id: sede.idAffiliate});
     console.log('DATOS DE MONEDA', Currency);
+
     // Calcular valores de la vista
     setValoresVenta({
       subTotal: formatAmount(subtotal),
@@ -256,6 +259,7 @@ export default function VistaPago(props) {
       TotalEfectivo: formatAmount(cashTotal),
       totalEnganche: formatAmount(engancheTotal),
       totalFinanciado: formatAmount(financiadoTotal),
+      totalPagar: formatAmount(totalPagar - descuento),
     });
     console.log('VALORES VENTA ARRAY', {
       subTotal: formatAmount(subtotal),
@@ -266,6 +270,7 @@ export default function VistaPago(props) {
       TotalEfectivo: formatAmount(cashTotal),
       totalEnganche: formatAmount(engancheTotal),
       totalFinanciado: formatAmount(financiadoTotal),
+      totalPagar: formatAmount(totalPagar),
     });
     console.log('PRODS A ENVIAR', sendProds);
     setProductosCarrito(sendProds);
@@ -554,7 +559,7 @@ export default function VistaPago(props) {
                     : 'Total (incl. IVA)'}
                 </Text>
                 <Text style={styles.valorCuenta}>
-                  {Currency.code + '.' + valoresVenta.total}
+                  {Currency.code + '.' + valoresVenta.totalPagar}
                 </Text>
               </View>
               <View style={styles.espacioTitle}>
@@ -972,6 +977,7 @@ export default function VistaPago(props) {
     let descPercent = 0.0;
     let descuento = 0;
     let sendProds = [];
+    let totalPagar = 0;
     // Productos del carrito
     if (carrito.length >= 1) {
       console.log('ENTRE A CARRITO EN BORRAR ITEM CON MAYOR QUE 1');
@@ -1022,6 +1028,7 @@ export default function VistaPago(props) {
 
         console.log('valor item', precioItem, parseFloat(precioItem));
         subtotal = subtotal + item.cantidad * parseFloat(precioItem);
+        totalPagar = totalPagar + item.cantidad * parseFloat(precioItem2);
         if (item.type == '2') {
           sendProds.push({
             idProduct: item._id,
@@ -1061,6 +1068,7 @@ export default function VistaPago(props) {
     getCurrency({_id: sede.idAffiliate});
     console.log('DATOS DE MONEDA', Currency);
     // Calcular valores de la vista
+
     setValoresVenta({
       subTotal: formatAmount(subtotal),
       entrega: formatAmount(descuento),
@@ -1070,6 +1078,7 @@ export default function VistaPago(props) {
       TotalEfectivo: formatAmount(cashTotal),
       totalEnganche: formatAmount(engancheTotal),
       totalFinanciado: formatAmount(financiadoTotal),
+      totalPagar: formatAmount(totalPagar - descuento),
     });
     console.log('PRODS A ENVIAR BORRADOS DEBE SER 0', sendProds);
     setProductosCarrito(sendProds);
