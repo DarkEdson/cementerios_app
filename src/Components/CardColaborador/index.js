@@ -22,17 +22,15 @@ export default function CardColaborador(props) {
 
 const styles = StyleSheet.create({
   cuerpoCard: {
-    marginLeft: '2%',
     marginTop: '2%',
     marginBottom: '2%',
-    width: '50%',
+    width: '45%',
     height: '100%',
   },
   view: {
     flexDirection: 'column',
   },
   top: {
-    width: '100%',
     height: '70%',
     overflow: 'hidden',
     //borderColor: 'black',
@@ -40,7 +38,6 @@ const styles = StyleSheet.create({
     borderRadius: 40,
   },
   bottom: {
-    width: '100%',
     height: '30%',
     flexDirection: 'row',
     marginBottom: '3%',
@@ -56,7 +53,6 @@ const styles = StyleSheet.create({
   imgCategoria: {
     marginVertical: 3.5,
     height: '100%',
-    width: '100%',
     //  borderTopRightRadius: 40,
     //  borderTopLeftRadius: 40,
     //  borderBottomLeftRadius: 53,

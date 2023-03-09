@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
-  ScrollView,
   StyleSheet,
   ActivityIndicator,
   SafeAreaView,
@@ -10,6 +9,10 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import {
+  GestureHandlerRootView,
+  ScrollView, // Note that this is not imported from react-native
+} from 'react-native-gesture-handler';
 import {Icon, FAB} from '@rneui/themed';
 import SelectDropdown from 'react-native-select-dropdown';
 import Carousel from 'react-native-reanimated-carousel';
@@ -106,6 +109,8 @@ export default function InitialScreen(props) {
 
   const baseOptions = {
     vertical: false,
+    borderColor: 'red',
+    borderWidth: 1,
     width: PAGE_WIDTH * 0.85,
     height: PAGE_WIDTH * 0.56,
   };
@@ -352,11 +357,14 @@ export default function InitialScreen(props) {
                     <Carousel
                       {...baseOptions}
                       loop={true}
-                      style={{width: '100%', flex: 1}}
+                      style={{
+                        width: '95%',
+                        flex: 1,
+                        marginLeft: 5,
+                      }}
                       autoPlay={true}
                       autoPlayInterval={2000}
                       data={Cementeries}
-                      pagingEnabled={true}
                       //onSnapToItem={(index) => console.log('current index:', index)}
                       renderItem={({item}) => (
                         <CardColaborador
