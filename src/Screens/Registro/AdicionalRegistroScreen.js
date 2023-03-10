@@ -158,17 +158,6 @@ export default function RegistroScreen(props) {
             image="credit-card-outline"
           />
            */}
-          {/* <MyTextInput
-            keyboardType={'phone-pad'}
-            value={data.phone}
-            onChangeText={phones => setData({...data, phone: phones})}
-            placeholder={
-              tags.registerAddScreen.phone != ''
-                ? tags.registerAddScreen.phone
-                : 'Phone'
-            }
-            image="phone"
-          /> */}
           <PhoneTextInput
             keyboardType={'phone-pad'}
             placeholder={'+XXX'}
