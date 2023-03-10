@@ -5,11 +5,12 @@ import {
   TouchableOpacity,
   StatusBar,
   SafeAreaView,
+  LogBox,
   ScrollView,
   StyleSheet,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
-import {CheckBox} from '@rneui/themed';
+import {CheckBox, Divider} from '@rneui/themed';
 import DatePicker from 'react-native-date-picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import {Icon} from '@rneui/base';
@@ -37,6 +38,7 @@ export default function RegistroScreen(props) {
   const {register} = useContext(AuthContext);
   const [registerUser, registerAction] = useContext(RegisterContext);
   const {paisesLista, getListaPaises} = useContext(CurrenciesContext);
+  const [boolProd, setboolProd] = useState(false);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -44,6 +46,7 @@ export default function RegistroScreen(props) {
   const [TC, setTC] = useState(false);
   const [birthday, setBirthday] = useState(new Date());
   const [openDate, setOpenDate] = useState(false);
+  const [filtroPaises, setfiltroPaises] = useState([]);
   const [tipoCuentaBank, settipoCuentaBank] = useState([
     {id: 1, name: 'monetaria'},
     {id: 2, name: 'ahorro'},
@@ -64,7 +67,20 @@ export default function RegistroScreen(props) {
     direccion: '',
   });
 
+  function filtrarPaises(texto) {
+    let listado = [];
+    paisesLista.map(pais => {
+      if (pais.name.includes(texto) && texto != '') {
+        listado.push(pais);
+      }
+      if (texto == '') {
+        listado.push(pais);
+      }
+    });
+    setfiltroPaises(listado);
+  }
   useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     setData({
       ...data,
       email: registerUser.email,
@@ -77,6 +93,10 @@ export default function RegistroScreen(props) {
       console.log('isFocused Register ADD');
     }
     getListaPaises();
+    (async () => {
+      await getListaPaises();
+      setfiltroPaises(paisesLista);
+    })();
     return () => {};
     //props, isFocused
   }, []);
@@ -167,42 +187,48 @@ export default function RegistroScreen(props) {
           ) : null}
           {registerUser.role == 'seller' ? (
             <>
-              <SelectDropdown
-                data={paisesLista}
-                //     defaultValue={defaultLanguage}
-                //   defaultValueByIndex={0}
-                defaultButtonText={'Pais'}
-                buttonTextStyle={{
-                  textAlign: 'left',
-                  color: color.TEXTCOLOR,
-                  marginLeft: 3,
+              <MyTextInput
+                keyboardType={null}
+                value={data.pais}
+                onChangeText={paisSelect => {
+                  setData({...data, pais: paisSelect});
+                  filtrarPaises(paisSelect);
+                  setboolProd(true);
                 }}
-                buttonStyle={styles.btnDropStyle}
-                search
-                dropdownStyle={{marginLeft: 15}}
-                renderDropdownIcon={isOpened => {
-                  return (
-                    <Icon
-                      style={{marginRight: 15}}
-                      type={'font-awesome'}
-                      name={isOpened ? 'chevron-up' : 'chevron-down'}
-                      color={'#444'}
-                      size={20}
-                    />
-                  );
+                onEndEditing={() => {
+                  setboolProd(false);
                 }}
-                dropdownIconPosition="right"
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem);
-                  setData({...data, pais: selectedItem.name});
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem.name;
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item.name;
-                }}
+                placeholder={'Pais'}
+                image="earth"
               />
+              {boolProd ? (
+                <View style={styles.espacioOpcionesProducto}>
+                  {filtroPaises
+                    .filter(str =>
+                      str.name.toUpperCase().includes(data.pais.toUpperCase()),
+                    )
+                    .map((op, key) => {
+                      if (key < 3) {
+                        return (
+                          <View key={key}>
+                            <TouchableOpacity
+                              style={styles.espacioItemProducto}
+                              key={key}
+                              onPress={() => {
+                                setData({...data, pais: op.name});
+                                setboolProd(false);
+                              }}
+                            >
+                              <Text style={styles.title55}>{op.name}</Text>
+                            </TouchableOpacity>
+                            <Divider orientation="vertical" />
+                          </View>
+                        );
+                      }
+                    })}
+                </View>
+              ) : null}
+
               <MyTextInput
                 keyboardType={null}
                 value={data.numercuenta}
@@ -224,7 +250,14 @@ export default function RegistroScreen(props) {
                 }}
                 buttonStyle={styles.btnDropStyle}
                 search
-                dropdownStyle={{marginLeft: 15}}
+                dropdownStyle={{
+                  marginLeft: 2,
+                  backgroundColor: color.INPUTCOLOR,
+                  paddingHorizontal: 0,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  borderColor: '#444',
+                }}
                 renderDropdownIcon={isOpened => {
                   return (
                     <Icon
@@ -374,5 +407,32 @@ const styles = StyleSheet.create({
     width: '100%',
     borderColor: color.GRAY2,
     borderRadius: 15,
+  },
+  autocompleteContainer: {
+    left: 0,
+
+    position: 'absolute',
+    right: 0,
+    zIndex: 1,
+  },
+  espacioOpcionesProducto: {
+    borderColor: 'grey',
+    backgroundColor: color.INPUTCOLOR,
+    marginTop: 10,
+    borderRadius: 15,
+    borderWidth: 1,
+    height: Platform.OS === 'ios' ? 120 : 190,
+    width: '100%',
+  },
+  title55: {
+    color: color.PRINCIPALCOLOR,
+    fontSize: 18,
+    fontWeight: '300',
+    marginTop: 10,
+    marginLeft: 7,
+  },
+  espacioItemProducto: {
+    height: Platform.OS === 'ios' ? 40 : 60,
+    width: '100%',
   },
 });

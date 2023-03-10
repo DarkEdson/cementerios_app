@@ -564,7 +564,15 @@ export default function VistaProducto(props) {
                             marginLeft: 3,
                           }}
                           buttonStyle={styles.btnDropStyle}
-                          dropdownStyle={{marginLeft: 15}}
+                          dropdownStyle={{
+                            marginLeft: 2,
+                            position: 'absolute',
+                            backgroundColor: color.INPUTCOLOR,
+                            paddingHorizontal: 0,
+                            borderWidth: 1,
+                            borderRadius: 8,
+                            borderColor: '#444',
+                          }}
                           renderDropdownIcon={isOpened => {
                             return (
                               <Icon
