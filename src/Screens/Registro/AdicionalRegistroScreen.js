@@ -186,6 +186,15 @@ export default function RegistroScreen(props) {
               />
               <MyTextInput
                 keyboardType={null}
+                value={data.codigoswift}
+                onChangeText={swiftCode =>
+                  setData({...data, codigoswift: swiftCode})
+                }
+                placeholder={'Codigo Swift'}
+                image="card-account-details-outline"
+              />
+              <MyTextInput
+                keyboardType={null}
                 value={data.banco}
                 onChangeText={bancoSeller =>
                   setData({...data, banco: bancoSeller})
