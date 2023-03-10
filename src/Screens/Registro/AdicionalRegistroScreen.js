@@ -167,6 +167,7 @@ export default function RegistroScreen(props) {
               setboolPhone(true);
             }}
             onEndEditing={() => {
+              setData({...data, phone: codigoPais + userPhone});
               setboolPhone(false);
             }}
             value2={userPhone}
@@ -201,7 +202,9 @@ export default function RegistroScreen(props) {
                             setboolPhone(false);
                           }}
                         >
-                          <Text style={styles.title55}>{op.dial_code}</Text>
+                          <Text style={styles.title55}>
+                            {op.dial_code}-{op.name}
+                          </Text>
                         </TouchableOpacity>
                         <Divider orientation="vertical" />
                       </View>
