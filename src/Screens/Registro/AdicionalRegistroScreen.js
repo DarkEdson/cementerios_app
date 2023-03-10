@@ -24,6 +24,7 @@ import MyTextInput from '@Components/common/MyTextInput';
 import ToolBar from '@Components/common/toolBar';
 import MyButton from '@Components/common/MyButton';
 import DateButton from '@Components/common/DateButton';
+import PhoneTextInput from '../../Components/common/PhoneTextInput';
 //Contextos
 import {RegisterContext} from '@context/RegisterContext';
 import {AuthContext} from '@context/AuthContext';
@@ -39,6 +40,9 @@ export default function RegistroScreen(props) {
   const [registerUser, registerAction] = useContext(RegisterContext);
   const {paisesLista, getListaPaises} = useContext(CurrenciesContext);
   const [boolProd, setboolProd] = useState(false);
+  const [boolPhone, setboolPhone] = useState(false);
+  const [codigoPais, setcodigoPais] = useState(null);
+  const [userPhone, setuserPhone] = useState(null);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -154,7 +158,7 @@ export default function RegistroScreen(props) {
             image="credit-card-outline"
           />
            */}
-          <MyTextInput
+          {/* <MyTextInput
             keyboardType={'phone-pad'}
             value={data.phone}
             onChangeText={phones => setData({...data, phone: phones})}
@@ -164,7 +168,59 @@ export default function RegistroScreen(props) {
                 : 'Phone'
             }
             image="phone"
+          /> */}
+          <PhoneTextInput
+            keyboardType={'phone-pad'}
+            placeholder={'+XXX'}
+            value={codigoPais}
+            onChangeText={codigoP => {
+              setcodigoPais(codigoP);
+              setboolPhone(true);
+            }}
+            onEndEditing={() => {
+              setboolPhone(false);
+            }}
+            value2={userPhone}
+            onChangeText2={phones => setuserPhone(phones)}
+            placeholder2={
+              tags.registerAddScreen.phone != ''
+                ? tags.registerAddScreen.phone
+                : 'Phone'
+            }
+            onEndEditing2={() => {
+              setData({...data, phone: codigoPais + userPhone});
+            }}
+            image="phone"
           />
+          {boolPhone ? (
+            <View style={styles.espacioOpcionesProducto}>
+              {filtroPaises
+                .filter(str =>
+                  str.dial_code
+                    .toUpperCase()
+                    .includes(codigoPais.toUpperCase()),
+                )
+                .map((op, key) => {
+                  if (key < 3) {
+                    return (
+                      <View key={key}>
+                        <TouchableOpacity
+                          style={styles.espacioItemProducto}
+                          key={key}
+                          onPress={() => {
+                            setcodigoPais(op.dial_code);
+                            setboolPhone(false);
+                          }}
+                        >
+                          <Text style={styles.title55}>{op.dial_code}</Text>
+                        </TouchableOpacity>
+                        <Divider orientation="vertical" />
+                      </View>
+                    );
+                  }
+                })}
+            </View>
+          ) : null}
           {registerUser.role != 'seller' ? (
             <>
               <MyTextInput
