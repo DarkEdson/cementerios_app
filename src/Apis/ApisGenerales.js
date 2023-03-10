@@ -264,6 +264,25 @@ async function apiCreateLink(dataLink) {
   }
 }
 
+async function apiListaPaises() {
+  let url = `https://countriesnow.space/api/v0.1/countries/codes`;
+  let resp = {};
+  try {
+    await fetch(url, {
+      method: 'GET',
+      redirect: 'follow',
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error', error))
+      .then(response => {
+        resp = response.data;
+      });
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export {
   apiLanguage,
   apiScreen,
@@ -274,4 +293,5 @@ export {
   apiLinkPaypal,
   apiPaypalAnswer,
   apiCreateLink,
+  apiListaPaises,
 };

@@ -6,10 +6,13 @@ import {
   StatusBar,
   SafeAreaView,
   ScrollView,
+  StyleSheet,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {CheckBox} from '@rneui/themed';
 import DatePicker from 'react-native-date-picker';
+import SelectDropdown from 'react-native-select-dropdown';
+import {Icon} from '@rneui/base';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Estilos generales
@@ -25,6 +28,7 @@ import {RegisterContext} from '@context/RegisterContext';
 import {AuthContext} from '@context/AuthContext';
 import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
+import {CurrenciesContext} from '../../context/CurrencyContext';
 
 //tags.registerAddScreen.ubica
 export default function RegistroScreen(props) {
@@ -32,6 +36,7 @@ export default function RegistroScreen(props) {
   const {tags} = useContext(ScreentagContext);
   const {register} = useContext(AuthContext);
   const [registerUser, registerAction] = useContext(RegisterContext);
+  const {paisesLista, getListaPaises} = useContext(CurrenciesContext);
 
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
@@ -39,6 +44,11 @@ export default function RegistroScreen(props) {
   const [TC, setTC] = useState(false);
   const [birthday, setBirthday] = useState(new Date());
   const [openDate, setOpenDate] = useState(false);
+  const [tipoCuentaBank, settipoCuentaBank] = useState([
+    {id: 1, name: 'monetaria'},
+    {id: 2, name: 'ahorro'},
+    {id: 3, name: 'nomina'},
+  ]);
   const [data, setData] = useState({
     name: '',
     lastname: '',
@@ -66,7 +76,7 @@ export default function RegistroScreen(props) {
       getInitialData();
       console.log('isFocused Register ADD');
     }
-
+    getListaPaises();
     return () => {};
     //props, isFocused
   }, []);
@@ -157,14 +167,41 @@ export default function RegistroScreen(props) {
           ) : null}
           {registerUser.role == 'seller' ? (
             <>
-              <MyTextInput
-                keyboardType={null}
-                value={data.pais}
-                onChangeText={paisSeller =>
-                  setData({...data, pais: paisSeller})
-                }
-                placeholder={'Pais'}
-                image="earth"
+              <SelectDropdown
+                data={paisesLista}
+                //     defaultValue={defaultLanguage}
+                //   defaultValueByIndex={0}
+                defaultButtonText={'Pais'}
+                buttonTextStyle={{
+                  textAlign: 'left',
+                  color: color.TEXTCOLOR,
+                  marginLeft: 3,
+                }}
+                buttonStyle={styles.btnDropStyle}
+                search
+                dropdownStyle={{marginLeft: 15}}
+                renderDropdownIcon={isOpened => {
+                  return (
+                    <Icon
+                      style={{marginRight: 15}}
+                      type={'font-awesome'}
+                      name={isOpened ? 'chevron-up' : 'chevron-down'}
+                      color={'#444'}
+                      size={20}
+                    />
+                  );
+                }}
+                dropdownIconPosition="right"
+                onSelect={(selectedItem, index) => {
+                  console.log(selectedItem);
+                  setData({...data, pais: selectedItem.name});
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return selectedItem.name;
+                }}
+                rowTextForSelection={(item, index) => {
+                  return item.name;
+                }}
               />
               <MyTextInput
                 keyboardType={null}
@@ -175,14 +212,41 @@ export default function RegistroScreen(props) {
                 placeholder={'Numero de Cuenta'}
                 image="book-account"
               />
-              <MyTextInput
-                keyboardType={null}
-                value={data.tipocuenta}
-                onChangeText={cuentatSeller =>
-                  setData({...data, tipocuenta: cuentatSeller})
-                }
-                placeholder={'Tipo Cuenta'}
-                image="card-account-details-outline"
+              <SelectDropdown
+                data={tipoCuentaBank}
+                //     defaultValue={defaultLanguage}
+                //   defaultValueByIndex={0}
+                defaultButtonText={'Tipo de Cuenta'}
+                buttonTextStyle={{
+                  textAlign: 'left',
+                  color: color.TEXTCOLOR,
+                  marginLeft: 3,
+                }}
+                buttonStyle={styles.btnDropStyle}
+                search
+                dropdownStyle={{marginLeft: 15}}
+                renderDropdownIcon={isOpened => {
+                  return (
+                    <Icon
+                      style={{marginRight: 15}}
+                      type={'font-awesome'}
+                      name={isOpened ? 'chevron-up' : 'chevron-down'}
+                      color={'#444'}
+                      size={20}
+                    />
+                  );
+                }}
+                dropdownIconPosition="right"
+                onSelect={(selectedItem, index) => {
+                  console.log(selectedItem);
+                  setData({...data, tipocuenta: selectedItem.name});
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return selectedItem.name;
+                }}
+                rowTextForSelection={(item, index) => {
+                  return item.name;
+                }}
               />
               <MyTextInput
                 keyboardType={null}
@@ -305,3 +369,10 @@ export default function RegistroScreen(props) {
     }
   }
 }
+const styles = StyleSheet.create({
+  btnDropStyle: {
+    width: '100%',
+    borderColor: color.GRAY2,
+    borderRadius: 15,
+  },
+});
