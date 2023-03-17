@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://cementeriosdelmar.com/api-app';
+export const BASE_URL = 'https://www.senoriales.com/api-app';
 //export const BASE_URL = 'http://34.171.224.39:4000/api';
 //34.171.224.39
 //proyectocementeriogt.gq
