@@ -83,6 +83,7 @@ export default function RegistroScreen(props) {
     });
     setfiltroPaises(listado);
   }
+  
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     setData({

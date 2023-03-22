@@ -1,19 +1,26 @@
 //import liraries
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, StyleSheet, TextInput, Alert} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Alert, TouchableOpacity, ScrollView} from 'react-native';
 import color from '@styles/colors';
-import {AirbnbRating, Dialog, CheckBox} from '@rneui/themed';
+import {AirbnbRating, Dialog, CheckBox, Divider} from '@rneui/themed';
 import Snackbar from 'react-native-snackbar';
 import MyButton from '@Components/common/MyButton';
 import MyTextInput from '@Components/common/MyTextInput';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import Card from '../Card';
+import PhoneTextInput from '../common/PhoneTextInput';
+import {CurrenciesContext} from '../../context/CurrencyContext';
 // create a component
 const LinkModal = props => {
   const [visible, setVisible] = useState(false);
   const {removeAllItemstoCart} = useContext(ShoppingCartContext);
+  const {paisesLista, getListaPaises} = useContext(CurrenciesContext);
   const [comment, setComment] = useState('');
   const [checked, setChecked] = useState(3);
+  const [filtroPaises, setfiltroPaises] = useState([]);
+  const [codigoPais, setcodigoPais] = useState(null)
+  const [userPhone, setuserPhone] = useState(null)
+  const [boolPhone, setboolPhone] = useState(false)
   const [tags, settags] = useState({
     btncancelar: 'CANCEL',
     btnconfirmar: 'CONFIRM',
@@ -35,11 +42,17 @@ const LinkModal = props => {
   useEffect(() => {
     settags(props.tags);
     setVisible(props.customModal);
+    getListaPaises();
+    (async () => {
+      await getListaPaises();
+      setfiltroPaises(paisesLista);
+    })();
     return () => {};
   }, []);
 
   return (
-    <Dialog isVisible={visible} onBackdropPress={toggleDialog}>
+    <ScrollView>
+    <Dialog isVisible={visible} onBackdropPress={toggleDialog} overlayStyle={{width: '95%'}}>
       <Dialog.Title title={'Info'} />
       <Text style={styles.titleLabel}>
         {props.tags.EditUserScreen.name != ''
@@ -94,7 +107,62 @@ const LinkModal = props => {
           ? props.tags.EditUserScreen.phone
           : 'phone'}
       </Text>
-      <MyTextInput
+      <PhoneTextInput
+            keyboardType={'phone-pad'}
+            placeholder={'+XXX'}
+            value={codigoPais}
+            onChangeText={codigoP => {
+              setcodigoPais(codigoP);
+              setboolPhone(true);
+            }}
+            onEndEditing={() => {
+              setData({...data, phone: codigoPais + userPhone});
+              setboolPhone(false);
+            }}
+            value2={userPhone}
+            onChangeText2={phones => setuserPhone(phones)}
+            placeholder2={
+              props.tags.EditUserScreen.phone != ''
+                ? props.tags.EditUserScreen.phone
+                : 'phone'
+            }
+            onEndEditing2={() => {
+              setData({...data, phone: codigoPais + userPhone});
+            }}
+            image="phone"
+          />
+          {boolPhone ? (
+            <View style={styles.espacioOpcionesProducto}>
+              {filtroPaises
+                .filter(str =>
+                  str.dial_code
+                    .toUpperCase()
+                    .includes(codigoPais.toUpperCase()),
+                )
+                .map((op, key) => {
+                  if (key < 3) {
+                    return (
+                      <View key={key}>
+                        <TouchableOpacity
+                          style={styles.espacioItemProducto}
+                          key={key}
+                          onPress={() => {
+                            setcodigoPais(op.dial_code);
+                            setboolPhone(false);
+                          }}
+                        >
+                          <Text style={styles.title55}>
+                            {op.dial_code}-{op.name}
+                          </Text>
+                        </TouchableOpacity>
+                        <Divider orientation="vertical" />
+                      </View>
+                    );
+                  }
+                })}
+            </View>
+          ) : null}
+      {/* <MyTextInput
         keyboardType={null}
         value={data.phone}
         onChangeText={tel => setData({...data, phone: tel})}
@@ -104,7 +172,7 @@ const LinkModal = props => {
             : 'phone'
         }
         image="card-account-details"
-      />
+      /> */}
       <Text style={styles.titleLabel}>NIT</Text>
       <MyTextInput
         keyboardType={null}
@@ -134,6 +202,7 @@ const LinkModal = props => {
         />
       </Dialog.Actions>
     </Dialog>
+    </ScrollView>
   );
 
   function dataUser() {

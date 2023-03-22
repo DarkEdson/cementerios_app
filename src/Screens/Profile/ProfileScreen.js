@@ -14,11 +14,14 @@ import {
   BackHandler,
 } from 'react-native';
 import {Icon, Avatar} from '@rneui/themed';
+import {launchImageLibrary} from 'react-native-image-picker';
 //Recarga la screen
 import {useIsFocused} from '@react-navigation/native';
 //Componentes
 import MyTextButton from '@Components/common/MyTextButton';
 import ToolBar from '@Components/common/toolBar';
+import normalizePath from '@utils/normalizeURL';
+import { apiLoadAvatar } from '@Apis/ApisGenerales';
 //Estilos
 import {loginStyles, mainStyles} from '@styles/stylesGeneral';
 import color from '@styles/colors';
@@ -72,6 +75,7 @@ export default function ProfileScreen(props) {
               style={styles.btnProfile}
               onPress={() => {
                 console.log('editar imagen');
+                chooseImage();
               }}
             >
               {loginUser.usuario.avatar ? (
@@ -206,6 +210,44 @@ export default function ProfileScreen(props) {
 
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
+  }
+
+
+  function chooseImage() {
+    let options = {
+      includeBase64: true,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    launchImageLibrary(options, async response => {
+      console.log('Response = ', response.assets);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        const source = {uri: response.assets};
+        console.log('response', JSON.stringify(response));
+        let imageURI = await normalizePath(response.assets[0].uri);
+        
+        avatarImage ={
+          fileName: response.assets[0].fileName,
+          base64: response.assets[0].base64,
+          fileType: response.assets[0].type,
+         // fileUri: imageURI,
+         fileUri: response.assets[0].uri,
+          file: response,
+        };
+        apiLoadAvatar(avatarImage,loginUser.usuario)
+      }
+    });
+    console.log('HOLA');
   }
 }
 

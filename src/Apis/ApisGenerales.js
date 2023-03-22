@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {Platform, NativeModules} from 'react-native';
+import {Platform, NativeModules, Alert} from 'react-native';
 import {BASE_URL} from '@utils/config';
 import {getLanguague, saveLanguague} from '@storage/LanguagueAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -264,6 +264,51 @@ async function apiCreateLink(dataLink) {
   }
 }
 
+async function apiLoadAvatar(image,user) {
+  let url = `${BASE_URL}/user.changeavatar/${user._id}`;
+  console.log(image);
+  let resp = {};
+  try {
+    var formdata = new FormData();
+            formdata.append('avatar', {
+              name: `${image.fileName}`,
+              type: `${image.fileType}`,
+              uri: image.fileUri,
+            });
+            var requestOptions = {
+              method: 'POST',
+              body: formdata,
+              redirect: 'follow',
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            };
+            console.log(url, {
+              name: `${image.fileName}`,
+              type: `${image.fileType}`,
+              uri: image.fileUri,
+            });
+            fetch(
+              url,
+              requestOptions,
+            )
+              .then(response => response.text())
+              .then(result => {
+                Alert.alert('Success', 'Avatar Cargado', [
+                  {
+                    text: 'OK',
+                    onPress: () => {},
+                  },
+                ]);
+                resp = result;
+                console.log('RESULTADO',result);
+              })
+              .catch(error => console.log('error', error));
+  } catch (error) {
+    console.error('ERROR EN API RESPUESTA LINK PAGO', error);
+  }
+}
+
 async function apiListaPaises() {
   let url = `https://countriesnow.space/api/v0.1/countries/codes`;
   let resp = {};
@@ -294,4 +339,5 @@ export {
   apiPaypalAnswer,
   apiCreateLink,
   apiListaPaises,
+  apiLoadAvatar
 };
