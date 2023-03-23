@@ -30,13 +30,16 @@ import {UsuarioContext} from '@context/UsuarioContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {ShoppingCartContext} from '@context/ShoppingCartContext';
 import {TermsContext} from '@context/TermsContext';
+import { AuthContext } from '../../context/AuthContext';
 //URL de server
 import {BASE_URL_IMG} from '@utils/config';
+
 
 export default function ProfileScreen(props) {
   const {setAcceptTerm} = useContext(TermsContext);
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const {removeAllItemstoCart} = useContext(ShoppingCartContext);
+  const {actualizaAvatar} = useContext(AuthContext)
   const {tags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();
@@ -45,6 +48,7 @@ export default function ProfileScreen(props) {
   useEffect(() => {
     if (isFocused) {
       getInitialData();
+      console.log(loginUser)
       console.log('isFocused Profile');
     }
     return () => {};
@@ -82,7 +86,7 @@ export default function ProfileScreen(props) {
                 <Avatar
                   rounded
                   source={{
-                    uri: `${BASE_URL_IMG}${loginUser.usuario.avatar}`,
+                    uri: `${BASE_URL_IMG}avatarUploads/${loginUser.usuario.avatar}`,
                   }}
                   size="large"
                 />
@@ -244,7 +248,7 @@ export default function ProfileScreen(props) {
          fileUri: response.assets[0].uri,
           file: response,
         };
-        apiLoadAvatar(avatarImage,loginUser.usuario)
+        apiLoadAvatar(avatarImage,loginUser.usuario, loginAction,actualizaAvatar)
       }
     });
     console.log('HOLA');

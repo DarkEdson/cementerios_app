@@ -64,7 +64,7 @@ export default function ToolBarSession(props) {
             <Avatar
               rounded
               source={{
-                uri: `${BASE_URL_IMG}${props.image}`,
+                uri: `${BASE_URL_IMG}avatarUploads/${props.image}`,
               }}
               size="medium"
             />

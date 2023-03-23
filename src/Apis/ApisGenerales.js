@@ -264,7 +264,7 @@ async function apiCreateLink(dataLink) {
   }
 }
 
-async function apiLoadAvatar(image,user) {
+async function apiLoadAvatar(image,user, loginAction, actualizaAvatar) {
   let url = `${BASE_URL}/user.changeavatar/${user._id}`;
   console.log(image);
   let resp = {};
@@ -301,6 +301,7 @@ async function apiLoadAvatar(image,user) {
                   },
                 ]);
                 resp = result;
+                actualizaAvatar(result,loginAction)
                 console.log('RESULTADO',result);
               })
               .catch(error => console.log('error', error));

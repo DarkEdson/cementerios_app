@@ -4,8 +4,8 @@ const USUARIO_KEY = '@usuario:key';
 
 async function saveUsuario(usuario) {
   try {
-    console.log('dentro del asynstorage');
-    console.log(usuario);
+    console.log('dentro del asynstorage de USUARIO');
+    console.log('USUARIO A GUARDAR',usuario);
     await AsyncStorage.setItem(USUARIO_KEY, JSON.stringify(usuario));
     return JSON.stringify(usuario);
   } catch (error) {

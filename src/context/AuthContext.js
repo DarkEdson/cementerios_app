@@ -241,6 +241,23 @@ export const AuthProvider = ({children}) => {
     });
   }
 
+
+  function actualizaAvatar(user, loginAction) {
+    setIsLoading(true);
+    console.log('usuario respuesta', user)
+    let userInfo = JSON.parse(user)
+    console.log('usuario PARSEADO', userInfo)
+    setUserInfo(userInfo);
+    loginAction({
+      type: 'update',
+      data: userInfo,
+      tags: {
+        inicio: 'Usuario Actualizado',
+      },
+    });
+    setIsLoading(false);
+  }
+
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -258,6 +275,7 @@ export const AuthProvider = ({children}) => {
         logout,
         cambiaClave,
         actualizaUsuario,
+        actualizaAvatar
       }}
     >
       {children}
