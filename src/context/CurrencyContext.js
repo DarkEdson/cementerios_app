@@ -1,7 +1,7 @@
 import React, {createContext, useEffect, useState} from 'react';
 //Apis
 import {AffiliateCurrentcyApi, CurrencyApi} from '@Apis/CurrenciesApi';
-import {apiListaPaises} from '../Apis/ApisGenerales';
+import {apiListaCuentas, apiListaPaises} from '../Apis/ApisGenerales';
 
 export const CurrenciesContext = createContext();
 
@@ -11,12 +11,21 @@ export const CurrenciesProvider = ({children}) => {
   const [CurrenciesAf, setCurrenciesAf] = useState([]);
   const [isLoadingCurrencies, setisLoadingCurrencies] = useState(true);
   const [paisesLista, setpaisesLista] = useState([]);
+  const [cuentasLista, setcuentasLista] = useState([])
 
   const getListaPaises = async () => {
     setisLoadingCurrencies(true);
     let listaPaises = await apiListaPaises();
     console.log(listaPaises);
     setpaisesLista(listaPaises);
+    setisLoadingCurrencies(false);
+  };
+
+  const getListaCuentas = async () => {
+    setisLoadingCurrencies(true);
+    let listaCuentas = await apiListaCuentas();
+    console.log('CUENTAS OBTENIDAS EN CONTEXTO',listaCuentas);
+    setcuentasLista(listaCuentas);
     setisLoadingCurrencies(false);
   };
 
@@ -64,6 +73,8 @@ export const CurrenciesProvider = ({children}) => {
         getCurrency,
         paisesLista,
         getListaPaises,
+        cuentasLista,
+        getListaCuentas,
       }}
     >
       {children}

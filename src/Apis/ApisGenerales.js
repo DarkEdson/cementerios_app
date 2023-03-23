@@ -329,6 +329,26 @@ async function apiListaPaises() {
   }
 }
 
+async function apiListaCuentas() {
+  let url = `${BASE_URL}/bank.accounts.index`;
+  let resp = [];
+  try {
+    await fetch(url, {
+      method: 'GET',
+      redirect: 'follow',
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error', error))
+      .then(response => {
+        resp = response;
+      });
+    return resp;
+  } catch (error) {
+    console.error(error);
+    return []
+  }
+}
+
 export {
   apiLanguage,
   apiScreen,
@@ -340,5 +360,6 @@ export {
   apiPaypalAnswer,
   apiCreateLink,
   apiListaPaises,
-  apiLoadAvatar
+  apiLoadAvatar,
+  apiListaCuentas
 };

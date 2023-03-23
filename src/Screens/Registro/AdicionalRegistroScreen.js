@@ -38,7 +38,7 @@ export default function RegistroScreen(props) {
   const {tags} = useContext(ScreentagContext);
   const {register} = useContext(AuthContext);
   const [registerUser, registerAction] = useContext(RegisterContext);
-  const {paisesLista, getListaPaises} = useContext(CurrenciesContext);
+  const {paisesLista, getListaPaises, cuentasLista, getListaCuentas} = useContext(CurrenciesContext);
   const [boolProd, setboolProd] = useState(false);
   const [boolPhone, setboolPhone] = useState(false);
   const [codigoPais, setcodigoPais] = useState(null);
@@ -83,7 +83,7 @@ export default function RegistroScreen(props) {
     });
     setfiltroPaises(listado);
   }
-  
+   
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     setData({
@@ -101,6 +101,11 @@ export default function RegistroScreen(props) {
     (async () => {
       await getListaPaises();
       setfiltroPaises(paisesLista);
+    })();
+    (async () => {
+      await getListaCuentas();
+      console.log('LOG EN VENTANA DE LAS CUENTAS',cuentasLista)
+      settipoCuentaBank(cuentasLista);
     })();
     return () => {};
     //props, isFocused
