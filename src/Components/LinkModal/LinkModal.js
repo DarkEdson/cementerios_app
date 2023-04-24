@@ -173,12 +173,12 @@ const LinkModal = props => {
         }
         image="card-account-details"
       /> */}
-      <Text style={styles.titleLabel}>NIT</Text>
+      <Text style={styles.titleLabel}>{props.tags.dialogAlertsScreen.y}</Text>
       <MyTextInput
         keyboardType={null}
         value={data.nit}
         onChangeText={nitClient => setData({...data, nit: nitClient})}
-        placeholder={'NIT'}
+        placeholder={props.tags.dialogAlertsScreen.y}
         image="identifier"
       />
       <Dialog.Actions>
@@ -231,7 +231,7 @@ const LinkModal = props => {
         shoppingCart: [props.shoppingCart],
         sellerID: props.shoppingCart.idUser,
       };
-      console.log('Info a Enviar', sendInfo);
+      console.log('INFO a Enviar', sendInfo);
       props.generaLink(sendInfo);
       toggleDialog();
       Alert.alert(

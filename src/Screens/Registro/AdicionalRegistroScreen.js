@@ -225,7 +225,7 @@ export default function RegistroScreen(props) {
                 keyboardType={null}
                 value={data.nit}
                 onChangeText={nitClient => setData({...data, nit: nitClient})}
-                placeholder={'NIT'}
+                placeholder={tags.dialogAlertsScreen.y}
                 image="identifier"
               />
               <DateButton

@@ -239,7 +239,7 @@ async function apiPaypalAnswer(tokenPago) {
 
 async function apiCreateLink(dataLink) {
   let url = `${BASE_URL}/payment.order`;
-  console.log(dataLink);
+  console.log('ENVIA DATOS LINK DE PAGO',dataLink);
   let resp = {};
   try {
     let data = dataLink;
