@@ -10,7 +10,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
-import {CheckBox, Divider} from '@rneui/themed';
+import {CheckBox, Divider,FAB} from '@rneui/themed';
 import DatePicker from 'react-native-date-picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import {Icon} from '@rneui/base';
@@ -37,6 +37,7 @@ export default function RegistroScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const {tags} = useContext(ScreentagContext);
   const {register} = useContext(AuthContext);
+  const [isLoadingApis, setisLoadingApis] = useState(false)
   const [registerUser, registerAction] = useContext(RegisterContext);
   const {paisesLista, getListaPaises, cuentasLista, getListaCuentas} = useContext(CurrenciesContext);
   const [boolProd, setboolProd] = useState(false);
@@ -99,13 +100,20 @@ export default function RegistroScreen(props) {
     }
     getListaPaises();
     (async () => {
+      setisLoadingApis(true)
       await getListaPaises();
       setfiltroPaises(paisesLista);
+      setisLoadingApis(false)
     })();
     (async () => {
-      await getListaCuentas();
-      console.log('LOG EN VENTANA DE LAS CUENTAS',cuentasLista)
-      settipoCuentaBank(cuentasLista);
+      setisLoadingApis(true)
+      let milistadeCuentas = await getListaCuentas();
+      if (cuentasLista.length == 0 ){
+        console.log('cuentas lista vacio')
+      }
+      console.log('LOG EN VENTANA DE LAS CUENTAS',cuentasLista, milistadeCuentas)
+      settipoCuentaBank(milistadeCuentas);
+      setisLoadingApis(false)
     })();
     return () => {};
     //props, isFocused
@@ -113,6 +121,23 @@ export default function RegistroScreen(props) {
 
   return (
     <SafeAreaView style={mainStyles.containers}>
+      {isLoadingApis ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '50%',
+          }}
+        >
+          <FAB
+            loading
+            color={color.PRINCIPALCOLOR}
+            visible={isLoadingApis}
+            icon={{name: 'add', color: 'white'}}
+            size="small"
+          />
+        </View>
+      ) :
       <ScrollView
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
@@ -389,6 +414,7 @@ export default function RegistroScreen(props) {
           />
         </View>
       </ScrollView>
+      }
     </SafeAreaView>
   );
 

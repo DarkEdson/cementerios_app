@@ -27,6 +27,7 @@ export const CurrenciesProvider = ({children}) => {
     console.log('CUENTAS OBTENIDAS EN CONTEXTO',listaCuentas);
     setcuentasLista(listaCuentas);
     setisLoadingCurrencies(false);
+    return listaCuentas;
   };
 
   const getCurrenciesAf = async () => {

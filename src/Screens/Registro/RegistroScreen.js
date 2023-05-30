@@ -325,14 +325,14 @@ export default function RegistroScreen(props) {
             }
             onPress={() => registroParcial()}
           />
-          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          {/* <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
             <Text style={{color: color.GRAY, fontSize: 16}}>
               {tags.registerScreen.label2 != ''
                 ? tags.registerScreen.label2
                 : 'o crea tu cuenta con tus redes sociales.'}
             </Text>
-          </View>
-          <View style={registroStyles.containerSocial}>
+          </View> */}
+          {/* <View style={registroStyles.containerSocial}>
             <SocialIcon
               style={registroStyles.buttonSocialIcon}
               title={
@@ -361,7 +361,7 @@ export default function RegistroScreen(props) {
                 setVariableSocial('G');
               }}
             />
-          </View>
+          </View> */}
           <View style={loginStyles.boxTransparent} />
           <Dialog isVisible={visible} onBackdropPress={toggleDialog}>
             <Dialog.Title
