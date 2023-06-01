@@ -225,6 +225,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('my-upload-key-cui.keystore')
+            storePassword 'cementerioscapillas'
+            keyAlias 'my-upload-key-cui'
+            keyPassword 'cementerioscapillas'
+        }
     }
     buildTypes {
         debug {
@@ -254,6 +260,7 @@ android {
 
         }
     }
+
 }
 
 dependencies {

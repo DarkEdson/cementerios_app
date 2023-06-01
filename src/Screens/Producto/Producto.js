@@ -182,6 +182,7 @@ export default function VistaProducto(props) {
       }
     }
     if (ProductMultimedia.length >= 1) {
+      console.log('Array de multimedia de productos',ProductMultimedia)
       divideMultimedia();
     }
     //Consultar Moneda
@@ -224,6 +225,7 @@ export default function VistaProducto(props) {
       }
     });
     videos.push(imagen);
+    console.log('imagenes divididas',imagenes)
     console.log(videos);
     setProductImages(imagenes);
     setProductVideos(videos);

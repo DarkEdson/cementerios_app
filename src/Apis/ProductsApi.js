@@ -178,6 +178,7 @@ async function productbyHeadquarters(Sede, lenguaje) {
 }
 
 async function multimediabyProduct(product) {
+  console.log('Producto escogido para multimedia' ,product)
   let url = `${BASE_URL}/product.multimedia.getmultimediabyid/${product._id}`;
   let multimedia = [];
   try {
@@ -189,11 +190,12 @@ async function multimediabyProduct(product) {
       .catch(error => console.error('Error', error))
       .then(response => {
         response.forEach(producto => {
+          console.log('PRODUCTO CON ID DENTRO DE FOR EACH EN APIS?', producto)
           multimedia.push({
             _id: producto._id,
             idProduct: producto.idProduct,
             code: producto.code,
-            name: `${BASE_URL_IMG}${PRODUCTS_URL}${producto._id}/${producto.name}`,
+            name: `${BASE_URL_IMG}${PRODUCTS_URL}${product._id}/${producto.name}`,
             description: producto.description,
           });
         });
