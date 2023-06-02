@@ -100,6 +100,7 @@ export default function VistaProducto(props) {
   const [itemModal, setitemModal] = useState(null);
   const [visible, setIsVisible] = useState(false);
   const [ProductImages, setProductImages] = useState([]);
+  const [carrouselImages, setcarrouselImages] = useState([])
   const [ProductVideos, setProductVideos] = useState([]);
   const [engancheReal, setengancheReal] = useState(0);
   const [financing, setFinancing] = useState([
@@ -136,7 +137,7 @@ export default function VistaProducto(props) {
         loginUser.usuario._id,
         Product._id,
       );
-      console.log('SE VENDIO EL PRODUCTO?', productoVendido);
+      //console.log('SE VENDIO EL PRODUCTO?', productoVendido);
       if (!productoVendido) {
         await getRatingsComments(
           GlobalLanguage._id,
@@ -203,6 +204,9 @@ export default function VistaProducto(props) {
       getInitialData();
       console.log('isFocused in Product Detail');
     }
+
+    console.log('Product Images', ProductImages.length)
+    console.log('Product Videos', ProductVideos)
     //props, isFocused
   }, []);
 
@@ -215,16 +219,21 @@ export default function VistaProducto(props) {
     let imagenes = [];
     let imagen = {};
     let videos = [];
+    let imagenesCarrousel = []
     ProductMultimedia.map(prod => {
       extension = prod.name.split('.');
       if (IMGEXTENSIONS.includes(extension[extension.length - 1])) {
         imagenes.push({uri: prod.name});
         imagen = prod;
+        imagenesCarrousel.push(prod)
       } else {
         videos.push(prod);
       }
     });
-    videos.push(imagen);
+    if (videos.length != 0){
+      videos.push(imagen);
+    }
+    setcarrouselImages(imagenesCarrousel)
     console.log('imagenes divididas',imagenes)
     console.log(videos);
     setProductImages(imagenes);
@@ -403,14 +412,14 @@ export default function VistaProducto(props) {
                     size="small"
                   />
                 </View>
-              ) : ProductMultimedia.length >= 1 ? (
-                <Carousel
+              ) : ProductMultimedia.length >= 1 ? (<>
+               <Carousel
                   {...baseOptions}
                   style={{width: '100%', marginLeft: '5%'}}
                   loop
                   autoPlay={true}
                   autoPlayInterval={2000}
-                  data={ProductVideos}
+                  data={ProductVideos.length == 0 ? carrouselImages : ProductVideos}
                   renderItem={({item}) => (
                     <CardMultimedia
                       style={styles.imgDetalle}
@@ -423,6 +432,16 @@ export default function VistaProducto(props) {
                     />
                   )}
                 />
+                {ProductImages.length >= 1 ? (
+                <ImageView
+                  images={ProductImages}
+                  imageIndex={0}
+                  visible={visible}
+                  onRequestClose={() => setIsVisible(false)}
+                />
+              ) : null}
+              </>
+               
               ) : (
                 <View style={styles.noPromoView}>
                   <Text style={styles.promoText}>No Multimedia</Text>

@@ -45,7 +45,7 @@ export const RatingsProvider = ({children}) => {
   const findProdSell = async (lenguajeid, userID, productID) => {
     setisLoadingRatings(true);
     findProductSell(lenguajeid, userID, productID).then(res => {
-      console.log('RATINGS COMMENTS', res);
+    //  console.log('RATINGS COMMENTS', res);
       console.log('Longitud resp', res.length);
       if (res.length > 0) {
         setproductoVendido(true);

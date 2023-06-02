@@ -133,7 +133,7 @@ async function findProductSell(lenguajeid, userID, productID) {
       .then(res => res.json())
       .catch(error => console.error('Error SALE', error))
       .then(response => {
-        console.log('RESPUESTA SI EL PRODUCTO FUE COMPRADO API', response);
+        //console.log('RESPUESTA SI EL PRODUCTO FUE COMPRADO API', response);
         response.forEach(prod => {
           sellprod.push({
             _id: prod._id,

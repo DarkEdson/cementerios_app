@@ -27,7 +27,7 @@ const InformationIcon = props => {
         <View style={{width: 95}}>
           <Text
             style={
-              props.titulo.length <= 11
+              props.titulo.length <= 5
                 ? informationIconStyles.titleText
                 : informationIconStyles.titleText14
             }
