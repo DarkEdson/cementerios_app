@@ -15,7 +15,7 @@ const InformationIcon = props => {
 
   return (
     <TouchableOpacity style={[props.style]} onPress={props.onPress}>
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', marginLeft: 5}}>
         <View style={sIcon}>
           <Icon
             size={iconHeight}
@@ -24,21 +24,44 @@ const InformationIcon = props => {
             name={props.image}
           />
         </View>
-        <View style={{width: 95}}>
-          <Text
-            style={
-              props.titulo.length <= 5
-                ? informationIconStyles.titleText
-                : informationIconStyles.titleText14
-            }
-            numberOfLines={2}
-          >
-            {props.titulo}
-          </Text>
-
-          <Text style={informationIconStyles.subtitleText}>
+        
+        <View style={{width: 85, marginRight: 15
+        //borderWidth: 1, borderColor: 'red'
+        }}>
+          {
+            props.isPrice ? (
+            <>
+            <Text
+              style={
+                props.titulo.length <= 5
+                  ? informationIconStyles.titleText14
+                  : informationIconStyles.titleTextPrice
+              }
+            >
+              {props.titulo}
+            </Text>
+            <Text style={informationIconStyles.subtitleTextPrice}>
             {props.subtitulo}
           </Text>
+            </>
+            )
+            
+            :(
+            <><Text
+              style={
+                props.titulo.length <= 5
+                  ? informationIconStyles.titleText
+                  : informationIconStyles.titleText14
+              }
+            >
+              {props.titulo}
+            </Text>
+            <Text style={informationIconStyles.subtitleText}>
+            {props.subtitulo}
+          </Text>
+            </>
+            )
+          }
         </View>
       </View>
     </TouchableOpacity>

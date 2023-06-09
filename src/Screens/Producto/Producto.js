@@ -314,13 +314,14 @@ export default function VistaProducto(props) {
             <Text style={styles.categorias}> {Category.name} </Text>
             <View style={CementeryScreen.HeaderView}>
               <InformationIcon
+              isPrice= {true}
                 tipo="font-awesome-5"
                 image="dollar-sign"
                 //Product.price.includes(',') ? formatAmount(parseFloat(Product.price.replace(/,/g, ''))) : formatAmount(parseFloat(Product.price))
                 titulo={
                   Product.type == '2'
                     ? Product.currency.code +
-                      '.' +
+                      '.'+ ' ' +
                       (Product.price.includes(',')
                         ? formatAmount(
                             (parseFloat(Product.price.replace(/,/g, '')) *

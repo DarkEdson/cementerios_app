@@ -19,6 +19,7 @@ export const CurrenciesProvider = ({children}) => {
     console.log(listaPaises);
     setpaisesLista(listaPaises);
     setisLoadingCurrencies(false);
+    return listaPaises
   };
 
   const getListaCuentas = async () => {

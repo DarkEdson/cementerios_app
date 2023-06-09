@@ -119,10 +119,13 @@ export default function SplashScreen(props) {
       ) : (
         <SafeAreaView style={mainStyles.containers}>
           <ScrollView
-            style={{paddingHorizontal: Dimensions.get('screen').width * 0.025}}
+            style={{paddingHorizontal: Dimensions.get('screen').width * 0.025, paddingBottom:5, marginTop: 5, marginHorizontal:3, borderColor: 'black'
+          , borderWidth: 1}}
           >
             <RenderHtml contentWidth={width} source={termText} />
-            <View
+            
+          </ScrollView>
+          <View
               style={{
                 flexDirection: 'row',
                 paddingHorizontal: Dimensions.get('screen').width * 0.045,
@@ -142,7 +145,6 @@ export default function SplashScreen(props) {
                 onPress={() => rechazarTerminos()}
               />
             </View>
-          </ScrollView>
         </SafeAreaView>
       )}
     </View>
