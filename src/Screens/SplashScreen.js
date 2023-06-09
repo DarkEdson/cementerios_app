@@ -13,6 +13,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import RenderHtml from 'react-native-render-html';
 import MyButton from '@Components/common/MyButton';
+import { CheckBox } from '@rneui/themed';
 
 //Estilos Generales
 import {splashStyles, mainStyles} from '@styles/stylesGeneral';
@@ -48,6 +49,7 @@ export default function SplashScreen(props) {
     saveTermStatus,
   } = useContext(TermsContext);
   const [usuarioAsincrono, setusuarioAsincrono] = useState(null);
+  const [aceptaTermCond, setaceptaTermCond] = useState(false)
   const [login, loginAction] = useContext(UsuarioContext);
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
@@ -127,23 +129,37 @@ export default function SplashScreen(props) {
           </ScrollView>
           <View
               style={{
-                flexDirection: 'row',
+              //  flexDirection: 'row',
                 paddingHorizontal: Dimensions.get('screen').width * 0.045,
               }}
             >
+              <CheckBox
+              center
+              title='Acepto los terminos y condiciones'
+              checked={aceptaTermCond}
+              onPress={()=> setaceptaTermCond(!aceptaTermCond)}
+              />
               <MyButton
                 style={{
+                  alignSelf:'center',
                   width: Dimensions.get('screen').width * 0.4,
                   marginRight: Dimensions.get('screen').width * 0.05,
                 }}
-                titulo={'Confirm.'}
-                onPress={() => aceptarTerminos()}
+                titulo={'Continuar'}
+                onPress={() => {
+                  if (aceptaTermCond){
+                    aceptarTerminos()
+                  }else{
+                    rechazarTerminos()
+                  }
+                  
+                }}
               />
-              <MyButton
+              {/* <MyButton
                 style={{width: Dimensions.get('screen').width * 0.4}}
                 titulo={'Cancel.'}
                 onPress={() => rechazarTerminos()}
-              />
+              /> */}
             </View>
         </SafeAreaView>
       )}
