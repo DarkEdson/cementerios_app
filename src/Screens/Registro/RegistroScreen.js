@@ -4,6 +4,7 @@ import {
   Text,
   StatusBar,
   ScrollView,
+  Platform,
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
@@ -284,7 +285,7 @@ export default function RegistroScreen(props) {
                 marginLeft: 3,
               }}
               buttonStyle={styles.btnDropStyle}
-              dropdownStyle={{
+              dropdownStyle={Platform.OS==='ios' ?{
                 marginLeft: 2,
                 position: 'absolute',
                 backgroundColor: color.INPUTCOLOR,
@@ -292,6 +293,15 @@ export default function RegistroScreen(props) {
                 borderWidth: 1,
                 borderRadius: 8,
                 borderColor: '#444',
+              }:{
+                marginLeft: 2,
+             //   position: 'absolute',
+                left:35,
+                marginTop:-19.5,
+                backgroundColor: color.INPUTCOLOR,
+                //borderWidth: 1,
+                borderRadius: 8,
+               // borderColor: '#444',
               }}
               renderDropdownIcon={isOpened => {
                 return (
@@ -527,7 +537,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     flexDirection: 'row',
     width: '100%',
-    height: '6.25%',
+    height: '9.5%',
     borderRadius: 15,
     backgroundColor: color.INPUTCOLOR,
   },

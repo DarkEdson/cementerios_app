@@ -10,7 +10,7 @@ export default function MyTextInput(props) {
       containerStyle={styles.container}
       inputContainerStyle={{
         borderBottomColor: color.INPUTCOLOR,
-        marginBottom: -23,
+        marginBottom: -25,
       }}
       inputStyle={{
         fontSize: 18,

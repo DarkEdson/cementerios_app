@@ -167,7 +167,7 @@ export default function BuyScreen(props) {
                 ? prodsClients.map((producto, key) => (
                     <CardProductoReporte
                       key={key}
-                      urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.image}`}
+                      urlImagen={`${BASE_URL_IMG}${PRODUCTS_URL}${producto.idProduct}/${producto.image}`}
                       titulo={producto.name}
                       styles={{marginLeft: 10}}
                       moneda={producto.currency ? producto.currency : '$'}

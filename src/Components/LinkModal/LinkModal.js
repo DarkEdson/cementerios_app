@@ -44,8 +44,9 @@ const LinkModal = props => {
     setVisible(props.customModal);
     getListaPaises();
     (async () => {
-      await getListaPaises();
-      setfiltroPaises(paisesLista);
+      let paisList = await getListaPaises();
+      console.log(paisList)
+      setfiltroPaises(paisList);
     })();
     return () => {};
   }, []);

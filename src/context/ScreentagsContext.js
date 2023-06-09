@@ -108,7 +108,8 @@ export const ScreentagProvider = ({children}) => {
             mas: etiquetas[2].description,
             precio: etiquetas[3].description,
             sede: etiquetas[4].description,
-            todos: etiquetas[5].description,
+            todos: etiquetas[6].description,
+            sinprods:  etiquetas[5].description
           },
         }));
       }

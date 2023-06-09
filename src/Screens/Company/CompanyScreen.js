@@ -40,6 +40,7 @@ import {ProductContext} from '@context/ProductContext';
 import {RouteBackContext} from '@context/RouteBackContext';
 import {CategoriesContext} from '@context/CategoriesContext';
 import {CategoryContext} from '@context/CategoryContext';
+import {CountryContext} from '@context/CountryContext';
 import {SedesContext} from '@context/SedesContext';
 import {SedeContext} from '@context/SedeContext';
 import {ProductsContext} from '@context/ProductsContext';
@@ -58,6 +59,9 @@ export default function CompanyScreen(props) {
     afiliateCart,
     setafiliateCart,
   } = useContext(ShoppingCartContext);
+  const {
+    country,
+  } = useContext(CountryContext);
   const [Product, setProduct] = useContext(ProductContext);
   const {RouteBack, setRouteBack, RouteBackComp, setRouteBackComp} = useContext(
     RouteBackContext,
@@ -172,7 +176,7 @@ export default function CompanyScreen(props) {
       <View style={CementeryScreen.vista}>
         <ImageBackground
           source={{uri: cementery.image}}
-          resizeMode="stretch"
+          resizeMode="center"
           style={CementeryScreen.imgProducto}
         />
         <ScrollView>
@@ -347,7 +351,13 @@ export default function CompanyScreen(props) {
                   />
                 );
               })
-            ) : null}
+            ) : (
+              <View style={mainStyles.noPromoView}>
+                <Text style={mainStyles.promoText}> {tags.CompanyDetailScreen.sinprods != ''
+                ? tags.CompanyDetailScreen.sinprods
+                : 'Sin Productos en '} {country.label}</Text>
+              </View>
+            )}
             <View style={mainStyles.boxTransparent} />
           </View>
         </ScrollView>

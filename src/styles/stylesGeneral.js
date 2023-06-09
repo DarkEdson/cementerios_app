@@ -417,13 +417,19 @@ const informationIconStyles = StyleSheet.create({
     fontWeight: '600',
     color: color.BLACK,
     justifyContent: 'center',
-    fontSize: 14,
+    fontSize: 12,
   },
   subtitleText: {
     fontWeight: '400',
     color: color.GRAY3,
     justifyContent: 'center',
     fontSize: 13,
+  },
+  subtitleTextPrice: {
+    fontWeight: '400',
+    color: color.GRAY3,
+    justifyContent: 'center',
+    fontSize: 12,
   },
   verticleLine: {
     height: '100%',

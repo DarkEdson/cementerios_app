@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, View, StyleSheet} from 'react-native';
 
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {Icon} from '@rneui/themed';
 import InitialScreen from './InitialScreen';
 //Screens
@@ -15,7 +16,8 @@ import color from '@styles/colors';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {UsuarioContext} from '@context/UsuarioContext';
-const Tab = createMaterialBottomTabNavigator();
+//const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 //tags.HomeTagsScreen.home != '' ? tags.HomeTagsScreen.home :
 export default function HomeScreen(props) {
@@ -27,21 +29,25 @@ export default function HomeScreen(props) {
 
   return (
     <Tab.Navigator
-      initialRouteName="initial"
-      labeled
-      activeColor={color.PRINCIPALCOLOR}
-      barStyle={{
+    screenOptions={{
+      headerShown: false,
+      tabBarStyle: {
         backgroundColor: color.WHITE,
-        alignSelf: 'stretch',
         height: 55,
         alignItems: 'center',
         borderRadius: 0,
         elevation: 7,
-        shadowOffset: {width: 1, height: 1},
+        shadowOffset: { width: 1, height: 1 },
         shadowColor: '#333',
         shadowOpacity: 0.6,
         shadowRadius: 2,
-      }}
+      },
+      tabBarLabelStyle: {
+        fontSize: 12,
+      },
+      tabBarActiveTintColor: color.PRINCIPALCOLOR,
+      tabBarInactiveTintColor: color.GRAY,
+    }}
     >
       <Tab.Screen
         name="Initial"
@@ -57,7 +63,7 @@ export default function HomeScreen(props) {
               type={'material-community'}
               name="home"
               color={color}
-              size={27}
+              size={25}
             />
           ),
         }}
@@ -76,7 +82,7 @@ export default function HomeScreen(props) {
               type={'material-community'}
               name="sale"
               color={color}
-              size={27}
+              size={25}
             />
           ),
         }}
@@ -95,7 +101,7 @@ export default function HomeScreen(props) {
               type={'material-community'}
               name="file-document-edit-outline"
               color={color}
-              size={27}
+              size={25}
             />
           ),
         }}
@@ -117,7 +123,7 @@ export default function HomeScreen(props) {
                 type={'entypo'}
                 name="text-document"
                 color={color}
-                size={27}
+                size={25}
               />
             ),
           }}
@@ -137,7 +143,7 @@ export default function HomeScreen(props) {
               type={'entypo'}
               name="shopping-bag"
               color={color}
-              size={27}
+              size={25}
             />
           ),
         }}

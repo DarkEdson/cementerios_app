@@ -15,6 +15,7 @@ export const ReportsProvider = ({children}) => {
     setisLoadingReports(true);
     apiReporteCliente(usuarioID, lenguajeID).then(res => {
       console.log('REPORTE DE CLIENTES COMPRAS', res);
+      console.log('PRODUCTOS VENTAS CLIENTES', res.products)
       setReportsClients(res);
       setprodsClients(res.products)
       setValoresVenta({  subTotal: 0,
