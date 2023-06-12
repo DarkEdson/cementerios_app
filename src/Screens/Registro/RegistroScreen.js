@@ -6,6 +6,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  KeyboardAvoidingView,
   StyleSheet,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
@@ -207,6 +208,8 @@ export default function RegistroScreen(props) {
           iconLeft={true}
         />
         <View style={mainStyles.container}>
+
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
           <MyTextInput
             keyboardType={null}
             placeholder={
@@ -262,6 +265,8 @@ export default function RegistroScreen(props) {
             onPressIcon={() => setHidePasswordConfirm(!hidePasswordConfirm)}
             onEndEditing={e => handlePasswordConfirm(e.nativeEvent.text)}
           />
+          </KeyboardAvoidingView>
+
           <View style={styles.containerDropStyle}>
             <Icon
               style={{marginLeft: 10, marginTop: 12}}

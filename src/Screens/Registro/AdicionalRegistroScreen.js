@@ -6,6 +6,7 @@ import {
   StatusBar,
   SafeAreaView,
   LogBox,
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
 } from 'react-native';
@@ -154,6 +155,8 @@ export default function RegistroScreen(props) {
           iconLeft={true}
         />
         <View style={mainStyles.container}>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+
           <MyTextInput
             keyboardType={null}
             placeholder={
@@ -389,6 +392,9 @@ export default function RegistroScreen(props) {
               />
             </>
           ) : null}
+          </KeyboardAvoidingView>
+
+
           {/*
       <CheckBox
           containerStyle={registroStyles.checkBox}

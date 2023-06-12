@@ -1,6 +1,6 @@
 //import liraries
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, StyleSheet, TextInput, Alert, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, TextInput,KeyboardAvoidingView, Alert, TouchableOpacity, ScrollView} from 'react-native';
 import color from '@styles/colors';
 import {AirbnbRating, Dialog, CheckBox, Divider} from '@rneui/themed';
 import Snackbar from 'react-native-snackbar';
@@ -55,6 +55,7 @@ const LinkModal = props => {
     <ScrollView>
     <Dialog isVisible={visible} onBackdropPress={toggleDialog} overlayStyle={{width: '95%'}}>
       <Dialog.Title title={'Info'} />
+      <KeyboardAvoidingView  behavior="padding">
       <Text style={styles.titleLabel}>
         {props.tags.EditUserScreen.name != ''
           ? props.tags.EditUserScreen.name
@@ -182,6 +183,7 @@ const LinkModal = props => {
         placeholder={props.tags.dialogAlertsScreen.y}
         image="identifier"
       />
+    </KeyboardAvoidingView>
       <Dialog.Actions>
         <Dialog.Button
           title={
