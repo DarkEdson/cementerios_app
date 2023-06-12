@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, TouchableOpacity,Dimensions, Image} from 'react-native';
 import {Icon, Input} from '@rneui/themed';
 import color from '@styles/colors';
 
@@ -9,8 +9,9 @@ export default function MyTextInput(props) {
       style={{alignItems: 'center'}}
       containerStyle={styles.container}
       inputContainerStyle={{
+       // height: 15,
         borderBottomColor: color.INPUTCOLOR,
-        marginBottom: -25,
+       // marginBottom: -25,
       }}
       inputStyle={{
         fontSize: 18,
@@ -67,6 +68,8 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 10,
     marginBottom: 10,
+    height: 50,
+    width:Dimensions.get('screen').width * 0.9,
     borderRadius: 12,
     borderColor: color.INPUTCOLOR,
     borderWidth: 1,

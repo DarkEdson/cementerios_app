@@ -53,7 +53,7 @@ const LinkModal = props => {
 
   return (
     <ScrollView>
-    <Dialog isVisible={visible} onBackdropPress={toggleDialog} overlayStyle={{width: '95%'}}>
+    <Dialog isVisible={visible} onBackdropPress={toggleDialog} overlayStyle={{width: '98%'}}>
       <Dialog.Title title={'Info'} />
       <KeyboardAvoidingView  behavior="padding">
       <Text style={styles.titleLabel}>
