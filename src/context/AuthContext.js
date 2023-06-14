@@ -35,7 +35,7 @@ export const AuthProvider = ({children}) => {
         bank: userNew?.banco || '',
         swiftCode: userNew?.codigoswift || '',
         direction: userNew?.direccion || '',
-        status: '0',
+        status: '1',
       })
       .then(res => {
         let userInfo = res.data;
