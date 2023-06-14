@@ -48,7 +48,9 @@ async function productbyCountry(country, lenguaje) {
           });
         });
       });
-    return productos;
+      const sortedData = productos.sort((a, b) => a.name.localeCompare(b.name));
+
+    return sortedData;
   } catch (error) {
     console.error('ERROR EN PRODUCTOS API POR PAIS', error);
     return productos;
@@ -93,7 +95,9 @@ async function productFullbyCategory(product, lenguaje) {
               : '',
         };
       });
-    return productos;
+      const sortedData = productos.sort((a, b) => a.name.localeCompare(b.name));
+
+      return sortedData;
   } catch (error) {
     console.error(error, 'FULL PROD RETURN');
     return productos;
@@ -170,7 +174,9 @@ async function productbyHeadquarters(Sede, lenguaje) {
           });
         });
       });
-    return productos;
+      const sortedData = productos.sort((a, b) => a.name.localeCompare(b.name));
+
+      return sortedData;
   } catch (error) {
     console.error('RESPUESTA ERROR EN SEDES', error);
     return productos;

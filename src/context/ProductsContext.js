@@ -22,7 +22,7 @@ export const ProductsProvider = ({children}) => {
   const getProductsbyCountry = async (country, languaje) => {
     setisLoadingProducts(true);
     productbyCountry(country, languaje).then(res => {
-      res.sort((a, b) => a.code.localeCompare(b.code));
+      //res.sort((a, b) => a.code.localeCompare(b.code));
       console.log('PRODUCTOS por PAIS', res);
       setProductsCountry(res);
       setisLoadingProducts(false);
@@ -58,7 +58,7 @@ export const ProductsProvider = ({children}) => {
     let sedeRanking = 0;
     setisLoadingProducts(true);
     productbyHeadquarters(sede, languaje).then(res => {
-      res.sort((a, b) => a.code.localeCompare(b.code));
+     // res.sort((a, b) => a.code.localeCompare(b.code));
       console.log('PRODUCTOS por SEDE', res);
       setProductsSede(res);
       res.forEach(prod => {

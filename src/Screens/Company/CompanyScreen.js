@@ -179,7 +179,7 @@ export default function CompanyScreen(props) {
           resizeMode="center"
           style={CementeryScreen.imgProducto}
         />
-        <ScrollView>
+        <ScrollView >
           <View style={CementeryScreen.descripcion}>
             <Text style={CementeryScreen.titulo}> {cementery.name} </Text>
             <View style={{flexDirection: 'row'}}>

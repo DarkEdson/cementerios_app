@@ -319,8 +319,9 @@ const CementeryScreen = StyleSheet.create({
     color: 'grey',
   },
   imgProducto: {
-    height: 300,
+    marginTop: -5.4,
     width: '100%',
+    aspectRatio: 1 
   },
   logoImage: {
     width: 230,
