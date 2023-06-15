@@ -349,6 +349,26 @@ async function apiListaCuentas() {
   }
 }
 
+async function apiPasswordRestore(email) {
+  let url = `${BASE_URL}/user.recoverpass/${email}`;
+  let resp = {};
+  try {
+    await fetch(url, {
+      method: 'POST',
+      redirect: 'follow',
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error', error))
+      .then(response => {
+        resp = response;
+      });
+    return resp;
+  } catch (error) {
+    console.error(error);
+    return {}
+  }
+}
+
 export {
   apiLanguage,
   apiScreen,
@@ -361,5 +381,6 @@ export {
   apiCreateLink,
   apiListaPaises,
   apiLoadAvatar,
-  apiListaCuentas
+  apiListaCuentas,
+  apiPasswordRestore
 };
