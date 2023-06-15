@@ -335,16 +335,20 @@ export default function InitialScreen(props) {
                     ? tags.HomeScreen.labelcementarios
                     : 'Cementerios'}
                 </Text>
-                <MyTextButton
-                  titulo={
-                    tags.HomeScreen.labelvertodos != ''
-                      ? tags.HomeScreen.labelvertodos
-                      : 'Ver todos'
-                  }
-                  underline={true}
-                  color="blue"
-                  onPress={() => goToScreen('Cementeries')}
-                />
+                {Cementeries.length >=3 ? 
+                 <MyTextButton
+                 titulo={
+                   tags.HomeScreen.labelvertodos != ''
+                     ? tags.HomeScreen.labelvertodos
+                     : 'Ver todos'
+                 }
+                 underline={true}
+                 color="blue"
+                 onPress={() => goToScreen('Cementeries')}
+               />: null
+
+                }
+               
               </View>
               <View>
                 {isLoadingCementeries ? (
@@ -364,7 +368,27 @@ export default function InitialScreen(props) {
                     />
                     <View style={styles.boxTransparent} />
                   </View>
-                ) : (
+                ) : Cementeries.length <2 ? <View
+                style={{
+                 // flexDirection: 'row',
+                  borderColor: 'gray',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  height: 250,
+                  marginBottom: -25,
+                }}
+              >
+                {Cementeries.map((Af, key) => {
+                  return (
+                    <CardColaborador
+                      key={key}
+                      urlImagen={Af.image}
+                      nombre={Af.name}
+                      onPressColab={() => selectCementery(Af, 'Company')}
+                    />
+                  );
+                })}
+                </View> : (
                   <View
                     style={{
                       flexDirection: 'row',

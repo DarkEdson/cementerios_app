@@ -884,6 +884,9 @@ export default function VistaProducto(props) {
   );
   function goToScreen(routeName) {
     seteditable(false);
+    setcarrouselImages([])
+    setProductImages([])
+    setProductVideos([])
     props.navigation.navigate(routeName);
   }
   function calculoTienda() {
