@@ -93,6 +93,7 @@ export const ProductsProvider = ({children}) => {
   };
 
   const getMultimediabyProduct = async product => {
+    let multim = []
     setisLoadingProducts(true);
     multimediabyProduct(product).then(res => {
       res.sort((a, b) => a.code.localeCompare(b.code));
@@ -100,6 +101,8 @@ export const ProductsProvider = ({children}) => {
       setProductMultimedia(res);
       setisLoadingProducts(false);
     });
+    multim = await multimediabyProduct(product)
+    return multim
   };
 
   useEffect(() => {}, []);

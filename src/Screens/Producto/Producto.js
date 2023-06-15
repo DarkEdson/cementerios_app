@@ -92,7 +92,7 @@ export default function VistaProducto(props) {
   const {Cementeries} = useContext(CementeriesContext);
   const [sede, setSede] = useContext(SedeContext);
   const {RouteBack, setRouteBack} = useContext(RouteBackContext);
-  const {ProductMultimedia, isLoadingProducts} = useContext(ProductsContext);
+  const {ProductMultimedia,getMultimediabyProduct, isLoadingProducts} = useContext(ProductsContext);
   const {Currency, getCurrency} = useContext(CurrenciesContext);
   const [customModal, setCustomModal] = useState(false);
   const [ratingModal, setRatingmodal] = useState(false);
@@ -121,6 +121,7 @@ export default function VistaProducto(props) {
   const [checked1, setchecked1] = useState(true);
   const [checked2, setchecked2] = useState(false);
   const [visibleMethod, setvisibleMethod] = useState(false);
+  const [prodMult, setprodMult] = useState([])
 
   const progressValue = useSharedValue(0);
   const baseOptions = {
@@ -132,6 +133,13 @@ export default function VistaProducto(props) {
   useEffect(() => {
     console.log('Producto?', Product);
     (async () => {
+      let mymultim = await getMultimediabyProduct(Product)
+      setprodMult(mymultim)
+      console.log ('MY MULTIM????', mymultim)
+      if (mymultim.length >= 1) {
+        console.log('Array de multimedia de productos llamada antes',ProductMultimedia)
+        divideMultimedia(mymultim);
+      }
       await findProdSell(
         GlobalLanguage._id,
         loginUser.usuario._id,
@@ -182,10 +190,7 @@ export default function VistaProducto(props) {
         }
       }
     }
-    if (ProductMultimedia.length >= 1) {
-      console.log('Array de multimedia de productos',ProductMultimedia)
-      divideMultimedia();
-    }
+  
     //Consultar Moneda
     getCurrency({_id: sede.idAffiliate});
     // Actualizar valores de la vista
@@ -214,13 +219,13 @@ export default function VistaProducto(props) {
     setRatingmodal(true);
   };
 
-  function divideMultimedia() {
+  function divideMultimedia(multim) {
     let extension = [];
     let imagenes = [];
     let imagen = {};
     let videos = [];
     let imagenesCarrousel = []
-    ProductMultimedia.map(prod => {
+    multim.map(prod => {
       extension = prod.name.split('.');
       if (IMGEXTENSIONS.includes(extension[extension.length - 1])) {
         imagenes.push({uri: prod.name});
