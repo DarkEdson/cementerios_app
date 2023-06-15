@@ -21,11 +21,12 @@ import MyTextInput from '@Components/common/MyTextInput';
 import ToolBar from '@Components/common/toolBar';
 //Contextos
 import {ScreentagContext} from '@context/ScreentagsContext';
+import { apiPasswordRestore } from '@Apis/ApisGenerales';
 
 //tags.PasswordRecoveryScreen.btn != '' ? tags.PasswordRecoveryScreen.btn :
 export default function RecuperarPasswordScreen(props) {
   const {tags, updateTags} = useContext(ScreentagContext);
-
+  const [email, setemail] = useState('')
   const isFocused = useIsFocused();
   const getInitialData = async () => {};
 
@@ -79,6 +80,8 @@ export default function RecuperarPasswordScreen(props) {
               : 'E-mail'
           }
           image="account-circle"
+          value={email}
+          onChangeText={email => setemail(email)}
         />
         <View style={mainStyles.btnMain}>
           <TouchableOpacity onPress={() => recuperarClave()}>
@@ -97,13 +100,25 @@ export default function RecuperarPasswordScreen(props) {
   );
 
   function recuperarClave() {
-    Snackbar.show({
-      text: tags.dialogAlertsScreen.d != ''
-      ? tags.dialogAlertsScreen.d
-      : 'Su contraseña fue reiniciada y enviada a su correo electronico',
-      duration: Snackbar.LENGTH_LONG,
-    });
+    if (email == ''){
+      Snackbar.show({
+        text:  'Ingrese correo',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }else{
+
+      apiPasswordRestore(email)
+      Snackbar.show({
+        text: tags.dialogAlertsScreen.d != ''
+        ? tags.dialogAlertsScreen.d
+        : 'Su contraseña fue reiniciada y enviada a su correo electronico',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
+    
+   
   }
+
   function goToScreen(routeName) {
     props.navigation.navigate(routeName);
   }
