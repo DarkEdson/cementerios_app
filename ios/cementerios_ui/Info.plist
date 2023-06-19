@@ -71,6 +71,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Esta aplicacion necesita acceder a tus fotos para que puedas seleccionar una imagen de tu biblioteca y personalizar tu perfil</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
