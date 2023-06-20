@@ -99,6 +99,7 @@ export default function VistaProducto(props) {
   const [imagenModal, setimagenModal] = useState(null);
   const [itemModal, setitemModal] = useState(null);
   const [visible, setIsVisible] = useState(false);
+  const [keyImage, setkeyImage] = useState(0)
   const [ProductImages, setProductImages] = useState([]);
   const [carrouselImages, setcarrouselImages] = useState([])
   const [ProductVideos, setProductVideos] = useState([]);
@@ -273,6 +274,15 @@ export default function VistaProducto(props) {
   function abrirModal(multimedia) {
     let extension = multimedia.name.split('.');
     if (IMGEXTENSIONS.includes(extension[extension.length - 1])) {
+      ProductImages.map((imgn,key) => {
+        if (imgn.uri == multimedia.name){
+          console.log('IMAGEN URI',imgn.uri, 'MULTIMEDIA NAME', multimedia.name, 'LLAVE',key)
+          setkeyImage(key)
+        }
+        
+      
+      })
+      //console.log(ProductImages)
       setIsVisible(true);
     } else {
       setCustomModal(true);
@@ -444,7 +454,7 @@ export default function VistaProducto(props) {
                 {ProductImages.length >= 1 ? (
                 <ImageView
                   images={ProductImages}
-                  imageIndex={0}
+                  imageIndex={keyImage}
                   visible={visible}
                   onRequestClose={() => setIsVisible(false)}
                 />
