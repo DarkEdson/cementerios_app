@@ -469,7 +469,7 @@ export default function VistaProducto(props) {
               {ProductImages.length >= 1 ? (
                 <ImageView
                   images={ProductImages}
-                  imageIndex={0}
+                  imageIndex={keyImage}
                   visible={visible}
                   onRequestClose={() => setIsVisible(false)}
                 />
