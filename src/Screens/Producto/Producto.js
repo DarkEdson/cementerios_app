@@ -236,7 +236,10 @@ export default function VistaProducto(props) {
       }
     });
     if (videos.length != 0){
-      videos.push(imagen);
+      imagenesCarrousel.map(imgn => {
+        videos.push(imgn)
+      })
+ //     videos.push(imagen);
     }
     setcarrouselImages(imagenesCarrousel)
     console.log('imagenes divididas',imagenes)
