@@ -40,7 +40,9 @@ const InformationIcon = props => {
             >
               {props.titulo}
             </Text>
-            <Text style={informationIconStyles.subtitleTextPrice}>
+            <Text style={ props.titulo.length <= 16
+                  ? informationIconStyles.subtitleTextPrice12
+                  : informationIconStyles.subtitleTextPrice10}>
             {props.subtitulo}
           </Text>
             </>

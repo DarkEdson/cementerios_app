@@ -257,6 +257,7 @@ export default function RegistroScreen(props) {
                 image="identifier"
               />
               <DateButton
+                tags={tags.sedeSelectScreen}
                 setOpen={setOpenDate}
                 setDate={setBirthday}
                 open={openDate}

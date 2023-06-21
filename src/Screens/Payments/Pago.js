@@ -661,7 +661,9 @@ export default function VistaPago(props) {
                           color: color.PRINCIPALCOLOR,
                           fontWeight: '600',
                         }}
-                        titulo={'No Cards'}
+                        titulo={tags.PaymentScreen.sinCards != ''
+                        ? tags.PaymentScreen.sinCards
+                        :'No Cards'}
                         onPressRight={() => goToScreen('PaymentMethod')}
                         iconRight={true}
                       />

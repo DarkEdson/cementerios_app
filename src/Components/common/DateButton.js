@@ -34,6 +34,15 @@ const DateButton = props => {
             textColor={color.PRINCIPALCOLOR}
             modal
             mode="date"
+            confirmText={props.tags.btnconfirmar != ''
+            ? props.tags.btnconfirmar
+            : 'CONFIRMAR'}
+            cancelText={
+              props.tags.btncancelar != ''
+                ? props.tags.btncancelar
+                : 'CANCEL'
+            }
+            locale='es'
             open={props.open}
             date={new Date()}
             onConfirm={datenew => {
