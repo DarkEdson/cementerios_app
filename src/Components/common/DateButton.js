@@ -40,9 +40,10 @@ const DateButton = props => {
             cancelText={
               props.tags.btncancelar != ''
                 ? props.tags.btncancelar
-                : 'CANCEL'
+                : 'CANCELAR'
             }
             locale='es'
+            title={props.tagFecha != '' ? props.tagFecha : 'Fecha Nacimiento:'}
             open={props.open}
             date={new Date()}
             onConfirm={datenew => {
