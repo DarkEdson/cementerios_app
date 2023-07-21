@@ -27,6 +27,7 @@ import color from '@styles/colors';
 //Contextos
 import {LanguaguesContext} from '@context/LanguaguesContext';
 import {UsuarioContext} from '@context/UsuarioContext';
+import { AuthContext } from '../../context/AuthContext';
 import {ScreenIdContext} from '@context/ScreensIDsContext';
 import {ScreentagContext} from '@context/ScreentagsContext';
 import {GlobalLanguageContext} from '@context/LanguageContext';
@@ -42,6 +43,7 @@ import {
 export default function PersonalDataScreen(props) {
   const [loginUser, loginAction] = useContext(UsuarioContext);
   const [Languagues, setLanguagues] = useContext(LanguaguesContext);
+  const {deleteUser} = useContext(AuthContext)
   const [ScreenId, setScreenId] = useContext(ScreenIdContext);
   const {tags, updateTags} = useContext(ScreentagContext);
   const [lenguajes, setLenguajes] = useState([]);
@@ -266,6 +268,23 @@ export default function PersonalDataScreen(props) {
                     }}
                   />
                 </View>
+              </View>
+              <Text style={styles.txtComponente}>
+                {tags.personalDataScreen.borrarCuenta != ''
+                      ? tags.personalDataScreen.borrarCuenta
+                      : 'Borrar Cuenta'}
+              </Text>
+              <View style={{backgroundColor: color.WHITE}}>
+                  <TouchableOpacity onPress={() => {
+                    deleteUser(loginUser.usuario._id, tags.personalDataScreen)
+                    console.log(loginUser.usuario._id)}}>
+                    <Text style={styles.txtComponente}>
+                       {tags.personalDataScreen.borrarUsuario != ''
+                      ? tags.personalDataScreen.borrarUsuario
+                      :
+                        'Eliminar Usuario'}
+                    </Text>
+                  </TouchableOpacity>
               </View>
             </View>
           )}

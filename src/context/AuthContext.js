@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, {createContext, useEffect, useState} from 'react';
+import { Alert, Linking } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {BASE_URL} from '@utils/config';
 import {apiChangePassword, apiUpdateUser} from '@Apis/ApisGenerales';
+import { apiBorraUsuario } from '../Apis/ApisGenerales';
 
 export const AuthContext = createContext();
 
@@ -13,6 +15,10 @@ export const AuthProvider = ({children}) => {
   const [errorInfo, setErrorInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
+
+  const handleEmailPress = ()=>{
+    Linking.openURL(`mailto:${email}`)
+  }
 
   const register = (userNew, goToScreen, loginAction, tags) => {
     setIsLoading(true);
@@ -156,6 +162,80 @@ export const AuthProvider = ({children}) => {
       });
   };
 
+  const deleteUser = (userID, tags) => {
+    setIsLoading(true);
+
+    axios
+      .get(
+        `${BASE_URL}/user.checkifcandelete/${userID}`,
+        {},
+      )
+      .then( res => {
+        console.log(res.data);
+        if (res.data == 'Si se puede borrar'){
+          Alert.alert(
+             tags.borrarUsuario ? tags.borrarUsuario :'Confirmación de eliminar usuario',
+            tags.confirmaEliminarUser ? tags.confirmaEliminarUser : '¿Esta seguro que \ndesea borrar su usuario?',
+            [
+              {
+                text:
+                  tags.closeSessionScreen.btnsi != ''
+                    ? tags.closeSessionScreen.btnsi
+                    : 'Si',
+                onPress: async() => {
+                  await apiBorraUsuario()
+          setTokenUserInfo(null);
+          AsyncStorage.removeItem('tokenUserInfo');
+          AsyncStorage.removeItem('userInfo');
+          AsyncStorage.removeItem('errorInfo');
+          setUserInfo({});
+          setErrorInfo(null);
+          Snackbar.show({
+            text: tags.usuarioBorrado ? tags.usuarioBorrado : 'Usuario Borrado',
+            //tags.c != '' ? tags.c : errorInfo,
+            duration: Snackbar.LENGTH_LONG,
+          });
+                },
+              },
+              {
+                text:
+                  tags.closeSessionScreen.btnno != ''
+                    ? tags.closeSessionScreen.btnno
+                    : 'No',
+                onPress: () => {},
+                style: 'cancel',
+              },
+            ],
+          );
+          
+        }else if (res.data == 'No se puede borrar'){
+          Alert.alert(
+            tags.borrarUsuario ? tags.borrarUsuario : 'Borrar Usuario',
+            tags.usuarioNoBorrado ? tags.usuarioNoBorrado  + ' sacwowgt@senoriales.com' : res.data,
+            [
+              {
+                text:
+                  'OK',
+                onPress: () => {},
+              },
+              
+            ],
+          );
+          Snackbar.show({
+            text: tags.usuarioNoBorrado ? tags.usuarioNoBorrado + ' sacwowgt@senoriales.com': res.data,
+            //tags.c != '' ? tags.c : errorInfo,
+            duration: Snackbar.LENGTH_LONG,
+          });
+        }
+      
+        setIsLoading(false);
+      })
+      .catch(e => {
+        console.log(`logout error ${e}`);
+        setIsLoading(false);
+      });
+  };
+
   const isLoggedIn = async () => {
     try {
       setSplashLoading(true);
@@ -275,7 +355,8 @@ export const AuthProvider = ({children}) => {
         logout,
         cambiaClave,
         actualizaUsuario,
-        actualizaAvatar
+        actualizaAvatar,
+        deleteUser
       }}
     >
       {children}
