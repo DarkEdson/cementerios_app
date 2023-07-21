@@ -22,7 +22,7 @@ export const AuthProvider = ({children}) => {
 
   const register = (userNew, goToScreen, loginAction, tags) => {
     setIsLoading(true);
-
+    console.log(userNew)
     axios
       .post(`${BASE_URL}/auth/signup`, {
         username: userNew.username,
@@ -162,7 +162,7 @@ export const AuthProvider = ({children}) => {
       });
   };
 
-  const deleteUser = (userID, tags) => {
+  const deleteUser = (userID, tags, tags2) => {
     setIsLoading(true);
 
     axios
@@ -179,8 +179,8 @@ export const AuthProvider = ({children}) => {
             [
               {
                 text:
-                  tags.closeSessionScreen.btnsi != ''
-                    ? tags.closeSessionScreen.btnsi
+                  tags2.btnsi != ''
+                    ? tags2.btnsi
                     : 'Si',
                 onPress: async() => {
                   await apiBorraUsuario()
@@ -199,8 +199,8 @@ export const AuthProvider = ({children}) => {
               },
               {
                 text:
-                  tags.closeSessionScreen.btnno != ''
-                    ? tags.closeSessionScreen.btnno
+                  tags2.btnno != ''
+                    ? tags2.btnno
                     : 'No',
                 onPress: () => {},
                 style: 'cancel',

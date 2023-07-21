@@ -276,7 +276,7 @@ export default function PersonalDataScreen(props) {
               </Text>
               <View style={{backgroundColor: color.WHITE}}>
                   <TouchableOpacity onPress={() => {
-                    deleteUser(loginUser.usuario._id, tags.personalDataScreen)
+                    deleteUser(loginUser.usuario._id, tags.personalDataScreen, tags.closeSessionScreen)
                     console.log(loginUser.usuario._id)}}>
                     <Text style={styles.txtComponente}>
                        {tags.personalDataScreen.borrarUsuario != ''
