@@ -369,6 +369,27 @@ async function apiPasswordRestore(email) {
   }
 }
 
+async function apiBorraUsuario(userID) {
+  let url = `${BASE_URL}/user.destroy/${userID}`;
+  let resp = {};
+  try {
+    await fetch(url, {
+      method: 'DELETE',
+      redirect: 'follow',
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error', error))
+      .then(response => {
+        resp = response;
+        console.log('usuario borrado', resp)
+      });
+    return resp;
+  } catch (error) {
+    console.error(error);
+    return resp
+  }
+}
+
 export {
   apiLanguage,
   apiScreen,
@@ -382,5 +403,6 @@ export {
   apiListaPaises,
   apiLoadAvatar,
   apiListaCuentas,
-  apiPasswordRestore
+  apiPasswordRestore,
+  apiBorraUsuario
 };

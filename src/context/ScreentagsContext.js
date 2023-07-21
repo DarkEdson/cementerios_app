@@ -217,18 +217,24 @@ export const ScreentagProvider = ({children}) => {
     if (pantalla.code == 'v13') {
       etiquetas.sort((a, b) => a.code.localeCompare(b.code));
       if (etiquetas.length != 0) {
+        console.log('OPCIONES DE EDICION PERSONAL DATA',etiquetas)
         setTags(prevState => ({
           ...prevState,
           personalDataScreen: {
-            codigo: etiquetas[0].description,
-            contrasena: etiquetas[1].description,
-            editar: etiquetas[2].description,
-            email: etiquetas[3].description,
-            idioma: etiquetas[4].description,
-            info: etiquetas[5].description,
-            metodos: etiquetas[6].description,
-            nombre: etiquetas[7].description,
-            titulo: etiquetas[8].description,
+            borrarCuenta: etiquetas[0].description,
+            borrarUsuario: etiquetas[1].description,
+            codigo: etiquetas[2].description,
+            confirmaEliminarUser: etiquetas[3].description,
+            contrasena: etiquetas[4].description,
+            editar: etiquetas[5].description,
+            email: etiquetas[6].description,
+            idioma: etiquetas[7].description,
+            info: etiquetas[8].description,
+            metodos: etiquetas[9].description,
+            nombre: etiquetas[10].description,
+            titulo: etiquetas[11].description,
+            usuarioBorrado: etiquetas[12].description,
+            usuarioNoBorrado: etiquetas[13].description,
           },
         }));
       }
