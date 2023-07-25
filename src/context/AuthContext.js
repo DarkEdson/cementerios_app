@@ -211,7 +211,7 @@ export const AuthProvider = ({children}) => {
         }else if (res.data == 'No se puede borrar'){
           Alert.alert(
             tags.borrarUsuario ? tags.borrarUsuario : 'Borrar Usuario',
-            tags.usuarioNoBorrado ? tags.usuarioNoBorrado  + ' sacwowgt@senoriales.com' : res.data,
+            tags.usuarioNoBorrado ? tags.usuarioNoBorrado : res.data,
             [
               {
                 text:
@@ -222,7 +222,7 @@ export const AuthProvider = ({children}) => {
             ],
           );
           Snackbar.show({
-            text: tags.usuarioNoBorrado ? tags.usuarioNoBorrado + ' sacwowgt@senoriales.com': res.data,
+            text: tags.usuarioNoBorrado ? tags.usuarioNoBorrado: res.data,
             //tags.c != '' ? tags.c : errorInfo,
             duration: Snackbar.LENGTH_LONG,
           });
