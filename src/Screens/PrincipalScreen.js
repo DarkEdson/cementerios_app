@@ -83,7 +83,7 @@ export default function PrincipalScreen(props) {
         />
         <Text style={styles.txtNuevoComponente}> Card de colaborador </Text>
         <CardColaborador
-          urlImagen="https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg"
+          urlImagen="https://cementeriosgt.com/wp-content/uploads/2021/07/Capillas-Funerarias-cementerio-oceanico.jpg"
           nombre="Cementarios del mar"
         />
         <CardColaborador
@@ -92,7 +92,7 @@ export default function PrincipalScreen(props) {
         />
         <Text style={styles.txtNuevoComponente}> Card de productos </Text>
         <CardProducto
-          urlImagen="https://cementeriosgt.gt/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg"
+          urlImagen="https://cementeriosgt.gt/wp-content/uploads/2021/07/Capillas-Funerarias-cementerio-oceanico.jpg"
           titulo="Perla Magistral"
           descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
           precio="$ 12.50"
