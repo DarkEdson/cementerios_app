@@ -16,7 +16,7 @@ import {ScreentagContext} from '@context/ScreentagsContext';
 const HelpScreen = () => {
   // Variables
   const [cel, setcel] = useState('308952032')
-  const [email, setemail] = useState('senoriales@gmail.com')
+  const [email, setemail] = useState('cementeriosgt@gmail.com')
   const {tags} = useContext(ScreentagContext);
 
   const isFocused = useIsFocused();

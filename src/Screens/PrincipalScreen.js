@@ -88,11 +88,11 @@ export default function PrincipalScreen(props) {
         />
         <CardColaborador
           urlImagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4HjGP0stpZVJ6HPn06tbnaxp6oWpD4Kps1g&usqp=CAU"
-          nombre="Capillas senoriales"
+          nombre="Capillas Funerarias"
         />
         <Text style={styles.txtNuevoComponente}> Card de productos </Text>
         <CardProducto
-          urlImagen="https://cementeriosdelmar.com/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg"
+          urlImagen="https://cementeriosgt.gt/wp-content/uploads/2021/07/Capillas-Sen%CC%83oriales-cementerio-en-el-mar.jpg"
           titulo="Perla Magistral"
           descripcion="Perla, cemento, cremacion, traslado, hundimiento.."
           precio="$ 12.50"
